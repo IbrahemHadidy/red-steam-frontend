@@ -1,0 +1,498 @@
+.featured-carousel {
+  all: unset;
+  display: block;
+  background: url("../../../public/images/cluster_bg.png") bottom center
+    no-repeat;
+  position: relative;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 0;
+  padding-top: 20px;
+  overflow: hidden;
+}
+
+.main-carousel-content {
+  display: block;
+  position: relative;
+  width: 940px;
+  margin: 0 auto;
+}
+
+.main-carousel-title {
+  font-family: "Motiva Sans", Sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 10px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  padding-top: 2px;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.slick-prev,
+.slick-next {
+  display: block !important;
+  top: 189px !important;
+  width: unset !important;
+  padding: 50px 15px !important;
+  cursor: pointer !important;
+  z-index: 3 !important;
+}
+
+.slick-prev {
+  left: -53px !important;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.3) 10%,
+    rgba(0, 0, 0, 0) 95%
+  ) !important;
+}
+.slick-next {
+  right: -53px !important;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.3) 10%,
+    rgba(0, 0, 0, 0) 95%
+  ) !important;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  position: relative !important;
+  right: auto !important;
+  left: auto !important;
+  opacity: unset !important;
+  width: 23px !important;
+  height: 36px !important;
+  display: block !important;
+  content: url("../../../public/images/blank.gif") !important;
+  background-image: url("../../../public/images/arrows.png") !important;
+  background-position-y: center !important;
+  bottom: 16px !important;
+}
+
+.slick-prev::before {
+  background-position-x: 23px !important;
+  left: 0 !important;
+}
+.slick-next::before {
+  right: 0 !important;
+}
+
+.slick-prev:hover {
+  background: linear-gradient(
+    to right,
+    rgba(171, 218, 244, 0.3) 5%,
+    rgba(171, 218, 244, 0) 95%
+  ) !important;
+}
+
+.slick-next:hover {
+  background: linear-gradient(
+    to left,
+    rgba(171, 218, 244, 0.3) 5%,
+    rgba(171, 218, 244, 0) 95%
+  ) !important;
+}
+
+.slick-dots {
+  all: unset !important;
+  width: unset !important;
+  display: block !important;
+  text-align: center !important;
+  min-height: 37px !important;
+  padding-bottom: 4px !important;
+  list-style: unset !important;
+  position: relative !important;
+  bottom: 5px !important;
+}
+
+.slick-dots li {
+  all: unset !important;
+}
+
+.slick-dots li button {
+  all: unset !important;
+  color: transparent !important;
+  display: inline-block !important;
+  margin: 12px 2px !important;
+  width: 15px !important;
+  height: 9px !important;
+  border-radius: 2px !important;
+  transition: background-color 0.2s !important;
+  background-color: hsla(202, 60%, 100%, 0.2) !important;
+  cursor: pointer !important;
+}
+
+.slick-dots li button::before {
+  all: unset !important;
+}
+
+.slick-dots .slick-active button {
+  background-color: hsla(202, 60%, 100%, 0.4) !important;
+}
+.slick-dots li button:hover {
+  background-color: hsla(202, 60%, 100%, 0.3) !important;
+}
+
+.slide {
+  pointer-events: auto !important;
+  text-decoration: unset;
+  cursor: pointer !important;
+  transition: opacity 400ms !important;
+  position: relative !important;
+  background-image: url("../../../public/images/background_maincap_2.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: right !important;
+  color: #fff !important;
+  display: flex !important;
+  box-shadow: 5px 1px 5px 0 #000;
+}
+.slick-active,
+.slick-current {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 100;
+}
+
+.slick-list {
+  height: 360px !important;
+  width: 940px;
+}
+
+.main-card {
+  display: block;
+  flex-shrink: 0;
+  background-color: #000;
+  position: relative;
+  z-index: 2;
+  margin-right: 10px;
+  width: 616px;
+  height: 353px;
+  background-size: 616px 353px;
+  background-position: center center;
+  box-shadow: 5px 1px 5px 0 #000;
+}
+
+.info-card {
+  flex-shrink: 1;
+  display: block;
+}
+
+.app-name {
+  display: flex;
+  align-items: center;
+  padding-top: 0px;
+  font-family: "Motiva Sans", Sans-serif;
+  font-weight: 300;
+  height: 69px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.app-name > div {
+  max-height: 62px;
+  overflow: hidden;
+  font-size: 24px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  line-height: 26px;
+  text-decoration: none;
+}
+
+.photos {
+  width: 344px;
+  display: inline-block;
+  margin-left: -30px;
+  max-height: 176px;
+  position: relative;
+}
+.photos > div {
+  width: 162px;
+  height: 69px;
+  display: inline-block;
+  margin: 5px 10px 0 0;
+}
+.photos > div > div {
+  width: 162px;
+  height: 69px;
+  background-size: cover;
+  background-position: center center;
+  display: inline-block;
+  position: absolute;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+.photos > div > div:hover {
+  opacity: 1;
+}
+.photos > div > div::before {
+  content: "";
+  position: absolute;
+  top: -11px;
+  left: -10px;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+.reason {
+  margin-top: 8px;
+  padding-left: 6px;
+  display: inline-block;
+  width: 298px;
+}
+.available {
+  font-size: 21px;
+  font-weight: 200;
+  min-height: auto;
+}
+.recommended {
+  min-height: 45px;
+  font-size: 17px;
+  padding-right: 10px;
+  padding-top: 0px;
+  font-family: "Motiva Sans", Sans-serif;
+  font-weight: 300;
+  line-height: 18px;
+}
+.recommended strong {
+  font-weight: 300;
+  color: #a3cf06;
+}
+.tags {
+  margin-top: 5px;
+  font-size: 14px;
+  display: block;
+}
+.tags > span {
+  margin: 3px 0;
+  display: inline-block;
+  margin-right: 14px;
+  line-height: 19px;
+  padding: 0 7px;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+  margin-right: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-bottom: 3px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+}
+
+.no-discount {
+  display: flex;
+  line-height: 15px;
+  position: absolute;
+  bottom: 10px;
+  left: 632px;
+}
+.price {
+  padding: 0 6px;
+  color: white;
+  font-size: 11px;
+  line-height: 12px;
+}
+.discount-block {
+  display: flex;
+  line-height: 15px;
+  position: fixed;
+  bottom: 10px;
+  left: 632px;
+  background: #344654;
+}
+.discount-precentage {
+  font-family: "Motiva Sans", Sans-serif;
+  font-weight: normal;
+  font-weight: 500;
+  color: #beee11;
+  background: #4c6b22;
+  display: inline-block;
+  padding: 0 3px;
+  margin: 0;
+}
+.discount-prices {
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-shrink: 1;
+  overflow: hidden;
+  justify-content: flex-end;
+  background: #344654;
+}
+.original-price {
+  position: relative;
+  width: fit-content;
+  color: #738895;
+  font-size: 11px;
+  line-height: 12px;
+}
+.original-price::before {
+  content: "";
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  top: 43%;
+  border-bottom: 1.5px solid #738895;
+  transform: skewY(-8deg);
+  box-shadow: 0 0 2px black;
+}
+.final-price {
+  color: #beee11;
+  padding-left: 4px;
+  font-size: 11px;
+  line-height: 12px;
+}
+
+.platform {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0.7;
+}
+.platform:hover {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.platform-image {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+}
+.win {
+  background-image: url("../../../public/images/icon_platform_win.png");
+}
+.mac {
+  background-image: url("../../../public/images/icon_platform_mac.png");
+}
+
+.mobile-carousel {
+  position: relative;
+  clear: both;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  height: auto;
+  white-space: nowrap;
+  box-shadow: none;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  box-sizing: content-box;
+  padding-bottom: 20px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.mobile-carousel::-webkit-scrollbar {
+  width: 1px;
+  scrollbar-width: 1px;
+}
+.mobile-carousel::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.mobile-carousel::-webkit-scrollbar-thumb {
+  border: 6px solid rgba(0, 0, 0, 0);
+  width: thin;
+  background-clip: content-box;
+  padding: 2px;
+}
+.mobile-carousel::-webkit-scrollbar-thumb:hover {
+  border: 6px solid rgba(0, 0, 0, 0);
+  width: thin;
+  background-clip: content-box;
+  padding: 2px;
+}
+
+.mobile-capsule {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-image: none;
+  color: #fff;
+  box-sizing: border-box;
+  transition: opacity 400ms;
+  position: relative;
+  top: auto;
+  left: auto;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  overflow: visible;
+  opacity: 1;
+  pointer-events: auto;
+  display: inline-block;
+  height: auto;
+  width: 85%;
+  box-shadow: 0 0 7px 0px #000;
+  text-decoration: none;
+  margin-right: 11px;
+}
+
+.mobile-capsule-content {
+  cursor: pointer;
+  color: #fff;
+  pointer-events: auto;
+  background-color: #000;
+  position: relative;
+  z-index: 2;
+  margin-right: 10px;
+  background-position: center center;
+  background-size: cover;
+  padding-top: 57.3%;
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1000px) {
+  .info-card {
+    background: linear-gradient(180deg, #0a141d 0%, rgba(10, 20, 29, 0.2) 100%);
+    min-height: 70px;
+    height: 90px;
+
+    .app-name {
+      margin-top: 0;
+      div {
+        line-height: unset;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+    .no-discount {
+      position: relative;
+      top: initial;
+      left: initial;
+      font-size: 14px;
+      line-height: 21px;
+    }
+    .discount-block {
+      position: relative;
+      bottom: initial;
+      left: initial;
+      font-size: 14px;
+      line-height: 21px;
+      pointer-events: auto;
+    }
+    .discount-precentage {
+      font-size: 14px;
+      line-height: 21px;
+    }
+    .discount-prices {
+      font-size: 14px;
+      line-height: 21px;
+    }
+  }
+  .main-carousel-content {
+    width: auto;
+  }
+}

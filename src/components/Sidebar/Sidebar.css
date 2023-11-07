@@ -1,0 +1,111 @@
+.sidebar {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 210px;
+  padding-top: 48px;
+  overflow: hidden;
+  transition: width 0.25s;
+  display: block;
+  margin: 5% 0% 0% 7.5%;
+  top: 0px;
+  left: 0;
+  z-index: 2;
+}
+
+.header {
+  font-family: "Motiva Sans", Sans-serif;    
+  color: #536f86;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: "Motiva Sans", sans-serif;
+  font-weight: bold;
+  line-height: 16px;
+  margin: 7px 8px 7px 0;
+  display: flex;
+}
+
+.gift-card-h6 {
+  color: #6fafe6;
+  font-family: "Motiva Sans", Sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bolder;
+  line-height: 16px;
+  font-weight: 550;
+}
+
+.gift-card-p {
+  color: #a4b3c4;
+  font-family: "Motiva Sans", Sans-serif;    
+  display: flex;
+  width: fit-content;
+  font-size: 12px;
+  font-weight: normal;
+  font-weight: 550;
+  margin-bottom: 25px;
+}
+
+.gift-card:hover .gift-card-h6 {
+  color: #f6f2f3; 
+}
+
+.gift-card:hover .gift-card-p {
+  color: #c2d8e3; 
+}
+
+.gift-card {
+  transition: color 0.3s;
+  display: grid;
+}
+
+.recents {
+  background: radial-gradient(circle at 0%, rgba(83,111,134,0) 20%, rgba(83,111,134,0.25) 100%);
+  padding: 4% 0;
+}
+
+.item {
+  display: flex;
+  width: fit-content;
+  color: #7a8b9d;
+  font-size: 12px;
+  font-family: "Motiva Sans", sans-serif;
+  font-weight: 550;
+  line-height: 16px;
+  margin: 2px 0;
+  text-decoration: none;
+  padding: 0;
+}
+
+.item:hover {
+  color: #66c0f4;
+}
+
+.header-tags {
+  color: #88bde9;
+  margin: 0 0 2px 0;
+}
+
+.image {
+  border: none;
+  -webkit-user-drag: none;
+  max-width: 85%;
+  margin-bottom: 6px;
+}
+
+
+@media screen and (max-width: 1400px) {
+  .sidebar {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 1600px) {
+  .sidebar {
+    margin: 6% 0% 0% 2%;
+  }
+}
+@media screen and (max-width: 1700px) {
+  .recents {
+    margin-right: 25px;
+  }
+}
