@@ -48,7 +48,7 @@ const sharedData = {
     { id: 'change-user', text: 'Change User', link: '#'},
   ],
   privacyPolicy: { id: 'privacy-policy', text: 'My GitHub', link: 'https://github.com/IbrahemHadidy/' },
-  legal: { id: 'legal', text: 'Repository', link: '' },
+  legal: { id: 'legal', text: 'Repository', link: 'https://github.com/IbrahemHadidy/node-steam/' },
   steamSubscriberAgreement: { id: 'GitHub', text: 'Steam', link: 'https://store.steampowered.com/' },
   refunds: { id: 'refunds', text: 'Valve', link: 'https://www.valvesoftware.com/en/' },
 };

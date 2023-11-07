@@ -88,6 +88,62 @@ const Offers: React.FC = () => {
     </div>
   );
 
+  const renderRegularOffers = (offers: OfferedGame[]) => (
+    <>
+      {offers.map((offer: OfferedGame, index: number) => (
+        <div className="offers-group" key={index}>
+          {renderOfferBgDiv(offer)}
+        </div>
+      ))}
+    </>
+  );
+  
+  const renderSpecialOffers = (specialOffers: OfferedGame[]) => (
+    <div className="small-group">
+      {specialOffers.map((specialOffer: OfferedGame, index: number) => (
+        renderSmallGroupDiv(specialOffer)
+      ))}
+    </div>
+  );
+
+
+
+
+
+
+  //------------------------ Change the structure of the slides from here and change the data structure if needed ------------------------//
+  const firstSlide = (
+    <>
+      {renderRegularOffers(offeredGames.slice(0, 2))}
+      {renderSpecialOffers(specialOffers.slice(0, 2))}
+    </>
+  );
+  const secondSlide = (
+    <>
+      {renderRegularOffers(offeredGames.slice(2, 4))}
+      {renderSpecialOffers(specialOffers.slice(2, 4))}
+    </>
+  );
+  const thirdSlide = (
+    <>
+      {renderRegularOffers(offeredGames.slice(4))}
+      {renderSpecialOffers(specialOffers.slice(4, 6))}
+      {renderSpecialOffers(specialOffers.slice(6, 8))}
+    </>
+  );
+  const fourthSlide = (
+    <>
+      {renderSpecialOffers(specialOffers.slice(8, 10))}
+      {renderSpecialOffers(specialOffers.slice(10, 12))}
+      {renderSpecialOffers(specialOffers.slice(12, 14))}
+    </>
+  );
+
+
+
+
+
+
   return (
     <div className="offers-carousel">
       <div className="main-offers-content">
@@ -117,115 +173,23 @@ const Offers: React.FC = () => {
           <div className="offers-items">
             {isMobileView ? (
 
-              // Mobile Component
-              <div className="mobile-offers">
-                {offeredGames.slice(0, 2).map((offer, index) => (
-                  <div className="offers-group" key={index}>
-                    {renderOfferBgDiv(offer)}
-                  </div>
-                ))}
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[0])}
-                  {renderSmallGroupDiv(specialOffers[1])}
-                </div>
+            // Mobile Component
+            <div className="mobile-offers">
+              {firstSlide}
+              {secondSlide}
+              {thirdSlide}
+              {fourthSlide}
+            </div>
+          ) : (
 
-                {offeredGames.slice(2, 4).map((offer, index) => (
-                  <div className="offers-group" key={index}>
-                    {renderOfferBgDiv(offer)}
-                  </div>
-                ))}
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[2])}
-                  {renderSmallGroupDiv(specialOffers[3])}
-                </div>
-
-                {offeredGames.slice(4).map((offer, index) => (
-                  <div className="offers-group" key={index}>
-                    {renderOfferBgDiv(offer)}
-                  </div>
-                ))}
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[4])}
-                  {renderSmallGroupDiv(specialOffers[5])}
-                </div>
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[6])}
-                  {renderSmallGroupDiv(specialOffers[7])}
-                </div>
-
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[8])}
-                  {renderSmallGroupDiv(specialOffers[9])}
-                </div>
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[10])}
-                  {renderSmallGroupDiv(specialOffers[11])}
-                </div>
-                <div className="small-group">
-                  {renderSmallGroupDiv(specialOffers[12])}
-                  {renderSmallGroupDiv(specialOffers[13])}
-                </div>
-              </div>
-            ) : (
-
-              // Desktop Component
-              <Slider {...offersSettings}>
-                <div className="offers-row">
-                  {offeredGames.slice(0, 2).map((offer, index) => (
-                    <div className="offers-group" key={index}>
-                      {renderOfferBgDiv(offer)}
-                    </div>
-                  ))}
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[0])}
-                    {renderSmallGroupDiv(specialOffers[1])}
-                  </div>
-                </div>
-
-                <div className="offers-row">
-                  {offeredGames.slice(2, 4).map((offer, index) => (
-                    <div className="offers-group" key={index}>
-                      {renderOfferBgDiv(offer)}
-                    </div>
-                  ))}
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[2])}
-                    {renderSmallGroupDiv(specialOffers[3])}
-                  </div>
-                </div>
-
-                <div className="offers-row">
-                  {offeredGames.slice(4).map((offer, index) => (
-                    <div className="offers-group" key={index}>
-                      {renderOfferBgDiv(offer)}
-                    </div>
-                  ))}
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[4])}
-                    {renderSmallGroupDiv(specialOffers[5])}
-                  </div>
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[6])}
-                    {renderSmallGroupDiv(specialOffers[7])}
-                  </div>
-                </div>
-
-                <div className="offers-row">
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[8])}
-                    {renderSmallGroupDiv(specialOffers[9])}
-                  </div>
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[10])}
-                    {renderSmallGroupDiv(specialOffers[11])}
-                  </div>
-                  <div className="small-group">
-                    {renderSmallGroupDiv(specialOffers[12])}
-                    {renderSmallGroupDiv(specialOffers[13])}
-                  </div>
-                </div>
-              </Slider>
-            )}
+            // Desktop Component
+            <Slider {...offersSettings}>
+              <div className="offers-row">{firstSlide}</div>
+              <div className="offers-row">{secondSlide}</div>   
+              <div className="offers-row">{thirdSlide}</div>
+              <div className="offers-row">{fourthSlide}</div>
+            </Slider>
+          )}
           </div>
         </div>
       </div>

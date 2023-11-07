@@ -186,6 +186,16 @@
   font-size: 11px;
   line-height: 12px;
 }
+.original-price-offers::before {
+  content: '';
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  top: 43%;
+  border-bottom: 1.5px solid #738895;
+  transform: skewY(-8deg);
+  box-shadow: 0 0 2px black;
+}
 .final-price-offers {
   color: #beee11;
   line-height: 16px;

@@ -1,3 +1,7 @@
+// IMPORTANT !!
+// Change the database structre if you will change the style of the slides to suit it
+
+
 interface OfferedGame {
     offerLink: string;
     image: string;
@@ -21,48 +25,48 @@ interface OfferedGame {
       discountPrecentage: "-40%",
     },
     {
-      // Exoprimal
-      offerLink: "https://store.steampowered.com/app/1286320",
+      // Attack on Titan 2 - A.O.T.2
+      offerLink: "https://store.steampowered.com/app/601050",
       image:
-        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/86026647f809dfac21032f50/spotlight_image_english.jpg",
-      offerType: "FREE WEEKEND",
-      endTime: "6 Nov @ 8:00pm.",
-      beforeDiscountPrice: "$34.99",
-      discountPrice:"$20.99 USD",
-      discountPrecentage: "-40%",
+        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/fbad60ab72af63798c1dff9c/spotlight_image_english.jpg",
+      offerType: "MIDWEEK DEAL",
+      endTime: "13 Nov @ 8:00pm.",
+      beforeDiscountPrice: "$59.99",
+      discountPrice:"$29.99 USD",
+      discountPrecentage: "-50%",
     },
     {
-      // Trailmakers
-      offerLink: "https://store.steampowered.com/app/585420",
+      // Mass Effect™ Legendary Edition
+      offerLink: "https://store.steampowered.com/app/1328670",
       image:
-        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/4122c583ca68a70e48cd445f/spotlight_image_english.jpg",
-      offerType: "WEEKEND DEAL",
-      endTime: "6 Nov @ 8:00pm.",
-      beforeDiscountPrice: "$34.99",
-      discountPrice:"$20.99 USD",
-      discountPrecentage: "-40%",
+        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/03ccac738e4e37f31f64e030/spotlight_image_english.jpg",
+      offerType: "MIDWEEK DEAL",
+      endTime: "9 Nov @ 8:00pm.",
+      beforeDiscountPrice: "$59.99",
+      discountPrice:"$9.59 USD",
+      discountPrecentage: "-84%",
     },
     {
-      // Ratchet & Clank: Rift Apart
-      offerLink: "https://store.steampowered.com/app/1895880",
+      // Shadows of Doubt
+      offerLink: "https://store.steampowered.com/app/986130",
       image:
-        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/081dd6d4248120f2fe9444c4/spotlight_image_english.jpg",
-      offerType: "WEEKEND DEAL",
-      endTime: "6 Nov @ 8:00pm.",
-      beforeDiscountPrice: "$34.99",
-      discountPrice:"$20.99 USD",
-      discountPrecentage: "-40%",
+        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/257d4e156bf40b986527e411/spotlight_image_english.jpg",
+      offerType: "MIDKEND DEAL",
+      endTime: "13 Nov @ 8:00pm.",
+      beforeDiscountPrice: "$19.99",
+      discountPrice:"$15.99 USD",
+      discountPrecentage: "-20%",
     },
     {
-      // tinyBuild
-      offerLink: "https://store.steampowered.com/app/1895880",
+      // Age of Wonders 4
+      offerLink: "https://store.steampowered.com/app/1669000",
       image:
-        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/cb46364f6ec47c70a1b725e4/spotlight_image_english.jpg",
-      offerType: "PUBLISHER SALE",
-      endTime: "6 Nov @ 8:00pm.",
-      // beforeDiscountPrice: "$34.99",
-      // discountPrice:"$20.99 USD",
-      discountPrecentage: "Up to -40%",
+        "https://cdn.cloudflare.steamstatic.com/steam/spotlights/f99b53e4fc811add25b5ada0/spotlight_image_english.jpg",
+      offerType: "MIDWEEK DEAL",
+      endTime: "13 Nov @ 8:00pm.",
+      beforeDiscountPrice: "$49.99",
+      discountPrice:"$34.99 USD",
+      discountPrecentage: "-30%",
     },
   ];
 
