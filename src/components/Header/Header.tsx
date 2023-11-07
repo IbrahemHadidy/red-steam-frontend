@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import DesktopSecondNav from "./SecondNavbar/Desktop/DesktopSecondNav";
-import MobileSecondNav from "./SecondNavbar/Mobile/MobileSecondNav";
-import "./SecondNavbar/SecondNavbar.css";
+import React, { FC, useState, useEffect } from "react";
+import DefaultDesktopComponent from "./Desktop/DefaultDesktopComponent";
+import CustomMobileComponent from "./Mobile/CustomMobileComponent";
+import "./Header.css";
 
-const SecondNavbar: React.FC = () => {
+const Header: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
 
   useEffect(() => {
@@ -19,11 +19,11 @@ const SecondNavbar: React.FC = () => {
 
   return (
     <div>
-      {isMobileView ? <MobileSecondNav /> : <DesktopSecondNav />}
+      {isMobileView ? <CustomMobileComponent /> : <DefaultDesktopComponent />}
     </div>
   );
 };
 
+export default Header;
 
 
-export default SecondNavbar;

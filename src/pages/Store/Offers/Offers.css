@@ -115,7 +115,7 @@
   padding: 0;
   margin: 0;
   position: relative;
-  background-image: url("../../../public/images/background_spotlight.jpg");
+  background-image: url("/public/images/background_spotlight.jpg");
   width: 306px;
   height: 390px;
   box-shadow: 0 0 5px #000000;
@@ -137,9 +137,9 @@
   position: absolute;
   bottom: 0;
   width: 306px;
-  background: url("../../../public/images/spotlight_background.jpg") bottom
+  background: url("/public/images/spotlight_background.jpg") bottom
     center no-repeat;
-  background-image: url("../../../public/images/background_spotlight.jpg");
+  background-image: url("/public/images/background_spotlight.jpg");
   margin: 0px;
   min-height: 23px;
   background-size: cover;
@@ -212,7 +212,7 @@
     rgba(42, 62, 89, 1) 95%
   );
   margin-right: 0;
-  background-image: url("../../../public/images/background_spotlight.jpg");
+  background-image: url("/public/images/background_spotlight.jpg");
   width: 306px;
   margin-bottom: 15px;
   box-shadow: 0 0 5px #000000;

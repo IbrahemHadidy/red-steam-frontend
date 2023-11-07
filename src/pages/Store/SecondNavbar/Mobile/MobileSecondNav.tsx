@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { menuData, navigationItems } from "../menuData-mobile";
 
 type MenuItem = {
@@ -16,7 +16,7 @@ type GroupedMenuItem = {
 
 type menuTitle = string | React.SetStateAction<null>;
 
-const MobileSecondNav: React.FC = () => {
+const MobileSecondNav: FC = () => {
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
 
   const handleMenuClick = (menuTitle: menuTitle) => {

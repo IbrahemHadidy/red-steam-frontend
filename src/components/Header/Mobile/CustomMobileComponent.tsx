@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, MouseEvent } from "react";
-import SteamMenu from "./Mobile/CustomMenu";
-import MiniHeader from "./Mobile/MiniHeader";
-import "./Header.css";
+import SteamMenu from "./CustomMenu";
+import MiniHeader from "./MiniHeader";
 
 const CustomMobileComponent: React.FC = () => {
   const [showAnotherComponent, setShowAnotherComponent] = useState<boolean>(false);

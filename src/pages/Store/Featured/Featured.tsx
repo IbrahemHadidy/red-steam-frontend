@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import DefaultDesktopComponent from "./Header/DefaultDesktopComponent";
-import CustomMobileComponent from "./Header/CustomMobileComponent";
-import "./Header/Header.css";
+import React, { FC, useState, useEffect } from "react";
+import "./Featured.css";
+import FeaturedDesktop from "./Desktop/FeaturedDesktop";
+import FeaturedMobile from "./Mobile/FeaturedMobile";
 
-const Header: React.FC = () => {
+
+const Featured: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
 
   useEffect(() => {
@@ -19,11 +20,9 @@ const Header: React.FC = () => {
 
   return (
     <div>
-      {isMobileView ? <CustomMobileComponent /> : <DefaultDesktopComponent />}
+      {isMobileView ? <FeaturedMobile /> : <FeaturedDesktop />}
     </div>
   );
-};
+}
 
-export default Header;
-
-
+export default Featured;

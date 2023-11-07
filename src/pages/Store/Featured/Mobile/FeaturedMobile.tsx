@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import featuredGames from "../featuredGames";
 
-const FeaturedMobile: React.FC = () => {
+const FeaturedMobile: FC = () => {
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">

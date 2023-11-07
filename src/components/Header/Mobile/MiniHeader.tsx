@@ -13,7 +13,7 @@ const MiniHeader: React.FC<MiniHeaderProps> = ({ onMenuClick }) => {
           onClick={onMenuClick} // Trigger the click event to show the other component
         >
           <img
-            src="../../../images/header_menu_hamburger.png"
+            src="images/header_menu_hamburger.png"
             height="100%"
             alt="header menu"
           />
@@ -26,7 +26,7 @@ const MiniHeader: React.FC<MiniHeaderProps> = ({ onMenuClick }) => {
         <div className="mobile-logo">
           <a href="https://store.steampowered.com/">
             <img
-              src="../../../images/header_logo.png"
+              src="images/header_logo.png"
               height="36"
               alt="header logo"
             />

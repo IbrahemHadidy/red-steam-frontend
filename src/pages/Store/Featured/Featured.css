@@ -1,7 +1,8 @@
+
 .featured-carousel {
   all: unset;
   display: block;
-  background: url("../../../public/images/cluster_bg.png") bottom center
+  background: url("/public/images/cluster_bg.png") bottom center
     no-repeat;
   position: relative;
   padding-left: 2%;
@@ -72,8 +73,8 @@
   width: 23px !important;
   height: 36px !important;
   display: block !important;
-  content: url("../../../public/images/blank.gif") !important;
-  background-image: url("../../../public/images/arrows.png") !important;
+  content: url("/public/images/blank.gif") !important;
+  background-image: url("/public/images/arrows.png") !important;
   background-position-y: center !important;
   bottom: 16px !important;
 }
@@ -148,7 +149,7 @@
   cursor: pointer !important;
   transition: opacity 400ms !important;
   position: relative !important;
-  background-image: url("../../../public/images/background_maincap_2.jpg") !important;
+  background-image: url("/public/images/background_maincap_2.jpg") !important;
   background-repeat: no-repeat !important;
   background-position: right !important;
   color: #fff !important;
@@ -373,10 +374,10 @@
   background-repeat: no-repeat;
 }
 .win {
-  background-image: url("../../../public/images/icon_platform_win.png");
+  background-image: url("/public/images/icon_platform_win.png");
 }
 .mac {
-  background-image: url("../../../public/images/icon_platform_mac.png");
+  background-image: url("/public/images/icon_platform_mac.png");
 }
 
 .mobile-carousel {

@@ -1,13 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./Sidebar/Sidebar.css";
+import "./Sidebar.css";
 
 interface LinkItem {
   to: string;
   text: string;
 }
-const Sidebar: React.FC = () => {
+const Sidebar: FC = () => {
 
   // Helper function to generate links
   const generateLinks = (links: LinkItem[]) => {
@@ -84,6 +84,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <Nav className="sidebar">
+      
       {/* Steam Gift Cards section */}
       <div>
         <a
@@ -93,7 +94,7 @@ const Sidebar: React.FC = () => {
           <div className="gift-card">
             <img
               className="image"
-              src="../../images/steamcards_promo_03.png"
+              src="images/steamcards_promo_03.png"
               alt="Steam Gift Cards"
             />{" "}
             <h6 className="gift-card-h6">Steam Gift Cards</h6>

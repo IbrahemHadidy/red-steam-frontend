@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faBell } from "@fortawesome/free-solid-svg-icons";
-import ProfileDropdown from "./Desktop/ProfileDropdown";
-import NavigationLinks from "./Desktop/NavigationLinks";
+import ProfileDropdown from "./ProfileDropdown";
+import NavigationLinks from "./NavigationLinks";
 
-const DefaultDesktopComponent: React.FC = () => {
+const DefaultDesktopComponent: FC = () => {
     return (
       <div>
         <Navbar
@@ -45,7 +45,7 @@ const DefaultDesktopComponent: React.FC = () => {
             <Navbar.Brand href="#home">
               <img
                 alt="Steam"
-                src="../../images/logo_steam.svg"
+                src="../../../images/logo_steam.svg"
                 width="180"
                 height="80"
                 className="d-inline-block align-top"

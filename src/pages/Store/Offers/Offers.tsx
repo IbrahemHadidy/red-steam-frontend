@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Slider from "react-slick";
-import { offeredGames, specialOffers } from "./Offers/OfferedGames";
-import "./Offers/Offers.css";
+import { offeredGames, specialOffers } from "./OfferedGames";
+import "./Offers.css";
 
 interface OfferedGame {
   offerLink: string;
@@ -13,7 +13,7 @@ interface OfferedGame {
   discountPrecentage: string;
 }
 
-const Offers: React.FC = () => {
+const Offers: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const Offers: React.FC = () => {
                   <div className="mobile-more-dive">
                     More{" "}
                     <img
-                      src="../../images/ResponsiveChevron.svg"
+                      src="images/ResponsiveChevron.svg"
                       className="dive"
                     />
                   </div>

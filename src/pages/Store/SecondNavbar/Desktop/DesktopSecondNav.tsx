@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { menuData, navigationItems } from "../menuData.ts";
 
 type MenuItem = {
@@ -14,7 +14,7 @@ type GroupedMenuItem = {
   categoryGroups: Record<string, MenuItem[]>;
 };
 
-const DesktopSecondNav: React.FC = () => {
+const DesktopSecondNav: FC = () => {
   const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(
     ([menuTitle, menu]) => {
       const items = menu.items;

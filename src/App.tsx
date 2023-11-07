@@ -1,19 +1,14 @@
-import React from 'react';
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import SecondNavbar from "./components/SecondNavbar";
-import Featured from "./components/Featured";
-import Offers from "./components/Offers"
+import React, { FC } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Store from "./pages/Store";
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
-    <div className="main">
-      <Header />
-      <Sidebar />
-      <SecondNavbar />
-      <Featured />
-      <Offers />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Store />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

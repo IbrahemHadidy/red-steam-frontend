@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import "./Featured/Featured.css";
-import FeaturedDesktop from "./Featured/Desktop/FeaturedDesktop";
-import FeaturedMobile from "./Featured/Mobile/FeaturedMobile";
+import React, { FC, useState, useEffect } from "react";
+import "./Categories.css";
 
 
-const Featured: React.FC = () => {
+const Categories: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
 
   useEffect(() => {
@@ -20,9 +18,9 @@ const Featured: React.FC = () => {
 
   return (
     <div>
-      {isMobileView ? <FeaturedMobile /> : <FeaturedDesktop />}
+      {isMobileView ? <></> : <></>}
     </div>
   );
 }
 
-export default Featured;
+export default Categories;
