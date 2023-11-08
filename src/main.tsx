@@ -9,7 +9,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 library.add(fas);
 
-const container = document.getElementById('app');
+const container = document.getElementById('root');
 
 if (container) {
   const root = createRoot(container);

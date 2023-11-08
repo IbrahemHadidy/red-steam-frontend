@@ -7,6 +7,7 @@ interface LinkItem {
   to: string;
   text: string;
 }
+
 const Sidebar: FC = () => {
 
   // Helper function to generate links
@@ -83,6 +84,7 @@ const Sidebar: FC = () => {
   ];
 
   return (
+    <div className="fixed-sidebar">
     <Nav className="sidebar">
       
       {/* Steam Gift Cards section */}
@@ -133,6 +135,7 @@ const Sidebar: FC = () => {
         {generateLinks(genreLinks)}
       </div>
     </Nav>
+    </div>
   );
 };
 

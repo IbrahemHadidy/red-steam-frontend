@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { menuData, navigationItems } from "../menuData.ts";
+import { menuData, navigationItems } from "../menuData";
 
 type MenuItem = {
   label: string;

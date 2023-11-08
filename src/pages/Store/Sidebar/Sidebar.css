@@ -1,14 +1,19 @@
+.fixed-sidebar {
+  display: block;
+  position: relative;
+  width: 1430px;
+  margin: 0 auto;
+}
+
 .sidebar {
   position: absolute;
   display: flex;
   flex-direction: column;
   width: 210px;
-  padding-top: 48px;
+  padding-top: 28px;
   overflow: hidden;
   transition: width 0.25s;
-  margin: 5% 0% 0% 7.5%;
   top: 0px;
-  left: 0;
   z-index: 2;
 }
 
@@ -96,11 +101,6 @@
 @media screen and (max-width: 1400px) {
   .sidebar {
     display: none !important;
-  }
-}
-@media screen and (max-width: 1600px) {
-  .sidebar {
-    margin: 6% 0% 0% 2%;
   }
 }
 @media screen and (max-width: 1700px) {
