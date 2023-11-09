@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import Slider from "react-slick";
 import featuredGames from "../featuredGames";
 
@@ -48,7 +48,7 @@ const FeaturedDesktop: FC = () => {
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">
-        <h2 className="main-carousel-title">Featured & Recommended</h2>
+        <h2 className="home-titles">Featured & Recommended</h2>
         <Slider {...featuredSettings}>
           {featuredGames.map((slide: FeaturedGame, index) => (
             <a key={index} className="slide" href={slide.gameLink}>

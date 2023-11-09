@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Header from "../components/Header/Header";
 import Sidebar from "./Store/Sidebar/Sidebar";
 import SecondNavbar from "./Store/SecondNavbar/SecondNavbar";

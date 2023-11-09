@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import DefaultDesktopComponent from "./Desktop/DefaultDesktopComponent";
 import CustomMobileComponent from "./Mobile/CustomMobileComponent";
 import "./Header.css";

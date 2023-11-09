@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import featuredGames from "../featuredGames";
 
 const FeaturedMobile: FC = () => {
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">
-        <h2 className="main-carousel-title">Featured & Recommended</h2>
+        <h2 className="home-titles">Featured & Recommended</h2>
         <div className="mobile-carousel">
           {featuredGames.map((slide, index) => (
             <a key={index} className="mobile-capsule" href={slide.gameLink}>

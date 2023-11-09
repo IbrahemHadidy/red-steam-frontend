@@ -1,0 +1,60 @@
+.categories-slides {
+    position: relative;
+    clear: both;
+}
+.categories-slides .slick-list {
+    height: auto !important;
+}
+
+.categories-row {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 940px !important;
+    pointer-events: auto;
+    transition: opacity 400ms;
+}
+
+.category-item {
+    display: block;
+    flex-shrink: 0;
+    cursor: pointer;
+    width: 24%;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.category-item:hover {
+    transform: scale(1.05);
+    transition: all .2s;
+}
+
+.category-item > img {
+    width: 100%;
+}
+
+.category-gradient {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.category-label {
+    position: absolute;
+    bottom: 16px;
+    text-align: center;
+    width: 100%;
+    padding: 1em;
+}
+
+.category-label > span {
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.1ch;
+    color: white;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+    text-transform: uppercase;
+}

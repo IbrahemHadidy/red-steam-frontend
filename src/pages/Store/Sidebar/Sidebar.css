@@ -1,7 +1,7 @@
 .fixed-sidebar {
   display: block;
   position: relative;
-  width: 1430px;
+  width: 1410px;
   margin: 0 auto;
 }
 
@@ -37,6 +37,7 @@
   font-weight: bolder;
   line-height: 16px;
   font-weight: 550;
+  margin-bottom: 1px;
 }
 
 .gift-card-p {
@@ -66,6 +67,7 @@
 .recents {
   background: radial-gradient(circle at 0%, rgba(83,111,134,0) 20%, rgba(83,111,134,0.25) 100%);
   padding: 4% 0;
+  margin-right: 30px;
 }
 
 .item {
@@ -101,10 +103,5 @@
 @media screen and (max-width: 1400px) {
   .sidebar {
     display: none !important;
-  }
-}
-@media screen and (max-width: 1700px) {
-  .recents {
-    margin-right: 25px;
   }
 }

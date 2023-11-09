@@ -11,12 +11,12 @@ const CustomMobileComponent: React.FC = () => {
     setShowAnotherComponent(!showAnotherComponent);
   };
 
-  const closeMenu = (event: MouseEvent) => {
+  const closeMenu = (event: MouseEvent | Event) => {
     event.stopPropagation(); // Prevent event propagation
     setShowAnotherComponent(false);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutside = (event: Event) => {
     console.log("Handling click outside"); // Add a log statement
     if (
       showAnotherComponent &&
@@ -33,16 +33,16 @@ const CustomMobileComponent: React.FC = () => {
     // Add or remove the click event listener based on the menu state
     if (showAnotherComponent) {
       console.log("Adding click event listener");
-      document.addEventListener("click", handleClickOutside as any);
+      document.addEventListener("click", handleClickOutside);
     } else {
       console.log("Removing click event listener");
-      document.removeEventListener("click", handleClickOutside as any);
+      document.removeEventListener("click", handleClickOutside);
     }
 
     return () => {
       // Clean up the event listener when the component unmounts
       console.log("Cleaning up useEffect"); // Add a log statement
-      document.removeEventListener("click", handleClickOutside as any);
+      document.removeEventListener("click", handleClickOutside);
     };
   });
 

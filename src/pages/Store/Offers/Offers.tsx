@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
-import Slider from "react-slick";
+import { FC, useEffect, useState } from "react";
 import { offeredGames, specialOffers } from "./OfferedGames";
+import Slider from "react-slick";
 import "./Offers.css";
 
 interface OfferedGame {
@@ -100,7 +100,7 @@ const Offers: FC = () => {
   
   const renderSpecialOffers = (specialOffers: OfferedGame[]) => (
     <div className="small-group">
-      {specialOffers.map((specialOffer: OfferedGame, index: number) => (
+      {specialOffers.map((specialOffer: OfferedGame) => (
         renderSmallGroupDiv(specialOffer)
       ))}
     </div>
@@ -145,8 +145,8 @@ const Offers: FC = () => {
 
 
   return (
-    <div className="offers-carousel">
-      <div className="main-offers-content">
+    <div className="home-section">
+      <div className="home-contents">
         <h2 className="main-offers-title">
           Special Offers
           <span className="right-btn">
