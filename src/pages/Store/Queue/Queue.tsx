@@ -25,7 +25,7 @@ const Queue: FC = () => {
     <div className="home-section">
       <div className="home-contents">
         <h2 className="main-btn-title">
-          Special Offers
+        YOUR DISCOVERY QUEUE
           <span className="right-btn">
             <a className="view-more" href="">
               {/* Render different button on mobile */}

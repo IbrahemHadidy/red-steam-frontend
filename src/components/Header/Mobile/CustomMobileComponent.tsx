@@ -17,7 +17,6 @@ const CustomMobileComponent: React.FC = () => {
   };
 
   const handleClickOutside = (event: Event) => {
-    console.log("Handling click outside"); // Add a log statement
     if (
       showAnotherComponent &&
       menuRef.current &&
@@ -29,19 +28,15 @@ const CustomMobileComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect called"); // Add a log statement
     // Add or remove the click event listener based on the menu state
     if (showAnotherComponent) {
-      console.log("Adding click event listener");
       document.addEventListener("click", handleClickOutside);
     } else {
-      console.log("Removing click event listener");
       document.removeEventListener("click", handleClickOutside);
     }
 
     return () => {
       // Clean up the event listener when the component unmounts
-      console.log("Cleaning up useEffect"); // Add a log statement
       document.removeEventListener("click", handleClickOutside);
     };
   });
