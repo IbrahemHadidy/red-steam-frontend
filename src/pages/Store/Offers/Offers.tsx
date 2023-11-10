@@ -147,7 +147,7 @@ const Offers: FC = () => {
   return (
     <div className="home-section">
       <div className="home-contents">
-        <h2 className="main-offers-title">
+        <h2 className="main-btn-title">
           Special Offers
           <span className="right-btn">
             <a className="view-more" href="">

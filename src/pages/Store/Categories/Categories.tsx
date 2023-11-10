@@ -92,27 +92,32 @@ const Categories: FC = () => {
     </>
   );
 
-  return isMobileView ? (
-    <div className="mobile-categories">
-      {firstCategorySlide}
-      {secondCategorySlide}
-      {thirdCategorySlide}
-      {fourthCategorySlide}
-      {fifthCategorySlide}
-    </div>
-  ) : (
+  return (
     <div className="home-section">
       <div className="home-contents">
-        <div className="home-titles">BROWSE BY CATEGORY</div>
-        <div className="categories-slides">
-          <Slider {...categoriesSettings}>
-            <div className="categories-row">{firstCategorySlide}</div>
-            <div className="categories-row">{secondCategorySlide}</div>
-            <div className="categories-row">{thirdCategorySlide}</div>
-            <div className="categories-row">{fourthCategorySlide}</div>
-            <div className="categories-row">{fifthCategorySlide}</div>
-          </Slider>
-        </div>
+        {" "}
+        {isMobileView ? (
+          <div className="mobile-mini">
+            {firstCategorySlide}
+            {secondCategorySlide}
+            {thirdCategorySlide}
+            {fourthCategorySlide}
+            {fifthCategorySlide}
+          </div>
+        ) : (
+          <>
+            <div className="home-titles">BROWSE BY CATEGORY</div>
+            <div className="mini-slides">
+              <Slider {...categoriesSettings}>
+                <div className="categories-row">{firstCategorySlide}</div>
+                <div className="categories-row">{secondCategorySlide}</div>
+                <div className="categories-row">{thirdCategorySlide}</div>
+                <div className="categories-row">{fourthCategorySlide}</div>
+                <div className="categories-row">{fifthCategorySlide}</div>
+              </Slider>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

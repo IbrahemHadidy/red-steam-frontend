@@ -5,6 +5,11 @@ import SecondNavbar from "./Store/SecondNavbar/SecondNavbar";
 import Featured from "./Store/Featured/Featured";
 import Offers from "./Store/Offers/Offers"
 import Categories from "./Store/Categories/Categories"
+import Queue from './Store/Queue/Queue';
+import Recommended from './Store/Recommended/Recommended';
+import PopularVR from './Store/PopularVR/PopularVR';
+import BrowseSteam from './Store/BrowseSteam/BrowseSteam';
+import "./Store.css"
 
 const Store: FC = () => {
   return(
@@ -15,6 +20,12 @@ const Store: FC = () => {
       <Featured />
       <Offers />
       <Categories />
+      <div>
+        <Queue />
+        <Recommended />
+      </div>
+      <BrowseSteam />
+      <PopularVR />
     </div>
   )
 }

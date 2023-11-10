@@ -140,72 +140,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 11px;
-}
-
-.no-discount {
-  display: flex;
-  line-height: 15px;
-  position: absolute;
-  bottom: 10px;
-  left: 632px;
-}
-.price {
-  padding: 0 6px;
-  color: white;
-  font-size: 11px;
-  line-height: 12px;
-}
-.discount-block {
-  display: flex;
-  line-height: 15px;
-  position: fixed;
-  bottom: 10px;
-  left: 632px;
-  background: #344654;
-}
-.discount-precentage {
-  font-family: "Motiva Sans", Sans-serif;
-  font-weight: normal;
-  font-weight: 500;
-  color: #beee11;
-  background: #4c6b22;
-  display: inline-block;
-  padding: 0 3px;
-  margin: 0;
-}
-.discount-prices {
-  padding: 0 5px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-shrink: 1;
-  overflow: hidden;
-  justify-content: flex-end;
-  background: #344654;
-}
-.original-price {
-  position: relative;
-  width: fit-content;
-  color: #738895;
-  font-size: 11px;
-  line-height: 12px;
-}
-.original-price::before {
-  content: "";
-  left: 0px;
-  right: 0px;
-  position: absolute;
-  top: 43%;
-  border-bottom: 1.5px solid #738895;
-  transform: skewY(-8deg);
-  box-shadow: 0 0 2px black;
-}
-.final-price {
-  color: #beee11;
-  padding-left: 4px;
-  font-size: 11px;
-  line-height: 12px;
-}
+} 
 
 .platform {
   position: absolute;

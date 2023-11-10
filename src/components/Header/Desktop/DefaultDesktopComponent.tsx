@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import ProfileDropdown from "./ProfileDropdown";
 import NavigationLinks from "./NavigationLinks";
 
@@ -21,9 +21,9 @@ const DefaultDesktopComponent: FC = () => {
               {/* "Install Steam" button with a FontAwesome icon */}
               <Button variant="secondary" className="mr-2 compact-button">
                 <span className="button-content button-text">
-                  <FontAwesomeIcon
+                  <img
                     className="fa-icon"
-                    icon={faDownload}
+                    src="images/btn_header_installsteam_download.png"
                     style={{ color: "#ffffff" }}
                   />{" "}
                   Install Steam
