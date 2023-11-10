@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import Slider from "react-slick";
-import recommended from "./recommendedGames";
+import recommendedGames from "./recommendedGames";
 
 interface recommendedItem {
   link: string;
@@ -35,62 +35,50 @@ const Recommended: FC = () => {
     fade: true,
   };
 
-  const renderRecomendation = (recommended: recommendedItem[]) => {
-    return recommended.map((recommended: recommendedItem, index: number) => (
-      <a className="mini-item" href={recommended.link} key={index}>
-        <div className="mini-capsule">
-          <img src={recommended.img} />
-        </div>
-        <div className="mini-price">
-          <div className={recommended.discount}>
-            <div className="price">
-              {recommended.discount === "no-discount" ? (
-                recommended.price
-              ) : (
-                <div className="mini-discount-block">
-                  <div className="discount-precentage">
-                    {recommended.discountPrecentage}
-                  </div>
-                  <div className="discount-prices">
-                    <div className="original-price">{recommended.price}</div>
-                    <div className="final-price">
-                      {recommended.discountPrice}
-                    </div>
-                  </div>
+  const renderGameItem = (game: recommendedItem) => (
+    <a className="mini-item" href={game.link}>
+      <div className="mini-capsule">
+        <img src={game.img} alt={game.link} />
+      </div>
+      <div className="mini-price">
+        <div className={game.discount}>
+          <div className="price">
+            {game.discount === "no-discount" ? (
+              game.price
+            ) : (
+              <div className="mini-discount-block">
+                <div className="discount-percentage">
+                  {game.discountPrecentage}
                 </div>
-              )}
-            </div>
+                <div className="discount-prices">
+                  <div className="original-price">{game.price}</div>
+                  <div className="final-price">{game.discountPrice}</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </a>
+      </div>
+    </a>
+  );
+
+  const renderCategorySlide = (start: number, end: number) => {
+    const categoryGames = recommendedGames.slice(start, end);
+    return categoryGames.map((game) => (
+      renderGameItem(game)
     ));
   };
 
-  const firstCategorySlide = (
-    <>
-      {renderRecomendation(recommended.slice(0, 1))}
-      {renderRecomendation(recommended.slice(1, 2))}
-      {renderRecomendation(recommended.slice(2, 3))}
-      {renderRecomendation(recommended.slice(3, 4))}
-    </>
-  );
-  const secondCategorySlide = (
-    <>
-      {renderRecomendation(recommended.slice(4, 5))}
-      {renderRecomendation(recommended.slice(5, 6))}
-      {renderRecomendation(recommended.slice(6, 7))}
-      {renderRecomendation(recommended.slice(7, 8))}
-    </>
-  );
-  const thirdCategorySlide = (
-    <>
-      {renderRecomendation(recommended.slice(8, 9))}
-      {renderRecomendation(recommended.slice(9, 10))}
-      {renderRecomendation(recommended.slice(10, 11))}
-      {renderRecomendation(recommended.slice(11, 12))}
-    </>
-  );
-  
+  const renderAllCategories = () => {
+    const categorySlides = [];
+    for (let i = 0; i < 3; i++) {
+      const start = i * 4;
+      const end = start + 4;
+      categorySlides.push(renderCategorySlide(start, end));
+    }
+    return categorySlides;
+  };
+
   return (
     <div className="home-section">
       <div className="home-contents">
@@ -98,7 +86,6 @@ const Recommended: FC = () => {
           RECOMMENDED BASED ON THE GAMES YOU PLAY
           <span className="right-btn">
             <a className="view-more" href="">
-              {/* Render different button on mobile */}
               {isMobileView ? (
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
@@ -114,20 +101,18 @@ const Recommended: FC = () => {
         </h2>
         {isMobileView ? (
           <div className="mobile-mini mini">
-            {firstCategorySlide}
-            {secondCategorySlide}
-            {thirdCategorySlide}
+            {renderAllCategories()}
           </div>
         ) : (
-          <>
-            <div className="mini-slides mini">
-              <Slider {...recommendedSettings}>
-                <div className="mini-row">{firstCategorySlide}</div>
-                <div className="mini-row">{secondCategorySlide}</div>
-                <div className="mini-row">{thirdCategorySlide}</div>
-              </Slider>
-            </div>
-          </>
+          <div className="mini-slides mini">
+            <Slider {...recommendedSettings}>
+              {renderAllCategories().map((categorySlide, index) => (
+                <div className="mini-row" key={index}>
+                  {categorySlide}
+                </div>
+              ))}
+            </Slider>
+          </div>
         )}
       </div>
     </div>

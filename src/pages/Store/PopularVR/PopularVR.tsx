@@ -11,7 +11,6 @@ interface vrGame {
   discountPrice?: string;
 }
 
-
 const PopularVR: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
 
@@ -36,103 +35,57 @@ const PopularVR: FC = () => {
     fade: true,
   };
 
-  const renderRecomendation = (recommended: vrGame[]) => {
-    return recommended.map((recommended: vrGame, index: number) => (
-      <a className="mini-item" href={recommended.link} key={index}>
-        <div className="mini-capsule">
-          <img src={recommended.img} />
-        </div>
-        <div className="mini-price">
-          <div className={recommended.discount}>
-            <div className="price">
-              {recommended.discount === "no-discount" ? (
-                recommended.price
-              ) : (
-                <div className="mini-discount-block">
-                  <div className="discount-precentage">
-                    {recommended.discountPrecentage}
-                  </div>
-                  <div className="discount-prices">
-                    <div className="original-price">{recommended.price}</div>
-                    <div className="final-price">
-                      {recommended.discountPrice}
-                    </div>
-                  </div>
+  const renderGameItem = (game: vrGame) => (
+    <a className="mini-item" href={game.link}>
+      <div className="mini-capsule">
+        <img src={game.img} alt={game.link} />
+      </div>
+      <div className="mini-price">
+        <div className={game.discount}>
+          <div className="price">
+            {game.discount === "no-discount" ? (
+              game.price
+            ) : (
+              <div className="mini-discount-block">
+                <div className="discount-percentage">
+                  {game.discountPrecentage}
                 </div>
-              )}
-            </div>
+                <div className="discount-prices">
+                  <div className="original-price">{game.price}</div>
+                  <div className="final-price">{game.discountPrice}</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </a>
+      </div>
+    </a>
+  );
+
+  const renderCategorySlide = (start: number, end: number) => {
+    const categoryGames = popularVRGames.slice(start, end);
+    return categoryGames.map((game) => (
+      renderGameItem(game)
     ));
   };
 
-  const firstCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(0, 1))}
-      {renderRecomendation(popularVRGames.slice(1, 2))}
-      {renderRecomendation(popularVRGames.slice(2, 3))}
-      {renderRecomendation(popularVRGames.slice(3, 4))}
-    </>
-  );
-  const secondCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(4, 5))}
-      {renderRecomendation(popularVRGames.slice(5, 6))}
-      {renderRecomendation(popularVRGames.slice(6, 7))}
-      {renderRecomendation(popularVRGames.slice(7, 8))}
-    </>
-  );
-  const thirdCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(8, 9))}
-      {renderRecomendation(popularVRGames.slice(9, 10))}
-      {renderRecomendation(popularVRGames.slice(10, 11))}
-      {renderRecomendation(popularVRGames.slice(11, 12))}
-    </>
-  );
-  const fourthCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(12, 13))}
-      {renderRecomendation(popularVRGames.slice(13, 14))}
-      {renderRecomendation(popularVRGames.slice(14, 15))}
-      {renderRecomendation(popularVRGames.slice(15, 16))}
-    </>
-  );
-  const fifthCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(16, 17))}
-      {renderRecomendation(popularVRGames.slice(17, 18))}
-      {renderRecomendation(popularVRGames.slice(18, 19))}
-      {renderRecomendation(popularVRGames.slice(19, 20))}
-    </>
-  );
-  const sixthCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(20, 21))}
-      {renderRecomendation(popularVRGames.slice(21, 22))}
-      {renderRecomendation(popularVRGames.slice(22, 23))}
-      {renderRecomendation(popularVRGames.slice(23, 24))}
-    </>
-  );
-  const seventhCategorySlide = (
-    <>
-      {renderRecomendation(popularVRGames.slice(24, 25))}
-      {renderRecomendation(popularVRGames.slice(25, 26))}
-      {renderRecomendation(popularVRGames.slice(26, 27))}
-      {renderRecomendation(popularVRGames.slice(27, 28))}
-    </>
-  );
-  
-  
+  const renderAllCategories = () => {
+    const categorySlides = [];
+    for (let i = 0; i < 7; i++) {
+      const start = i * 4;
+      const end = start + 4;
+      categorySlides.push(renderCategorySlide(start, end));
+    }
+    return categorySlides;
+  };
+
   return (
     <div className="home-section">
       <div className="home-contents">
         <h2 className="main-btn-title">
-        POPULAR VR GAMES
+          POPULAR VR GAMES
           <span className="right-btn">
             <a className="view-more" href="">
-              {/* Render different button on mobile */}
               {isMobileView ? (
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
@@ -148,28 +101,18 @@ const PopularVR: FC = () => {
         </h2>
         {isMobileView ? (
           <div className="mobile-mini mini">
-            {firstCategorySlide}
-            {secondCategorySlide}
-            {thirdCategorySlide}
-            {fourthCategorySlide}
-            {fifthCategorySlide}
-            {sixthCategorySlide}
-            {seventhCategorySlide}
+            {renderAllCategories()}
           </div>
         ) : (
-          <>
-            <div className="mini-slides mini">
-              <Slider {...vrGamesSettings}>
-                <div className="mini-row">{firstCategorySlide}</div>
-                <div className="mini-row">{secondCategorySlide}</div>
-                <div className="mini-row">{thirdCategorySlide}</div>
-                <div className="mini-row">{fourthCategorySlide}</div>
-                <div className="mini-row">{fifthCategorySlide}</div>
-                <div className="mini-row">{sixthCategorySlide}</div>
-                <div className="mini-row">{seventhCategorySlide}</div>
-              </Slider>
-            </div>
-          </>
+          <div className="mini-slides mini">
+            <Slider {...vrGamesSettings}>
+              {renderAllCategories().map((categorySlide, index) => (
+                <div className="mini-row" key={index}>
+                  {categorySlide}
+                </div>
+              ))}
+            </Slider>
+          </div>
         )}
       </div>
     </div>
