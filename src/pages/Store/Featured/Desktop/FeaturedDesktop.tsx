@@ -16,7 +16,7 @@ interface FeaturedGame {
   tag3?: string | null;
   tag4?: string | null;
   discount: "no-discount" | "discount";
-  discountPrecentage?: string;
+  discountPercentage?: string;
   price: string;
   discountPrice?: string;
   win: string | null;
@@ -125,8 +125,8 @@ const FeaturedDesktop: FC = () => {
                       slide.price
                     ) : (
                       <div className="discount-block">
-                        <div className="discount-precentage">
-                          {slide.discountPrecentage}
+                        <div className="discount-percentage">
+                          {slide.discountPercentage}
                         </div>
                         <div className="discount-prices">
                           <div className="original-price">{slide.price}</div>

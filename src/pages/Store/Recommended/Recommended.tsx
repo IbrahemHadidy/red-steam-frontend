@@ -6,7 +6,7 @@ interface recommendedItem {
   link: string;
   img: string;
   discount: "no-discount" | "discount";
-  discountPrecentage?: string;
+  discountPercentage?: string;
   price: string;
   discountPrice?: string;
 }
@@ -35,8 +35,8 @@ const Recommended: FC = () => {
     fade: true,
   };
 
-  const renderGameItem = (game: recommendedItem) => (
-    <a className="mini-item" href={game.link}>
+  const renderGameItem = (game: recommendedItem, index: number) => (
+    <a className="mini-item" href={game.link} key={index}>
       <div className="mini-capsule">
         <img src={game.img} alt={game.link} />
       </div>
@@ -48,7 +48,7 @@ const Recommended: FC = () => {
             ) : (
               <div className="mini-discount-block">
                 <div className="discount-percentage">
-                  {game.discountPrecentage}
+                  {game.discountPercentage}
                 </div>
                 <div className="discount-prices">
                   <div className="original-price">{game.price}</div>
@@ -64,13 +64,15 @@ const Recommended: FC = () => {
 
   const renderCategorySlide = (start: number, end: number) => {
     const categoryGames = recommendedGames.slice(start, end);
-    return categoryGames.map((game) => (
-      renderGameItem(game)
+    return categoryGames.map((game, index) => (
+      renderGameItem(game, index)
     ));
   };
 
   const renderAllCategories = () => {
     const categorySlides = [];
+    
+    // Edit `the i < "num"` for how much slide sections you want
     for (let i = 0; i < 3; i++) {
       const start = i * 4;
       const end = start + 4;

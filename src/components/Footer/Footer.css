@@ -1,0 +1,60 @@
+@media screen and (max-width: 1000px) { 
+    .footer {
+        display: none;
+    }
+}
+.footer {
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 16px 0 60px 0;
+    margin: 0;
+    text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    background: #171a21;
+}
+
+.footer-content {
+    width: 940px;
+    margin: 0px auto;
+    padding-top: 16px;
+}
+
+.footer-rule {
+    height: 8px;
+    border-top: 1px solid #363c44;
+}
+
+.footer-steam-logo {
+    float: right;
+    padding-top: 2px;
+}
+
+.footer-logo {
+    float: left;
+    padding-top: 2px;
+}
+
+.footer-logo img {
+    height: 25px;
+    width: auto;
+}
+
+.footer-text {
+    float: left;
+    margin-left: 12px;
+    color: #8F98A0;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.footer-links {
+    margin-top: 8px;
+    float: left;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: normal;
+    font-size: 13px;
+    color: #61686D;
+}

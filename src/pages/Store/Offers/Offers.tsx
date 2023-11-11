@@ -10,7 +10,7 @@ interface OfferedGame {
   endTime?: string;
   beforeDiscountPrice?: string;
   discountPrice?: string;
-  discountPrecentage: string;
+  discountPercentage: string;
 }
 
 const Offers: FC = () => {
@@ -37,12 +37,11 @@ const Offers: FC = () => {
     fade: true,
   };
 
-  // Create constants for repeated div elements
-  const renderOfferBgDiv = (offer: OfferedGame) => (
+  const renderOfferDiv = (offer: OfferedGame) => (
     <div className="offer-bg">
       <div className="spotlight-img">
         <a href={offer.offerLink}>
-          <img src={offer.image} />
+          <img src={offer.image} alt={offer.offerLink} />
         </a>
       </div>
       <div className="spotlight-content">
@@ -50,8 +49,8 @@ const Offers: FC = () => {
         <div className="spotlight-body">Offer ends {offer.endTime}</div>
         <div className="spotlight-body spotlight-price price">
           <div className="discount-block-offers">
-            <div className="discount-precentage-offers">
-              {offer.discountPrecentage}
+            <div className="discount-Percentage-offers">
+              {offer.discountPercentage}
             </div>
             <div className="discount-prices-offers">
               <div className="original-price-offers">
@@ -69,12 +68,12 @@ const Offers: FC = () => {
     <div className="specials">
       <a className="special-capsule" href={offer.offerLink}>
         <div className="header-capsule">
-          <img src={offer.image} />
+          <img src={offer.image} alt={offer.offerLink} />
         </div>
         <div>
           <div className="discount-block-offers">
-            <div className="discount-precentage-offers">
-              {offer.discountPrecentage}
+            <div className="discount-Percentage-offers">
+              {offer.discountPercentage}
             </div>
             <div className="discount-prices-offers">
               <div className="original-price-offers">
@@ -88,17 +87,13 @@ const Offers: FC = () => {
     </div>
   );
 
-  const renderRegularOffers = (offers: OfferedGame[]) => (
-    <>
-      {offers.map((offer: OfferedGame, index: number) => (
-        <div className="offers-group" key={index}>
-          {renderOfferBgDiv(offer)}
-        </div>
-      ))}
-    </>
+  const renderOffers = (offers: OfferedGame[]) => (
+    offers.map((offer: OfferedGame) => (
+      renderOfferDiv(offer)
+    ))
   );
-  
-  const renderSpecialOffers = (specialOffers: OfferedGame[]) => (
+
+  const renderSmallGroups = (specialOffers: OfferedGame[]) => (
     <div className="small-group">
       {specialOffers.map((specialOffer: OfferedGame) => (
         renderSmallGroupDiv(specialOffer)
@@ -107,42 +102,31 @@ const Offers: FC = () => {
   );
 
 
-
-
-
-
-  //------------------------ Change the structure of the slides from here and change the data structure if needed ------------------------//
-  const firstSlide = (
+  //---- Change the structure of the slides from here and change the data structure if needed ----//
+ const renderSlides = () => {
+  const slides = [
     <>
-      {renderRegularOffers(offeredGames.slice(0, 2))}
-      {renderSpecialOffers(specialOffers.slice(0, 2))}
-    </>
-  );
-  const secondSlide = (
+      {renderOffers(offeredGames.slice(0, 2))}
+      {renderSmallGroups(specialOffers.slice(0, 2))}
+    </>,
     <>
-      {renderRegularOffers(offeredGames.slice(2, 4))}
-      {renderSpecialOffers(specialOffers.slice(2, 4))}
-    </>
-  );
-  const thirdSlide = (
+      {renderOffers(offeredGames.slice(2, 4))}
+      {renderSmallGroups(specialOffers.slice(2, 4))}
+    </>,
     <>
-      {renderRegularOffers(offeredGames.slice(4))}
-      {renderSpecialOffers(specialOffers.slice(4, 6))}
-      {renderSpecialOffers(specialOffers.slice(6, 8))}
-    </>
-  );
-  const fourthSlide = (
+      {renderOffers(offeredGames.slice(4))}
+      {renderSmallGroups(specialOffers.slice(4, 6))}
+      {renderSmallGroups(specialOffers.slice(6, 8))}
+    </>,
     <>
-      {renderSpecialOffers(specialOffers.slice(8, 10))}
-      {renderSpecialOffers(specialOffers.slice(10, 12))}
-      {renderSpecialOffers(specialOffers.slice(12, 14))}
-    </>
-  );
+      {renderSmallGroups(specialOffers.slice(8, 10))}
+      {renderSmallGroups(specialOffers.slice(10, 12))}
+      {renderSmallGroups(specialOffers.slice(12, 14))}
+    </>,
+  ];
 
-
-
-
-
+  return slides;
+};
 
   return (
     <div className="home-section">
@@ -173,23 +157,21 @@ const Offers: FC = () => {
           <div className="offers-items">
             {isMobileView ? (
 
-            // Mobile Component
-            <div className="mobile-offers">
-              {firstSlide}
-              {secondSlide}
-              {thirdSlide}
-              {fourthSlide}
-            </div>
-          ) : (
+              // Mobile Component
+              <div className="mobile-offers">
+                {renderSlides()}
+              </div>
+            ) : (
 
-            // Desktop Component
-            <Slider {...offersSettings}>
-              <div className="offers-row">{firstSlide}</div>
-              <div className="offers-row">{secondSlide}</div>   
-              <div className="offers-row">{thirdSlide}</div>
-              <div className="offers-row">{fourthSlide}</div>
-            </Slider>
-          )}
+              // Desktop Component
+              <Slider {...offersSettings}>
+                {renderSlides().map((slide, index) => (
+                  <div className="offers-row" key={index}>
+                    {slide}
+                  </div>
+                ))}
+              </Slider>
+            )}
           </div>
         </div>
       </div>

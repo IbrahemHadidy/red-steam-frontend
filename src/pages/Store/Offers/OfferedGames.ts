@@ -9,7 +9,7 @@ interface OfferedGame {
     endTime?: string;
     beforeDiscountPrice?: string;
     discountPrice?: string;
-    discountPrecentage: string;
+    discountPercentage: string;
   }
   
   const offeredGames: OfferedGame[] = [
@@ -22,7 +22,7 @@ interface OfferedGame {
       endTime: "6 Nov @ 8:00pm.",
       beforeDiscountPrice: "$34.99",
       discountPrice:"$20.99 USD",
-      discountPrecentage: "-40%",
+      discountPercentage: "-40%",
     },
     {
       // Attack on Titan 2 - A.O.T.2
@@ -33,7 +33,7 @@ interface OfferedGame {
       endTime: "13 Nov @ 8:00pm.",
       beforeDiscountPrice: "$59.99",
       discountPrice:"$29.99 USD",
-      discountPrecentage: "-50%",
+      discountPercentage: "-50%",
     },
     {
       // Mass Effect™ Legendary Edition
@@ -44,7 +44,7 @@ interface OfferedGame {
       endTime: "9 Nov @ 8:00pm.",
       beforeDiscountPrice: "$59.99",
       discountPrice:"$9.59 USD",
-      discountPrecentage: "-84%",
+      discountPercentage: "-84%",
     },
     {
       // Shadows of Doubt
@@ -55,7 +55,7 @@ interface OfferedGame {
       endTime: "13 Nov @ 8:00pm.",
       beforeDiscountPrice: "$19.99",
       discountPrice:"$15.99 USD",
-      discountPrecentage: "-20%",
+      discountPercentage: "-20%",
     },
     {
       // Age of Wonders 4
@@ -66,7 +66,7 @@ interface OfferedGame {
       endTime: "13 Nov @ 8:00pm.",
       beforeDiscountPrice: "$49.99",
       discountPrice:"$34.99 USD",
-      discountPrecentage: "-30%",
+      discountPercentage: "-30%",
     },
   ];
 
@@ -78,7 +78,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/1049410/header.jpg",
       beforeDiscountPrice: "$19.99",
       discountPrice:"$7.99 USD",
-      discountPrecentage: "-60%",
+      discountPercentage: "-60%",
     },
     {
       // DEVOUR
@@ -87,7 +87,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/1274570/header.jpg",
       beforeDiscountPrice: "$4.99",
       discountPrice:"$3.99 USD",
-      discountPrecentage: "-20%",
+      discountPercentage: "-20%",
     },
     {
       // Residend Evil Village Gold Edition
@@ -96,7 +96,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/subs/764692/header_ratio.jpg",
       beforeDiscountPrice: "$49.99",
       discountPrice:"$19.99 USD",
-      discountPrecentage: "-60%",
+      discountPercentage: "-60%",
     },
     {
       // Bloons TD 6
@@ -105,7 +105,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/960090/header.jpg",
       beforeDiscountPrice: "$13.99",
       discountPrice:"$4.19 USD",
-      discountPrecentage: "-70%",
+      discountPercentage: "-70%",
     },
     {
       // Graveyard Keeper
@@ -114,7 +114,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/599140/header.jpg",
       beforeDiscountPrice: "$19.99",
       discountPrice:"$3.99 USD",
-      discountPrecentage: "-80%",
+      discountPercentage: "-80%",
     },
     {
       // Marvel's Guardians of the Galaxy
@@ -123,7 +123,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/1088850/header.jpg",
       beforeDiscountPrice: "$59.99",
       discountPrice:"$14.99 USD",
-      discountPrecentage: "-75%",
+      discountPercentage: "-75%",
     },
     {
       // Sniper Elite 5
@@ -132,7 +132,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/1029690/header.jpg",
       beforeDiscountPrice: "$49.99",
       discountPrice:"$14.99 USD",
-      discountPrecentage: "-70%",
+      discountPercentage: "-70%",
     },
     {
       // Resident Evil Village
@@ -141,7 +141,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/subs/678069/header_ratio.jpg",
       beforeDiscountPrice: "$39.99",
       discountPrice:"$15.99 USD",
-      discountPrecentage: "-60%",
+      discountPercentage: "-60%",
     },
     {
       // Detroit: Become Human
@@ -150,7 +150,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/1222140/header.jpg",
       beforeDiscountPrice: "$39.99",
       discountPrice:"$15.99 USD",
-      discountPrecentage: "-30%",
+      discountPercentage: "-30%",
     },
     {
       // Sun Haven
@@ -159,7 +159,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/1432860/header.jpg",
       beforeDiscountPrice: "$24.99",
       discountPrice:"$17.49 USD",
-      discountPrecentage: "-30%",
+      discountPercentage: "-30%",
     },
     {
       // Sniper Elite 4
@@ -168,7 +168,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/312660/header.jpg",
       beforeDiscountPrice: "$59.99",
       discountPrice:"$5.99 USD",
-      discountPrecentage: "-90%",
+      discountPercentage: "-90%",
     },
     {
       // Monster Hunter: World
@@ -177,7 +177,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/582010/header.jpg",
       beforeDiscountPrice: "$29.99",
       discountPrice:"$14.99 USD",
-      discountPrecentage: "-50%",
+      discountPercentage: "-50%",
     },
     {
       // Far Cry® 6
@@ -186,7 +186,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/2369390/header.jpg",
       beforeDiscountPrice: "$59.99",
       discountPrice:"$14.99 USD",
-      discountPrecentage: "-75%",
+      discountPercentage: "-75%",
     },
     {
       // Rise of the Tomb Raider™
@@ -195,7 +195,7 @@ interface OfferedGame {
         "https://cdn.cloudflare.steamstatic.com/steam/apps/391220/header.jpg",
       beforeDiscountPrice: "$29.99",
       discountPrice:"$5.99 USD",
-      discountPrecentage: "-80%",
+      discountPercentage: "-80%",
     },
   ]
   

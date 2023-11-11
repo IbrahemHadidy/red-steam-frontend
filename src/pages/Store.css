@@ -379,6 +379,9 @@
   font-size: 11px;
   line-height: 12px;
 }
+.offer-bg .price {
+  padding-left: 0px;
+}
 .discount-block {
   display: flex;
   line-height: 15px;
@@ -390,9 +393,10 @@
 .mini-discount-block {
   display: flex;
   line-height: 15px;
-  position: static;
+  position: absolute;
+  bottom: 6px;
 }
-.discount-precentage {
+.discount-percentage {
   font-family: "Motiva Sans", Sans-serif;
   font-weight: normal;
   font-weight: 500;

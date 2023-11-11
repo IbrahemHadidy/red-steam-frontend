@@ -6,7 +6,7 @@ interface vrGame {
   link: string;
   img: string;
   discount: "no-discount" | "discount";
-  discountPrecentage?: string;
+  discountPercentage?: string;
   price: string;
   discountPrice?: string;
 }
@@ -35,8 +35,8 @@ const PopularVR: FC = () => {
     fade: true,
   };
 
-  const renderGameItem = (game: vrGame) => (
-    <a className="mini-item" href={game.link}>
+  const renderGameItem = (game: vrGame, index: number) => (
+    <a className="mini-item" href={game.link} key={index}>
       <div className="mini-capsule">
         <img src={game.img} alt={game.link} />
       </div>
@@ -48,7 +48,7 @@ const PopularVR: FC = () => {
             ) : (
               <div className="mini-discount-block">
                 <div className="discount-percentage">
-                  {game.discountPrecentage}
+                  {game.discountPercentage}
                 </div>
                 <div className="discount-prices">
                   <div className="original-price">{game.price}</div>
@@ -64,14 +64,16 @@ const PopularVR: FC = () => {
 
   const renderCategorySlide = (start: number, end: number) => {
     const categoryGames = popularVRGames.slice(start, end);
-    return categoryGames.map((game) => (
-      renderGameItem(game)
+    return categoryGames.map((game, index) => (
+      renderGameItem(game, index)
     ));
   };
 
   const renderAllCategories = () => {
     const categorySlides = [];
-    for (let i = 0; i < 7; i++) {
+
+    // Edit `the i < "num"` for how much slide sections you want
+    for (let i = 0; i < 3; i++) {
       const start = i * 4;
       const end = start + 4;
       categorySlides.push(renderCategorySlide(start, end));

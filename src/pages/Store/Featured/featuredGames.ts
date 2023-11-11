@@ -12,7 +12,7 @@ interface FeaturedGame {
   tag3?: string;
   tag4?: string;
   discount: "no-discount" | "discount";
-  discountPrecentage?: string;
+  discountPercentage?: string;
   price: string;
   discountPrice?: string;
   win: string;
@@ -38,7 +38,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "Free to Play",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "Survival",
     tag2: "Shooter",
     tag3: "Battle Royale",
@@ -64,7 +64,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "Free to Play",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "Top Seller",
     // tag2: "",
     // tag3: "",
@@ -91,7 +91,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "$19.99",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "RPG",
     tag2: "Open World",
     tag3: "Story Rich",
@@ -116,7 +116,7 @@ const featuredGames: FeaturedGame[] = [
       "https://cdn.akamai.steamstatic.com/steam/apps/1174180/ss_66b553f4c209476d3e4ce25fa4714002cc914c4f.600x338.jpg",
     reason: "available", // "available" or "recommended"
     discount: "discount", // "discount" or "no-discount"
-    discountPrecentage: "-60%",
+    discountPercentage: "-60%",
     price: "$59.99",
     discountPrice: "$23.99 USD",
     tag1: "Top Seller",
@@ -145,7 +145,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "$59.99 USD",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "Action",
     tag2: "Adventure",
     tag3: "RPG",
@@ -171,7 +171,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "$59.99 USD",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "RPG",
     tag2: "Dark Fantasy",
     tag3: "Open World",
@@ -197,7 +197,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "Free to Play",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "RPG",
     tag2: "Free to Play",
     tag3: "Open World",
@@ -222,7 +222,7 @@ const featuredGames: FeaturedGame[] = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/ss_0ce49e629369dbf9e8fba324667167568c05c66f.600x338.jpg",
     reason: "recommended", // "available" or "recommended"
     discount: "discount", // "discount" or "no-discount"
-    discountPrecentage: "-10%",
+    discountPercentage: "-10%",
     price: "$44.99",
     discountPrice: "$40.49 USD",
     tag1: "RPG",
@@ -250,7 +250,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "$59.99 USD",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "RPG",
     tag2: "Ooen World",
     tag3: "Story Rich",
@@ -276,7 +276,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "discount", // "discount" or "no-discount"
     price: "$59.99",
     discountPrice: "$35.99",
-    discountPrecentage: "-40%",
+    discountPercentage: "-40%",
     tag1: "Top Seller",
     // tag2: "Ooen World",
     // tag3: "Story Rich",
@@ -303,7 +303,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "$59.99",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "RPG",
     tag2: "Open World",
     tag3: "Story Rich",
@@ -330,7 +330,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "no-discount", // "discount" or "no-discount"
     price: "$49.99",
     // discountPrice:"",
-    // discountPrecentage: "",
+    // discountPercentage: "",
     tag1: "RPG",
     tag2: "Open World",
     tag3: "Great Soundtrack",

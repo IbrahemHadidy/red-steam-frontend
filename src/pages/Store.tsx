@@ -9,6 +9,8 @@ import Queue from './Store/Queue/Queue';
 import Recommended from './Store/Recommended/Recommended';
 import PopularVR from './Store/PopularVR/PopularVR';
 import BrowseSteam from './Store/BrowseSteam/BrowseSteam';
+import HomeTabs from './Store/HomeTabs/HomeTabs';
+import Footer from "../components/Footer/Footer";
 import "./Store.css"
 
 const Store: FC = () => {
@@ -26,6 +28,8 @@ const Store: FC = () => {
       </div>
       <BrowseSteam />
       <PopularVR />
+      <HomeTabs />
+      <Footer />
     </div>
   )
 }

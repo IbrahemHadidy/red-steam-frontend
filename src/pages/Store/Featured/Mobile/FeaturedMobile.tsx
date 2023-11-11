@@ -23,8 +23,8 @@ const FeaturedMobile: FC = () => {
                       slide.price
                     ) : (
                       <div className="discount-block">
-                        <div className="discount-precentage">
-                          {slide.discountPrecentage}
+                        <div className="discount-Percentage">
+                          {slide.discountPercentage}
                         </div>
                         <div className="discount-prices">
                           <div className="original-price">{slide.price}</div>
