@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import categories from "./categoryItems";
 import "./Categories.css";
 
-interface category {
+interface Category {
   title: string;
   link: string;
   img: string;
@@ -34,8 +34,8 @@ const Categories: FC = () => {
     fade: true,
   };
 
-  const renderCategory = (category: category, index: number) => (
-    <a className="category-item" href={category.link} key={index}>
+  const renderCategory = (category: Category, key: string) => (
+    <a className="category-item" href={category.link} key={key}>
       <img src={category.img} alt={category.title} />
       <div
         className="category-gradient"
@@ -49,13 +49,9 @@ const Categories: FC = () => {
     </a>
   );
 
-  const renderCategoryGroup = (categoryGroup: category[], groupIndex: number) => (
+  const renderCategoryGroup = (categoryGroup: Category[], groupIndex: number) => (
     <>
-      {categoryGroup.map((category: category, index: number) => (
-        <div key={`${groupIndex}-${index}`}>
-          {renderCategory(category, index)}
-        </div>
-      ))}
+      {categoryGroup.map((category, index) => renderCategory(category, `${groupIndex}-${index}`))}
     </>
   );
 
