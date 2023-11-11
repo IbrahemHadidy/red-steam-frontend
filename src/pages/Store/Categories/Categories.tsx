@@ -49,9 +49,13 @@ const Categories: FC = () => {
     </a>
   );
 
-  const renderCategoryGroup = (categoryGroup: category[], index: number) => (
+  const renderCategoryGroup = (categoryGroup: category[], groupIndex: number) => (
     <>
-      {categoryGroup.map((category: category) => renderCategory(category, index))}
+      {categoryGroup.map((category: category, index: number) => (
+        <div key={`${groupIndex}-${index}`}>
+          {renderCategory(category, index)}
+        </div>
+      ))}
     </>
   );
 

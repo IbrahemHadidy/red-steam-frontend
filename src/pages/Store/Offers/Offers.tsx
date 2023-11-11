@@ -37,8 +37,8 @@ const Offers: FC = () => {
     fade: true,
   };
 
-  const renderOfferDiv = (offer: OfferedGame) => (
-    <div className="offer-bg">
+  const renderOfferDiv = (offer: OfferedGame, index: number) => (
+    <div className="offer-bg" key={`offer-${index}`}>
       <div className="spotlight-img">
         <a href={offer.offerLink}>
           <img src={offer.image} alt={offer.offerLink} />
@@ -64,8 +64,8 @@ const Offers: FC = () => {
     </div>
   );
 
-  const renderSmallGroupDiv = (offer: OfferedGame) => (
-    <div className="specials">
+  const renderSmallGroupDiv = (offer: OfferedGame, index: number) => (
+    <div className="specials" key={`special-${index}`}>
       <a className="special-capsule" href={offer.offerLink}>
         <div className="header-capsule">
           <img src={offer.image} alt={offer.offerLink} />
@@ -88,45 +88,49 @@ const Offers: FC = () => {
   );
 
   const renderOffers = (offers: OfferedGame[]) => (
-    offers.map((offer: OfferedGame) => (
-      renderOfferDiv(offer)
+    offers.map((offer: OfferedGame, index: number) => (
+      renderOfferDiv(offer, index)
     ))
   );
 
   const renderSmallGroups = (specialOffers: OfferedGame[]) => (
     <div className="small-group">
-      {specialOffers.map((specialOffer: OfferedGame) => (
-        renderSmallGroupDiv(specialOffer)
+      {specialOffers.map((specialOffer: OfferedGame, index: number) => (
+        renderSmallGroupDiv(specialOffer, index) 
       ))}
     </div>
   );
 
 
   //---- Change the structure of the slides from here and change the data structure if needed ----//
- const renderSlides = () => {
-  const slides = [
-    <>
-      {renderOffers(offeredGames.slice(0, 2))}
-      {renderSmallGroups(specialOffers.slice(0, 2))}
-    </>,
-    <>
-      {renderOffers(offeredGames.slice(2, 4))}
-      {renderSmallGroups(specialOffers.slice(2, 4))}
-    </>,
-    <>
-      {renderOffers(offeredGames.slice(4))}
-      {renderSmallGroups(specialOffers.slice(4, 6))}
-      {renderSmallGroups(specialOffers.slice(6, 8))}
-    </>,
-    <>
-      {renderSmallGroups(specialOffers.slice(8, 10))}
-      {renderSmallGroups(specialOffers.slice(10, 12))}
-      {renderSmallGroups(specialOffers.slice(12, 14))}
-    </>,
-  ];
-
-  return slides;
-};
+  const renderSlides = () => {
+    const slides = [
+      <>
+        {renderOffers(offeredGames.slice(0, 2))}
+        {renderSmallGroups(specialOffers.slice(0, 2))}
+      </>,
+      <>
+        {renderOffers(offeredGames.slice(2, 4))}
+        {renderSmallGroups(specialOffers.slice(2, 4))}
+      </>,
+      <>
+        {renderOffers(offeredGames.slice(4))}
+        {renderSmallGroups(specialOffers.slice(4, 6))}
+        {renderSmallGroups(specialOffers.slice(6, 8))}
+      </>,
+      <>
+        {renderSmallGroups(specialOffers.slice(8, 10))}
+        {renderSmallGroups(specialOffers.slice(10, 12))}
+        {renderSmallGroups(specialOffers.slice(12, 14))}
+      </>,
+    ];
+  
+    return slides.map((slide, index) => (
+      <div className="offers-row" key={`slide-${index}`}>
+        {slide}
+      </div>
+    ));
+  };
 
   return (
     <div className="home-section">
