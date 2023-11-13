@@ -151,14 +151,14 @@
 .tab-item-discount {
     position: relative;
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     float: right;
     margin-right: 16px;
     background: none;
-    margin-top: 17px;
+    margin-top: 22px;
     width: 133px;
     text-align: right;
-    justify-content: flex-end;
 }
 
 .tab-item-discount > .discount-block {
@@ -166,7 +166,6 @@
 }
 
 .tab-final-price {
-    line-height: 16px;
     font-size: 15px;
     padding: 0 6px;
     color: white;
@@ -178,9 +177,9 @@
     display: flex;
     align-items: center;
     font-size: 14px;
-    line-height: 18px;
-    padding: 0 4px;
+    padding: 4px 4px;
     border-radius: 1px;
+    line-height: 2px;
 }
 .tab-item-discount .discount-prices {    
     display: flex;
@@ -190,8 +189,18 @@
     padding-left: 4px;
     background: transparent;
 }
-
-
+.tab-item-discount .original-price {    
+    position: relative;
+    width: fit-content;
+    color: #738895;
+    font-size: 11px;
+    line-height: 12px;
+}
+.tab-item-discount .final-price {    
+    color: #BEEE11;
+    line-height: 16px;
+    font-size: 15px;
+}
 .tab-item-discount .tab-final-price {
     background: transparent;
 }
@@ -289,6 +298,7 @@
     background-color: rgba( 38, 54, 69, 0.6);
     width: 258px;
     border-radius: 2px;
+    box-sizing: content-box;
 }
 
 .game-review-summary {
@@ -305,4 +315,40 @@
     background-size: cover;
     background-position: center center;
     padding: 8px;
+    box-sizing: content-box;
+}
+
+.tab-right .tab-preview h2 {
+    text-transform: none;
+    font-size: 21px;
+    letter-spacing: 0px;
+    color: #263645;
+    height: 30px;
+    padding-right: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.tab-tags {
+    margin-top: 5px;
+    height: 22px;
+    overflow: hidden;
+}
+
+.tab-tags a {
+    display: inline-block;
+    line-height: 19px;
+    padding: 0 7px;
+    box-shadow: none;
+    margin-right: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 3px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    background-color: rgba( 38, 54, 69, 0.6);
 }

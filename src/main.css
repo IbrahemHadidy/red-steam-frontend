@@ -24,6 +24,8 @@ html body {
   font-family: "Motiva Sans", "Arial", "Helvetica", "sans-serif";
   letter-spacing: 0.03em;
   padding-top: 2px;
+  font-size: 12px;
+  color: #c6d4df;
 }
 
 body h2 {
