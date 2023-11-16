@@ -15,6 +15,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
       <NavDropdown
         title={title}
         id={renderKey}
+        className="profile-dropdown"
         renderMenuOnMount
         onClick={(e: MouseEvent) => {
           e.stopPropagation(); // Prevent event propagation

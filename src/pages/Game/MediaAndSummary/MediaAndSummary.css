@@ -1,0 +1,227 @@
+.game-title-area {
+    width: 940px;
+    margin: 0 auto;
+}
+
+.genre-block {
+    padding-top: 10px;
+    color: #56707f;
+    font-size: 12px;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: normal;
+}
+
+.genre-item {
+    color: #8f98a0;
+}
+
+.game-header-content {
+    padding-top: 0px;
+    position: relative;
+    margin: 0px auto;
+    text-align: left;
+    min-height: 46px;
+}
+
+.game-community {
+    position: relative;
+    float: right;
+}
+
+.community-btn {
+    border-radius: 2px;
+    border: none;
+    padding: 1px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none !important;
+    color: #67c1f5 !important;
+    background: rgba( 103, 193, 245, 0.2 );
+}
+
+.community-btn:hover {
+    text-decoration: none !important;
+    color: #fff !important;
+    background: linear-gradient( -60deg, #417a9b 5%,#67c1f5 95%);
+}
+
+.community-btn span {
+    padding: 0 15px;
+    font-size: 15px;
+    line-height: 30px;
+    border-radius: 2px;
+    display: block;
+    background: transparent;
+}
+
+.main-game-name {
+    color: white;
+    font-size: 26px;
+    line-height: 32px;
+    text-overflow: ellipsis;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: normal;
+    padding-left: 0px;
+}
+
+.game-background {
+    background: url( '/images/game_page_background_shadow.png' );
+    background-position: bottom;
+    padding-bottom: 1px;
+    background-repeat: no-repeat;
+    margin: 0px auto;
+    display: flex;
+}
+
+.game-page-content {
+    width: 940px;
+    margin: 0 auto;
+    padding-bottom: 12px;
+    background: linear-gradient(to right,  rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 100%);
+}
+
+.right-game-summary {
+    width: 324px;
+    margin-left: 0px;
+    float: right;
+}
+
+.game-image {
+    margin-bottom: 7px;
+}
+
+.image-full {
+    width: 324px;
+    height: 151px;
+}
+
+.game-discription {
+    max-height: 111px;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 18px;
+    padding-right: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
+
+.user-reviews {
+    font-size: 12px;
+    color: #556772;
+    margin-top: 10px;
+}
+
+.user-reviews-summary {
+    display: flex;
+    line-height: 16px;
+}
+
+.summary-subtitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    font-size: 10px;
+    padding-right: 10px;
+    min-width: 94px;
+    color: #556772;
+}
+
+.summary-column {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.summary-column a {
+    color: #67c1f5;
+}
+.summary-column a:hover {
+    color: #ffffff;
+}
+
+.game-review-summary.mixed {
+    color: #B9A074;
+}
+
+.game-review-summary.positive {
+    color: #66C0F4;
+}
+
+.game-review-summary.negative {
+    color: #A34C25;
+}
+
+.release-date {
+    padding-top: 9px;
+    padding-bottom: 13px;
+    display: flex;
+    line-height: 16px;
+}
+
+.release-date .date {
+    max-height: 30px;
+    overflow: hidden;
+    color: #8f98a0;
+}
+
+.dev-publish {
+    display: flex;
+    line-height: 16px;
+}
+
+.dev-publish a {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.user-defined-tags {
+    margin: 10px 0px 0px 0px;
+    font-size: 11px;
+}
+
+.glance-tags-label {
+    line-height: 19px;
+    font-size: 12px;
+    color: #556772;
+}
+
+.glance-tags {
+    white-space: nowrap;
+    height: 22px;
+}
+
+.game-tag {
+    display: inline-block;
+    line-height: 19px;
+    padding: 0 7px;
+    color: #67c1f5;
+    background-color: rgba( 103, 193, 245, 0.2 );
+    box-shadow: none;
+    margin-right: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 3px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.game-tag:hover {
+    background: linear-gradient(135deg,  #67c1f5 0%,#417a9b 100%);
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.left-game-summary {
+    width: 616px;
+    float: left;
+}
+
+.game-highlights {
+    overflow: hidden;
+    margin-right: 16px;
+    position: relative;
+}

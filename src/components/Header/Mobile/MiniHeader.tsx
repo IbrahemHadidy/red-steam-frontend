@@ -24,7 +24,7 @@ const MiniHeader: React.FC<MiniHeaderProps> = ({ onMenuClick }) => {
           </div>
         </div>
         <div className="mobile-logo">
-          <a href="https://store.steampowered.com/">
+          <a href="/">
             <img
               src="images/header_logo.png"
               height="36"

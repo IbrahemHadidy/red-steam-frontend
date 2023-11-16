@@ -246,11 +246,11 @@
 }
 
 .tab-item.focus .win {
-    background-image: url( '/public/images/icon_platform_win_dark.png' );
+    background-image: url( '/images/icon_platform_win_dark.png' );
 }
 
 .tab-item.focus .mac {
-    background-image: url( '/public/images/icon_platform_mac_dark.png' );
+    background-image: url( '/images/icon_platform_mac_dark.png' );
 }
 
 .tab-item-top-tags {
@@ -351,4 +351,19 @@
     text-overflow: ellipsis;
     font-size: 11px;
     background-color: rgba( 38, 54, 69, 0.6);
+}
+
+@media screen and (max-width: 1000px) { 
+    .tab-right {
+        display: none;
+    }
+    .tab-contents {
+        width: auto;
+    }
+    .tab-left {
+        width: auto;
+        float: none;
+        flex-grow: 1;  
+        margin-bottom: 16px;
+    }
 }

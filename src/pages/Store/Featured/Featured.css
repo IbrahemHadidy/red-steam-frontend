@@ -2,7 +2,7 @@
 .featured-carousel {
   all: unset;
   display: block;
-  background: url("/public/images/cluster_bg.png") bottom center
+  background: url("/images/cluster_bg.png") bottom center
     no-repeat;
   position: relative;
   padding-left: 2%;
@@ -160,10 +160,10 @@
   background-repeat: no-repeat;
 }
 .win {
-  background-image: url("/public/images/icon_platform_win.png");
+  background-image: url("/images/icon_platform_win.png");
 }
 .mac {
-  background-image: url("/public/images/icon_platform_mac.png");
+  background-image: url("/images/icon_platform_mac.png");
 }
 
 .mobile-carousel {

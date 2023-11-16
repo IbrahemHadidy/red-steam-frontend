@@ -5,7 +5,7 @@
 
 .wishlist-Link-div {
   background: rgba(255, 255, 255, 0.4)
-    url("/public/images/background_wishlist.jpg") -34px 20px;
+    url("/images/background_wishlist.jpg") -34px 20px;
   border-radius: 1px;
   position: absolute;
   margin: 0.4% 0;
@@ -419,11 +419,11 @@
   position: absolute;
   top: 1px;
   right: -1px;
-  background-image: url("/public/images/search_icon_btn.png");
+  background-image: url("/images/search_icon_btn.png");
 }
 
 #search-button img:hover {
-  background-image: url("/public/images/search_icon_btn_over.png");
+  background-image: url("/images/search_icon_btn_over.png");
 }
 @media screen and (max-width: 1000px) {
   .Categories-div {
