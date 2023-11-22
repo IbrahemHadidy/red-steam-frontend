@@ -78,7 +78,7 @@ const featuredGames: FeaturedGame[] = [
     gameLink:
       "https://store.steampowered.com/app/306130/The_Elder_Scrolls_Online/",
     mainImage:
-      "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/capsule_616x353_alt_assets_13.jpg",
+      "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/capsule_616x353.jpg",
     image1:
       "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/ss_ae00343059f2751a9bd1385383bc065d6d72a8df.600x338.jpg",
     image2:

@@ -121,110 +121,117 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
 
   // Render the SteamMenu component
   return (
-    <div className="responsive_page_menu_ctn mainmenu">
-      <div className="responsive_page_menu" id="responsive_page_menu">
-        <div className="mainmenu_contents">
-          <div className="mainmenu_contents_items">
-            <div className="responsive_menu_user_area">
-              {/* User persona and profile link */}
-              <div className="responsive_menu_user_persona persona offline">
-                <div className="playerAvatar offline">
-                  <a href="https://steamcommunity.com/id/iTankDestroyer/">
-                    <img
-                      src="https://source.unsplash.com/user/c_v_r"
-                      alt="User Avatar"
-                    />
+    <div className="steam-menu">
+      <div className="responsive_page_menu_ctn mainmenu">
+        <div className="responsive_page_menu" id="responsive_page_menu">
+          <div className="mainmenu_contents">
+            <div className="mainmenu_contents_items">
+              <div className="responsive_menu_user_area">
+                {/* User persona and profile link */}
+                <div className="responsive_menu_user_persona persona offline">
+                  <div className="playerAvatar offline">
+                    <a href="https://steamcommunity.com/id/iTankDestroyer/">
+                      <img
+                        src="https://source.unsplash.com/user/c_v_r"
+                        alt="User Avatar"
+                      />
+                    </a>
+                  </div>
+                  <a
+                    href="https://steamcommunity.com/id/iTankDestroyer/"
+                    data-miniprofile="216405522"
+                  >
+                    Profile
                   </a>
                 </div>
-                <a
-                  href="https://steamcommunity.com/id/iTankDestroyer/"
-                  data-miniprofile="216405522"
-                >
-                  Profile
-                </a>
+
+                {/* User cart and cart link */}
+                <div className="responsive_menu_cartwallet_area persona offline">
+                  <div className="responsive_menu_user_cart">
+                    <a href="https://store.steampowered.com/cart/">
+                      Cart&nbsp;<b>(0)</b>
+                    </a>
+                  </div>
+                </div>
               </div>
 
-              {/* User cart and cart link */}
-              <div className="responsive_menu_cartwallet_area persona offline">
-                <div className="responsive_menu_user_cart">
-                  <a href="https://store.steampowered.com/cart/">
-                    Cart&nbsp;<b>(0)</b>
-                  </a>
+              {/* Notifications menu item with a dropdown */}
+              <div
+                className={`menu-item supernav ${
+                  showNotificationDropdown ? "opened" : ""
+                }`}
+                onClick={() =>
+                  setShowNotificationDropdown(!showNotificationDropdown)
+                }
+              >
+                <div className="menu-item-content">
+                  <span className="menu-item-text">Notifications</span>
+                  <img
+                    src="images/dropdown.png"
+                    alt="Rotate Icon"
+                    className={`rotate-icon ${
+                      showNotificationDropdown ? "rotated" : ""
+                    }`}
+                  />
+                  <div className="chevron"></div>
                 </div>
+                {showNotificationDropdown && <NotificationDropdown />}
               </div>
+
+              {/* Generate menu items based on shared data */}
+              {generateMenuItems(sharedData.menuItems, "supernav")}
+
+              {/* Generate minor menu items based on shared data */}
+              {generateMenuItems(sharedData.minorMenuItems, "smallnav")}
             </div>
 
-            {/* Notifications menu item with a dropdown */}
-            <div
-              className={`menu-item supernav ${
-                showNotificationDropdown ? "opened" : ""
-              }`}
-              onClick={() =>
-                setShowNotificationDropdown(!showNotificationDropdown)
-              }
-            >
-              <div className="menu-item-content">
-                <span className="menu-item-text">Notifications</span>
+            <div className="mainmenu_footer_spacer"></div>
+            <div className="mainmenu_footer">
+              <div className="mainmenu_footer_logo">
                 <img
-                  src="images/dropdown.png"
-                  alt="Rotate Icon"
-                  className={`rotate-icon ${
-                    showNotificationDropdown ? "rotated" : ""
-                  }`}
+                  src="images/logo_valve_footer.png"
+                  alt="Valve Footer Logo"
                 />
-                <div className="chevron"></div>
               </div>
-              {showNotificationDropdown && <NotificationDropdown />}
+              {/* Copyright and legal information */}
+              This website is an educational project replicating the Steam site
+              for learning purposes and is not affiliated with Valve
+              Corporation.
+              <br />
+              <span className="mainmenu_valve_links">
+                <a
+                  href={sharedData.privacyPolicy.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.privacyPolicy.text}
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                  href={sharedData.legal.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.legal.text}
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                  href={sharedData.steamSubscriberAgreement.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.steamSubscriberAgreement.text}
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                  href={sharedData.refunds.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.refunds.text}
+                </a>
+              </span>
             </div>
-
-            {/* Generate menu items based on shared data */}
-            {generateMenuItems(sharedData.menuItems, "supernav")}
-
-            {/* Generate minor menu items based on shared data */}
-            {generateMenuItems(sharedData.minorMenuItems, "smallnav")}
-          </div>
-
-          <div className="mainmenu_footer_spacer"></div>
-          <div className="mainmenu_footer">
-            <div className="mainmenu_footer_logo">
-              <img
-                src="images/logo_valve_footer.png"
-                alt="Valve Footer Logo"
-              />
-            </div>
-            {/* Copyright and legal information */}
-            This website is an educational project replicating the Steam site
-            for learning purposes and is not affiliated with Valve Corporation.
-            <br />
-            <span className="mainmenu_valve_links">
-              <a
-                href={sharedData.privacyPolicy.link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {sharedData.privacyPolicy.text}
-              </a>
-              &nbsp;|&nbsp;
-              <a href={sharedData.legal.link} target="_blank" rel="noreferrer">
-                {sharedData.legal.text}
-              </a>
-              &nbsp;|&nbsp;
-              <a
-                href={sharedData.steamSubscriberAgreement.link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {sharedData.steamSubscriberAgreement.text}
-              </a>
-              &nbsp;|&nbsp;
-              <a
-                href={sharedData.refunds.link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {sharedData.refunds.text}
-              </a>
-            </span>
           </div>
         </div>
       </div>

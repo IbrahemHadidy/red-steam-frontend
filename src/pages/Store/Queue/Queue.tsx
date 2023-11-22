@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import queueGames from "./queueGames";
-import "./Queue.css";
+import "./Queue.scss";
 
 interface queueGame {
   imageNumber: string;

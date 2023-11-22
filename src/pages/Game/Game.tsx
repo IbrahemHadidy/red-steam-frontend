@@ -3,7 +3,7 @@ import Header from "../../components/Header/Header";
 import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
 import MediaAndSummary from "./MediaAndSummary/MediaAndSummary";
 import Footer from "../../components/Footer/Footer";
-import "./Game.css"
+import "./Game.scss"
 
 const Store: FC = () => {
   return(

@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import DefaultDesktopComponent from "./Desktop/DefaultDesktopComponent";
 import CustomMobileComponent from "./Mobile/CustomMobileComponent";
-import "./Header.css";
+import "./Header.scss";
 
 const Header: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);

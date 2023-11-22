@@ -1,0 +1,80 @@
+$color_1: #969696;
+$color_2: #c6d4df;
+$color_3: #fff;
+$color_4: #ffffff;
+$font-family_1: "Motiva Sans", "Arial", "Helvetica", "sans-serif";
+$font-family_2: "Motiva Sans", Sans-serif;
+$background-color_1: #434953;
+
+@import "https://fonts.cdnfonts.com/css/motiva-sans";
+@import "https://fonts.cdnfonts.com/css/arial";
+@import "https://fonts.cdnfonts.com/css/microsoft-sans-serif";
+@font-face {
+	font-family: "helvetica";
+	src: url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("woff"), url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("opentype"), url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("truetype");
+}
+html {
+	body {
+		padding: 0;
+		margin: 0;
+		min-height: 100%;
+		display: block;
+		height: auto;
+		position: relative;
+		color: $color_1;
+		background: url("/images/colored_body_top.png") center top no-repeat #1b2838;
+		font-family: $font-family_1;
+		letter-spacing: 0.03em;
+		padding-top: 2px;
+		font-size: 12px;
+		color: $color_2;
+	}
+}
+body {
+	h2 {
+		font-family: $font-family_2;
+		font-weight: 300;
+		font-size: 14px;
+		text-transform: uppercase;
+		color: $color_3;
+		margin: 0 0 10px;
+		letter-spacing: 0.03em;
+		font-weight: normal;
+		padding-top: 2px;
+	}
+}
+a {
+	text-decoration: none;
+	color: $color_4;
+}
+* {
+	padding: 0;
+	margin: 0;
+}
+::-webkit-scrollbar {
+	width: 12px;
+	background: rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-corner {
+	background: #202020;
+}
+::-webkit-scrollbar-track {
+	background: #1b2838;
+}
+::-webkit-scrollbar-thumb {
+	background-color: $background-color_1;
+	border-radius: 20px;
+	border: 3px solid #1b2838;
+	&:hover {
+		background: #4e5157;
+	}
+}
+::selection {
+	background: #54a5d4;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.67);
+	color: $color_3;
+}
+.main {
+	position: flex;
+	flex-wrap: wrap;
+}

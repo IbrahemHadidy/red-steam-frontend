@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { newAndTrending, topSellers, popularUpcoming, specials, } from "./homeTabsItems";
-import "./HomeTabs.css";
+import "./HomeTabs.scss";
 
 interface TabItem {
   gameName: string;

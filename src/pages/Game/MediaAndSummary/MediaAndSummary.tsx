@@ -1,39 +1,62 @@
-import { FC, useState, useRef, useEffect } from "react";
-import "./MediaAndSummary.css";
-import "./steamVideo.css";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FC, useState, useRef, RefObject, useEffect, Fragment } from "react";
+import gameData from "./gameData";
+import "./MediaAndSummary.scss";
+import "./steamVideo.scss";
 
-const SteamVideo: React.FC<unknown> = () => {
+interface SteamVideoProps {
+  videoRef: RefObject<HTMLVideoElement | null>;
+  videoSrc: string;
+  poster: string;
+  isAutoplay: boolean;
+  setAutoplay: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutoplay, setAutoplay }) => {
+
   const videoSettings = {
-    poster:
-      "https://cdn.cloudflare.steamstatic.com/steam/apps/256969851/movie.293x165.jpg",
-    src: "videos/4_5828148300003414123.mp4",
+    poster: poster,
+    src: videoSrc,
     controls: false,
     playsInline: true,
+    disablePictureInPicture: true,
   };
 
   const [overlayBottom, setOverlayBottom] = useState("-35px");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isAutoplay, setAutoplay] = useState(true);
   const [isPlaying, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(1);
-  const [volumeSliderValue, setVolumeSliderValue] = useState(100);
-  const [isMuted, setMuted] = useState(false);
-  const downloadProgressBarRef = useRef<HTMLProgressElement | null>(null);
-  const videoProgressBarRef = useRef<HTMLInputElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [autoplayInitialized, setAutoplayInitialized] = useState(false);
 
+  const [volume, setVolume] = useState(() => { 
+    const storedVolume = localStorage.getItem("volume");
+    return storedVolume ? parseFloat(storedVolume) : 1;
+  });
+  const [volumeSliderValue, setVolumeSliderValue] = useState( () => volume * 100 );
+
+  const [isMuted, setMuted] = useState(() => {
+    const storedMuted = localStorage.getItem("isMuted");
+    return storedMuted ? JSON.parse(storedMuted) : false;
+  });
+
+  const bufferProgressBarRef = useRef<HTMLProgressElement | null>(null);
+  const videoProgressBarRef = useRef<HTMLInputElement | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  // hovering over the video functions
   const handleMouseEnter = () => {
+    clearTimeout(timeoutRef.current);
     setOverlayBottom("0");
   };
-
   const handleMouseLeave = () => {
-    setOverlayBottom("-35px");
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setOverlayBottom("-35px");
+    }, 1000);
   };
 
-  const handleTimeUpdate: React.EventHandler<
-    React.SyntheticEvent<HTMLVideoElement>
-  > = (event) => {
+  // time update function
+  const handleTimeUpdate: React.EventHandler<React.SyntheticEvent<HTMLVideoElement>> = (event) => {
     const video = event.currentTarget as HTMLVideoElement;
     setCurrentTime(video.currentTime);
 
@@ -46,66 +69,182 @@ const SteamVideo: React.FC<unknown> = () => {
     }
   };
 
+  // seeking time function
   const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
     const video = document.querySelector(
       ".highlight-movie video"
     ) as HTMLVideoElement;
+
     if (video) {
       const seekTime = (event.target.valueAsNumber / 100) * video.duration;
       video.currentTime = seekTime;
     }
   };
 
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart( 2, "0" )}`;
+  };
+
+  // progess bar function
   const handleDurationChange = (event: Event) => {
     const video = event.currentTarget as HTMLVideoElement;
     setDuration(video.duration);
   };
 
+  // autoplay button function
   const handleAutoplayToggle = () => {
-    setAutoplay(!isAutoplay);
+    const video = videoRef.current;
+
+    if (video) {
+      if (!isAutoplay) {
+        video.play().catch((error) => {
+          console.error("Autoplay was prevented:", error);
+        });
+      }
+
+      setAutoplay(!isAutoplay);
+    }
   };
 
+  // Save autoplay setting to localStorage
+  useEffect(() => {
+    if (autoplayInitialized) {
+      localStorage.setItem("isAutoplay", JSON.stringify(isAutoplay));
+    }
+  }, [isAutoplay, autoplayInitialized]);
+  useEffect(() => {
+    const storedAutoplay = localStorage.getItem("isAutoplay");
+    if (storedAutoplay !== null) {
+      setAutoplay(JSON.parse(storedAutoplay));
+    }
+    setAutoplayInitialized(true);
+  }, [setAutoplay]);
+
+  // play/pause button function
   const handlePlayPause = () => {
     setPlaying(!isPlaying);
   };
 
+  // play/pause by pressing on screen function
+  useEffect(() => {
+    const video = document.querySelector(
+      ".highlight-movie video"
+    ) as HTMLVideoElement;
+
+    if (video) {
+      if (isPlaying) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  // this is used to fix the wrong play/pause button at the begining
+  useEffect(() => {
+    const video = videoRef.current;
+
+    const handlePlayStateChange = () => {
+      setPlaying(!video?.paused);
+    };
+
+    if (video) {
+      setPlaying(!video.paused);
+
+      video.addEventListener("play", handlePlayStateChange);
+      video.addEventListener("pause", handlePlayStateChange);
+
+      return () => {
+        video.removeEventListener("play", handlePlayStateChange);
+        video.removeEventListener("pause", handlePlayStateChange);
+      };
+    }
+  }, [videoRef]);
+
+  // audio mute button function
+  const handleMuteToggle = () => {
+    setMuted(!isMuted);
+  };
+
+  // Save mute setting to localStorage
+  useEffect(() => {
+    localStorage.setItem("isMuted", JSON.stringify(isMuted));
+  }, [isMuted]);
+
+  // volume bar function
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseInt(event.target.value, 10) / 100;
     setVolumeSliderValue(parseInt(event.target.value, 10));
     setVolume(newVolume);
   };
 
-  const handleFullscreen = () => {
+  // Save volume to localStorage
+  useEffect(() => {
+    localStorage.setItem("volume", volume.toString());
+  }, [volume]);
+
+  useEffect(() => {
     const video = document.querySelector(
       ".highlight-movie video"
     ) as HTMLVideoElement;
 
     if (video) {
+      video.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
+
+  // fullscreen function
+  const handleFullscreen = () => {
+    const playerArea = document.querySelector(".player-area") as HTMLElement;
+
+    if (playerArea) {
       if (!document.fullscreenElement) {
-        video.requestFullscreen();
+        playerArea.requestFullscreen().then(() => {
+          setOverlayBottom("-35px");
+        });
       } else {
-        document.exitFullscreen();
+        document.exitFullscreen().then(() => {
+          setOverlayBottom("0");
+        });
       }
     }
   };
 
+  // this is used to make the custom player controls work on the fullscreen too
   useEffect(() => {
-    const handleLoadedMetadata = () => {
-      const video = videoRef.current;
+    const handleFullscreenChange = () => {
+      const isFullscreen = !!document.fullscreenElement;
+      const videoOverlay = document.querySelector(
+        ".video-overlay"
+      ) as HTMLElement | null;
 
-      if (video) {
-        const bufferedEnd = video.buffered.end(0); // Get the end time of the buffered range
-        const totalDuration = video.duration;
+      if (videoOverlay) {
+        if (isFullscreen) {
+          setOverlayBottom("0");
+        }
+      }
+    };
 
-        const bufferedPercentage = (bufferedEnd / totalDuration) * 100;
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
 
-        // Check if a certain percentage of the video is buffered (e.g., 50%)
-        if (bufferedPercentage >= 80) {
-          // Do something, like moving to the next part
-          console.log('At least 50% of the video has been buffered. Proceed to the next part.');
-        } else {
-          // Continue buffering
-          console.log(`Buffered: ${bufferedPercentage.toFixed(2)}%`);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  // this is used to make the autoplay work after loading metadata
+  useEffect(() => {
+    const handleLoadedData = () => {
+      // Video metadata is loaded, autoplay can be attempted
+      if (isAutoplay) {
+        const video = videoRef.current;
+
+        if (video) {
+          video.play().catch((error) => {
+            console.error("Autoplay was prevented:", error);
+          });
         }
       }
     };
@@ -113,18 +252,15 @@ const SteamVideo: React.FC<unknown> = () => {
     const video = videoRef.current;
 
     if (video) {
-      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      video.addEventListener("loadeddata", handleLoadedData);
 
       return () => {
-        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        video.removeEventListener("loadeddata", handleLoadedData);
       };
     }
-  }, []);
+  }, [isAutoplay, videoRef]);
 
-  const handleMuteToggle = () => {
-    setMuted(!isMuted);
-  };
-
+  // buffer progress fucntion
   useEffect(() => {
     const video = document.querySelector(
       ".highlight-movie video"
@@ -143,65 +279,32 @@ const SteamVideo: React.FC<unknown> = () => {
       }
     };
 
-    const handleDownloadProgress = () => {
+    const handleBufferProgress = () => {
       const video = document.querySelector(
         ".highlight-movie video"
       ) as HTMLVideoElement;
 
-      if (video && downloadProgressBarRef.current) {
+      if (video && bufferProgressBarRef.current) {
         const loaded = video.buffered.end(0);
         const total = video.duration;
 
         const progressPercentage = (loaded / total) * 100;
-        downloadProgressBarRef.current.value = progressPercentage;
+        bufferProgressBarRef.current.value = progressPercentage;
       }
     };
 
     if (video) {
       video.addEventListener("timeupdate", handleTimeUpdate);
       video.addEventListener("durationchange", handleDurationChange);
-      video.addEventListener("progress", handleDownloadProgress);
+      video.addEventListener("progress", handleBufferProgress);
 
       return () => {
         video.removeEventListener("timeupdate", handleTimeUpdate);
         video.removeEventListener("durationchange", handleDurationChange);
-        video.removeEventListener("progress", handleDownloadProgress);
+        video.removeEventListener("progress", handleBufferProgress);
       };
     }
   }, [currentTime, duration]);
-
-  useEffect(() => {
-    const video = document.querySelector(
-      ".highlight-movie video"
-    ) as HTMLVideoElement;
-
-    if (video) {
-      if (isPlaying) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    const video = document.querySelector(
-      ".highlight-movie video"
-    ) as HTMLVideoElement;
-
-    if (video) {
-      video.volume = isMuted ? 0 : volume;
-    }
-  }, [volume, isMuted]);
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
 
   return (
     <div
@@ -218,16 +321,14 @@ const SteamVideo: React.FC<unknown> = () => {
         <video
           className="highlight-movie"
           {...videoSettings}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={handlePlayPause}
+          ref={videoRef as RefObject<HTMLVideoElement>}
+          controls={false}
           onTimeUpdate={handleTimeUpdate}
+          onClick={handlePlayPause}
         />
         <div
           className="video-overlay"
           style={{ bottom: overlayBottom, transition: "all 0.5s" }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
         >
           <div
             className={`play-btn ${isPlaying ? "pause" : "play"}`}
@@ -265,8 +366,8 @@ const SteamVideo: React.FC<unknown> = () => {
               <div>
                 <progress
                   max="100"
-                  ref={downloadProgressBarRef}
-                  className="progress-bar-download"
+                  ref={bufferProgressBarRef}
+                  className="progress-bar-buffer"
                 />
               </div>
               <div className="progress-bar-progress">
@@ -282,7 +383,9 @@ const SteamVideo: React.FC<unknown> = () => {
                 />
                 <div
                   className="filled-track"
-                  style={{ width: `${(currentTime / duration) * 100 || 0}%` }}
+                  style={{
+                    width: `${(currentTime / duration) * 100 || 0}%`,
+                  }}
                 ></div>
               </div>
             </div>
@@ -293,18 +396,296 @@ const SteamVideo: React.FC<unknown> = () => {
   );
 };
 
+const Screenshot: FC<{ 
+  imgSrc: string; isMouseOverScreenshot: boolean; onEnter: () => void; onLeave: () => void;
+}> = ({ imgSrc, onEnter, onLeave }) => {
+  return (
+    <div className="player-area">
+      <img
+        className="area-spacer"
+        src="/images/game_highlight_image_spacer.gif"
+        alt=""
+      />
+      <div className="player-item">
+        <div
+          className="screenshot-holder"
+          onMouseEnter={() => {
+            onEnter(); // Call the onEnter handler from props
+          }}
+          onMouseLeave={() => {
+            onLeave(); // Call the onLeave handler from props
+          }}
+        >
+          <a className="screenshot-link" href="">
+            <img src={imgSrc} alt="Screenshot" />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface VideoEntry {
+  type: "video";
+  link: string;
+  posterLink: string;
+}
+
+interface ImageEntry {
+  type: "image";
+  link: string;
+}
+
+type MovieEntry = VideoEntry | ImageEntry;
+
+interface gameData {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  releaseDate: string;
+  developer: {
+    name: string;
+    link: string;
+  };
+  publisher: {
+    name: string;
+    link: string;
+  };
+  backgroundImage: string;
+  headerImage: string;
+  moviesAndImages: MovieEntry[];
+  reason: "available" | "recommended";
+  tags: string[];
+  discount: "no-discount" | "discount";
+  discountPercentage?: string;
+  free: boolean;
+  price: string;
+  discountPrice?: string;
+  win: string;
+  mac?: string;
+}
+
 const MediaAndSummary: FC = () => {
+
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [isAutoplay, setAutoplay] = useState<boolean>(true);
+  const [initialRender, setInitialRender] = useState(true);
+  const [isMouseOverScreenshot, setIsMouseOverScreenshot] = useState<boolean>(false);
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // define the current game data
+  const game = gameData[0];
+
   useEffect(() => {
-    document.body.style.background =
-      'url("https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/page_bg_generated_v6b.jpg?t=1699897087") center top no-repeat #1b2838';
+    // this is responsible for the page background
+    document.body.style.background = `url(${game.backgroundImage}) center top no-repeat #1b2838`;
+
+    // this is responsible for the tab title
+    document.title = `${game.name} on Steam`;
+
+    // this is responsible for skipping the first videos after the page loads if autoplay is off
+    if (!isAutoplay) {
+      const firstNonVideoItem = game.moviesAndImages.find(
+        (entry) => entry.type !== "video"
+      );
+      setSelectedItem(firstNonVideoItem?.link || null);
+    } else {
+      setSelectedItem(
+        game.moviesAndImages.find((entry) => entry.type === "video")?.link ||
+          null
+      );
+    }
 
     return () => {
       document.body.style.background = "";
     };
   }, []);
 
-  return (
-    <>
+  // function to swap photos and videos and photos with autoplay or the right swap button
+  const handleSwap = () => {
+    const currentIndex = game.moviesAndImages.findIndex(
+      (entry) => entry.link === selectedItem
+    );
+
+    if (isAutoplay) {
+      const nextIndex = (currentIndex + 1) % game.moviesAndImages.length;
+      setSelectedItem(game.moviesAndImages[nextIndex].link);
+    } else {
+      const nextPhotoIndex = game.moviesAndImages.findIndex(
+        (entry, index) => index > currentIndex && entry.type !== "video"
+      );
+
+      if (nextPhotoIndex !== -1) {
+        setSelectedItem(game.moviesAndImages[nextPhotoIndex].link);
+      } else {
+        setSelectedItem(
+          game.moviesAndImages.find((entry) => entry.type !== "video")?.link ||
+            null
+        );
+      }
+    }
+
+    // Check if the selected item is outside the visible area
+    const indicatorPosition =
+      game.moviesAndImages.findIndex((entry) => entry.link === selectedItem) *
+      120;
+
+    const slideArea = document.querySelector(".slide-area");
+    if (slideArea) {
+      const visibleWidth = slideArea.clientWidth;
+      const scrollLeft = slideArea.scrollLeft;
+
+      if (currentIndex === game.moviesAndImages.length - 1) {
+        // If the index is 0, scroll to the start
+        slideArea.scroll({
+          left: 0,
+          behavior: "smooth",
+        });
+      } else if (indicatorPosition + 140 < scrollLeft) {
+        // Scroll to the left to bring the selected item into view
+        slideArea.scrollBy({
+          left: indicatorPosition + 120 - scrollLeft,
+          behavior: "smooth",
+        });
+      } else if (indicatorPosition + 140 > scrollLeft + visibleWidth) {
+        // Scroll to the right to bring the selected item into view
+        slideArea.scrollBy({
+          left: indicatorPosition + 730 - (scrollLeft + visibleWidth),
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  // function to swap photos and videos and photos with left swap button
+  const handleLeftSwap = (currentIndex: number) => {
+    const slideArea = document.querySelector(".slide-area");
+    if (slideArea) {
+      const indicatorPosition = currentIndex * 120;
+  
+      // Calculate the distance from the left edge to the indicator
+      const distanceToLeftEdge = indicatorPosition -120 - slideArea.scrollLeft;
+  
+      // Check if the indicator is going out of the left edge
+      const isOutOfLeftEdge = distanceToLeftEdge < 0;
+  
+      // If the index is not the first, move to the previous item
+      if (currentIndex > 0) {
+        const nextIndex = currentIndex - 1;
+        setSelectedItem(game.moviesAndImages[nextIndex].link);
+  
+        // If the indicator is out of the left edge, scroll to the left
+        if (isOutOfLeftEdge) {
+          slideArea.scrollBy({
+            left: distanceToLeftEdge,
+            behavior: "smooth",
+          });
+        }
+      } else {
+        // If the index is the first, scroll to the end only if it's not already at the last item
+        if (slideArea.scrollLeft !== (game.moviesAndImages.length - 1) * 120) {
+          slideArea.scroll({
+            left: (game.moviesAndImages.length - 1) * 120,
+            behavior: "smooth",
+          });
+        }
+      }
+    }
+  };
+
+  // function controlling the behavior of the right and left buttons under the slides area
+  const handleSliderClick = (direction: "left" | "right") => {
+    const currentIndex = game.moviesAndImages.findIndex(
+      (entry) => entry.link === selectedItem
+    );
+
+    let nextIndex = currentIndex;
+
+    if (direction === "right") {
+      // Find the next video or screenshot index
+      nextIndex = (currentIndex + 1) % game.moviesAndImages.length;
+      handleSwap();
+    } else {
+      // Find the previous video or screenshot index
+      nextIndex =
+        (currentIndex - 1 + game.moviesAndImages.length) %
+        game.moviesAndImages.length;
+      handleLeftSwap(currentIndex);
+    }
+
+    // Set the selectedItem based on the nextIndex
+    setSelectedItem(game.moviesAndImages[nextIndex].link);
+  };
+
+  // auto swap for screenshots function
+  useEffect(() => {
+    const screenshotIntervalId = setInterval(() => {
+      if (
+        selectedItem &&
+        typeof selectedItem === "string" &&
+        game.moviesAndImages.find((entry) => entry.link === selectedItem)
+          ?.type !== "video"
+      ) {
+        handleSwap();
+      }
+    }, 5000);
+
+    return () => {
+      clearInterval(screenshotIntervalId);
+    };
+  });
+
+  // auto swap for videos function
+  useEffect(() => {
+    const video = videoRef.current;
+
+    const handleVideoEnded = () => {
+      console.log("Video ended. Swapping...");
+      handleSwap();
+    };
+
+    if (video) {
+      video.addEventListener("ended", handleVideoEnded);
+      return () => {
+        video.removeEventListener("ended", handleVideoEnded);
+      };
+    }
+  }, [selectedItem]);
+
+  // auto swap for the first video if autoplay is off
+  useEffect(() => {
+    if (initialRender) {
+      const firstVideo = game.moviesAndImages.find(
+        (entry) => entry.type === "video"
+      );
+
+      if (!isAutoplay && firstVideo && selectedItem === firstVideo.link) {
+        const videoSwapTimeout = setTimeout(() => {
+          handleSwap();
+          setInitialRender(false); // Update the state to indicate that the initial render has occurred
+        }, 0); // Adjust the duration as needed
+
+        return () => {
+          clearTimeout(videoSwapTimeout);
+        };
+      }
+    }
+  }, [initialRender, isAutoplay, selectedItem]);
+
+  // variable that represents the currently selected item
+  const selectedEntry = gameData.reduce<MovieEntry | null>(
+    (selected, game) =>
+      selected ||
+      (game.moviesAndImages.find(
+        (entry) => entry.link === selectedItem
+      ) as MovieEntry | null),
+    null
+  );
+
+  return gameData.map((game) => (
+    <Fragment key={game.id}>
       <div className="game-title-area">
         <div className="genre-block">
           <a href="/search/">
@@ -312,11 +693,11 @@ const MediaAndSummary: FC = () => {
           </a>{" "}
           &gt;{" "}
           <a href="/genre/RPG/">
-            <span className="genre-item">gameCategory</span>
+            <span className="genre-item">{game.category}</span>
           </a>{" "}
           &gt;{" "}
           <a href="/game/gameName/">
-            <span className="genre-item">Hamas</span>
+            <span className="genre-item">{game.name}</span>
           </a>
         </div>
         <div className="game-header-content">
@@ -325,7 +706,7 @@ const MediaAndSummary: FC = () => {
               <span>Community Hub</span>
             </a>
           </div>
-          <div className="main-game-name">Hamas</div>
+          <div className="main-game-name">{game.name}</div>
         </div>
       </div>
       <div className="game-background">
@@ -333,15 +714,9 @@ const MediaAndSummary: FC = () => {
           <div className="media-summary-block">
             <div className="right-game-summary">
               <div className="game-image">
-                <img className="image-full" src="images/hamas.png" alt="" />
+                <img className="image-full" src={game.headerImage} alt="" />
               </div>
-              <div className="game-discription">
-                {" "}
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-                at eum natus, soluta recusandae ex quasi optio officia omnis
-                perspiciatis debitis odit ab accusantium culpa libero dolorem
-                incidunt, quaerat nihil!
-              </div>
+              <div className="game-discription">{game.description}</div>
               <div className="game-glance-first">
                 <div className="user-reviews">
                   <div className="user-reviews-summary">
@@ -354,18 +729,18 @@ const MediaAndSummary: FC = () => {
                 </div>
                 <div className="release-date">
                   <div className="summary-subtitle">Release Date:</div>
-                  <div className="date">DD MMM, YYYY</div>
+                  <div className="date">{game.releaseDate}</div>
                 </div>
                 <div className="dev-publish">
                   <div className="summary-subtitle">Developer:</div>
                   <div className="summary-column">
-                    <a href="">developer name</a>
+                    <a href={game.developer.link}>{game.developer.name}</a>
                   </div>
                 </div>
                 <div className="dev-publish">
                   <div className="summary-subtitle">Publisher:</div>
                   <div className="summary-column">
-                    <a href="">publisher name</a>
+                    <a href={game.developer.link}>{game.developer.name}</a>
                   </div>
                 </div>
                 <div className="user-defined-tags">
@@ -374,16 +749,16 @@ const MediaAndSummary: FC = () => {
                   </div>
                   <div className="glance-tags">
                     <a className="game-tag" href="">
-                      tag1
+                      {game.tags[0]}
                     </a>
                     <a className="game-tag" href="">
-                      tag2
+                      {game.tags[1]}
                     </a>
                     <a className="game-tag" href="">
-                      tag3
+                      {game.tags[2]}
                     </a>
                     <a className="game-tag" href="">
-                      tag4
+                      {game.tags[3]}
                     </a>
                   </div>
                 </div>
@@ -391,14 +766,136 @@ const MediaAndSummary: FC = () => {
             </div>
             <div className="left-game-summary">
               <div className="game-highlights">
-                <SteamVideo />
+                {selectedItem && selectedEntry && (
+                  <>
+                    {selectedEntry.type === "video" ? (
+                      <SteamVideo
+                        key={selectedEntry.link}
+                        videoRef={videoRef}
+                        videoSrc={selectedEntry.link}
+                        poster={selectedEntry.posterLink}
+                        isAutoplay={isAutoplay}
+                        setAutoplay={setAutoplay}
+                      />
+                    ) : (
+                      <Screenshot
+                        key={selectedEntry.link}
+                        imgSrc={selectedEntry.link}
+                        isMouseOverScreenshot={isMouseOverScreenshot}
+                        onEnter={() => setIsMouseOverScreenshot(true)}
+                        onLeave={() => setIsMouseOverScreenshot(false)}
+                      />
+                    )}
+                  </>
+                )}
+
+                <div className="slide-area">
+                  <div
+                    className="slide-area-scroll"
+                    style={{
+                      width: `${game.moviesAndImages.length * 120}px`,
+                      left: "0px",
+                    }}
+                  >
+                    <div
+                      className="highlight-selector"
+                      style={{
+                        left: `${
+                          game.moviesAndImages.findIndex(
+                            (entry) => entry.link === selectedItem
+                          ) * 120
+                        }px`,
+                      }}
+                    ></div>
+                    {game.moviesAndImages.map((entry) => (
+                      <div
+                        key={game.id}
+                        className={`higlight-slide-item ${
+                          entry.type === "video"
+                            ? "higlight-slide-movie"
+                            : "highlight-slide-screenshot"
+                        }`}
+                        id={entry.link}
+                        onClick={() => setSelectedItem(entry.link)}
+                      >
+                        {entry.type === "video" ? (
+                          <>
+                            <img
+                              src={entry.posterLink}
+                              alt="Movie Thumbnail"
+                              className="movie-thumb"
+                            />
+                            <div className="movie-marker"></div>
+                          </>
+                        ) : (
+                          <img
+                            className="mini-img"
+                            src={entry.link}
+                            alt="Screenshot"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="slides-slider">
+                <div
+                  className="slider-left"
+                  onClick={() => handleSliderClick("left")}
+                >
+                  <span />
+                </div>
+
+                <div
+                  className="slider-right"
+                  onClick={() => handleSliderClick("right")}
+                >
+                  <span />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
-  );
+      <div className="queue-area">
+          <div className="queue-actions">
+            <a className="view-queue-button" href="">
+              <span>View Your Queue&nbsp;&nbsp;&nbsp;<i className="arrow-next"/></span>
+            </a>
+            <div id="add-wishlist" className="queue-button-container" style={{display:"inline-block"}} >
+              <a className="queue-button" href="">
+                <span>Add to your wishlist</span>
+              </a>
+            </div>
+            <div id="added-wishlist" className="queue-button-container" style={{display: "none"}}>
+              <a className="queue-button" href="">
+                <span><img src="images/ico_selected.png" alt="" /> On Wishlist</span>
+              </a>
+              <div className="wishlist-added"> Item added to your wishlist! </div>
+            </div>
+            <div id="follow" className="queue-button-container">
+              <div className="queue-button" style={{display:"inline-block"}} >
+                <span>Follow</span>
+              </div>
+              <div className="queue-button" style={{display: "none"}} >
+                <span>
+                  <img src="images/ico_selected.png" alt="" /> Following
+                </span>
+              </div>
+            </div>
+            <div id="ignore" className="queue-button-container" style={{display:"inline-block"}} >
+              <div className="queue-button">
+                <span>Ignore</span>
+              </div>
+            </div>
+            <div id="ignored" className="queue-button-container" style={{display:"none"}}>
+              <div className="queue-button"><span><img src="images/ico_selected.png" alt="" /> Ignored</span></div>
+            </div>
+          </div>
+      </div>
+    </Fragment>
+  ));
 };
 
 export default MediaAndSummary;

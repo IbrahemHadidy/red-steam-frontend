@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import DesktopSecondNav from "./Desktop/DesktopSecondNav";
 import MobileSecondNav from "./Mobile/MobileSecondNav";
-import "./SecondNavbar.css";
+import "./SecondNavbar.scss";
 
 const SecondNavbar: FC = () => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);

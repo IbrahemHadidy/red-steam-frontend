@@ -11,7 +11,7 @@ import PopularVR from './PopularVR/PopularVR';
 import BrowseSteam from './BrowseSteam/BrowseSteam';
 import HomeTabs from './HomeTabs/HomeTabs';
 import Footer from "../../components/Footer/Footer";
-import "./Store.css"
+import "./Store.scss"
 
 const Store: FC = () => {
   return(

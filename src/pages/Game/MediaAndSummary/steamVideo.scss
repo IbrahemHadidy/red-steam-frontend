@@ -1,0 +1,226 @@
+$color_1: #9d9d9d;
+$background-color_1: #000000;
+$background-color_2: #000;
+$background-color_3: rgba(0, 0, 0, 0.8);
+$background-color_4: #2c2b28;
+$background-color_5: transparent;
+$background-color_6: #808080;
+$background-color_7: #6f9fc8;
+
+.area-spacer {
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+.highlight-movie {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background-color: $background-color_2;
+}
+.video-overlay {
+  position: absolute;
+  height: 35px;
+  background-color: $background-color_3;
+  width: 100%;
+  text-align: left;
+}
+:fullscreen {
+  .video-overlay {
+    position: absolute;
+    height: 35px;
+    background-color: $background-color_3;
+    width: 100%;
+    text-align: left;
+  }
+}
+:-webkit-full-screen {
+  .video-overlay {
+    position: absolute;
+    height: 35px;
+    background-color: $background-color_3;
+    width: 100%;
+    text-align: left;
+  }
+}
+:-moz-full-screen {
+  .video-overlay {
+    position: absolute;
+    height: 35px;
+    background-color: $background-color_3;
+    width: 100%;
+    text-align: left;
+  }
+}
+.play-btn {
+  width: 19px;
+  height: 19px;
+  margin: 1px;
+  float: left;
+}
+.play-btn.play {
+  background-image: url(images/play.png);
+}
+.play-btn.pause {
+  background-image: url(images/pause.png);
+}
+.control-container {
+  background-color: $background-color_4;
+  margin: 1px;
+  height: 19px;
+  margin-left: 21px;
+}
+.fullscreen-btn {
+  height: 19px;
+  width: 19px;
+  margin-right: 3px;
+  background-image: url(images/fullscreen.png);
+  float: right;
+  &:hover {
+    background-image: url(images/fullscreen-hover.png);
+  }
+}
+.video-time {
+  color: $color_1;
+  font-size: 10px;
+  line-height: 19px;
+  margin-right: 5px;
+  float: right;
+}
+.volume-icon {
+  width: 19px;
+  height: 19px;
+  margin-left: 3px;
+  display: inline-block;
+  background-image: url(images/volume.png);
+}
+.volume-icon.muted {
+  background-image: url(images/muted.png);
+}
+.volume-slider {
+  width: 80px;
+  height: 19px;
+  display: inline-block;
+  margin-left: 5px;
+  background-image: url(images/volume-slider.png);
+  position: relative;
+  input {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    appearance: none;
+    background: transparent;
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 4px;
+      height: 20px;
+      background: url(images/volume-handler.png) transparent;
+      cursor: pointer;
+      margin-top: 9px;
+    }
+  }
+}
+.autoplay-checkbox {
+  width: 11px;
+  height: 11px;
+  margin: 4px;
+  display: inline-block;
+  background-image: url(images/unchecked.png);
+  margin-left: 15px;
+  &:hover {
+    box-sizing: border-box;
+    outline: 1px solid #cccccc;
+  }
+}
+.autoplay-checkbox.checked {
+  width: 11px;
+  height: 11px;
+  margin: 4px;
+  display: inline-block;
+  background-image: url(images/checked.png);
+  margin-left: 15px;
+  &:hover {
+    box-sizing: border-box;
+    outline: 1px solid #cccccc;
+  }
+}
+.autoplay-label {
+  font-size: 10px;
+  line-height: 19px;
+  display: inline-block;
+  vertical-align: top;
+}
+.progress-bar-wrapper {
+  position: absolute;
+  bottom: 0px;
+  top: 21px;
+  left: 0px;
+  right: 0px;
+  background-color: $background-color_4;
+}
+.progress-bar-container {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 1px;
+}
+.progress-bar-buffer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 0px;
+  bottom: 0px;
+  background-color: $background-color_5;
+  width: 100%;
+  &::-webkit-progress-bar {
+    background-color: $background-color_4;
+  }
+  &::-webkit-progress-value {
+    background-color: $background-color_6;
+  }
+}
+.progress-bar-progress {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 0px;
+  bottom: 0px;
+  width: 100%;
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: $background-color_5;
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      position: relative;
+      width: 5px;
+      height: 15px;
+      background-color: $background-color_5;
+      cursor: default;
+      background-color: $background-color_5;
+    }
+    &:focus {
+      outline: none;
+    }
+    &:active {
+      &::-webkit-slider-thumb {
+        background-color: $background-color_5;
+      }
+    }
+  }
+}
+.filled-track {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: $background-color_7;
+  pointer-events: none;
+  transition: width 0.1s ease;
+}

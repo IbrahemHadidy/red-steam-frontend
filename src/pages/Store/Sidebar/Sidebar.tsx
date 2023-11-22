@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./Sidebar.css";
+import "./Sidebar.scss";
 
 interface LinkItem {
   to: string;

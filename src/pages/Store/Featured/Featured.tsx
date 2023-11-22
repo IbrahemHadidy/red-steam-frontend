@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import "./Featured.css";
+import "./Featured.scss";
 import FeaturedDesktop from "./Desktop/FeaturedDesktop";
 import FeaturedMobile from "./Mobile/FeaturedMobile";
 

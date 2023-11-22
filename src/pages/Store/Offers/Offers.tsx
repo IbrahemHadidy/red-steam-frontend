@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { offeredGames, specialOffers } from "./OfferedGames";
 import Slider from "react-slick";
-import "./Offers.css";
+import "./Offers.scss";
 
 interface OfferedGame {
   offerLink: string;

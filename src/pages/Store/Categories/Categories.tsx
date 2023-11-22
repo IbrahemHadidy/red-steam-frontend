@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import Slider from "react-slick";
 import categories from "./categoryItems";
-import "./Categories.css";
+import "./Categories.scss";
 
 interface Category {
   title: string;

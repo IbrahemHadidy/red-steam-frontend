@@ -1,5 +1,5 @@
 import { FC } from "react";
-import "./BrowseSteam.css";
+import "./BrowseSteam.scss";
 const BrowseSteam: FC = () => {
   return (
     <div className="home-section">
