@@ -71,13 +71,13 @@ const Footer: FC = () => {
           </a>
           &nbsp; | &nbsp;
           <a href="#">
-            <img src="/images/ico_facebook.gif" />
-            <s>Steam</s>
+            <img src="/images/ico_facebook.gif" style={{borderRadius: "3px"}}/>
+            &nbsp;<s>Steam</s>
           </a>
           &nbsp; | &nbsp;
           <a href="http://twitter.com/steam">
-            <img src="/images/ico_twitter.gif" />
-            <s>@steam</s>
+            <img src="/images/ico_twitter.gif" style={{borderRadius: "3px"}}/>
+            &nbsp;<s>@steam</s>
           </a>
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;

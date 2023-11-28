@@ -92,7 +92,7 @@ const PopularVR: FC = () => {
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
                     More{" "}
-                    <img src="images/ResponsiveChevron.svg" className="dive" />
+                    <img src="/images/ResponsiveChevron.svg" className="dive" />
                   </div>
                 </div>
               ) : (

@@ -1,28 +1,22 @@
-// CustomMobileComponent.jsx
 import React, { useState, useEffect, useRef, MouseEvent } from "react";
 import SteamMenu from "./CustomMenu";
 import MiniHeader from "./MiniHeader";
 
 const CustomMobileComponent: React.FC = () => {
-  const [showAnotherComponent, setShowAnotherComponent] =
-    useState<boolean>(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleAnotherComponent = (event: MouseEvent) => {
-    event.stopPropagation(); // Prevent event propagation
-    setShowAnotherComponent(!showAnotherComponent);
+  const toggleMenu = (event: MouseEvent) => {
+    event.stopPropagation();
+    setShowMenu(!showMenu);
   };
 
   const closeMenu = () => {
-    setShowAnotherComponent(false);
+    setShowMenu(false);
   };
 
   const handleClickOutside = (event: Event) => {
-    if (
-      showAnotherComponent &&
-      menuRef.current &&
-      !menuRef.current.contains(event.target as Node)
-    ) {
+    if (showMenu && menuRef.current && !menuRef.current.contains(event.target as Node)) {
       // Click occurred outside the menu, so close it
       closeMenu();
     }
@@ -30,7 +24,7 @@ const CustomMobileComponent: React.FC = () => {
 
   useEffect(() => {
     // Add or remove the click event listener based on the menu state
-    if (showAnotherComponent) {
+    if (showMenu) {
       document.addEventListener("click", handleClickOutside);
       document.body.style.overflow = "hidden"; // Prevent scrolling
     } else {
@@ -43,16 +37,15 @@ const CustomMobileComponent: React.FC = () => {
       document.removeEventListener("click", handleClickOutside);
       document.body.style.overflow = "auto";
     };
-  }, [showAnotherComponent]);
+  }, [showMenu]);
 
   return (
     <>
-      <MiniHeader onMenuClick={toggleAnotherComponent} />
-      <div
-        className={`overlay ${showAnotherComponent ? "show" : ""}`}
-        onClick={closeMenu} // Handle click to fade away the overlay
-      ></div>
-      <div className={`steam-menu-container ${showAnotherComponent ? "show" : ""}`} ref={menuRef}>
+      <MiniHeader onMenuClick={toggleMenu} />
+      {/* Overlay to fade away when the menu is open */}
+      <div className={`overlay ${showMenu ? "show" : ""}`} onClick={closeMenu}></div>
+      {/* Container for the menu */}
+      <div className={`steam-menu-container ${showMenu ? "show" : ""}`} ref={menuRef}>
         <SteamMenu />
       </div>
     </>

@@ -63,7 +63,7 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
           menuItem.id === "you-and-friends" ||
           menuItem.id === "community" ? (
             <img
-              src="images/dropdown.png"
+              src="/images/dropdown.png"
               alt="Rotate Icon"
               className={`rotate-icon ${
                 openedItems[menuItem.id] ? "rotated" : ""
@@ -167,7 +167,7 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
                 <div className="menu-item-content">
                   <span className="menu-item-text">Notifications</span>
                   <img
-                    src="images/dropdown.png"
+                    src="/images/dropdown.png"
                     alt="Rotate Icon"
                     className={`rotate-icon ${
                       showNotificationDropdown ? "rotated" : ""
@@ -189,7 +189,7 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
             <div className="mainmenu_footer">
               <div className="mainmenu_footer_logo">
                 <img
-                  src="images/logo_valve_footer.png"
+                  src="/images/logo_valve_footer.png"
                   alt="Valve Footer Logo"
                 />
               </div>

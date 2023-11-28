@@ -146,7 +146,7 @@ const Offers: FC = () => {
                   <div className="mobile-more-dive">
                     More{" "}
                     <img
-                      src="images/ResponsiveChevron.svg"
+                      src="/images/ResponsiveChevron.svg"
                       className="dive"
                     />
                   </div>

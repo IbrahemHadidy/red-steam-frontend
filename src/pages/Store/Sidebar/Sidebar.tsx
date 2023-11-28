@@ -96,7 +96,7 @@ const Sidebar: FC = () => {
           <div className="gift-card">
             <img
               className="image"
-              src="images/steamcards_promo_03.png"
+              src="/images/steamcards_promo_03.png"
               alt="Steam Gift Cards"
             />{" "}
             <h6 className="gift-card-h6">Steam Gift Cards</h6>

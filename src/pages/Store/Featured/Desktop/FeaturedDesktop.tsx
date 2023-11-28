@@ -119,11 +119,13 @@ const FeaturedDesktop: FC = () => {
                     <span>{slide.tag4 || null}</span>
                   </div>
                 </div>
-                <div className="discount no-discount">
-                  <div className="price">
-                    {slide.discount === "no-discount" ? (
-                      slide.price
-                    ) : (
+                {slide.discount === "no-discount" ? (
+                  <div className="no-discount">
+                    <div className="price">{slide.price}</div>
+                  </div>
+                ) : (
+                  <div className="discount">
+                    <div className="price">
                       <div className="discount-block">
                         <div className="discount-percentage">
                           {slide.discountPercentage}
@@ -135,9 +137,9 @@ const FeaturedDesktop: FC = () => {
                           </div>
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="platform">
                   <span className={slide.win || ""}></span>
                   <span className={slide.mac || ""}></span>

@@ -1,21 +1,25 @@
-interface VideoEntry {
+export interface VideoEntry {
   type: "video";
   link: string;
   posterLink: string;
 }
 
-interface ImageEntry {
+export interface ImageEntry {
   type: "image";
   link: string;
 }
 
-type MovieEntry = VideoEntry | ImageEntry;
+export type MovieEntry = VideoEntry | ImageEntry;
 
-interface gamesData {
+export interface gamesData {
     id: string;
     name: string;
     category: string;
     description: string;
+    reviews: {
+      positive: number,
+      negative: number,
+    }
     releaseDate: string;
     developer: {
         name: string,
@@ -40,12 +44,17 @@ interface gamesData {
   }
 
 const gameData: gamesData[] = [
+
+  // PUBG: BATTLEGROUNDS
   {
-    // PUBG: BATTLEGROUNDS
     id: "1",
     name: "PUBG: BATTLEGROUNDS",
     category: "Free to Play Games",
     description: "Play PUBG: BATTLEGROUNDS for free. Land on strategic locations, loot weapons and supplies, and survive to become the last team standing across various, diverse Battlegrounds. Squad up and join the Battlegrounds for the original Battle Royale experience that only PUBG: BATTLEGROUNDS can offer.",
+    reviews: {
+      positive: 1000,
+      negative: 1000,
+    },
     releaseDate: "21 Dec,2017",
     developer: {
         name: "KRAFTON, Inc.",
@@ -137,6 +146,7 @@ const gameData: gamesData[] = [
     win: "platform-image win",
     // mac: "platform-image mac", // Comment the varibale if the platform is not available
   },
+  
 ];
 
 export default gameData;

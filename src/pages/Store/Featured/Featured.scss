@@ -14,14 +14,63 @@ $background-color_3: transparent;
   padding-right: 2%;
   padding-bottom: 0;
   padding-top: 20px;
-  overflow: hidden;
+
+  .discount {
+    .price {
+      padding-left: 6px;
+    }
+  }
+
+  .slick-initialized {
+    left: -3px;
+    .slick-track {
+      left: 5px;
+      .slick-slide {
+        top: 3px;
+        width: 940px !important;
+        margin-right: 10px;
+      }
+    }
+    & .slick-prev {
+      left: -43px !important;
+    }
+    & .slick-next {
+      right: -52px !important;
+    }
+  }
+  @media (min-width: 1000px) {
+    .discount {
+      display: flex;
+      line-height: 15px;
+      position: relative;
+      top: 30px;
+      left: auto;
+    }
+
+    .no-discount {
+      top: 10px;
+    }
+  }
+
+  .no-discount {
+    .price {
+      padding: 0 6px;
+    }
+
+    background-color: transparent;
+    position: relative;
+    bottom: 0;
+    left: 0px;
+  }
 }
+
 .main-carousel-content {
   display: block;
   position: relative;
   width: 940px;
   margin: 0 auto;
 }
+
 .main-card {
   display: block;
   flex-shrink: 0;
@@ -35,10 +84,12 @@ $background-color_3: transparent;
   background-position: center center;
   box-shadow: 5px 1px 5px 0 #000;
 }
+
 .info-card {
   flex-shrink: 1;
   display: block;
 }
+
 .app-name {
   display: flex;
   align-items: center;
@@ -48,7 +99,8 @@ $background-color_3: transparent;
   height: 69px;
   padding-left: 6px;
   padding-right: 6px;
-  > div {
+
+  >div {
     max-height: 62px;
     overflow: hidden;
     font-size: 24px;
@@ -58,18 +110,21 @@ $background-color_3: transparent;
     text-decoration: none;
   }
 }
+
 .photos {
   width: 344px;
   display: inline-block;
   margin-left: -30px;
   max-height: 176px;
   position: relative;
-  > div {
+
+  >div {
     width: 162px;
     height: 69px;
     display: inline-block;
     margin: 5px 10px 0 0;
-    > div {
+
+    >div {
       width: 162px;
       height: 69px;
       background-size: cover;
@@ -78,9 +133,11 @@ $background-color_3: transparent;
       position: absolute;
       opacity: 0.6;
       transition: opacity 0.3s;
+
       &:hover {
         opacity: 1;
       }
+
       &::before {
         content: "";
         position: absolute;
@@ -93,17 +150,20 @@ $background-color_3: transparent;
     }
   }
 }
+
 .reason {
   margin-top: 8px;
   padding-left: 6px;
   display: inline-block;
   width: 298px;
 }
+
 .available {
   font-size: 21px;
   font-weight: 200;
   min-height: auto;
 }
+
 .recommended {
   min-height: 45px;
   font-size: 17px;
@@ -112,16 +172,19 @@ $background-color_3: transparent;
   font-family: $font-family_1;
   font-weight: 300;
   line-height: 18px;
+
   strong {
     font-weight: 300;
     color: $color_1;
   }
 }
+
 .tags {
   margin-top: 5px;
   font-size: 14px;
   display: block;
-  > span {
+
+  >span {
     margin: 3px 0;
     display: inline-block;
     margin-right: 14px;
@@ -140,28 +203,34 @@ $background-color_3: transparent;
     font-size: 11px;
   }
 }
+
 .platform {
   position: absolute;
   bottom: 10px;
   right: 10px;
   opacity: 0.7;
+
   &:hover {
     opacity: 1;
     transition: opacity 0.3s;
   }
 }
+
 .platform-image {
   display: inline-block;
   width: 20px;
   height: 20px;
   background-repeat: no-repeat;
 }
+
 .win {
   background-image: url("/images/icon_platform_win.png");
 }
+
 .mac {
   background-image: url("/images/icon_platform_mac.png");
 }
+
 .mobile-carousel {
   position: relative;
   clear: both;
@@ -176,18 +245,22 @@ $background-color_3: transparent;
   padding-bottom: 20px;
   display: flex;
   flex-wrap: nowrap;
+
   &::-webkit-scrollbar {
     width: 1px;
     scrollbar-width: 1px;
   }
+
   &::-webkit-scrollbar-track {
     background-color: $background-color_3;
   }
+
   &::-webkit-scrollbar-thumb {
     border: 6px solid rgba(0, 0, 0, 0);
     width: thin;
     background-clip: content-box;
     padding: 2px;
+
     &:hover {
       border: 6px solid rgba(0, 0, 0, 0);
       width: thin;
@@ -196,6 +269,7 @@ $background-color_3: transparent;
     }
   }
 }
+
 .mobile-capsule {
   cursor: pointer;
   background-repeat: no-repeat;
@@ -219,6 +293,7 @@ $background-color_3: transparent;
   text-decoration: none;
   margin-right: 11px;
 }
+
 .mobile-capsule-content {
   cursor: pointer;
   color: $color_2;
@@ -234,13 +309,7 @@ $background-color_3: transparent;
   width: 100%;
   overflow: hidden;
 }
-.no-discount {
-  position: relative;
-  top: initial;
-  left: initial;
-  font-size: 14px;
-  line-height: 21px;
-}
+
 .discount-block {
   position: relative;
   bottom: initial;
@@ -249,10 +318,12 @@ $background-color_3: transparent;
   line-height: 21px;
   pointer-events: auto;
 }
+
 .discount-Percentage {
   font-size: 14px;
   line-height: 21px;
 }
+
 .discount-prices {
   font-size: 14px;
   line-height: 21px;
@@ -261,17 +332,21 @@ $background-color_3: transparent;
     width: auto;
   }
 }
+
 @media screen and (max-width: 1000px) {
   .info-card {
     background: linear-gradient(180deg, #0a141d 0%, rgba(10, 20, 29, 0.2) 100%);
     min-height: 70px;
     height: 90px;
+
     .app-name {
       margin-top: 0;
     }
+
     div {
       line-height: unset;
     }
+
     font-size: 18px;
     font-weight: 600;
   }

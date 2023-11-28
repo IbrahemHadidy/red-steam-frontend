@@ -65,10 +65,10 @@ $background-color_7: #6f9fc8;
   float: left;
 }
 .play-btn.play {
-  background-image: url(images/play.png);
+  background-image: url(/images/play.png);
 }
 .play-btn.pause {
-  background-image: url(images/pause.png);
+  background-image: url(/images/pause.png);
 }
 .control-container {
   background-color: $background-color_4;
@@ -80,10 +80,10 @@ $background-color_7: #6f9fc8;
   height: 19px;
   width: 19px;
   margin-right: 3px;
-  background-image: url(images/fullscreen.png);
+  background-image: url(/images/fullscreen.png);
   float: right;
   &:hover {
-    background-image: url(images/fullscreen-hover.png);
+    background-image: url(/images/fullscreen-hover.png);
   }
 }
 .video-time {
@@ -98,17 +98,17 @@ $background-color_7: #6f9fc8;
   height: 19px;
   margin-left: 3px;
   display: inline-block;
-  background-image: url(images/volume.png);
+  background-image: url(/images/volume.png);
 }
 .volume-icon.muted {
-  background-image: url(images/muted.png);
+  background-image: url(/images/muted.png);
 }
 .volume-slider {
   width: 80px;
   height: 19px;
   display: inline-block;
   margin-left: 5px;
-  background-image: url(images/volume-slider.png);
+  background-image: url(/images/volume-slider.png);
   position: relative;
   input {
     position: absolute;
@@ -120,7 +120,7 @@ $background-color_7: #6f9fc8;
       appearance: none;
       width: 4px;
       height: 20px;
-      background: url(images/volume-handler.png) transparent;
+      background: url(/images/volume-handler.png) transparent;
       cursor: pointer;
       margin-top: 9px;
     }
@@ -131,7 +131,7 @@ $background-color_7: #6f9fc8;
   height: 11px;
   margin: 4px;
   display: inline-block;
-  background-image: url(images/unchecked.png);
+  background-image: url(/images/unchecked.png);
   margin-left: 15px;
   &:hover {
     box-sizing: border-box;
@@ -143,7 +143,7 @@ $background-color_7: #6f9fc8;
   height: 11px;
   margin: 4px;
   display: inline-block;
-  background-image: url(images/checked.png);
+  background-image: url(/images/checked.png);
   margin-left: 15px;
   &:hover {
     box-sizing: border-box;

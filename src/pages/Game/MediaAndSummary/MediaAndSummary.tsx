@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useState, useRef, RefObject, useEffect, Fragment } from "react";
-import gameData from "./gameData";
+import { FC, useState, useRef, RefObject, useEffect, useCallback } from "react";
+import gameData, { gamesData, MovieEntry } from "../gameData";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
 
@@ -12,8 +12,13 @@ interface SteamVideoProps {
   setAutoplay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutoplay, setAutoplay }) => {
-
+const SteamVideo: FC<SteamVideoProps> = ({
+  videoRef,
+  videoSrc,
+  poster,
+  isAutoplay,
+  setAutoplay,
+}) => {
   const videoSettings = {
     poster: poster,
     src: videoSrc,
@@ -28,11 +33,13 @@ const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutopla
   const [isPlaying, setPlaying] = useState(false);
   const [autoplayInitialized, setAutoplayInitialized] = useState(false);
 
-  const [volume, setVolume] = useState(() => { 
+  const [volume, setVolume] = useState(() => {
     const storedVolume = localStorage.getItem("volume");
     return storedVolume ? parseFloat(storedVolume) : 1;
   });
-  const [volumeSliderValue, setVolumeSliderValue] = useState( () => volume * 100 );
+  const [volumeSliderValue, setVolumeSliderValue] = useState(
+    () => volume * 100
+  );
 
   const [isMuted, setMuted] = useState(() => {
     const storedMuted = localStorage.getItem("isMuted");
@@ -56,7 +63,9 @@ const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutopla
   };
 
   // time update function
-  const handleTimeUpdate: React.EventHandler<React.SyntheticEvent<HTMLVideoElement>> = (event) => {
+  const handleTimeUpdate: React.EventHandler<
+    React.SyntheticEvent<HTMLVideoElement>
+  > = (event) => {
     const video = event.currentTarget as HTMLVideoElement;
     setCurrentTime(video.currentTime);
 
@@ -84,7 +93,10 @@ const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutopla
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart( 2, "0" )}`;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
   };
 
   // progess bar function
@@ -284,7 +296,7 @@ const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutopla
         ".highlight-movie video"
       ) as HTMLVideoElement;
 
-      if (video && bufferProgressBarRef.current) {
+      if (video && bufferProgressBarRef.current && video.buffered.length > 0) {
         const loaded = video.buffered.end(0);
         const total = video.duration;
 
@@ -340,7 +352,7 @@ const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutopla
               {formatTime(currentTime)} / {formatTime(duration)}
             </div>
             <div
-              className={`volume-icon ${isMuted ? "muted" : null}`}
+              className={`volume-icon ${isMuted && "muted"}`}
               onClick={handleMuteToggle}
             >
               {isMuted ? <div className="muted"></div> : null}
@@ -396,8 +408,11 @@ const SteamVideo: FC<SteamVideoProps> = ({ videoRef, videoSrc, poster, isAutopla
   );
 };
 
-const Screenshot: FC<{ 
-  imgSrc: string; isMouseOverScreenshot: boolean; onEnter: () => void; onLeave: () => void;
+const Screenshot: FC<{
+  imgSrc: string;
+  isMouseOverScreenshot: boolean;
+  onEnter: () => void;
+  onLeave: () => void;
 }> = ({ imgSrc, onEnter, onLeave }) => {
   return (
     <div className="player-area">
@@ -425,58 +440,14 @@ const Screenshot: FC<{
   );
 };
 
-interface VideoEntry {
-  type: "video";
-  link: string;
-  posterLink: string;
-}
-
-interface ImageEntry {
-  type: "image";
-  link: string;
-}
-
-type MovieEntry = VideoEntry | ImageEntry;
-
-interface gameData {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  releaseDate: string;
-  developer: {
-    name: string;
-    link: string;
-  };
-  publisher: {
-    name: string;
-    link: string;
-  };
-  backgroundImage: string;
-  headerImage: string;
-  moviesAndImages: MovieEntry[];
-  reason: "available" | "recommended";
-  tags: string[];
-  discount: "no-discount" | "discount";
-  discountPercentage?: string;
-  free: boolean;
-  price: string;
-  discountPrice?: string;
-  win: string;
-  mac?: string;
-}
-
-const MediaAndSummary: FC = () => {
-
+const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
   const [initialRender, setInitialRender] = useState(true);
-  const [isMouseOverScreenshot, setIsMouseOverScreenshot] = useState<boolean>(false);
+  const [isMouseOverScreenshot, setIsMouseOverScreenshot] =
+    useState<boolean>(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  // define the current game data
-  const game = gameData[0];
 
   useEffect(() => {
     // this is responsible for the page background
@@ -504,7 +475,7 @@ const MediaAndSummary: FC = () => {
   }, []);
 
   // function to swap photos and videos and photos with autoplay or the right swap button
-  const handleSwap = () => {
+  const handleSwap = useCallback(() => {
     const currentIndex = game.moviesAndImages.findIndex(
       (entry) => entry.link === selectedItem
     );
@@ -557,43 +528,52 @@ const MediaAndSummary: FC = () => {
         });
       }
     }
-  };
+  }, [game, isAutoplay, selectedItem]);
+
+  //730 - 612 = 118
 
   // function to swap photos and videos and photos with left swap button
-  const handleLeftSwap = (currentIndex: number) => {
-    const slideArea = document.querySelector(".slide-area");
-    if (slideArea) {
-      const indicatorPosition = currentIndex * 120;
-  
-      // Calculate the distance from the left edge to the indicator
-      const distanceToLeftEdge = indicatorPosition -120 - slideArea.scrollLeft;
-  
-      // Check if the indicator is going out of the left edge
-      const isOutOfLeftEdge = distanceToLeftEdge < 0;
-  
-      // If the index is not the first, move to the previous item
-      if (currentIndex > 0) {
-        const nextIndex = currentIndex - 1;
-        setSelectedItem(game.moviesAndImages[nextIndex].link);
-  
-        // If the indicator is out of the left edge, scroll to the left
-        if (isOutOfLeftEdge) {
-          slideArea.scrollBy({
-            left: distanceToLeftEdge,
-            behavior: "smooth",
-          });
-        }
-      } else {
-        // If the index is the first, scroll to the end only if it's not already at the last item
-        if (slideArea.scrollLeft !== (game.moviesAndImages.length - 1) * 120) {
-          slideArea.scroll({
-            left: (game.moviesAndImages.length - 1) * 120,
-            behavior: "smooth",
-          });
+  const handleLeftSwap = useCallback(
+    (currentIndex: number) => {
+      const slideArea = document.querySelector(".slide-area");
+      if (slideArea) {
+        const indicatorPosition = currentIndex * 120;
+
+        // Calculate the distance from the left edge to the indicator
+        const distanceToLeftEdge =
+          indicatorPosition - 120 - slideArea.scrollLeft;
+
+        // Check if the indicator is going out of the left edge
+        const isOutOfLeftEdge = distanceToLeftEdge < 0;
+
+        // If the index is not the first, move to the previous item
+        if (currentIndex > 0) {
+          const nextIndex = currentIndex - 1;
+          setSelectedItem(game.moviesAndImages[nextIndex].link);
+
+          // If the indicator is out of the left edge, scroll to the left
+          if (isOutOfLeftEdge) {
+            slideArea.scrollBy({
+              left: distanceToLeftEdge,
+              behavior: "smooth",
+            });
+          }
+        } else {
+          // If the index is the first, scroll to the end only if it's not already at the last item
+          if (
+            slideArea.scrollLeft !==
+            (game.moviesAndImages.length - 1) * 120
+          ) {
+            slideArea.scroll({
+              left: (game.moviesAndImages.length - 1) * 120,
+              behavior: "smooth",
+            });
+          }
         }
       }
-    }
-  };
+    },
+    [game, setSelectedItem]
+  );
 
   // function controlling the behavior of the right and left buttons under the slides area
   const handleSliderClick = (direction: "left" | "right") => {
@@ -684,8 +664,39 @@ const MediaAndSummary: FC = () => {
     null
   );
 
-  return gameData.map((game) => (
-    <Fragment key={game.id}>
+  let positivePercentage: number = 0;
+  function getReviewSummary(
+    positiveCount: number,
+    _negativeCount: number,
+    totalReviews: number
+  ) {
+    positivePercentage = (positiveCount / totalReviews) * 100;
+  
+    if (positivePercentage >= 90) return "Overwhelmingly Positive";
+    if (positivePercentage >= 80) return "Very Positive";
+    if (positivePercentage >= 75) return "Mostly Positive";
+    if (positivePercentage > 40 && positivePercentage < 75) return "Mixed";
+    if (positivePercentage <= 10)  return "Overwhelmingly Negative";
+    if (positivePercentage <= 20) return "Very Negative";
+    if (positivePercentage <= 40) return "Mostly Negative";
+  }
+  
+  function getHoverInfo(positiveCount: number, totalReviews: number) {
+    const positivePercentage = (positiveCount / totalReviews) * 100;
+  
+    return `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
+  }
+  
+  const totalReviews = game.reviews.positive + game.reviews.negative;
+  const summary = getReviewSummary(
+    game.reviews.positive,
+    game.reviews.negative,
+    totalReviews
+  );
+  
+
+  return (
+    <div className="MeidaAndSummary" key={game.id}>
       <div className="game-title-area">
         <div className="genre-block">
           <a href="/search/">
@@ -722,8 +733,22 @@ const MediaAndSummary: FC = () => {
                   <div className="user-reviews-summary">
                     <div className="summary-subtitle">All Reviews:</div>
                     <div className="summary-column">
-                      <span className="game-review-summary mixed">Mixed</span>
-                      <span className="game-review-count"> (number) </span>
+                      <span
+                        className={`game-review-summary ${
+                          (positivePercentage < 75 && positivePercentage > 40) ? 'mixed'
+                            : positivePercentage >= 75 ? 'positive'
+                            : positivePercentage >= 40 ? 'negative' : ''
+                        }`}
+                      >
+                        {summary}
+                      </span>
+                      <span className="game-review-count">
+                        {" "}
+                        ({game.reviews.positive + game.reviews.negative})
+                      </span>
+                      <span className="review-tooltip">
+                      {getHoverInfo(game.reviews.positive, game.reviews.positive + game.reviews.negative)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -743,24 +768,24 @@ const MediaAndSummary: FC = () => {
                     <a href={game.developer.link}>{game.developer.name}</a>
                   </div>
                 </div>
-                <div className="user-defined-tags">
-                  <div className="glance-tags-label">
-                    Popular user-defined tags for this product:
-                  </div>
-                  <div className="glance-tags">
-                    <a className="game-tag" href="">
-                      {game.tags[0]}
-                    </a>
-                    <a className="game-tag" href="">
-                      {game.tags[1]}
-                    </a>
-                    <a className="game-tag" href="">
-                      {game.tags[2]}
-                    </a>
-                    <a className="game-tag" href="">
-                      {game.tags[3]}
-                    </a>
-                  </div>
+              </div>
+              <div className="user-defined-tags">
+                <div className="glance-tags-label">
+                  Popular user-defined tags for this product:
+                </div>
+                <div className="glance-tags">
+                  <a className="game-tag" href="">
+                    {game.tags[0]}
+                  </a>
+                  <a className="game-tag" href="">
+                    {game.tags[1]}
+                  </a>
+                  <a className="game-tag" href="">
+                    {game.tags[2]}
+                  </a>
+                  <a className="game-tag" href="">
+                    {game.tags[3]}
+                  </a>
                 </div>
               </div>
             </div>
@@ -809,7 +834,7 @@ const MediaAndSummary: FC = () => {
                     ></div>
                     {game.moviesAndImages.map((entry) => (
                       <div
-                        key={game.id}
+                        key={entry.link}
                         className={`higlight-slide-item ${
                           entry.type === "video"
                             ? "higlight-slide-movie"
@@ -859,43 +884,68 @@ const MediaAndSummary: FC = () => {
         </div>
       </div>
       <div className="queue-area">
-          <div className="queue-actions">
-            <a className="view-queue-button" href="">
-              <span>View Your Queue&nbsp;&nbsp;&nbsp;<i className="arrow-next"/></span>
+        <div className="queue-actions">
+          <a className="view-queue-button" href="">
+            <span>
+              View Your Queue&nbsp;&nbsp;&nbsp;
+              <i className="arrow-next" />
+            </span>
+          </a>
+          <div
+            id="add-wishlist"
+            className="queue-button-container"
+            style={{ display: "inline-block" }}
+          >
+            <a className="queue-button" href="">
+              <span>Add to your wishlist</span>
             </a>
-            <div id="add-wishlist" className="queue-button-container" style={{display:"inline-block"}} >
-              <a className="queue-button" href="">
-                <span>Add to your wishlist</span>
-              </a>
+          </div>
+          <div
+            id="added-wishlist"
+            className="queue-button-container"
+            style={{ display: "none" }}
+          >
+            <a className="queue-button" href="">
+              <span>
+                <img src="/images/ico_selected.png" alt="" /> On Wishlist
+              </span>
+            </a>
+            <div className="wishlist-added"> Item added to your wishlist! </div>
+          </div>
+          <div id="follow" className="queue-button-container">
+            <div className="queue-button" style={{ display: "inline-block" }}>
+              <span>Follow</span>
             </div>
-            <div id="added-wishlist" className="queue-button-container" style={{display: "none"}}>
-              <a className="queue-button" href="">
-                <span><img src="images/ico_selected.png" alt="" /> On Wishlist</span>
-              </a>
-              <div className="wishlist-added"> Item added to your wishlist! </div>
-            </div>
-            <div id="follow" className="queue-button-container">
-              <div className="queue-button" style={{display:"inline-block"}} >
-                <span>Follow</span>
-              </div>
-              <div className="queue-button" style={{display: "none"}} >
-                <span>
-                  <img src="images/ico_selected.png" alt="" /> Following
-                </span>
-              </div>
-            </div>
-            <div id="ignore" className="queue-button-container" style={{display:"inline-block"}} >
-              <div className="queue-button">
-                <span>Ignore</span>
-              </div>
-            </div>
-            <div id="ignored" className="queue-button-container" style={{display:"none"}}>
-              <div className="queue-button"><span><img src="images/ico_selected.png" alt="" /> Ignored</span></div>
+            <div className="queue-button" style={{ display: "none" }}>
+              <span>
+                <img src="/images/ico_selected.png" alt="" /> Following
+              </span>
             </div>
           </div>
+          <div
+            id="ignore"
+            className="queue-button-container"
+            style={{ display: "inline-block" }}
+          >
+            <div className="queue-button">
+              <span>Ignore</span>
+            </div>
+          </div>
+          <div
+            id="ignored"
+            className="queue-button-container"
+            style={{ display: "none" }}
+          >
+            <div className="queue-button">
+              <span>
+                <img src="/images/ico_selected.png" alt="" /> Ignored
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-    </Fragment>
-  ));
+    </div>
+  );
 };
 
 export default MediaAndSummary;

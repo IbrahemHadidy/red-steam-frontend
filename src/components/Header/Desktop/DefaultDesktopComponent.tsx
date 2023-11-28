@@ -21,7 +21,7 @@ const DefaultDesktopComponent: FC = () => {
               <span className="button-content button-text">
                 <img
                   className="fa-icon"
-                  src="images/btn_header_installsteam_download.png"
+                  src="/images/btn_header_installsteam_download.png"
                   style={{ color: "#ffffff" }}
                 />{" "}
                 Install Steam
