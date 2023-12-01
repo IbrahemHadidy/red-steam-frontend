@@ -7,8 +7,9 @@ $color_1: white;
 	box-sizing: border-box;
 	width: 940px !important;
 	pointer-events: auto;
-	transition: opacity 400ms;
+	transition: opacity 400ms;	
 }
+
 .category-item {
 	display: block;
 	flex-shrink: 0;
@@ -17,35 +18,41 @@ $color_1: white;
 	margin-top: 16px;
 	margin-bottom: 16px;
 	position: relative;
+
 	&:hover {
 		transform: scale(1.05);
 		transition: all 0.2s;
 	}
+
 	>img {
 		width: 100%;
 	}
+
+	.category-label {
+		position: absolute;
+		bottom: 16px;
+		text-align: center;
+		width: 100%;
+		padding: 1em;
+
+		>span {
+			font-size: 16px;
+			font-weight: bold;
+			letter-spacing: 0.1ch;
+			color: $color_1;
+			text-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+			text-transform: uppercase;
+		}
+	}
 }
+
 .category-gradient {
 	position: absolute;
 	top: 0;
 	height: 100%;
 	width: 100%;
 }
-.category-label {
-	position: absolute;
-	bottom: 16px;
-	text-align: center;
-	width: 100%;
-	padding: 1em;
-	>span {
-		font-size: 16px;
-		font-weight: bold;
-		letter-spacing: 0.1ch;
-		color: $color_1;
-		text-shadow: 0 1px 3px rgb(0 0 0 / 50%);
-		text-transform: uppercase;
-	}
-}
+
 @media screen and (max-width: 1000px) {
 	.category-item {
 		width: auto;

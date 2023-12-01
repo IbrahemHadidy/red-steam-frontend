@@ -10,7 +10,7 @@ const MiniHeader: React.FC<MiniHeaderProps> = ({ onMenuClick }) => {
       <div>
         <div
           id="headermenu-mobile"
-          onClick={onMenuClick} // Trigger the click event to show the other component
+          onClick={onMenuClick}
         >
           <img
             src="/images/header_menu_hamburger.png"

@@ -21,7 +21,6 @@ const Game: FC<GameProps> = () => {
     return <Navigate to="/" />;
   }
 
-  // Render MediaAndSummary component for /game/:id route
   return (
     <>
       <Header />

@@ -1,4 +1,4 @@
-interface FeaturedGame {
+export interface FeaturedGame {
   gameName: string;
   gameLink: string;
   mainImage: string;

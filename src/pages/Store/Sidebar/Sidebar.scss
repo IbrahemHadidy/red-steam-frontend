@@ -1,106 +1,105 @@
-$color_1: #536f86;
-$color_2: #6fafe6;
-$color_3: #a4b3c4;
-$color_4: #f6f2f3;
-$color_5: #c2d8e3;
-$color_6: #7a8b9d;
-$color_7: #66c0f4;
-$color_8: #88bde9;
 $font-family_1: "Motiva Sans", Sans-serif;
-$font-family_2: "Motiva Sans", sans-serif;
 
 .fixed-sidebar {
-	display: block;
-	position: relative;
-	width: 1410px;
-	margin: 0 auto;
+  display: block;
+  position: relative;
+  width: 1410px;
+  margin: 0 auto;
+
+  .sidebar {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 210px;
+    padding-top: 28px;
+    overflow: hidden;
+    transition: width 0.25s;
+    top: 0px;
+    z-index: 2;
+
+    .item {
+      display: flex;
+      width: fit-content;
+      color: #7a8b9d;
+      font-size: 12px;
+      font-family: $font-family_1;
+      font-weight: 550;
+      line-height: 16px;
+      margin: 2px 0;
+      text-decoration: none;
+      padding: 0;
+
+      &:hover {
+        color: #66c0f4;
+      }
+
+      .gift-card {
+        transition: color 0.3s;
+        display: grid;
+
+        &:hover {
+          .gift-card-h6 {
+            color: #f6f2f3;
+          }
+
+          .gift-card-p {
+            color: #c2d8e3;
+          }
+        }
+
+        .image {
+          border: none;
+          -webkit-user-drag: none;
+          max-width: 85%;
+          margin-bottom: 6px;
+        }
+
+        .gift-card-h6 {
+          color: #6fafe6;
+          font-family: $font-family_1;
+          font-size: 14px;
+          text-transform: uppercase;
+          font-weight: bolder;
+          line-height: 16px;
+          font-weight: 550;
+          margin-bottom: 1px;
+        }
+
+        .gift-card-p {
+          color: #a4b3c4;
+          font-family: $font-family_1;
+          display: flex;
+          width: fit-content;
+          font-size: 12px;
+          font-weight: normal;
+          font-weight: 550;
+          margin-bottom: 25px;
+        }
+      }
+    }
+
+    .recents {
+      background: radial-gradient(circle at 0%, rgba(83, 111, 134, 0) 20%, rgba(83, 111, 134, 0.25) 100%);
+      padding: 4% 0;
+      margin-right: 30px;
+    }
+
+    .header {
+      font-family: $font-family_1;
+      color: #536f86;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-family: $font-family_1;
+      font-weight: bold;
+      line-height: 16px;
+      margin: 7px 8px 7px 0;
+      display: flex;
+    }
+  }
 }
-.sidebar {
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-	width: 210px;
-	padding-top: 28px;
-	overflow: hidden;
-	transition: width 0.25s;
-	top: 0px;
-	z-index: 2;
-}
-.header {
-	font-family: $font-family_1;
-	color: $color_1;
-	font-size: 14px;
-	text-transform: uppercase;
-	font-family: $font-family_2;
-	font-weight: bold;
-	line-height: 16px;
-	margin: 7px 8px 7px 0;
-	display: flex;
-}
-.gift-card-h6 {
-	color: $color_2;
-	font-family: $font-family_1;
-	font-size: 14px;
-	text-transform: uppercase;
-	font-weight: bolder;
-	line-height: 16px;
-	font-weight: 550;
-	margin-bottom: 1px;
-}
-.gift-card-p {
-	color: $color_3;
-	font-family: $font-family_1;
-	display: flex;
-	width: fit-content;
-	font-size: 12px;
-	font-weight: normal;
-	font-weight: 550;
-	margin-bottom: 25px;
-}
-.gift-card {
-	&:hover {
-		.gift-card-h6 {
-			color: $color_4;
-		}
-		.gift-card-p {
-			color: $color_5;
-		}
-	}
-	transition: color 0.3s;
-	display: grid;
-}
-.recents {
-	background: radial-gradient(circle at 0%, rgba(83,111,134,0) 20%, rgba(83,111,134,0.25) 100%);
-	padding: 4% 0;
-	margin-right: 30px;
-}
-.item {
-	display: flex;
-	width: fit-content;
-	color: $color_6;
-	font-size: 12px;
-	font-family: $font-family_2;
-	font-weight: 550;
-	line-height: 16px;
-	margin: 2px 0;
-	text-decoration: none;
-	padding: 0;
-	&:hover {
-		color: $color_7;
-	}
-}
-.header-tags {
-	color: $color_8;
-	margin: 0 0 2px 0;
-}
-.image {
-	border: none;
-	-webkit-user-drag: none;
-	max-width: 85%;
-	margin-bottom: 6px;
-}
+
 @media screen and (max-width: 1400px) {
-	.sidebar {
-		display: none !important;
-	}
+  .sidebar {
+    display: none !important;
+  }
 }

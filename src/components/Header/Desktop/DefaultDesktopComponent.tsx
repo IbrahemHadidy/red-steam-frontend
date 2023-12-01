@@ -9,7 +9,7 @@ const DefaultDesktopComponent: FC = () => {
   return (
     <div>
       <Navbar
-        className="custom-bg-color nav-color header-container"
+        className="nav-color header-container"
         variant="dark"
         collapseOnSelect={false}
       >

@@ -1,27 +1,6 @@
 import { FC, useState } from "react";
 import Slider from "react-slick";
-import featuredGames from "../featuredGames";
-
-interface FeaturedGame {
-  gameName: string;
-  gameLink: string;
-  mainImage: string;
-  image1?: string | null;
-  image2?: string | null;
-  image3?: string | null;
-  image4?: string | null;
-  reason: "available" | "recommended";
-  tag1?: string | null;
-  tag2?: string | null;
-  tag3?: string | null;
-  tag4?: string | null;
-  discount: "no-discount" | "discount";
-  discountPercentage?: string;
-  price: string;
-  discountPrice?: string;
-  win: string | null;
-  mac?: string | null;
-}
+import featuredGames, { FeaturedGame } from "../featuredGames";
 
 const FeaturedDesktop: FC = () => {
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
@@ -125,8 +104,7 @@ const FeaturedDesktop: FC = () => {
                   </div>
                 ) : (
                   <div className="discount">
-                    <div className="price">
-                      <div className="discount-block">
+                    <div className="discount-block">
                         <div className="discount-percentage">
                           {slide.discountPercentage}
                         </div>
@@ -137,6 +115,7 @@ const FeaturedDesktop: FC = () => {
                           </div>
                         </div>
                       </div>
+                    <div className="price">
                     </div>
                   </div>
                 )}

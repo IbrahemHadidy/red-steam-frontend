@@ -1,4 +1,4 @@
-interface tabItem {
+export interface tabItem {
     gameName: string;
     gameLink: string;
     mainImage: string;

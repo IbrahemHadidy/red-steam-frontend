@@ -80,7 +80,7 @@ const Categories: FC = () => {
             <div className="mini-slides">
               <Slider {...categoriesSettings}>
                 {categoryGroups.map((group, index) => (
-                  <div className="categories-row" key={index}>
+                  <div className="categories-row" key={index * 100}>
                     {renderCategoryGroup(group, index)}
                   </div>
                 ))}

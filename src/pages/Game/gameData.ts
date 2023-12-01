@@ -41,6 +41,7 @@ export interface gamesData {
     discountPrice?: string;
     win: string;
     mac?: string;
+    menuImg: string;
   }
 
 const gameData: gamesData[] = [
@@ -145,6 +146,7 @@ const gameData: gamesData[] = [
     tags: ["Survival", "Shooter", "Battle Royale", "Multiplayer"], // Array of tags
     win: "platform-image win",
     // mac: "platform-image mac", // Comment the varibale if the platform is not available
+    menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/capsule_231x87.jpg"
   },
   
 ];

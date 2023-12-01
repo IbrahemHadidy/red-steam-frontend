@@ -38,8 +38,7 @@ const DesktopSecondNav: FC = () => {
       <div className="d-none d-md-block mx-auto myNavSec">
         <div className="wishlist-Link-div">
           <a
-            id="wishlist_link"
-            className="store_header_btn_content"
+            className="wishlist-link"
             href="https://store.steampowered.com/wishlist/"
           >
             Wishlist
@@ -48,7 +47,7 @@ const DesktopSecondNav: FC = () => {
         <nav className="navbar navbar-expand-sm navbarBg">
           <ul className="navbar-nav">
             <img
-              className="profile_picture"
+              className="profile-picture"
               src="https://source.unsplash.com/user/c_v_r"
               alt="Avatar"
             />
@@ -106,7 +105,7 @@ const DesktopSecondNav: FC = () => {
                     className="search-input"
                     placeholder="search"
                   />
-                  <a href="#" id="search-button">
+                  <a href="#" className="search-button">
                     <img alt="Search" src="/images/blank.gif" />
                   </a>
                 </div>

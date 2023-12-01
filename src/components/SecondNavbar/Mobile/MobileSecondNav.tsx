@@ -120,7 +120,7 @@ const MobileSecondNav: FC = () => {
                 className="search-input"
                 placeholder="search"
               />
-              <a href="#" id="search-button">
+              <a href="#" className="search-button">
                 <img alt="Search" src="/images/blank.gif" />
               </a>
             </div>

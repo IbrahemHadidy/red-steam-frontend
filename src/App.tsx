@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Store from "./pages/Store/Store";
 import Game from "./pages/Game/Game";
 
-const App: FC = () => {
+
+const App: FC = () => {  
   return (
     <BrowserRouter>
       <Routes>

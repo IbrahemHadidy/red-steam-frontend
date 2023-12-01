@@ -92,6 +92,26 @@ $background-color_5: rgba(20, 31, 44, 0.4);
 			text-transform: uppercase;
 		}
 	}
+	
+	.mobile-more {
+	  display: block;
+	
+	  .mobile-more-dive {
+		opacity: 0.5;
+		color: white;
+		font-size: 12px;
+		letter-spacing: normal;
+		text-transform: none;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	
+		.dive {
+		  display: block;
+		  margin-left: 4px;
+		}
+	  }
+	}
 }
 .home-contents {
 	display: block;

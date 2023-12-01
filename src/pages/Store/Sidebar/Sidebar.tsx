@@ -9,7 +9,6 @@ interface LinkItem {
 }
 
 const Sidebar: FC = () => {
-
   // Helper function to generate links
   const generateLinks = (links: LinkItem[]) => {
     return links.map((link: LinkItem) => (
@@ -85,56 +84,55 @@ const Sidebar: FC = () => {
 
   return (
     <div className="fixed-sidebar">
-    <Nav className="sidebar">
-      
-      {/* Steam Gift Cards section */}
-      <div>
-        <a
-          className="item"
-          href="https://store.steampowered.com/digitalgiftcards/"
-        >
-          <div className="gift-card">
-            <img
-              className="image"
-              src="/images/steamcards_promo_03.png"
-              alt="Steam Gift Cards"
-            />{" "}
-            <h6 className="gift-card-h6">Steam Gift Cards</h6>
-            <p className="gift-card-p">Give the Gift of Game</p>
-          </div>
-        </a>
-      </div>
+      <Nav className="sidebar">
+        {/* Steam Gift Cards section */}
+        <div>
+          <a
+            className="item"
+            href="https://store.steampowered.com/digitalgiftcards/"
+          >
+            <div className="gift-card">
+              <img
+                className="image"
+                src="/images/steamcards_promo_03.png"
+                alt="Steam Gift Cards"
+              />{" "}
+              <h6 className="gift-card-h6">Steam Gift Cards</h6>
+              <p className="gift-card-p">Give the Gift of Game</p>
+            </div>
+          </a>
+        </div>
 
-      {/* Recently Viewed section */}
-      <div className="recents" id="hom-elj">
-        <div className="header">Recently Viewed</div>
-        <div>{generateLinks(recentlyViewedLinks)}</div>
-      </div>
+        {/* Recently Viewed section */}
+        <div className="recents" id="hom-elj">
+          <div className="header">Recently Viewed</div>
+          <div>{generateLinks(recentlyViewedLinks)}</div>
+        </div>
 
-      {/* Your Tags section */}
-      <div>
-        <div className="header tag">Your Tags</div>
-        <div>{generateLinks(tagsLinks)}</div>
-      </div>
+        {/* Your Tags section */}
+        <div>
+          <div className="header tag">Your Tags</div>
+          <div>{generateLinks(tagsLinks)}</div>
+        </div>
 
-      {/* Recommended section */}
-      <div>
-        <div className="header">Recommended</div>
-        <div>{generateLinks(recommendedLinks)}</div>
-      </div>
+        {/* Recommended section */}
+        <div>
+          <div className="header">Recommended</div>
+          <div>{generateLinks(recommendedLinks)}</div>
+        </div>
 
-      {/* Browse Categories section */}
-      <div>
-        <div className="header">Browse Categories</div>
-        <div>{generateLinks(categoryLinks)}</div>
-      </div>
+        {/* Browse Categories section */}
+        <div>
+          <div className="header">Browse Categories</div>
+          <div>{generateLinks(categoryLinks)}</div>
+        </div>
 
-      {/* Browse by Genre section */}
-      <div>
-        <div className="header">Browse by genre</div>
-        {generateLinks(genreLinks)}
-      </div>
-    </Nav>
+        {/* Browse by Genre section */}
+        <div>
+          <div className="header">Browse by genre</div>
+          {generateLinks(genreLinks)}
+        </div>
+      </Nav>
     </div>
   );
 };

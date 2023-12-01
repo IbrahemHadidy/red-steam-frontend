@@ -26,19 +26,21 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
   };
 
   const generateMenuItems = (menuItems: MenuItem[], menuClass: string) => {
-    return menuItems.map((menuItem) => (
+    return menuItems.map((menuItem, index) => (
       <div
-        className={`menu-item ${menuClass} ${
-          menuItem.id === "account-details" ||
-          menuItem.id === "store-preferences" ||
-          menuItem.id === "change-language" ||
-          menuItem.id === "change-user"
-            ? "has-dropdown"
-            : ""
-        } ${openedItems[menuItem.id] ? "opened" : ""}`}
-        data-submenu={`submenu-${menuItem.id}`}
-        key={menuItem.id}
-      >
+      className={`menu-item ${menuClass} ${
+        menuItem.id === "account-details" ||
+        menuItem.id === "store-preferences" ||
+        menuItem.id === "change-language" ||
+        menuItem.id === "change-user"
+          ? "has-dropdown"
+          : ""
+      } ${openedItems[menuItem.id] ? "opened" : ""} ${
+        index === 0 ? "first" : ""
+      }`}
+      data-submenu={`submenu-${menuItem.id}`}
+      key={menuItem.id}
+    >
         <div
           onClick={() => {
             if (
@@ -70,7 +72,6 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
               }`}
             />
           ) : null}
-          <div className="chevron"></div>
         </div>
         {openedItems[menuItem.id] &&
           menuItem.id !== "support" &&
