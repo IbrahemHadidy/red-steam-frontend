@@ -578,89 +578,89 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .game-page-content {
-    margin: 0 2%;
-  }
-
   .game-title-area {
     max-width: 940px;
     width: auto;
     margin: 0 2%;
   }
 
-  .media-summary-block {
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
+  .game-page-content {
+    margin: 0 2%;
 
-    .right-game-summary {
+    .media-summary-block {
       width: auto;
       height: auto;
-      padding: 4px 2%;
-
-      .game-image {
-        float: left;
-        width: 50%;
-        margin-right: 8px;
-
-        img {
-          width: 100%;
-          height: auto;
-        }
-      }
-
-      .game-discription {
-        overflow: hidden;
-        padding-right: 0;
-      }
-
-      .game-glance-first {
-        overflow: hidden;
-
-        .summary-column {
-          a {
-            position: relative;
+      display: flex;
+      flex-direction: column;
+  
+      .right-game-summary {
+        width: auto;
+        height: auto;
+        padding: 4px 2%;
+  
+        .game-image {
+          float: left;
+          width: 50%;
+          margin-right: 8px;
+  
+          img {
+            width: 100%;
+            height: auto;
           }
         }
-      }
-
-      .user-defined-tags {
-        clear: left;
-        padding-top: 10px;
-        overflow: hidden;
-        margin-top: 0;
-      }
-    }
-
-    .left-game-summary {
-      width: auto;
-      margin-left: 0;
-      float: none;
-
-      .game-highlights {
-        margin-right: 0;
-        overflow: hidden;
-        position: relative;
-
-        .player-area {
-          height: 96.6vh;
+  
+        .game-discription {
+          overflow: hidden;
+          padding-right: 0;
         }
-
-        .player-item {
-          .screenshot-link {
-            height: 100%;
-            position: relative;
+  
+        .game-glance-first {
+          overflow: hidden;
+  
+          .summary-column {
+            a {
+              position: relative;
+            }
           }
         }
-
-        .slide-area {
-          width: 172.2vh;
+  
+        .user-defined-tags {
+          clear: left;
+          padding-top: 10px;
+          overflow: hidden;
+          margin-top: 0;
         }
       }
-
-      .slider-right {
-        margin-right: 12.5px;
+  
+      .left-game-summary {
+        width: auto;
+        margin-left: 0;
+        float: none;
+  
+        .game-highlights {
+          margin-right: 0;
+          overflow: hidden;
+          position: relative;
+  
+          .player-area {
+            height: 96.6vh;
+          }
+  
+          .player-item {
+            .screenshot-link {
+              height: 100%;
+              position: relative;
+            }
+          }
+  
+          .slide-area {
+            width: 172.2vh;
+          }
+        }
+  
+        .slider-right {
+          margin-right: 12.5px;
+        }
       }
     }
   }
