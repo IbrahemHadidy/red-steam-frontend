@@ -4,6 +4,7 @@ import { GameTitleArea } from "./GameTitleArea";
 import { RightGameSummary } from "./RightGameSummary";
 import { LeftGameSummary } from "./LeftGameSummary/LeftGameSummary";
 import { QueueArea } from "./QueueArea";
+import { GameOwned } from "./GameOwned";
 import gameData, { gamesData, MovieEntry } from "../gameData";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
@@ -22,7 +23,10 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
     document.body.style.background = `url(${game.backgroundImage}) center top no-repeat #1b2838`;
 
     // this is responsible for the tab title
-    document.title = `${game.name} on Steam`;
+    document.title = `${
+      game.discount === "discount" && game.discountPercentage
+        ? `Save ${game.discountPercentage.replace(/^-(\d+)/, '$1')} on` : ""
+    } ${game.name} on Steam`;
 
     // this is responsible for skipping the first videos after the page loads if autoplay is off
     if (!isAutoplay) {
@@ -255,6 +259,9 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         </div>
       </div>
       <QueueArea game={game} />
+
+      {/* isInLibrary backend logic */}
+      {/* <GameOwned game={game} /> */}
     </div>
   );
 };

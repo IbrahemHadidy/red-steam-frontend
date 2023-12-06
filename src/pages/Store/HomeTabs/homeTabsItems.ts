@@ -17,9 +17,13 @@ export interface tabItem {
     discountPrice?: string;
     win: string;
     mac?: string;
+    reviews: {
+      positive: number
+      negative: number
+    };
   }
   
-  const newAndTrending: tabItem[] = [
+  export const newAndTrending: tabItem[] = [
     {
       // PUBG: BATTLEGROUNDS
       gameName: "PUBG: BATTLEGROUNDS",
@@ -44,6 +48,10 @@ export interface tabItem {
       tag4: "Multiplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // NARAKA: BLADEPOINT
@@ -69,6 +77,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // The Elder Scrolls® Online
@@ -95,6 +107,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Red Dead Redemption 2
@@ -121,6 +137,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Sekiro™: Shadows Die Twice - GOTY Edition
@@ -147,6 +167,10 @@ export interface tabItem {
       tag4: "Singleplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ELDEN RING
@@ -172,6 +196,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Tower of Fantasy
@@ -197,6 +225,10 @@ export interface tabItem {
       tag4: "Story Rich",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ARK: Survival Ascended
@@ -223,6 +255,10 @@ export interface tabItem {
       tag4: "Action",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Hogwarts Legacy
@@ -248,6 +284,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Cyberpunk 2077
@@ -273,10 +313,14 @@ export interface tabItem {
       // tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
   ];
 
-  const topSellers: tabItem[] = [
+  export const topSellers: tabItem[] = [
     {
       // PUBG: BATTLEGROUNDS
       gameName: "PUBG: BATTLEGROUNDS",
@@ -301,6 +345,10 @@ export interface tabItem {
       tag4: "Multiplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // NARAKA: BLADEPOINT
@@ -326,6 +374,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // The Elder Scrolls® Online
@@ -352,6 +404,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Red Dead Redemption 2
@@ -378,6 +434,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Sekiro™: Shadows Die Twice - GOTY Edition
@@ -404,6 +464,10 @@ export interface tabItem {
       tag4: "Singleplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ELDEN RING
@@ -429,6 +493,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Tower of Fantasy
@@ -454,6 +522,10 @@ export interface tabItem {
       tag4: "Story Rich",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ARK: Survival Ascended
@@ -480,6 +552,10 @@ export interface tabItem {
       tag4: "Action",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Hogwarts Legacy
@@ -505,6 +581,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Cyberpunk 2077
@@ -530,10 +610,14 @@ export interface tabItem {
       // tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
   ];
 
-  const popularUpcoming: tabItem[] = [
+  export const popularUpcoming: tabItem[] = [
     {
       // PUBG: BATTLEGROUNDS
       gameName: "PUBG: BATTLEGROUNDS",
@@ -558,6 +642,10 @@ export interface tabItem {
       tag4: "Multiplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // NARAKA: BLADEPOINT
@@ -583,6 +671,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // The Elder Scrolls® Online
@@ -609,6 +701,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Red Dead Redemption 2
@@ -635,6 +731,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Sekiro™: Shadows Die Twice - GOTY Edition
@@ -661,6 +761,10 @@ export interface tabItem {
       tag4: "Singleplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ELDEN RING
@@ -686,6 +790,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Tower of Fantasy
@@ -711,6 +819,10 @@ export interface tabItem {
       tag4: "Story Rich",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ARK: Survival Ascended
@@ -737,6 +849,10 @@ export interface tabItem {
       tag4: "Action",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Hogwarts Legacy
@@ -762,6 +878,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Cyberpunk 2077
@@ -787,10 +907,14 @@ export interface tabItem {
       // tag4: ", Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
   ];
 
-  const specials: tabItem[] = [
+  export const specials: tabItem[] = [
     
     {
         // Cyberpunk 2077
@@ -816,6 +940,10 @@ export interface tabItem {
         // tag4: ", Fantasy",
         win: "platform-image win",
         // mac: "platform-image mac", // Comment the varibale if the platform is not available
+        reviews: {
+          positive: 1000,
+          negative: 1000,
+        },
       },
     {
       // PUBG: BATTLEGROUNDS
@@ -841,6 +969,10 @@ export interface tabItem {
       tag4: "Multiplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // NARAKA: BLADEPOINT
@@ -866,6 +998,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // The Elder Scrolls® Online
@@ -892,6 +1028,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Red Dead Redemption 2
@@ -918,6 +1058,10 @@ export interface tabItem {
       // tag4: "",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Sekiro™: Shadows Die Twice - GOTY Edition
@@ -944,6 +1088,10 @@ export interface tabItem {
       tag4: "Singleplayer",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ELDEN RING
@@ -969,6 +1117,10 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Tower of Fantasy
@@ -994,6 +1146,10 @@ export interface tabItem {
       tag4: "Story Rich",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // ARK: Survival Ascended
@@ -1020,6 +1176,10 @@ export interface tabItem {
       tag4: "Action",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
     {
       // Hogwarts Legacy
@@ -1045,8 +1205,11 @@ export interface tabItem {
       tag4: "Fantasy",
       win: "platform-image win",
       // mac: "platform-image mac", // Comment the varibale if the platform is not available
+      reviews: {
+        positive: 1000,
+        negative: 1000,
+      },
     },
   ];
   
-  export {newAndTrending, topSellers, popularUpcoming, specials};
   

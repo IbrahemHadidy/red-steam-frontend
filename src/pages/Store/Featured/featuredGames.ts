@@ -118,7 +118,7 @@ const featuredGames: FeaturedGame[] = [
     discount: "discount", // "discount" or "no-discount"
     discountPercentage: "-60%",
     price: "$59.99",
-    discountPrice: "$23.99 USD",
+    discountPrice: "$23.99",
     tag1: "Top Seller",
     // tag2: "",
     // tag3: "",
@@ -143,7 +143,7 @@ const featuredGames: FeaturedGame[] = [
       "https://cdn.akamai.steamstatic.com/steam/apps/814380/ss_1e6f5540866a5564d65df915c22fe1e57e336a6f.600x338.jpg",
     reason: "recommended", // "available" or "recommended"
     discount: "no-discount", // "discount" or "no-discount"
-    price: "$59.99 USD",
+    price: "$59.99",
     // discountPrice:"",
     // discountPercentage: "",
     tag1: "Action",
@@ -169,7 +169,7 @@ const featuredGames: FeaturedGame[] = [
       "https://cdn.akamai.steamstatic.com/steam/apps/1245620/ss_e80a907c2c43337e53316c71555c3c3035a1343e.600x338.jpg",
     reason: "recommended", // "available" or "recommended"
     discount: "no-discount", // "discount" or "no-discount"
-    price: "$59.99 USD",
+    price: "$59.99",
     // discountPrice:"",
     // discountPercentage: "",
     tag1: "RPG",
@@ -224,9 +224,9 @@ const featuredGames: FeaturedGame[] = [
     discount: "discount", // "discount" or "no-discount"
     discountPercentage: "-10%",
     price: "$44.99",
-    discountPrice: "$40.49 USD",
+    discountPrice: "$40.49",
     tag1: "RPG",
-    tag2: "Ooen World",
+    tag2: "Open World",
     tag3: "Fantasy",
     tag4: "Action",
     win: "platform-image win",
@@ -248,11 +248,11 @@ const featuredGames: FeaturedGame[] = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/ss_df93b5e8a183f7232d68be94ae78920a90de1443.600x338.jpg",
     reason: "recommended", // "available" or "recommended"
     discount: "no-discount", // "discount" or "no-discount"
-    price: "$59.99 USD",
+    price: "$59.99",
     // discountPrice:"",
     // discountPercentage: "",
     tag1: "RPG",
-    tag2: "Ooen World",
+    tag2: "Open World",
     tag3: "Story Rich",
     tag4: "Fantasy",
     win: "platform-image win",

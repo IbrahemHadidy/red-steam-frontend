@@ -61,8 +61,9 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
           game={game}
         />
       </div>
-
-      <SliderButtons handleSliderClick={handleSliderClick} />
+      {game.moviesAndImages.length >= 6 && (
+        <SliderButtons handleSliderClick={handleSliderClick} />
+      )}
     </div>
   );
 };

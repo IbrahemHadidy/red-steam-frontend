@@ -7,13 +7,14 @@ interface SlidesProps {
     moviesAndImages: Array<{ link: string; type: string; posterLink?: string }>;
   };
 }
+// height: 80px;
 
 export const SlidesArea: React.FC<SlidesProps> = ({
   selectedItem,
   setSelectedItem,
   game,
 }) => (
-  <div className="slide-area">
+  <div className="slide-area" style={(game.moviesAndImages.length < 6) ? { height: "80px" } : {}}>
     <div
       className="slide-area-scroll"
       style={{

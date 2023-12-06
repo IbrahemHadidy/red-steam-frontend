@@ -51,39 +51,39 @@ const Footer: FC = () => {
 
         <div className="footer-links">
           <a href="http://www.valvesoftware.com/">Valve</a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="http://www.steampowered.com/">Steam</a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="#">
             <s>Jobs</s>
           </a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="#">
             <s>Steam Distribution</s>
           </a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="#">
             <s>Support</s>
           </a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="#">
             <s>Gift Cards</s>
           </a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="#">
             <img src="/images/ico_facebook.gif"/>
             &nbsp;<s>Steam</s>
           </a>
-          &nbsp; | &nbsp;
+          &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="http://twitter.com/steam">
             <img src="/images/ico_twitter.gif"/>
             &nbsp;<s>@steam</s>
           </a>
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          <a href="https://github.com/IbrahemHadidy">My Github</a>
-          &nbsp; | &nbsp;
+          <div style={{display: "inline-block", marginLeft: "235px"}}>
+            <a href="https://github.com/IbrahemHadidy">My Github</a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
           <a href="https://github.com/IbrahemHadidy/red-steam">Repository</a>
+          </div>
         </div>
       </div>
     </div>

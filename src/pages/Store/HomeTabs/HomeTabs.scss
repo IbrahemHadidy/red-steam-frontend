@@ -289,7 +289,6 @@
       top: 9px;
       left: 16px;
       transition: opacity 300ms;
-      pointer-events: none;
       width: 292px;
 
       h2 {
@@ -312,12 +311,26 @@
         border-radius: 2px;
         box-sizing: content-box;
 
-        .game-review-summary {
-          color: #A34C25;
+        .review-tooltip {
+          background: #c2c2c2;
+          color: #3d3d3f;
+          font-size: 11px;
+          border-radius: 3px;
+          padding: 5px;
+          max-width: 275px;
+          white-space: normal;
+          box-shadow: 0 0 3px #000000;
+          word-wrap: break-word;
+          position: absolute;
+          z-index: 15000;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
+          top: 0%;
+          left: 0%;
+        }
 
-          &.positive {
-            color: #66C0F4;
-          }
+        .game-review-summary:hover~.review-tooltip {
+          opacity: 1;
         }
       }
 

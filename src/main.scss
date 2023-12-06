@@ -2,11 +2,6 @@
 @import "https://fonts.cdnfonts.com/css/arial";
 @import "https://fonts.cdnfonts.com/css/microsoft-sans-serif";
 
-@font-face {
-  font-family: "helvetica";
-  src: url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("woff"), url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("opentype"), url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("truetype");
-}
-
 * {
   padding: 0;
   margin: 0;
@@ -26,6 +21,8 @@ body {
   padding-top: 2px;
   font-size: 12px;
   color: #c6d4df;
+  letter-spacing: -0.2px;
+  word-spacing: -1px;
 
   &::-webkit-scrollbar {
     width: 12px;

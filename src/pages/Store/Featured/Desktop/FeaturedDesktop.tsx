@@ -100,7 +100,7 @@ const FeaturedDesktop: FC = () => {
                 </div>
                 {slide.discount === "no-discount" ? (
                   <div className="no-discount">
-                    <div className="price">{slide.price}</div>
+                    <div className="price">{slide.price} USD</div>
                   </div>
                 ) : (
                   <div className="discount">
@@ -111,7 +111,7 @@ const FeaturedDesktop: FC = () => {
                         <div className="discount-prices">
                           <div className="original-price">{slide.price}</div>
                           <div className="final-price">
-                            {slide.discountPrice}
+                            {slide.discountPrice} USD
                           </div>
                         </div>
                       </div>

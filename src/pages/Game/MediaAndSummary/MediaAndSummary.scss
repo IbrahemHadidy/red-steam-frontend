@@ -136,28 +136,6 @@
             }
           }
 
-          .game-review-summary {
-            &.positive {
-              color: #66c0f4;
-            }
-
-            &.mixed {
-              color: #b9a074;
-            }
-
-            &.negative {
-              color: #a34c25;
-            }
-
-            &:hover {
-              cursor: pointer;
-
-              &~.review-tooltip {
-                opacity: 1;
-              }
-            }
-          }
-
           .review-tooltip {
             background: #c2c2c2;
             color: #3d3d3f;
@@ -173,8 +151,13 @@
             pointer-events: auto;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
-            top: 50%;
+            top: 63%;
             left: 60%;
+          }
+
+
+          .game-review-summary:hover~.review-tooltip {
+            opacity: 1;
           }
         }
 
@@ -228,29 +211,6 @@
         .glance-tags {
           white-space: nowrap;
           height: 22px;
-
-          .game-tag {
-            display: inline-block;
-            line-height: 19px;
-            padding: 0 7px;
-            color: #67c1f5;
-            background-color: rgba(103, 193, 245, 0.2);
-            box-shadow: none;
-            margin-right: 2px;
-            border-radius: 2px;
-            cursor: pointer;
-            margin-bottom: 3px;
-            max-width: 200px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            &:hover {
-              background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
-              text-decoration: none;
-              color: #ffffff;
-            }
-          }
         }
       }
     }
@@ -577,6 +537,84 @@
   }
 }
 
+.game-owned {
+  margin: 0 auto;
+  height: 40px;
+  padding: 0px 15px 0px 0px;
+  position: relative;
+  background: linear-gradient(to right, rgba(163, 207, 6, 0.6) 0%, rgba(75, 106, 33, 0.6) 100%);
+  font-size: 18px;
+  font-family: "Motiva Sans", Sans-serif;
+  font-weight: 300;
+  line-height: 40px;
+  color: #a3cf06;
+  margin-bottom: 1px;
+  width: 925px;
+
+  .owned-flag {
+    font-size: 10px;
+    color: #111111;
+    height: 18px;
+    line-height: 19px;
+    padding: 0 0 0 18px;
+    white-space: nowrap;
+    z-index: 5;
+    position: relative;
+    float: left;
+    top: 10px;
+    left: -8px;
+    box-shadow: 1px 1px 2px #000000;
+    background: url('/images/inLibrary_flag.png') no-repeat 4px 4px #a3cf06;
+  }
+
+  .already-in-library {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.already-owned {
+  background: linear-gradient(135deg, rgba(97, 100, 101, 0.3) 0%, rgba(226, 244, 255, 0.3) 100%);
+  padding: 0px 16px 52px 16px;
+  margin: 0px auto;
+  margin-bottom: 40px;
+  max-width: 925px;
+
+  .already-owned-actions {
+    padding-top: 16px;
+
+    .owned-actions-button {
+      float: left;
+      position: relative;
+      margin-right: 12px;
+
+      a {
+        padding: 1px;
+        display: inline-block;
+        cursor: pointer;
+        text-decoration: none !important;
+        color: #2B5066 !important;
+        background: linear-gradient(to bottom, rgba(193, 228, 249, 1) 5%, rgba(148, 183, 202, 1) 95%);
+        border-radius: 4px;
+        border: 2px solid #17202f;
+
+        span {
+          display: block;
+          background: transparent;
+          text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+          border-radius: 3px;
+          padding: 0 15px;
+          font-size: 15px;
+          line-height: 30px;
+          color: #2B5066 !important;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .game-title-area {
     max-width: 940px;
@@ -592,38 +630,38 @@
       height: auto;
       display: flex;
       flex-direction: column;
-  
+
       .right-game-summary {
         width: auto;
         height: auto;
         padding: 4px 2%;
-  
+
         .game-image {
           float: left;
           width: 50%;
           margin-right: 8px;
-  
+
           img {
             width: 100%;
             height: auto;
           }
         }
-  
+
         .game-discription {
           overflow: hidden;
           padding-right: 0;
         }
-  
+
         .game-glance-first {
           overflow: hidden;
-  
+
           .summary-column {
             a {
               position: relative;
             }
           }
         }
-  
+
         .user-defined-tags {
           clear: left;
           padding-top: 10px;
@@ -631,33 +669,33 @@
           margin-top: 0;
         }
       }
-  
+
       .left-game-summary {
         width: auto;
         margin-left: 0;
         float: none;
-  
+
         .game-highlights {
           margin-right: 0;
           overflow: hidden;
           position: relative;
-  
+
           .player-area {
             height: 96.6vh;
           }
-  
+
           .player-item {
             .screenshot-link {
               height: 100%;
               position: relative;
             }
           }
-  
+
           .slide-area {
             width: 172.2vh;
           }
         }
-  
+
         .slider-right {
           margin-right: 12.5px;
         }
@@ -669,5 +707,16 @@
     width: auto;
     margin: 0 0;
     margin-bottom: 16px;
+  }
+
+  .game-owned{
+    max-width: 940px;
+    width: auto;
+    margin: 0 2%;
+  }
+
+  .already-owned{
+    width: auto;
+    margin: 0 2%;
   }
 }

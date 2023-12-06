@@ -1,11 +1,7 @@
 import { FC } from "react";
 import { gamesData } from "../gameData";
 
-interface RightGameSummaryProps {
-  game: gamesData;
-}
-
-export const RightGameSummary: FC<RightGameSummaryProps> = ({ game }) => {
+export const RightGameSummary: FC<{ game: gamesData }> = ({ game }) => {
   
   let positivePercentage: number = 0;
   function getReviewSummary(
