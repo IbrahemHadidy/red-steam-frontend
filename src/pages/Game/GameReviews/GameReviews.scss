@@ -1,0 +1,310 @@
+.reviews-content {
+  margin-bottom: 32px;
+  border-top: 1px solid #000;
+  position: relative;
+
+  .user-reviews-header {
+    padding-bottom: 4px;
+    padding-top: 8px;
+    background-image: url('/images/maincol_gradient_rule.png');
+    background-repeat: no-repeat;
+    background-position: bottom left;
+  }
+
+  .overall-summary-container {
+    background-color: #2a475e;
+    box-shadow: 0 0 5px #000;
+    position: relative;
+
+    .overall-summary {
+      display: inline-block;
+      border-bottom: 1px solid #000000;
+      padding: 10px;
+      margin-bottom: 0px;
+      background: none;
+      min-height: 38px;
+      width: -webkit-fill-available;
+
+      .overall-section {
+        display: inline-block;
+        margin-right: 15px;
+        color: #8ba6b6;
+        min-width: 320px;
+
+        .title {
+          font-family: "Motiva Sans", Sans-serif;
+          font-weight: normal;
+          font-size: 15px;
+          margin-bottom: 5px;
+          color: #e5e5e5;
+        }
+
+        .game-review-summary {
+          font-family: "Motiva Sans", Sans-serif;
+          font-weight: bold;
+          font-size: 17px;
+          line-height: 9px;
+          text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+
+  .filter-options {
+    font-size: 12px;
+    padding: 0;
+    margin-bottom: 30px;
+    height: 28px;
+    background-color: #1f2f42;
+
+    .review-type {
+      float: left;
+      text-transform: uppercase;
+      font-size: 10px;
+      color: #4582a5;
+      padding: 5px 10px;
+      border-left: 1px solid #2a475e;
+
+      select {
+        width: 100px;
+        background: #4582a5;
+        font-size: 12px;
+        border: none;
+        border-radius: 2px;
+        margin-left: 5px;
+        margin-top: 2px;
+      }
+    }
+  }
+
+  .reviews-info {
+    border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+
+    .reviews-filter-score {
+      font-family: "Motiva Sans", Sans-serif;
+      font-weight: normal;
+      display: block;
+      padding-top: 10px;
+      font-size: 15px;
+
+      .game-review-summary {
+        font-family: "Motiva Sans", Sans-serif;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .reviews-summary {
+    display: flex;
+    flex-direction: column;
+    min-height: 1000px;
+    margin-top: 0px;
+
+    .reviews-sub-header {
+      font-family: "Motiva Sans", Sans-serif;
+      font-weight: normal;
+      font-size: 14px;
+      color: #ffffff;
+      text-transform: uppercase;
+      padding-bottom: 5px;
+      letter-spacing: 2px;
+    }
+    .review-box {
+      background-color: rgba(0, 0, 0, 0.2);
+      margin-bottom: 26px;
+      background-image: url("/images/maincol_gradient_rule.png");
+      background-repeat: no-repeat;
+      background-position: top left;
+      border-bottom: 1px solid #8ba6b6;
+      display: flex;
+      flex-direction: row;
+
+      &:hover {
+        .leftcol {
+          opacity: 1;
+        }
+      }
+
+      &.partial {
+        .content {
+          max-height: 225px !important;
+          overflow: hidden !important;
+          position: relative !important;
+          
+          .gradient {
+            display: block;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            z-index: 1;
+            height: 30px;
+            background: -webkit-linear-gradient( top, rgba( 22,32,45,0) 5%, rgba( 22,32,45,.95) 95%);
+            background: linear-gradient( to bottom, rgba( 22,32,45,0) 5%, rgba( 22,32,45,.95) 95%);
+          }
+        }
+      }
+
+      .leftcol {
+        width: 180px;
+        float: left;
+        padding: 8px;
+        opacity: 0.6;
+        display: grid;
+
+        .avatar {
+          float: left;
+          padding-right: 8px;
+
+          .player-avatar {
+            width: 34px;
+            height: 34px;
+            position: relative;
+            border-radius: 0;
+            padding: 1px;
+            
+            &.offline {
+              background: linear-gradient( to bottom, rgba(106,106,106,1) 5%, rgba(85,85,85,1) 95%);
+            }
+            &.online {
+              background: linear-gradient( to bottom, rgba(83,164,196,1) 5%, rgba(69,128,151,1) 95%);
+            }
+
+            img {
+              width: 32px;
+              height: 32px;
+              padding: 1px;
+              border-radius: 0;
+              border: none;
+            }
+          }
+        }
+        .person-name {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 140px;
+          overflow: hidden;
+          margin-top: 0px;
+          margin-top: -2px;
+          margin-bottom: -1px;
+          display: inline-block;
+          grid-column: none;
+          
+          a {
+            color: #c1dbf4;
+            font-size: 13px;
+            font-family: "Motiva Sans", Sans-serif;
+            font-weight: bold;
+          }
+        }
+      }
+      .rightcol {
+        float: right;
+        width: 744px;
+        position: relative;
+
+        .vote-header {
+          margin: 8px 0 13px;
+          display: block;
+          background: rgba( 0, 0, 0, 0.2 );
+          height: 40px;
+
+          &:hover {
+            background: rgba( 255, 255, 255, 0.1 );
+          }
+
+          .thumb {
+            float: left;
+            margin-right: 10px;
+          }
+          .review-source {
+            float: right;
+            margin-right: 5px;
+            margin-top: 12px;
+            opacity: 0.5;
+          }
+          .title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+            color: #d6d7d8;
+            font-family: "Motiva Sans", Sans-serif;
+            font-weight: normal;
+            padding: 10px 0px 0px 0px;
+            line-height: 19px;
+          }
+        }
+        .post-date {
+          margin: 0px 0px 8px;
+          font-size: 10px;
+          text-transform: uppercase;
+          font-style: normal;
+          color: #8091a2;
+          display: inline-block;
+          opacity: 0.6;
+        }
+        .content {
+          margin-right: 8px;
+          font-family: "Motiva Sans", Sans-serif;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 17px;
+          color: #acb2b8;
+          overflow-wrap: break-word;
+          overflow: hidden;
+          margin-bottom: 15px;
+        }
+        .posted {
+          font-size: 10px;
+          font-style: italic;
+          color: #626366;
+          margin: 10px 0 8px;
+
+          .view-more {
+            display: block;
+            float: right;
+            margin-right: 15px;
+
+            a {
+              color: #67c1f5;
+              text-transform: uppercase;
+              font-style: normal;
+            }
+          }
+          .hr {
+            background-color: #363f4c;
+            height: 1px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media  (max-width: 1000px) {
+	.review-box {
+    display: block !important;
+
+    .leftcol {
+      display: block !important;
+      width: fit-content !important;
+      float: left !important;
+      opacity: 1 !important;
+    }
+
+    .rightcol {
+      width: auto !important;
+      float: none !important;
+      .vote-header {
+        overflow: hidden;
+      }
+      .post-date, .content, .posted {
+        margin-right: 3% !important;
+        margin-left: 3% !important;
+      }
+    }
+  }
+}

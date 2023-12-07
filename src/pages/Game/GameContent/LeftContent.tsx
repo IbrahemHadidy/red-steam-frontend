@@ -141,7 +141,7 @@ export const LeftContent: FC<{ game: gamesData }> = ({ game }) => {
       </div>
 
       {/* Game mature */}
-      {game.mature && (
+      {game.mature && game.matureDescription && (
         <div className="autocollapse-container">
           <div className="autocollapse">
             <div className="game-description">

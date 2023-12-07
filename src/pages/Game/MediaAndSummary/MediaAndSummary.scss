@@ -576,10 +576,10 @@
 
 .already-owned {
   background: linear-gradient(135deg, rgba(97, 100, 101, 0.3) 0%, rgba(226, 244, 255, 0.3) 100%);
-  padding: 0px 16px 52px 16px;
+  padding: 0px 16px 16px 16px;
   margin: 0px auto;
   margin-bottom: 40px;
-  max-width: 925px;
+  max-width: 908px;
 
   .already-owned-actions {
     padding-top: 16px;
@@ -609,6 +609,212 @@
           line-height: 30px;
           color: #2B5066 !important;
           cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.review-container {
+  clear: left;
+
+  .review-create {
+    max-width: 908px;
+    position: relative;
+    overflow: visible;
+    padding-top: 16px;
+
+    h1 {
+      font-size: 18px;
+      margin-bottom: 3px;
+      color: #66c0f4;
+      font-family: "Motiva Sans", Sans-serif;
+      font-weight: 300;
+      width: 100%;
+      border-top: 1px solid #212c3d;
+      padding-top: 10px;
+    }
+
+    p {
+      font-size: 13px;
+      margin-bottom: 15px;
+      line-height: 17px;
+      color: #8f98a0;
+    }
+
+    .formatting-help {
+      float: right;
+      padding-right: 10px;
+    }
+
+    .avatar-block {
+      clear: right;
+
+      .avatar {
+        width: 94px;
+        height: 94px;
+        background-repeat: no-repeat;
+        padding: 1px;
+        margin-right: 16px;
+        border-radius: 0px;
+        float: left;
+
+        img {
+          width: 92px;
+          height: 92px;
+          padding: 1px;
+        }
+
+        &.online {
+          background: linear-gradient(to bottom, rgba(83, 164, 196, 1) 5%, rgba(69, 128, 151, 1) 95%);
+          filter: none;
+
+          img {
+            background: linear-gradient(to bottom, #41778f 5%, #3d697b 95%);
+          }
+        }
+
+        &.offline {
+          background: linear-gradient(to bottom, rgba(106, 106, 106, 1) 5%, rgba(85, 85, 85, 1) 95%);
+          filter: none;
+
+          img {
+            background: linear-gradient(to bottom, #515151 5%, #474747 95%);
+          }
+        }
+      }
+
+    }
+
+    .content {
+      overflow: hidden;
+
+      .error-message {
+        color: #ff0000;
+        margin-bottom: 12px;
+      }
+
+      .game-recommendation {
+        border: 1px solid #233c51;
+        border-radius: 3px;
+        height: 132px;
+        width: 764px;
+        max-width: 800px;
+        background-color: #222b35;
+        color: #d6d7d8;
+        padding: 10px 11px;
+        font-size: 13px;
+        font-family: "Motiva Sans", Sans-serif;
+        font-weight: normal;
+        box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.5);
+
+        &:focus-visible {
+          outline: none;
+        }
+      }
+
+      .controls {
+        margin-top: 4px;
+
+        .review-controls-left {
+          float: left;
+          margin-bottom: 8px;
+          margin-right: 8px;
+
+          .do-you-recommend {
+            margin-bottom: 4px;
+          }
+
+          .vote-up-down {
+            color: #acb2b8;
+            font-size: 13px;
+            font-family: "Motiva Sans", Sans-serif;
+            font-weight: normal;
+
+            .vote-btn {
+              border-radius: 2px;
+              border: none;
+              padding: 1px;
+              display: inline-block;
+              cursor: pointer;
+              text-decoration: none !important;
+              color: #67c1f5 !important;
+              background: rgba(103, 193, 245, 0.2);
+              margin-right: 4px;
+
+              span {
+                border-radius: 2px;
+                display: block;
+                background: transparent;
+                padding: 0 15px;
+                font-size: 15px;
+                line-height: 30px;
+
+                .thumb {
+                  display: inline-block;
+                  width: 18px;
+                  height: 18px;
+                  margin: 0 0px;
+                  background: url("/images/icons_18.png");
+                  vertical-align: text-top;
+
+                  &.thumb-up {
+                    background-position: 0px 0px;
+                  }
+
+                  &.thumb-down {
+                    background-position: -18px 0px;
+                  }
+                }
+              }
+
+              &:hover {
+                text-decoration: none !important;
+                color: #fff !important;
+                background: linear-gradient(-60deg, #417a9b 5%, #67c1f5 95%);
+
+                span {
+                  background: transparent;
+
+                  .thumb {
+                    &.thumb-up {
+                      background-position: -72px 0px;
+                    }
+
+                    &.thumb-down {
+                      background-position: -90px 0px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .review-controls-right {
+          padding-top: 14px;
+          padding-right: 7px;
+
+          a {
+            padding: 1px;
+            cursor: pointer;
+            text-decoration: none !important;
+            color: #2B5066 !important;
+            background: linear-gradient(to bottom, rgba(193, 228, 249, 1) 5%, rgba(148, 183, 202, 1) 95%);
+            border-radius: 4px;
+            border: 2px solid #17202f;
+            float: right;
+
+            span {
+              display: block;
+              background: transparent;
+              text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+              border-radius: 3px;
+              padding: 0 15px;
+              font-size: 15px;
+              line-height: 30px;
+            }
+          }
         }
       }
     }
@@ -709,13 +915,13 @@
     margin-bottom: 16px;
   }
 
-  .game-owned{
+  .game-owned {
     max-width: 940px;
     width: auto;
     margin: 0 2%;
   }
 
-  .already-owned{
+  .already-owned {
     width: auto;
     margin: 0 2%;
   }

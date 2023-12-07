@@ -1,13 +1,13 @@
 import { FC } from "react";
-import { gamesData } from "../gameData";
 import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
+import { gamesData } from "../gameData";
 import "./GameContent.scss";
 
 const GameContent: FC<{ game: gamesData }> = ({ game }) => {
 
   return (
-    <div className="game-content">
+    <div className="page-content">
       <RightContent game={game} />
       <LeftContent game={game} />
     </div>

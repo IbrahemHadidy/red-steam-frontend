@@ -18,16 +18,18 @@ export interface SystemRequirementsDetails {
   storage: string;
 }
 
+export interface ReviewEntry {user: string, type: "negative" | "positive", date: string, content: string }
+
 export interface gamesData {
   id: string;
   name: string;
   category: string;
   description: string;
-  reviews: { positive: number, negative: number };
   releaseDate: string;
   developer: { name: string, link: string };
   publisher: { name: string, link: string };
   backgroundImage: string;
+  capsulePic: string;
   headerImage: string;
   moviesAndImages: MovieEntry[];
   reason: "available" | "recommended";
@@ -50,6 +52,7 @@ export interface gamesData {
   matureDescription: string;
   req: SystemRequirements;
   legal: string;
+  reviews: ReviewEntry[];
 }
 
 const gameData: gamesData[] = [
@@ -59,12 +62,12 @@ const gameData: gamesData[] = [
     name: "PUBG: BATTLEGROUNDS",
     category: "Free to Play Games",
     description: "Play PUBG: BATTLEGROUNDS for free. Land on strategic locations, loot weapons and supplies, and survive to become the last team standing across various, diverse Battlegrounds. Squad up and join the Battlegrounds for the original Battle Royale experience that only PUBG: BATTLEGROUNDS can offer.",
-    reviews: { positive: 1000, negative: 1000 },
     releaseDate: "21 Dec, 2017",
     developer: { name: "KRAFTON, Inc.", link: "https://store.steampowered.com/developer/KRAFTON"},
     publisher: { name: "KRAFTON, Inc.", link: "https://store.steampowered.com/publisher/KRAFTON"},
     headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
     backgroundImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/page_bg_generated_v6b.jpg",
+    capsulePic: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/capsule_231x87.jpg",
     moviesAndImages: [
       {
         type: "video",
@@ -169,7 +172,15 @@ const gameData: gamesData[] = [
       }
     },
     legal: `© 2017 KRAFTON, Inc. <br />
-    PUBG: BATTLEGROUNDS Korea and PUBG are registered trademarks or service marks of KRAFTON, Inc.`
+    PUBG: BATTLEGROUNDS Korea and PUBG are registered trademarks or service marks of KRAFTON, Inc.`,
+    reviews: [
+      {user:"ibrahim", type:"negative", date: "1/12/2022", content:"bad game"},
+      {user:"Mazen", type:"negative", date: "2/12/2022", content:"meh game"},
+      {user:"mrCringe", type:"positive", date: "3/12/2022", content:"WOW BEST GAME EVERRRRRR!!!!"},
+      {user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+      {user:"Samy", type:"negative", date: "5/12/2022", content:"bg"},
+      {user:"idiotgaming69", type:"positive", date: "6/12/2022", content:"Very nice gameplay and graphics"},
+    ]
   },
 ];
 

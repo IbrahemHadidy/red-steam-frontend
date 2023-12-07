@@ -1,37 +1,35 @@
 import { FC } from "react";
-import { gamesData } from "../gameData";
+import { ReviewEntry, gamesData } from "../gameData";
 
 export const RightGameSummary: FC<{ game: gamesData }> = ({ game }) => {
   
   let positivePercentage: number = 0;
-  function getReviewSummary(
-    positiveCount: number,
-    _negativeCount: number,
-    totalReviews: number
-  ) {
+
+  function getReviewSummary(positiveCount: number, _negativeCount: number, totalReviews: number) {
     positivePercentage = (positiveCount / totalReviews) * 100;
-  
+
     if (positivePercentage >= 90) return "Overwhelmingly Positive";
     if (positivePercentage >= 80) return "Very Positive";
     if (positivePercentage >= 75) return "Mostly Positive";
     if (positivePercentage > 40 && positivePercentage < 75) return "Mixed";
-    if (positivePercentage <= 10)  return "Overwhelmingly Negative";
+    if (positivePercentage <= 10) return "Overwhelmingly Negative";
     if (positivePercentage <= 20) return "Very Negative";
     if (positivePercentage <= 40) return "Mostly Negative";
   }
+
+  const totalReviews = game.reviews.length;
+  const positiveReviews = game.reviews.filter((review: ReviewEntry) => review.type === "positive").length;
+  const negativeReviews = game.reviews.filter((review: ReviewEntry) => review.type === "negative").length;
+
+  const summary = getReviewSummary(positiveReviews, negativeReviews, totalReviews);
   
-  function getHoverInfo(positiveCount: number, totalReviews: number) {
-    const positivePercentage = (positiveCount / totalReviews) * 100;
+  function getHoverInfo(positiveReviews: number, negativeReviews: number) {
+    const positivePercentage = (positiveReviews / negativeReviews) * 100;
   
     return `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
   }
   
-  const totalReviews = game.reviews.positive + game.reviews.negative;
-  const summary = getReviewSummary(
-    game.reviews.positive,
-    game.reviews.negative,
-    totalReviews
-  );
+  
   
   return (
     <div className="right-game-summary">
@@ -55,16 +53,16 @@ export const RightGameSummary: FC<{ game: gamesData }> = ({ game }) => {
                     : ""
                 }`}
               >
-                {summary}
+                {summary || "N/A"}
               </span>
               <span className="game-review-count">
                 {" "}
-                ({game.reviews.positive + game.reviews.negative})
+                ({(positiveReviews + negativeReviews).toLocaleString()})
               </span>
               <span className="review-tooltip">
                 {getHoverInfo(
-                  game.reviews.positive,
-                  game.reviews.positive + game.reviews.negative
+                  positiveReviews,
+                  positiveReviews + negativeReviews
                 )}
               </span>
             </div>

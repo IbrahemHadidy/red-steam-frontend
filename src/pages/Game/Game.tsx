@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
 import MediaAndSummary from "./MediaAndSummary/MediaAndSummary";
 import GameContent from "./GameContent/GameContent";
+import GameReviews from "./GameReviews/GameReviews";
 import Footer from "../../components/Footer/Footer";
 import gameData from "./gameData";
 import "./Game.scss";
@@ -25,19 +26,18 @@ const Game: FC<GameProps> = () => {
     <>
       <Header />
       <SecondNavbar />
-      <div className="game">
         <Routes>
           <Route
             path="/"
             element={
-              <div>
+              <div className="game">
                 <MediaAndSummary game={game} />
                 <GameContent game={game} />
+                <GameReviews game={game} />
               </div>
             }
           />
         </Routes>
-      </div>
       {/* <Footer /> */}
     </>
   );

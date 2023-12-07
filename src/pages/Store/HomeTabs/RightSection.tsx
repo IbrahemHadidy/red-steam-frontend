@@ -63,7 +63,7 @@ const RightSection: FC<RightSectionProps> = ({ openedTab, hoveredTabIndex }) => 
                 }`}>
                 {reviewSummary || "N/A"}
               </span>
-              <span>&nbsp;({reviews.positive + reviews.negative})</span>
+              <span>&nbsp;({(reviews.positive + reviews.negative).toLocaleString()})</span>
               <span className="review-tooltip">
                 {getHoverInfo(
                   reviews.positive,

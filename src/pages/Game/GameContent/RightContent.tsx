@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { gamesData } from "../gameData";
+import { ReviewEntry, gamesData } from "../gameData";
 
 export const RightContent: FC<{ game: gamesData }> = ({ game }) => {
 
@@ -21,7 +21,9 @@ export const RightContent: FC<{ game: gamesData }> = ({ game }) => {
       setShowAllLanguages(!showAllLanguages);
     };
   
-    const positivePercentage = (game.reviews.positive / (game.reviews.positive + game.reviews.negative)) * 100;
+    const positiveReviews = game.reviews.filter((review: ReviewEntry) => review.type === "positive").length;
+    const negativeReviews = game.reviews.filter((review: ReviewEntry) => review.type === "negative").length;
+    const positivePercentage = (positiveReviews / (positiveReviews + negativeReviews)) * 100;
 
     // Recommendation reasons
     const firstDetails = (
@@ -38,8 +40,8 @@ export const RightContent: FC<{ game: gamesData }> = ({ game }) => {
                 </span>
               </p>
             )}
-            {/* top sellers backend logic 
-             <p className="reason-for"> In the Top Sellers </p> 
+            {/* top sellers backend logic */}
+            {/* <p className="reason-for"> In the Top Sellers </p> 
              <hr /> */}
           </div>
         </>

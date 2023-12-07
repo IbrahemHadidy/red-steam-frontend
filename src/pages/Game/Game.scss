@@ -1,3 +1,14 @@
+.game {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  width: 940px;
+  margin: 0 auto;
+  position: relative;
+}
+
 .game-tag {
   display: inline-block;
   line-height: 19px;
@@ -37,5 +48,13 @@
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .page-content {
+    max-width: 940px;
+    width: auto;
+    margin: 0 2%;
   }
 }
