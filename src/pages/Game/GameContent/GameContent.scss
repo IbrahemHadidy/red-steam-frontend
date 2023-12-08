@@ -222,6 +222,10 @@
           cursor: pointer;
           margin-top: 5px;
           display: inline-block;
+
+          &:hover {
+            color: #ffffff;
+          }
         }
       }
 

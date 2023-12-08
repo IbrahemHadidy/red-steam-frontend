@@ -38,7 +38,7 @@ const Game: FC<GameProps> = () => {
             }
           />
         </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

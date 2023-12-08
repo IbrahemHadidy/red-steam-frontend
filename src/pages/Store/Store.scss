@@ -131,6 +131,7 @@ $background-color_5: rgba(20, 31, 44, 0.4);
 	padding: 55px 11px !important;
 	cursor: pointer !important;
 	z-index: 3 !important;
+  box-sizing: border-box !important;
 	&::before {
 		position: relative !important;
 		right: auto !important;
@@ -159,6 +160,7 @@ $background-color_5: rgba(20, 31, 44, 0.4);
 	padding: 55px 11px !important;
 	cursor: pointer !important;
 	z-index: 3 !important;
+  box-sizing: border-box !important;
 	&::before {
 		position: relative !important;
 		right: auto !important;

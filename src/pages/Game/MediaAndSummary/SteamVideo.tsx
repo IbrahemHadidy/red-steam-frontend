@@ -21,6 +21,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     controls: false,
     playsInline: true,
     disablePictureInPicture: true,
+    autoPlay: true,
   };
 
   const [overlayBottom, setOverlayBottom] = useState("-35px");
@@ -28,7 +29,6 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const [duration, setDuration] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
   const [autoplayInitialized, setAutoplayInitialized] = useState(false);
-
   const [volume, setVolume] = useState(() => {
     const storedVolume = localStorage.getItem("volume");
     return storedVolume ? parseFloat(storedVolume) : 1;
@@ -36,7 +36,6 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const [volumeSliderValue, setVolumeSliderValue] = useState(
     () => volume * 100
   );
-
   const [isMuted, setMuted] = useState(() => {
     const storedMuted = localStorage.getItem("isMuted");
     return storedMuted ? JSON.parse(storedMuted) : false;
@@ -61,8 +60,10 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   // time update function
   const handleTimeUpdate: React.EventHandler<
     React.SyntheticEvent<HTMLVideoElement>
-  > = (event) => {
-    const video = event.currentTarget as HTMLVideoElement;
+  > = () => {
+    const video = document.querySelector(
+      ".highlight-movie video"
+    ) as HTMLVideoElement;
     setCurrentTime(video.currentTime);
 
     // Calculate the playback progress percentage
@@ -96,14 +97,38 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   };
 
   // progess bar function
-  const handleDurationChange = (event: Event) => {
-    const video = event.currentTarget as HTMLVideoElement;
+  const handleDurationChange = () => {
+    const video = document.querySelector(".highlight-movie video") as HTMLVideoElement;
     setDuration(video.duration);
+    console.log("Duration updated:", video.duration);
   };
+
+  // functionality to handle time update after swaping to another video (react-spring bug fix)
+  useEffect(() => {
+    const video = videoRef.current;
+  
+    const handleLoadedData = () => {
+      setDuration(video?.duration || 0); 
+      bufferProgressBarRef!.current!.value = 0;
+    };
+  
+    if (video) {
+      video.addEventListener("loadeddata", handleLoadedData);
+  
+      return () => {
+        video.removeEventListener("loadeddata", handleLoadedData);
+      };
+    }
+  }, [videoRef]);
+  useEffect(() => {
+    setCurrentTime(0);
+  }, []);
 
   // autoplay button function
   const handleAutoplayToggle = () => {
-    const video = videoRef.current;
+    const video = document.querySelector(
+      ".highlight-movie video"
+    ) as HTMLVideoElement;
 
     if (video) {
       if (!isAutoplay) {
@@ -152,7 +177,9 @@ export const SteamVideo: FC<SteamVideoProps> = ({
 
   // this is used to fix the wrong play/pause button at the begining
   useEffect(() => {
-    const video = videoRef.current;
+    const video = document.querySelector(
+      ".highlight-movie video"
+    ) as HTMLVideoElement;
 
     const handlePlayStateChange = () => {
       setPlaying(!video?.paused);
@@ -247,7 +274,9 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     const handleLoadedData = () => {
       // Video metadata is loaded, autoplay can be attempted
       if (isAutoplay) {
-        const video = videoRef.current;
+        const video = document.querySelector(
+      ".highlight-movie video"
+    ) as HTMLVideoElement;
 
         if (video) {
           video.play().catch((error) => {
@@ -257,7 +286,9 @@ export const SteamVideo: FC<SteamVideoProps> = ({
       }
     };
 
-    const video = videoRef.current;
+    const video = document.querySelector(
+      ".highlight-movie video"
+    ) as HTMLVideoElement;
 
     if (video) {
       video.addEventListener("loadeddata", handleLoadedData);

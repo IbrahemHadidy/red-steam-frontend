@@ -33,6 +33,7 @@
     "react-multi-carousel": "^2.8.4",
     "react-router-dom": "^6.18.0",
     "react-slick": "^0.29.0",
+    "react-spring": "^9.7.3",
     "sass": "^1.69.5",
     "slick-carousel": "^1.8.1",
     "swiper": "^10.3.1",

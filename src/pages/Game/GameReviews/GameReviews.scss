@@ -114,10 +114,9 @@
     .review-box {
       background-color: rgba(0, 0, 0, 0.2);
       margin-bottom: 26px;
-      background-image: url("/images/maincol_gradient_rule.png");
-      background-repeat: no-repeat;
-      background-position: top left;
-      border-bottom: 1px solid #8ba6b6;
+      background-image: url("/images/maincol_gradient_rule.png"), url("/images/maincol_gradient_rule.png");
+      background-repeat: no-repeat, no-repeat;
+      background-position: top left, bottom left;;
       display: flex;
       flex-direction: row;
 
