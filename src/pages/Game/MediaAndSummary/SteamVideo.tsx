@@ -28,6 +28,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
+  const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState(false);
   const [autoplayInitialized, setAutoplayInitialized] = useState(false);
   const [volume, setVolume] = useState(() => {
     const storedVolume = localStorage.getItem("volume");
@@ -87,42 +88,62 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     }
   };
 
+  // handle visibility play/pause
+  useEffect(() => {
+    const video = document.querySelector(".highlight-movie video") as HTMLVideoElement;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Save the current playback state before swapping
+        setWasPausedBeforeSwap(video.paused);
+        video.pause();
+      } else {
+        // Resume playback only if the video was not paused before the swap
+        if (!wasPausedBeforeSwap) {
+          video.play();
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [wasPausedBeforeSwap]);
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2,"0")}`;
   };
 
   // progess bar function
   const handleDurationChange = () => {
     const video = document.querySelector(".highlight-movie video") as HTMLVideoElement;
     setDuration(video.duration);
-    console.log("Duration updated:", video.duration);
   };
 
-  // functionality to handle time update after swaping to another video (react-spring bug fix)
-  useEffect(() => {
-    const video = videoRef.current;
+  // // functionality to handle time update after swaping to another video (react-spring bug fix)
+  // useEffect(() => {
+  //   const video = document.querySelector(".highlight-movie video") as HTMLVideoElement;
   
-    const handleLoadedData = () => {
-      setDuration(video?.duration || 0); 
-      bufferProgressBarRef!.current!.value = 0;
-    };
+  //   const handleLoadedData = () => {
+  //     setDuration(video?.duration || 0); 
+  //     bufferProgressBarRef!.current!.value = 0;
+  //   };
   
-    if (video) {
-      video.addEventListener("loadeddata", handleLoadedData);
+  //   if (video) {
+  //     video.addEventListener("loadeddata", handleLoadedData);
   
-      return () => {
-        video.removeEventListener("loadeddata", handleLoadedData);
-      };
-    }
-  }, [videoRef]);
-  useEffect(() => {
-    setCurrentTime(0);
-  }, []);
+  //     return () => {
+  //       video.removeEventListener("loadeddata", handleLoadedData);
+  //     };
+  //   }
+  // }, [videoRef]);
+  // useEffect(() => {
+  //   setCurrentTime(0);
+  // }, []);
 
   // autoplay button function
   const handleAutoplayToggle = () => {
@@ -165,32 +186,33 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     const video = document.querySelector(
       ".highlight-movie video"
     ) as HTMLVideoElement;
-
+  
     if (video) {
       if (isPlaying) {
-        video.play();
+        video.play().catch((error) => console.error("Play error:", error));
       } else {
         video.pause();
       }
     }
   }, [isPlaying]);
+  
 
   // this is used to fix the wrong play/pause button at the begining
   useEffect(() => {
     const video = document.querySelector(
       ".highlight-movie video"
     ) as HTMLVideoElement;
-
+  
     const handlePlayStateChange = () => {
       setPlaying(!video?.paused);
     };
-
+  
     if (video) {
       setPlaying(!video.paused);
-
+  
       video.addEventListener("play", handlePlayStateChange);
       video.addEventListener("pause", handlePlayStateChange);
-
+  
       return () => {
         video.removeEventListener("play", handlePlayStateChange);
         video.removeEventListener("pause", handlePlayStateChange);
@@ -343,7 +365,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
         video.removeEventListener("progress", handleBufferProgress);
       };
     }
-  }, [currentTime, duration]);
+  }, [currentTime, duration]);  
 
   return (
     <div
@@ -364,6 +386,8 @@ export const SteamVideo: FC<SteamVideoProps> = ({
           controls={false}
           onTimeUpdate={handleTimeUpdate}
           onClick={handlePlayPause}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
         />
         <div
           className="video-overlay"

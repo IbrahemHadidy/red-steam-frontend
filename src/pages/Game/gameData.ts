@@ -71,15 +71,15 @@ const gameData: gamesData[] = [
     moviesAndImages: [
       {
         type: "video",
-        link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256940388/movie480_vp9.webm",
-        posterLink:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/256940388/movie.293x165.jpg",
-      },
-      {
-        type: "video",
         link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256919601/movie480_vp9.webm",
         posterLink:
           "https://cdn.cloudflare.steamstatic.com/steam/apps/256919601/movie.293x165.jpg",
+      },
+      {
+        type: "video",
+        link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256940388/movie480_vp9.webm",
+        posterLink:
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/256940388/movie.293x165.jpg",
       },
       { type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/ss_63bb4a659968c3417ddd2ea5fd82cd2143e458a0.600x338.jpg"},
       { type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/ss_93e6e1fa807c3b3b09ce4e1e4800e7723dc308a1.600x338.jpg"},

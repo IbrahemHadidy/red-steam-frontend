@@ -3,7 +3,6 @@ import { SteamVideo } from "../SteamVideo";
 import { Screenshot } from "../Screenshot";
 import { SlidesArea, SliderButtons } from "./SlidesArea";
 import { MovieEntry, gamesData } from "../../gameData";
-import { useTransition, animated } from 'react-spring';
 
 interface LeftGameSummaryProps {
   selectedItem: string | null;
@@ -30,21 +29,12 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
   setSelectedItem,
   handleSliderClick,
 }) => {
-
-  const transitions = useTransition(selectedEntry, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  });
-
-  
   return (
     <div className="left-game-summary">
       <div className="game-highlights">
-      {transitions((style, selectedEntry) =>
-        selectedEntry ? (
-          selectedEntry.type === 'video' ? (
-            <animated.div style={style}>
+        {selectedItem && selectedEntry && (
+          <>
+            {selectedEntry.type === "video" ? (
               <SteamVideo
                 key={selectedEntry.link}
                 videoRef={videoRef}
@@ -53,20 +43,17 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
                 isAutoplay={isAutoplay}
                 setAutoplay={setAutoplay}
               />
-              </animated.div>
             ) : (
-              <animated.div style={style}>
               <Screenshot
                 key={selectedEntry.link}
                 imgSrc={selectedEntry.link}
                 isMouseOverScreenshot={isMouseOverScreenshot}
                 onEnter={() => setIsMouseOverScreenshot(true)}
                 onLeave={() => setIsMouseOverScreenshot(false)}
-                />
-                </animated.div>
-              )
-            ) : null
+              />
             )}
+          </>
+        )}
 
         <SlidesArea
           selectedItem={selectedItem}
