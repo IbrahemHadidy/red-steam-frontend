@@ -51,7 +51,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
     const currentIndex = game.moviesAndImages.findIndex(
       (entry) => entry.link === selectedItem
     );
-
+  
     if (isAutoplay) {
       const nextIndex = (currentIndex + 1) % game.moviesAndImages.length;
       setSelectedItem(game.moviesAndImages[nextIndex].link);
@@ -59,7 +59,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
       const nextPhotoIndex = game.moviesAndImages.findIndex(
         (entry, index) => index > currentIndex && entry.type !== "video"
       );
-
+  
       if (nextPhotoIndex !== -1) {
         setSelectedItem(game.moviesAndImages[nextPhotoIndex].link);
       } else {
@@ -69,17 +69,17 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         );
       }
     }
-
+  
     // Check if the selected item is outside the visible area
     const indicatorPosition =
-      game.moviesAndImages.findIndex((entry) => entry.link === selectedItem) *
-      120;
-
+      game.moviesAndImages.findIndex((entry) => entry.link === selectedItem) * 120;
+  
     const slideArea = document.querySelector(".slide-area");
     if (slideArea) {
+      // Calculate visible width dynamically
       const visibleWidth = slideArea.clientWidth;
       const scrollLeft = slideArea.scrollLeft;
-
+  
       if (currentIndex === game.moviesAndImages.length - 1) {
         // If the index is 0, scroll to the start
         slideArea.scroll({
@@ -92,15 +92,15 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
           left: indicatorPosition + 120 - scrollLeft,
           behavior: "smooth",
         });
-      } else if (indicatorPosition + 140 > scrollLeft + visibleWidth) {
+      } else if (indicatorPosition + 240 > scrollLeft + visibleWidth) {
         // Scroll to the right to bring the selected item into view
         slideArea.scrollBy({
-          left: indicatorPosition + 730 - (scrollLeft + visibleWidth),
+          left: indicatorPosition + visibleWidth + 120 - (scrollLeft + visibleWidth),
           behavior: "smooth",
         });
       }
     }
-  }, [game, isAutoplay, selectedItem]);
+  }, [game, isAutoplay, selectedItem]);  
 
   //730 - 612 = 118
 

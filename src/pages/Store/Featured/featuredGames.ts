@@ -263,7 +263,7 @@ const featuredGames: FeaturedGame[] = [
     gameName: "Cyberpunk 2077",
     gameLink: "https://store.steampowered.com/app/1091500/Cyberpunk_2077/",
     mainImage:
-      "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/capsule_616x353_alt_assets_1.jpg",
+      "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/capsule_616x353.jpg",
     image1:
       "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/ss_8640d9db74f7cad714f6ecfb0e1aceaa3f887e58.600x338.jpg",
     image2:
