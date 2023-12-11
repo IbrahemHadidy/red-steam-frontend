@@ -1,8 +1,7 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { ReviewEntry, gamesData } from "../gameData";
 
-export const RightGameSummary: FC<{ game: gamesData }> = ({ game }) => {
-  
+export const RightGameSummary: FC<{ game: gamesData; isMobileView630: ReactNode }> = ({ game, isMobileView630 }) => {  
   let positivePercentage: number = 0;
 
   function getReviewSummary(positiveCount: number, _negativeCount: number, totalReviews: number) {
@@ -36,6 +35,7 @@ export const RightGameSummary: FC<{ game: gamesData }> = ({ game }) => {
       <div className="game-image">
         <img className="image-full" src={game.headerImage} alt="" />
       </div>
+      {isMobileView630 && <div className="game-name-mobile">{game.name}</div>}
       <div className="game-discription">{game.description}</div>
       <div className="game-glance-first">
         <div className="user-reviews">

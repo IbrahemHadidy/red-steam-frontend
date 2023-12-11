@@ -3,6 +3,10 @@
     width: 100%;
     display: block;
   }
+  @media (max-width: 1000px) {
+    height: initial;
+    width: inherit;
+  }
 }
 
 .highlight-movie {
@@ -16,31 +20,21 @@
   height: 100%;
   background-color: #000;
 
+  @media (max-width: 1000px) {
+    height: inherit;
+  }
+
   .video-overlay {
     position: absolute;
     height: 35px;
     background-color: rgba(0, 0, 0, 0.8);
-    width: 100%;
+    width: 99.74%;
     text-align: left;
+    border: 0.4px solid black;
+    border-top: 0;
 
-    &:-webkit-full-screen {
-      .video-overlay {
-        position: absolute;
-        height: 35px;
-        background-color: rgba(0, 0, 0, 0.8);
-        width: 100%;
-        text-align: left;
-      }
-    }
-
-    &:-moz-full-screen {
-      .video-overlay {
-        position: absolute;
-        height: 35px;
-        background-color: rgba(0, 0, 0, 0.8);
-        width: 100%;
-        text-align: left;
-      }
+    @media (max-width: 1000px) {
+      width: 99.9%;
     }
 
     .play-btn {
@@ -51,11 +45,11 @@
       float: left;
 
       &.play {
-        background-image: url(/images/play.png);
+        background-image: url("/images/play.png");
       }
 
       &.pause {
-        background-image: url(/images/pause.png);
+        background-image: url("/images/pause.png");
       }
     }
 
@@ -189,6 +183,7 @@
           height: 10px;
 
           input[type="range"] {
+            appearance: none;
             -webkit-appearance: none;
             width: 100%;
             background-color: transparent;

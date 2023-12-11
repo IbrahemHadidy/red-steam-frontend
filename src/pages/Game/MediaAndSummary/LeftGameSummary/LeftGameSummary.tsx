@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEventHandler, RefObject, Dispatch, SetStateAction } from "react";
 import { SteamVideo } from "../SteamVideo";
 import { Screenshot } from "../Screenshot";
 import { SlidesArea, SliderButtons } from "./SlidesArea";
@@ -7,14 +7,19 @@ import { MovieEntry, gamesData } from "../../gameData";
 interface LeftGameSummaryProps {
   selectedItem: string | null;
   selectedEntry: MovieEntry | null;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
+  videoRef: RefObject<HTMLVideoElement | null>;
   isAutoplay: boolean;
-  setAutoplay: React.Dispatch<React.SetStateAction<boolean>>;
+  setAutoplay: Dispatch<SetStateAction<boolean>>;
   isMouseOverScreenshot: boolean;
-  setIsMouseOverScreenshot: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsMouseOverScreenshot: Dispatch<SetStateAction<boolean>>;
   game: gamesData;
-  setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedItem: Dispatch<SetStateAction<string | null>>;
   handleSliderClick: (direction: "left" | "right") => void;
+  openModal: MouseEventHandler<HTMLAnchorElement>,
+  autoplayInitialized: boolean;
+  setAutoplayInitialized: Dispatch<SetStateAction<boolean>>;
+  wasPausedBeforeSwap: boolean;
+  setWasPausedBeforeSwap: Dispatch<SetStateAction<boolean>>;
 }
 
 export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
@@ -28,6 +33,11 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
   game,
   setSelectedItem,
   handleSliderClick,
+  openModal,
+  autoplayInitialized,
+  setAutoplayInitialized,
+  wasPausedBeforeSwap,
+  setWasPausedBeforeSwap,
 }) => {
   return (
     <div className="left-game-summary">
@@ -42,6 +52,10 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
                 poster={selectedEntry.posterLink}
                 isAutoplay={isAutoplay}
                 setAutoplay={setAutoplay}
+                autoplayInitialized={autoplayInitialized}
+                setAutoplayInitialized={setAutoplayInitialized}
+                wasPausedBeforeSwap={wasPausedBeforeSwap}
+                setWasPausedBeforeSwap={setWasPausedBeforeSwap}
               />
             ) : (
               <Screenshot
@@ -50,6 +64,7 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
                 isMouseOverScreenshot={isMouseOverScreenshot}
                 onEnter={() => setIsMouseOverScreenshot(true)}
                 onLeave={() => setIsMouseOverScreenshot(false)}
+                openModal={openModal}
               />
             )}
           </>

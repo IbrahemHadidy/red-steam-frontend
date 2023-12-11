@@ -29,11 +29,17 @@
       background-color: #3d4450 !important;
       color: #dcdedf !important;
       padding: 0;
+      --bs-dropdown-min-width: 0 !important;
+      box-shadow: 3px 3px 5px -3px #000;
+      top: 80%;
     }
 
     .dropdown-item {
       border-radius: 0 !important;
       color: #dcdedf !important;
+      font-size: 12px;
+      width: auto;
+      padding: 6px 15px;
 
       &:hover {
         background-color: #dcdedf !important;
@@ -147,6 +153,16 @@
 
         a {
           padding-top: 3.5px !important;
+        }
+
+        .dropdown-menu {
+          left: -163%;
+          top: 80%;
+
+          .dropdown-item {
+            padding: 8px 18px !important;
+            font-size: 13px;
+          }
         }
       }
 
@@ -444,6 +460,7 @@
               transition: max-height 0.3s ease-in-out;
 
               .inner-menu {
+                transition: max-height 0.3s ease-in-out;
                 max-height: initial;
                 border-top: 1px solid #454953;
 

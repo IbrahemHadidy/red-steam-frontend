@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import { useSpring, animated } from "react-spring";
 import { menuData, navigationItems } from "../menuData";
 
 type MenuItem = {
@@ -15,6 +16,8 @@ type GroupedMenuItem = {
 };
 
 const DesktopSecondNav: FC = () => {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+
   const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(
     ([menuTitle, menu]) => {
       const items = menu.items;
@@ -32,6 +35,17 @@ const DesktopSecondNav: FC = () => {
       return { menuTitle, categoryGroups };
     }
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fadeAnimations: Record<string, any> = {};
+
+  groupedMenuItems.forEach(({ menuTitle }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    fadeAnimations[menuTitle] = useSpring({
+      opacity: openMenu === menuTitle ? 1 : 0,
+      config: { duration: openMenu ? 30 : 15 },
+    });
+  });
 
   return (
     <>
@@ -51,41 +65,53 @@ const DesktopSecondNav: FC = () => {
               src="https://source.unsplash.com/user/c_v_r"
               alt="Avatar"
             />
-            {groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
-              <li key={index} className="nav-item dropdown">
-                <a
-                  className={`nav-link navBarItem ${
-                    menuTitle === "Your Store" ? "special-class" : ""
-                  }`}
-                  href=""
-                  data-toggle="dropdown"
-                >
-                  {menuTitle}
-                </a>
-                <div className={`dropdown-menu ${menuTitle}-div`}>
-                  {Object.entries(categoryGroups).map(
-                    ([category, categoryItems], categoryIndex) => (
-                      <div
-                        key={categoryIndex}
-                        className={`category-div ${category}`}
-                      >
-                        {categoryItems.map((categoryItem, itemIndex) => (
-                          <a
-                            key={itemIndex}
-                            className={`menuItem ${categoryItem.className} ${
-                              categoryItem.specialClass || ""
-                            }`}
-                            href={categoryItem.url}
-                          >
-                            {categoryItem.label}
-                          </a>
-                        ))}
-                      </div>
-                    )
-                  )}
-                </div>
-              </li>
-            ))}
+             {groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
+        <li
+          key={index}
+          className="nav-item dropdown"
+          onMouseEnter={() => setOpenMenu(menuTitle)}
+          onMouseLeave={() => setOpenMenu(null)}
+        >
+          <a
+            className={`nav-link navBarItem ${
+              menuTitle === "Your Store" ? "special-class" : ""
+            }`}
+            href=""
+            data-toggle="dropdown"
+          >
+            {menuTitle}
+          </a>
+          <animated.div
+            className={`dropdown-menu ${menuTitle}-div`}
+            style={fadeAnimations[menuTitle]}
+          >
+            {openMenu === menuTitle && (
+              <>
+                {Object.entries(categoryGroups).map(
+                  ([category, categoryItems], categoryIndex) => (
+                    <div
+                      key={categoryIndex}
+                      className={`category-div ${category}`}
+                    >
+                      {categoryItems.map((categoryItem, itemIndex) => (
+                        <a
+                          key={itemIndex}
+                          className={`menuItem ${categoryItem.className} ${
+                            categoryItem.specialClass || ""
+                          }`}
+                          href={categoryItem.url}
+                        >
+                          {categoryItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  )
+                )}
+              </>
+            )}
+          </animated.div>
+        </li>
+      ))}
 
             {navigationItems.map((item, index) => (
               <a key={index} className="nav-link navBarItem" href={item.url}>

@@ -1,11 +1,15 @@
-import { FC, RefObject, useEffect, useRef, useState } from "react";
+import { FC, RefObject, useEffect, useRef, useState, Dispatch, SetStateAction, EventHandler, SyntheticEvent, ChangeEvent } from "react";
 
 interface SteamVideoProps {
   videoRef: RefObject<HTMLVideoElement | null>;
   videoSrc: string;
   poster: string;
   isAutoplay: boolean;
-  setAutoplay: React.Dispatch<React.SetStateAction<boolean>>;
+  setAutoplay: Dispatch<SetStateAction<boolean>>;
+  autoplayInitialized: boolean;
+  setAutoplayInitialized: Dispatch<SetStateAction<boolean>>;
+  wasPausedBeforeSwap: boolean;
+  setWasPausedBeforeSwap: Dispatch<SetStateAction<boolean>>;
 }
 
 export const SteamVideo: FC<SteamVideoProps> = ({
@@ -14,6 +18,10 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   poster,
   isAutoplay,
   setAutoplay,
+  autoplayInitialized,
+  setAutoplayInitialized,
+  wasPausedBeforeSwap,
+  setWasPausedBeforeSwap,
 }) => {
   const videoSettings = {
     poster: poster,
@@ -24,12 +32,10 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     autoPlay: true,
   };
 
-  const [overlayBottom, setOverlayBottom] = useState("-35px");
+  const [overlayBottom, setOverlayBottom] = useState("-37px");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
-  const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState(false);
-  const [autoplayInitialized, setAutoplayInitialized] = useState(false);
   const [volume, setVolume] = useState(() => {
     const storedVolume = localStorage.getItem("volume");
     return storedVolume ? parseFloat(storedVolume) : 1;
@@ -54,13 +60,13 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const handleMouseLeave = () => {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      setOverlayBottom("-35px");
+      setOverlayBottom("-37px");
     }, 1000);
   };
 
   // time update function
-  const handleTimeUpdate: React.EventHandler<
-    React.SyntheticEvent<HTMLVideoElement>
+  const handleTimeUpdate: EventHandler<
+    SyntheticEvent<HTMLVideoElement>
   > = () => {
     const video = document.querySelector(
       ".highlight-movie video"
@@ -77,7 +83,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   };
 
   // seeking time function
-  const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = (event: ChangeEvent<HTMLInputElement>) => {
     const video = document.querySelector(
       ".highlight-movie video"
     ) as HTMLVideoElement;
@@ -110,7 +116,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [wasPausedBeforeSwap]);
+  }, [setWasPausedBeforeSwap, wasPausedBeforeSwap]);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -174,7 +180,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
       setAutoplay(JSON.parse(storedAutoplay));
     }
     setAutoplayInitialized(true);
-  }, [setAutoplay]);
+  }, [setAutoplay, setAutoplayInitialized]);
 
   // play/pause button function
   const handlePlayPause = () => {
@@ -231,7 +237,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   }, [isMuted]);
 
   // volume bar function
-  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseInt(event.target.value, 10) / 100;
     setVolumeSliderValue(parseInt(event.target.value, 10));
     setVolume(newVolume);
@@ -259,7 +265,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     if (playerArea) {
       if (!document.fullscreenElement) {
         playerArea.requestFullscreen().then(() => {
-          setOverlayBottom("-35px");
+          setOverlayBottom("-37px");
         });
       } else {
         document.exitFullscreen().then(() => {

@@ -14,14 +14,14 @@ const getPlatform = () => {
   }
 };
 
-export const LeftContent: FC<{ game: gamesData }> = ({ game }) => {
+export const LeftContent: FC<{ game: gamesData, isMobileView630: boolean }> = ({ game, isMobileView630 }) => {
   const platform = getPlatform();
 
   return (
     <div className="game-content-left">
 
       {/* Purchase area */}
-      <div className="game-purchase-wrapper">
+      {!isMobileView630 && <div className="game-purchase-wrapper">
         <div className="game-purchase">
           <div className="game-purchase-platform">
             {game.mac && platform === "darwin" ? (
@@ -121,7 +121,7 @@ export const LeftContent: FC<{ game: gamesData }> = ({ game }) => {
             </>
           )}
         </div>
-      </div>
+      </div>}
       
       {/* Game about */}
       <div className="autocollapse-container">

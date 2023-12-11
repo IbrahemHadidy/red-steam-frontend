@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSpring, animated } from "react-spring";
 import sharedData from "../sharedData";
 
 interface MenuItem {
@@ -7,14 +8,18 @@ interface MenuItem {
   link: string;
 }
 
-interface SteamMenuProps {}
-
-const SteamMenu: React.FC<SteamMenuProps> = () => {
+const SteamMenu: React.FC = () => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
   const [showNotificationDropdown, setShowNotificationDropdown] =
     useState(false);
 
+  const dropdownAnimation = useSpring({
+    height: showNotificationDropdown ? 42 : 0,
+    opacity: showNotificationDropdown ? 1 : 0,
+    from: { height: 0, opacity: 0 },
+  })
+  
   const toggleSubmenu = (submenuId: string) => {
     if (openSubmenu === submenuId) {
       setOpenSubmenu(null);
@@ -26,90 +31,109 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
   };
 
   const generateMenuItems = (menuItems: MenuItem[], menuClass: string) => {
-    return menuItems.map((menuItem, index) => (
-      <div
-      className={`menu-item ${menuClass} ${
-        menuItem.id === "account-details" ||
-        menuItem.id === "store-preferences" ||
-        menuItem.id === "change-language" ||
-        menuItem.id === "change-user"
-          ? "has-dropdown"
-          : ""
-      } ${openedItems[menuItem.id] ? "opened" : ""} ${
-        index === 0 ? "first" : ""
-      }`}
-      data-submenu={`submenu-${menuItem.id}`}
-      key={menuItem.id}
-    >
+    return menuItems.map((menuItem, index) => {
+      const submenu = sharedData.subMenus.find((subMenu) => subMenu.title === menuItem.text);
+      const subMenuItemCount = submenu ? submenu.items.length : 0;
+  
+      const itemHeight = openedItems[menuItem.id] ? subMenuItemCount * 41.250 : 0;
+  
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const dropdownAnimation = useSpring({
+        height: itemHeight,
+        opacity: openedItems[menuItem.id] ? 1 : 0,
+        from: { height: 0, opacity: 0 },
+      });
+  
+
+      return (
         <div
-          onClick={() => {
-            if (
-              menuItem.id === "support" ||
-              menuItem.id === "account-details" ||
-              menuItem.id === "store-preferences" ||
-              menuItem.id === "change-language" ||
-              menuItem.id === "change-user"
-            ) {
-              window.location.href = menuItem.link;
-            } else {
-              toggleSubmenu(menuItem.id);
-            }
-          }}
-          className={`menu-item-content ${
-            menuItem.id === "supernav" ? "supernav" : ""
-          }`}
-        >
-          <span className="menu-item-text">{menuItem.text}</span>
-          {menuItem.id === "notifications" ||
-          menuItem.id === "store" ||
-          menuItem.id === "you-and-friends" ||
-          menuItem.id === "community" ? (
-            <img
-              src="/images/dropdown.png"
-              alt="Rotate Icon"
-              className={`rotate-icon ${
-                openedItems[menuItem.id] ? "rotated" : ""
-              }`}
-            />
-          ) : null}
-        </div>
-        {openedItems[menuItem.id] &&
+        className={`menu-item ${menuClass} ${
+          menuItem.id === "account-details" ||
+          menuItem.id === "store-preferences" ||
+          menuItem.id === "change-language" ||
+          menuItem.id === "change-user"
+            ? "has-dropdown"
+            : ""
+        } ${openedItems[menuItem.id] ? "opened" : ""} ${
+          index === 0 ? "first" : ""
+        }`}
+        data-submenu={`submenu-${menuItem.id}`}
+        key={menuItem.id}
+      >
+          <div
+            onClick={() => {
+              if (
+                menuItem.id === "support" ||
+                menuItem.id === "account-details" ||
+                menuItem.id === "store-preferences" ||
+                menuItem.id === "change-language" ||
+                menuItem.id === "change-user"
+              ) {
+                window.location.href = menuItem.link;
+              } else {
+                toggleSubmenu(menuItem.id);
+              }
+            }}
+            className={`menu-item-content ${
+              menuItem.id === "supernav" ? "supernav" : ""
+            }`}
+          >
+            <span className="menu-item-text">{menuItem.text}</span>
+            {menuItem.id === "notifications" ||
+            menuItem.id === "store" ||
+            menuItem.id === "you-and-friends" ||
+            menuItem.id === "community" ? (
+              <img
+                src="/images/dropdown.png"
+                alt="Rotate Icon"
+                className={`rotate-icon ${
+                  openedItems[menuItem.id] ? "rotated" : ""
+                }`}
+              />
+            ) : null}
+          </div>
+          {openedItems[menuItem.id] &&
           menuItem.id !== "support" &&
           menuItem.id !== "account-details" &&
           menuItem.id !== "store-preferences" &&
           menuItem.id !== "change-language" &&
           menuItem.id !== "change-user" && (
-            <div
+            <animated.div
               className={`submenu-wrapper inner-menu ${
                 menuItem.id === "supernav" ? "supernav-opened" : ""
               }`}
+              style={{
+                height: dropdownAnimation.height,
+                opacity: dropdownAnimation.opacity,
+              }}
             >
-              {sharedData.subMenus
-                .find((subMenu) => subMenu.title === menuItem.text)
-                ?.items.map((subMenuItem) => (
-                  <a
-                    className="submenuitem"
-                    href={subMenuItem.link}
-                    key={subMenuItem.id}
-                  >
-                    {subMenuItem.text}
-                  </a>
-                ))}
-            </div>
+              {submenu?.items.map((subMenuItem) => (
+                <a
+                  className="submenuitem"
+                  href={subMenuItem.link}
+                  key={subMenuItem.id}
+                >
+                  {subMenuItem.text}
+                </a>
+              ))}
+              {/* Display the count of submenu items */}
+              <p>Number of submenu items: {subMenuItemCount}</p>
+            </animated.div>
           )}
       </div>
-    ));
+      );
+    });
   };
 
-  const NotificationDropdown: React.FC = () => (
-    <div
+ const NotificationDropdown: React.FC = () => (
+    <animated.div
       className={`menuitem_submenu_wrapper notification-dropdown ${
         showNotificationDropdown ? "active" : ""
       }`}
-      style={{ height: "42px" }}
+      style={{ height: dropdownAnimation.height, opacity: dropdownAnimation.opacity }}
     >
       <div className="inner_borders">
-        <div className="notification_submenu" data-submenuid="notifications">
+        <div className="notification_submenu" >
           <div data-featuretarget="green-envelope-responsive">
             <div className="NotificationHeader ResponsiveViewAll">
               <button className="AllNotificationsButton">View All</button>
@@ -117,7 +141,7 @@ const SteamMenu: React.FC<SteamMenuProps> = () => {
           </div>
         </div>
       </div>
-    </div>
+    </animated.div>
   );
 
   // Render the SteamMenu component

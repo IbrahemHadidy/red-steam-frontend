@@ -111,12 +111,14 @@
       padding-bottom: 5px;
       letter-spacing: 2px;
     }
+
     .review-box {
       background-color: rgba(0, 0, 0, 0.2);
       margin-bottom: 26px;
       background-image: url("/images/maincol_gradient_rule.png"), url("/images/maincol_gradient_rule.png");
       background-repeat: no-repeat, no-repeat;
-      background-position: top left, bottom left;;
+      background-position: top left, bottom left;
+      ;
       display: flex;
       flex-direction: row;
 
@@ -131,7 +133,7 @@
           max-height: 225px !important;
           overflow: hidden !important;
           position: relative !important;
-          
+
           .gradient {
             display: block;
             position: absolute;
@@ -140,8 +142,8 @@
             right: 0px;
             z-index: 1;
             height: 30px;
-            background: -webkit-linear-gradient( top, rgba( 22,32,45,0) 5%, rgba( 22,32,45,.95) 95%);
-            background: linear-gradient( to bottom, rgba( 22,32,45,0) 5%, rgba( 22,32,45,.95) 95%);
+            background: -webkit-linear-gradient(top, rgba(22, 32, 45, 0) 5%, rgba(22, 32, 45, .95) 95%);
+            background: linear-gradient(to bottom, rgba(22, 32, 45, 0) 5%, rgba(22, 32, 45, .95) 95%);
           }
         }
       }
@@ -163,12 +165,13 @@
             position: relative;
             border-radius: 0;
             padding: 1px;
-            
+
             &.offline {
-              background: linear-gradient( to bottom, rgba(106,106,106,1) 5%, rgba(85,85,85,1) 95%);
+              background: linear-gradient(to bottom, rgba(106, 106, 106, 1) 5%, rgba(85, 85, 85, 1) 95%);
             }
+
             &.online {
-              background: linear-gradient( to bottom, rgba(83,164,196,1) 5%, rgba(69,128,151,1) 95%);
+              background: linear-gradient(to bottom, rgba(83, 164, 196, 1) 5%, rgba(69, 128, 151, 1) 95%);
             }
 
             img {
@@ -180,6 +183,7 @@
             }
           }
         }
+
         .person-name {
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -190,7 +194,7 @@
           margin-bottom: -1px;
           display: inline-block;
           grid-column: none;
-          
+
           a {
             color: #c1dbf4;
             font-size: 13px;
@@ -199,6 +203,7 @@
           }
         }
       }
+
       .rightcol {
         float: right;
         width: 744px;
@@ -207,23 +212,25 @@
         .vote-header {
           margin: 8px 0 13px;
           display: block;
-          background: rgba( 0, 0, 0, 0.2 );
+          background: rgba(0, 0, 0, 0.2);
           height: 40px;
 
           &:hover {
-            background: rgba( 255, 255, 255, 0.1 );
+            background: rgba(255, 255, 255, 0.1);
           }
 
           .thumb {
             float: left;
             margin-right: 10px;
           }
+
           .review-source {
             float: right;
             margin-right: 5px;
             margin-top: 12px;
             opacity: 0.5;
           }
+
           .title {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -236,6 +243,7 @@
             line-height: 19px;
           }
         }
+
         .post-date {
           margin: 0px 0px 8px;
           font-size: 10px;
@@ -245,6 +253,7 @@
           display: inline-block;
           opacity: 0.6;
         }
+
         .content {
           margin-right: 8px;
           font-family: "Motiva Sans", Sans-serif;
@@ -256,6 +265,7 @@
           overflow: hidden;
           margin-bottom: 15px;
         }
+
         .posted {
           font-size: 10px;
           font-style: italic;
@@ -273,6 +283,7 @@
               font-style: normal;
             }
           }
+
           .hr {
             background-color: #363f4c;
             height: 1px;
@@ -283,8 +294,8 @@
   }
 }
 
-@media  (max-width: 1000px) {
-	.review-box {
+@media (max-width: 1000px) {
+  .review-box {
     display: block !important;
 
     .leftcol {
@@ -292,15 +303,51 @@
       width: fit-content !important;
       float: left !important;
       opacity: 1 !important;
+      margin-left: 9px !important;
+
+      @media (max-width: 630px) {
+        width: -webkit-fill-available !important;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 6px !important;
+        padding-right: 5px !important;
+        padding-left: 4px !important;
+        margin-left: 0 !important;
+
+        .player-avatar {
+          width: 40px !important;
+          height: 40px !important;
+
+          img {
+            width: 38px !important;
+            height: 38px !important;
+          }
+        }
+      }
     }
 
     .rightcol {
       width: auto !important;
       float: none !important;
+
       .vote-header {
         overflow: hidden;
+
+        @media (max-width:630px) {
+          clear: both;
+          margin: 8px 0 3px !important;
+          padding-bottom: 5px;
+          padding-top: 5px;
+
+          .thumb {
+            margin-left: 5px !important;
+            margin-right: 5px !important;
+          }
+        }
       }
-      .post-date, .content, .posted {
+
+      .post-date,
+      .content,
+      .posted {
         margin-right: 3% !important;
         margin-left: 3% !important;
       }

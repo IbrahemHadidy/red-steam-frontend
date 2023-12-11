@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useState, useRef, useEffect, useCallback } from "react";
+import { FC, useState, useRef, useEffect, useCallback, MouseEventHandler } from "react";
 import { GameTitleArea } from "./GameTitleArea";
 import { RightGameSummary } from "./RightGameSummary";
 import { LeftGameSummary } from "./LeftGameSummary/LeftGameSummary";
 import { QueueArea } from "./QueueArea";
 import { GameOwned } from "./GameOwned";
+import { ScreenshotModal } from "./Screenshot";
 import gameData, { gamesData, MovieEntry } from "../gameData";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
@@ -12,10 +13,39 @@ import "./steamVideo.scss";
 const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
+  const [autoplayInitialized, setAutoplayInitialized] = useState(false);
   const [initialRender, setInitialRender] = useState(true);
-  const [isMouseOverScreenshot, setIsMouseOverScreenshot] =
-    useState<boolean>(false);
+  const [isMouseOverScreenshot, setIsMouseOverScreenshot] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentScreenshotIndex, setCurrentScreenshotIndex] = useState<number>(0);
+  const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState(false);
+  const [isMobileView630, setIsMobileView630] = useState(window.innerWidth <= 630);
 
+  // handle resizing with maxwidth = 630
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView630(window.innerWidth <= 630);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // filter screenshots only number from the media
+  const selectedEntryIndex = game.moviesAndImages
+  .filter((entry) => entry.type === "image")
+  .findIndex((entry) => entry.link === selectedItem);
+
+  const openModal: MouseEventHandler<HTMLAnchorElement> = (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+    setIsModalOpen(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -51,7 +81,10 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
     const currentIndex = game.moviesAndImages.findIndex(
       (entry) => entry.link === selectedItem
     );
-  
+    const totalScreenshots = game.moviesAndImages.filter((entry) => entry.type === "image").length;
+    const nextIndex = (currentScreenshotIndex + 1) % totalScreenshots;
+    setCurrentScreenshotIndex(nextIndex);
+
     if (isAutoplay) {
       const nextIndex = (currentIndex + 1) % game.moviesAndImages.length;
       setSelectedItem(game.moviesAndImages[nextIndex].link);
@@ -100,13 +133,17 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         });
       }
     }
-  }, [game, isAutoplay, selectedItem]);  
+  }, [game, isAutoplay, selectedItem, currentScreenshotIndex]);  
 
   //730 - 612 = 118
 
   // function to swap photos and videos and photos with left swap button
   const handleLeftSwap = useCallback(
     (currentIndex: number) => {
+      const totalScreenshots = game.moviesAndImages.filter((entry) => entry.type === "image").length;
+      const nextIndex = (currentScreenshotIndex - 1 + totalScreenshots) % totalScreenshots;
+      setCurrentScreenshotIndex(nextIndex)
+
       const slideArea = document.querySelector(".slide-area");
       if (slideArea) {
         const indicatorPosition = currentIndex * 120;
@@ -144,10 +181,10 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         }
       }
     },
-    [game, setSelectedItem]
+    [game, setSelectedItem, currentScreenshotIndex]
   );
 
-  // function controlling the behavior of the right and left buttons under the slides area
+  // function controlling the behavior of the previous and next buttons in the screenshots modal
   const handleSliderClick = (direction: "left" | "right") => {
     const currentIndex = game.moviesAndImages.findIndex(
       (entry) => entry.link === selectedItem
@@ -169,7 +206,32 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 
     // Set the selectedItem based on the nextIndex
     setSelectedItem(game.moviesAndImages[nextIndex].link);
+
+    const totalScreenshots = game.moviesAndImages.filter((entry) => entry.type === "image").length;
+    if (direction === "right") {
+      // Increment the index when clicking right
+      setCurrentScreenshotIndex((prevIndex) => (prevIndex + 1) % totalScreenshots);
+    } else if (direction === "left") {
+      // Decrement the index when clicking left
+      setCurrentScreenshotIndex((prevIndex) => (prevIndex - 1 + totalScreenshots) % totalScreenshots);
+    }
   };
+  
+  // check if the tab is visible
+  const isPageVisible = useRef(true);
+  useEffect(() => {
+    // Set up event listeners for visibility changes
+    const handleVisibilityChange = () => {
+      isPageVisible.current = !document.hidden;
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Clean up event listeners
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   // auto swap for screenshots function
   useEffect(() => {
@@ -178,7 +240,9 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         selectedItem &&
         typeof selectedItem === "string" &&
         game.moviesAndImages.find((entry) => entry.link === selectedItem)
-          ?.type !== "video"
+          ?.type !== "video" &&
+        !isModalOpen && // Check if the modal is open
+        isPageVisible.current // Check if the page is visible
       ) {
         handleSwap();
       }
@@ -187,7 +251,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
     return () => {
       clearInterval(screenshotIntervalId);
     };
-  });
+  }, [selectedItem, game, isModalOpen]);
 
   // auto swap for videos function
   useEffect(() => {
@@ -195,17 +259,21 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 
     const handleVideoEnded = () => {
       console.log("Video ended. Swapping...");
-      handleSwap();
+      // Check if the page is visible before swapping
+      if (isPageVisible.current) {
+        handleSwap();
+      }
     };
 
     if (video) {
       video.addEventListener("ended", handleVideoEnded);
+
       return () => {
         video.removeEventListener("ended", handleVideoEnded);
       };
     }
   }, [selectedItem]);
-
+  
   // auto swap for the first video if autoplay is off
   useEffect(() => {
     if (initialRender) {
@@ -242,18 +310,26 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
       <div className="game-background">
         <div className="game-page-content">
           <div className="media-summary-block">
-            <RightGameSummary game={game} />
+            <RightGameSummary 
+            game={game}
+            isMobileView630={isMobileView630}
+             />
             <LeftGameSummary
               selectedItem={selectedItem}
               selectedEntry={selectedEntry}
               videoRef={videoRef}
               isAutoplay={isAutoplay}
               setAutoplay={setAutoplay}
+              autoplayInitialized={autoplayInitialized}
+              setAutoplayInitialized={setAutoplayInitialized}
               isMouseOverScreenshot={isMouseOverScreenshot}
               setIsMouseOverScreenshot={setIsMouseOverScreenshot}
               game={game}
               setSelectedItem={setSelectedItem}
               handleSliderClick={handleSliderClick}
+              openModal={openModal}
+              wasPausedBeforeSwap={wasPausedBeforeSwap}
+              setWasPausedBeforeSwap={setWasPausedBeforeSwap}
             />
           </div>
         </div>
@@ -262,6 +338,18 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 
       {/* isInLibrary backend logic */}
       {/* <GameOwned game={game} /> */}
+
+      
+      {isModalOpen && (
+        <ScreenshotModal imgSrc={selectedEntry?.link || ''}
+        onClose={closeModal}
+        currentScreenshotIndex={selectedEntryIndex}
+        game={game}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        selectedEntry={selectedEntry}
+        />
+      )}
     </div>
   );
 };
