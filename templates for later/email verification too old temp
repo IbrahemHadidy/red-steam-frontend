@@ -1,0 +1,9 @@
+<div class="joinsteam_content_container">
+		<div class="section_title">
+							<div class="newaccount_email_header_text">Unable to Verify Email Address</div>
+					</div>
+
+		<div id="main_content">
+							<div class="newaccount_email_verified_text error">This verification request is too old. Please try creating your account again.</div>
+					</div>
+	</div>

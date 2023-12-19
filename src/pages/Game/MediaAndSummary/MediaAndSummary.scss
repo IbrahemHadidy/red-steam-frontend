@@ -945,6 +945,7 @@
 
       .right-game-summary {
         height: auto;
+        width: auto;
         padding: 4px 2%;
         @media (max-width: 630px) {
           width: auto;
@@ -1041,7 +1042,6 @@
               margin-left: 21px;
             }
           }
-
         }
       }
     }

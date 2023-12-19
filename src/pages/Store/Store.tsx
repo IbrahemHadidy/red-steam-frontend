@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Header from "../../components/Header/Header";
 import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
 import Sidebar from "./Sidebar/Sidebar";
@@ -14,6 +14,11 @@ import Footer from "../../components/Footer/Footer";
 import "./Store.scss"
 
 const Store: FC = () => {
+
+  useEffect(() => {
+    document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"
+  }, []);
+
   return(
     <div className='store'>
       <Header />

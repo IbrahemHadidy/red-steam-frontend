@@ -1,7 +1,5 @@
 import { FC } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
 import ProfileDropdown from "./ProfileDropdown";
 import NavigationLinks from "./NavigationLinks";
 
@@ -16,8 +14,9 @@ const DefaultDesktopComponent: FC = () => {
         <Container className="header-content">
           {/* Right-Top-side navigation links */}
           <Nav className="my-nav">
-            {/* "Install Steam" button with a FontAwesome icon */}
-            <Button variant="secondary" className="mr-2 compact-button">
+            {/* "Install Steam" button */}
+            {/* isLoggedIn ? */}
+            <Button variant="secondary" className={`mr-2 compact-button ${{/*isLoggedIn*/} && "login"}`}>
               <span className="button-content button-text">
                 <img
                   className="fa-icon"
@@ -28,15 +27,19 @@ const DefaultDesktopComponent: FC = () => {
               </span>
             </Button>
 
-            {/* "Notifications" button with a FontAwesome icon */}
+            {/* "Notifications" button */}
+            {/* isLoggedIn ? */}
             <Button variant="secondary" className="compact-button">
               <span className="button-content button-text bell">
-                <FontAwesomeIcon icon={faBell} style={{ color: "#b8b6b4" }} />
+                <img src="/images/bell.svg" style={{ width: "14px" }} />
               </span>
             </Button>
-
+            {/* isLoggedIn Backend Logic */}
+            {/* isLoggedIn ? */}
             {/* User profile dropdown menu */}
             <ProfileDropdown />
+            {/* !isLoggedIn */}
+            {/* <a style={{paddingTop: "3.5px"}} href="/login">login</a> */}
           </Nav>
 
           {/* Brand/logo section */}

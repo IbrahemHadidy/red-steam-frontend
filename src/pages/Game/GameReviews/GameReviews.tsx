@@ -1,26 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import { gamesData, ReviewEntry } from "../gameData";
 import DOMPurify from "dompurify";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import "./GameReviews.scss";
 
 
 const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
+  const { isMobileView, isMobileView630 } = useResponsiveViewports();
   const [selectedFilter, setSelectedFilter] = useState<string>("All");
   const [isPartial, setIsPartial] = useState<boolean>(false);
-
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1000);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
 
   let positivePercentage: number = 0;
 
@@ -133,6 +121,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
                 <div className="person-name">
                   <a href={`/id/${{/*userId*/}}`}>{review.user}</a>
                 </div>
+                {isMobileView630 && <div className="post-date"> Posted: {review.date}</div>}
               </div>
               <div className="rightcol">
                 <div className="vote-header">
@@ -142,7 +131,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
                   <img className="review-source" src="/images/icon_review_steam.png" />
                   <div className="title">{review.type === "negative" ? "Not Recommended" : "Recommended"}</div>
                 </div>
-                <div className="post-date"> Posted: {review.date}</div>
+                {!isMobileView630 && <div className="post-date"> Posted: {review.date}</div>}
                 <div className="content">
                   <div dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(review.content)}}/>
                   {isPartial ? (<div className="gradient" />) : ''}

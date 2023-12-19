@@ -202,6 +202,14 @@
             font-weight: bold;
           }
         }
+
+        .post-date {
+          font-size: 10px;
+          text-transform: uppercase;
+          font-style: normal;
+          color: #8091a2;
+          opacity: 0.6;
+        }
       }
 
       .rightcol {
@@ -334,22 +342,27 @@
 
         @media (max-width:630px) {
           clear: both;
-          margin: 8px 0 3px !important;
+          margin: 8px 0 12px !important;
           padding-bottom: 5px;
           padding-top: 5px;
 
           .thumb {
             margin-left: 5px !important;
-            margin-right: 5px !important;
+            margin-right: 8px !important;
           }
         }
       }
 
       .post-date,
       .content,
-      .posted {
-        margin-right: 3% !important;
-        margin-left: 3% !important;
+      .posted {    
+        margin-right: 19px !important;
+        margin-left: 19px !important;
+
+        @media (max-width: 630px) {
+          margin-right: 10px !important;
+          margin-left: 10px !important;
+        }
       }
     }
   }

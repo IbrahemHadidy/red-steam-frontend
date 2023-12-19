@@ -1,0 +1,24 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
+
+// this is for user authentication
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const PORT = 3001;
+
+app.use(bodyParser.json());
+
+app.post('/authenticate', (req, res) => {
+  // Perform authentication logic here (check user credentials against a database)
+  const { accountName, password } = req.body;
+  const isAuthenticated = /* Your authentication logic here */ true;
+
+  res.json({ isAuthenticated });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

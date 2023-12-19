@@ -1,5 +1,6 @@
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import Slider from "react-slick";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import popularVRGames from "./popularVRGames";
 
 interface vrGame {
@@ -12,18 +13,7 @@ interface vrGame {
 }
 
 const PopularVR: FC = () => {
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1000);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const { isMobileView } = useResponsiveViewports();
 
   const vrGamesSettings = {
     dots: true,

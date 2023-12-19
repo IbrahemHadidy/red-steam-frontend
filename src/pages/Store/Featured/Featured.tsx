@@ -1,22 +1,11 @@
-import { FC, useState, useEffect } from "react";
-import "./Featured.scss";
+import { FC } from "react";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import FeaturedDesktop from "./Desktop/FeaturedDesktop";
 import FeaturedMobile from "./Mobile/FeaturedMobile";
-
+import "./Featured.scss";
 
 const Featured: FC = () => {
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1000);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const { isMobileView } = useResponsiveViewports();
 
   return (
     <div>

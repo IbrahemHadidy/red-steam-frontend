@@ -81,7 +81,7 @@ export const RightGameSummary: FC<{ game: gamesData; isMobileView630: ReactNode 
         <div className="dev-publish">
           <div className="summary-subtitle">Publisher:</div>
           <div className="summary-column">
-            <a href={game.developer.link}>{game.developer.name}</a>
+            <a href={game.developer.link}>{game.publisher.name}</a>
           </div>
         </div>
       </div>

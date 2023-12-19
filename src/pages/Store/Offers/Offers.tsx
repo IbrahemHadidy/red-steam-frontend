@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import { offeredGames, specialOffers } from "./OfferedGames";
 import Slider from "react-slick";
 import "./Offers.scss";
@@ -14,18 +15,7 @@ interface OfferedGame {
 }
 
 const Offers: FC = () => {
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1000);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const { isMobileView } = useResponsiveViewports();
 
   const offersSettings = {
     dots: true,

@@ -7,10 +7,12 @@ import { QueueArea } from "./QueueArea";
 import { GameOwned } from "./GameOwned";
 import { ScreenshotModal } from "./Screenshot";
 import gameData, { gamesData, MovieEntry } from "../gameData";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
 
 const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
+  const { isMobileView630 } = useResponsiveViewports();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
   const [autoplayInitialized, setAutoplayInitialized] = useState(false);
@@ -19,19 +21,6 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentScreenshotIndex, setCurrentScreenshotIndex] = useState<number>(0);
   const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState(false);
-  const [isMobileView630, setIsMobileView630] = useState(window.innerWidth <= 630);
-
-  // handle resizing with maxwidth = 630
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView630(window.innerWidth <= 630);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   // filter screenshots only number from the media
   const selectedEntryIndex = game.moviesAndImages
@@ -58,16 +47,16 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         ? `Save ${game.discountPercentage.replace(/^-(\d+)/, '$1')} on` : ""
     } ${game.name} on Steam`;
 
-    // this is responsible for skipping the first videos after the page loads if autoplay is off
-    if (!isAutoplay) {
-      const firstNonVideoItem = game.moviesAndImages.find(
-        (entry) => entry.type !== "video"
+    // this is responsible for skipping the first videos after the page loads if autoplay is off 
+    // and handle the loading of the first image if video doesnt exist
+    const videoExist = game.moviesAndImages.find((entry) => entry.type === "video");
+    if (!isAutoplay || !videoExist) {
+      setSelectedItem(
+        game.moviesAndImages.find((entry) => entry.type === "image")?.link || null
       );
-      setSelectedItem(firstNonVideoItem?.link || null);
     } else {
       setSelectedItem(
-        game.moviesAndImages.find((entry) => entry.type === "video")?.link ||
-          null
+        game.moviesAndImages.find((entry) => entry.type === "video")?.link || null
       );
     }
 

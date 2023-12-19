@@ -359,6 +359,17 @@
               right: 6px;
               top: 2px;
               font-size: 11px;
+
+              &::before {
+                content: '';
+                left: 0px;
+                right: 0px;
+                position: absolute;
+                top: 43%;
+                border-bottom: 1.5px solid #738895;
+                transform: skewY(-8deg);
+                box-shadow: 0 0 2px black;
+              }
             }
 
             .discount-final-price {
@@ -457,18 +468,27 @@
         font-family: "Motiva Sans", Sans-serif;
         font-weight: normal;
 
-        h2 {
+        >h2 {
           &:first-of-type {
             line-height: 26px;
             background-image: url("/images/maincol_gradient_rule.png");
             background-repeat: no-repeat;
             background-position: bottom left;
           }
-
-          &:not(:first-of-type) {
+        }
+        div {
+          h2 {
             color: #acb2b8;
+            margin-top: 18px;
+            margin-bottom: 0px;
+            background-image: none;
+            font-size: 15px;
+            color: #2f89bc;
+            text-transform: none;
+            letter-spacing: 0px;
           }
         }
+
 
         p {
           margin-bottom: 8px;
@@ -646,6 +666,14 @@
       margin-top: 10px;
       margin-bottom: -10px;
       width: 100%;
+    }
+    
+    .game-description {
+      >div {
+        img {
+          width: -webkit-fill-available;
+        }
+      }
     }
   }
 }

@@ -108,6 +108,13 @@
         align-items: center;
         border-radius: 0 !important;
 
+        &.login {
+          background-color: #5c7e10 !important;
+          &:hover {
+            background-color: #6c9018 !important; 
+          }
+        }
+
         .fa-icon {
           margin-right: 5px;
           padding-bottom: 2px;

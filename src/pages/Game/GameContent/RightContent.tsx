@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { ReviewEntry, gamesData } from "../gameData";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 
 export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = ({ game, isMobileView630 }) => {
   const [showAllLanguages, setShowAllLanguages] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
+  const { isMobileView } = useResponsiveViewports();
 
   const getPlatform = () => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -16,18 +17,6 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
       return "unknown";
     }
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1000);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   const toggleAllLanguages = () => {
     setShowAllLanguages(!showAllLanguages);
   };
@@ -49,12 +38,20 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
         <p className="reason-for">Players like you love this game.</p>
         <hr />
         {positivePercentage >= 90 && (
-          <p className="reason-for">
+          <><p className="reason-for">
             User reviews:&nbsp;
             <span className="game-review-summary positive">
               Overwhelmingly Positive
             </span>
-          </p>
+          </p><hr /></>
+        )}
+        {90 > positivePercentage && positivePercentage >= 80 && (
+          <><p className="reason-for">
+            User reviews:&nbsp;
+            <span className="game-review-summary positive">
+              Very Positive
+            </span>
+          </p><hr /></>
         )}
         {/* top sellers backend logic */}
         {/* <p className="reason-for"> In the Top Sellers </p> 

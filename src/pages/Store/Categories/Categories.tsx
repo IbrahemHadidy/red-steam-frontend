@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import Slider from "react-slick";
+import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import categories from "./categoryItems";
 import "./Categories.scss";
 
@@ -11,18 +12,7 @@ interface Category {
 }
 
 const Categories: FC = () => {
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1000);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const { isMobileView } = useResponsiveViewports();
 
   const categoriesSettings = {
     dots: true,

@@ -313,6 +313,7 @@ $background-color_3: transparent;
       bottom: 5px;
       width: -webkit-fill-available;
       transform: translateX(-2px);
+      pointer-events: none;
     }
 
     .no-discount {

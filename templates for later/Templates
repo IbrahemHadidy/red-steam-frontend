@@ -1,0 +1,9 @@
+// Throbber template //
+<div className="throbber"><div /><div /><div /></div>
+
+
+// Submit Button template //
+<button className={`submit-button ${condition && 'loading'}`} type="submit" disabled={condition}>
+  title
+  {condition && (<div className="loading-container"><div className="loading-spinner" /></div>)}
+</button>

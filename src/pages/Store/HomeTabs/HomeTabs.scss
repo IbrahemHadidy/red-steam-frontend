@@ -133,6 +133,10 @@
           padding-left: 198px;
           -webkit-text-size-adjust: none;
 
+          @media (max-width: 630px) {
+            padding-left: 125px;
+          }
+
           .tab-item-cap {
             position: absolute;
             left: 0;
@@ -140,12 +144,25 @@
             z-index: 3;
             line-height: 69px;
             transition: opacity 0.25s;
+
+            @media (max-width: 630px) {
+              img {
+                width: 65%;
+              }
+            }
           }
 
           &.focus {
             background: linear-gradient(to right, #c6e6f8 5%, #95bcd3 95%);
             margin-right: -14px;
             padding-right: 14px;
+
+            @media (max-width: 630px) {
+              margin-right: 0;
+              .tab-item-discount {
+                margin-right: 1px;
+              }
+            }
 
             .tab-item-discount {
               .final-price {
@@ -164,11 +181,11 @@
             }
 
             .win {
-              background-image: url('/images/icon_platform_win_dark.png');
+              background-image: url('/images/icon_platform_win_dark.png') !important;
             }
 
             .mac {
-              background-image: url('/images/icon_platform_mac_dark.png');
+              background-image: url('/images/icon_platform_mac_dark.png') !important;
             }
           }
 
@@ -183,6 +200,10 @@
             margin-top: 22px;
             width: 133px;
             text-align: right;
+
+            @media (max-width: 630px) {
+              width: 100px;
+            }
 
             >.discount-block {
               all: unset;
@@ -250,10 +271,31 @@
               color: #384959;
               line-height: 20px;
 
+                .platform-image {
+                  height: 19px;
+                  width: 20px;
+                  display: inline-block;
+                  position: static;
+                  background-size: auto;
+                  background-repeat: no-repeat;
+                
+                  &.win {
+                    background-image: url("/images/icon_platform_win.png");
+                  }
+                  &.mac {
+                    background-image: url("/images/icon_platform_mac.png");
+                  }
+              }
+
               .tab-item-top-tags {
                 height: 20px;
                 white-space: normal;
                 overflow: hidden;
+
+                @media (max-width: 630px) {
+                  height: 16px;
+                  margin-top: -3px;
+                }
 
                 .tab-top-tag {
                   white-space: nowrap;
@@ -264,7 +306,6 @@
         }
       }
     }
-
   }
 }
 

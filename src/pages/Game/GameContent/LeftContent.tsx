@@ -14,115 +14,119 @@ const getPlatform = () => {
   }
 };
 
-export const LeftContent: FC<{ game: gamesData, isMobileView630: boolean }> = ({ game, isMobileView630 }) => {
+export const LeftContent: FC<{ game: gamesData; isMobileView630: boolean }> = ({
+  game,
+  isMobileView630,
+}) => {
   const platform = getPlatform();
 
   return (
     <div className="game-content-left">
-
       {/* Purchase area */}
-      {!isMobileView630 && <div className="game-purchase-wrapper">
-        <div className="game-purchase">
-          <div className="game-purchase-platform">
-            {game.mac && platform === "darwin" ? (
-              <span className="platform-img mac"></span>
+      {!isMobileView630 && (
+        <div className="game-purchase-wrapper">
+          <div className="game-purchase">
+            <div className="game-purchase-platform">
+              {game.mac && platform === "darwin" ? (
+                <span className="platform-img mac"></span>
+              ) : (
+                <span className="platform-img win"></span>
+              )}
+            </div>
+            {game.free ? (
+              <>
+                <h1>Play {game.name}</h1>
+                <div className="game-purchase-action">
+                  <div className="game-purchase-action-background">
+                    <div className="game-purchase-price"> {game.price} </div>
+                    <div className="play-game-btn">
+                      <a className="green-btn" href="">
+                        <span className="medium-btn">Play Game</span>
+                      </a>
+                    </div>
+                    {/* !isInLibrary */}
+                    <div className="addtocart-btn">
+                      <a href="" className="blue-btn">
+                        <span className="medium-btn">Add to Library</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : game.discount === "no-discount" ? (
+              <>
+                <h1>Buy {game.name}</h1>
+                <div className="game-purchase-action">
+                  <div className="game-purchase-action-background">
+                    <div className="game-purchase-price"> {game.price} USD </div>
+                    {/* isInLibrary backend logic */}
+                    {/* <div className="play-game-btn">
+                        <a className="green-btn" href="">
+                          <span className="medium-btn">Play Game</span>
+                        </a>
+                      </div> */}
+
+                    {/* !isInLibrary */}
+                    <div className="addtocart-btn">
+                      {/* isNotInCart backend logic */}
+                      <a href="" className="green-btn">
+                        <span className="medium-btn">Add to Cart</span>
+                      </a>
+                      {/* !isNotInCart*/}
+                      {/* <a href="" className="green-btn">
+                          <span className="medium-btn">In Cart</span>
+                        </a> */}
+                    </div>
+                  </div>
+                </div>
+              </>
             ) : (
-              <span className="platform-img win"></span>
+              <>
+                <h1>Buy {game.name}</h1>
+                <p className="dicount-countdown">
+                  {game.offerType}! Offer ends {game.offerEndDate}
+                </p>
+                <div className="game-purchase-action">
+                  <div className="game-purchase-action-background">
+                    <div className="game-purchase-discount">
+                      <div className="discount-precentage">
+                        -{game.discountPercentage}
+                      </div>
+                      <div className="discount-prices">
+                        <div className="discount-original-price">
+                          {game.price}
+                        </div>
+                        <div className="discount-final-price">
+                          {game.discountPrice} USD
+                        </div>
+                      </div>
+                    </div>
+                    {/* isInLibrary backend logic */}
+                    {/* <div className="play-game-btn">
+                        <a className="green-btn" href="">
+                          <span className="medium-btn">Play Game</span>
+                        </a>
+                      </div> */}
+
+                    {/* !isInLibrary */}
+                    <div className="addtocart-btn">
+                      {/* isNotInCart backend logic */}
+                      <a href="" className="green-btn">
+                        <span className="medium-btn">Add to Cart</span>
+                      </a>
+                      {/* !isNotInCart*/}
+                      {/* <a href="" className="green-btn">
+                          <span className="medium-btn">In Cart</span>
+                        </a> */}
+                    </div>
+                  </div>
+                </div>
+              </>
             )}
           </div>
-          {game.free ? (
-            <>
-              <h1>Play {game.name}</h1>
-              <div className="game-purchase-action">
-                <div className="game-purchase-action-background">
-                  <div className="game-purchase-price"> {game.price} </div>
-                  <div className="play-game-btn">
-                    <a className="green-btn" href="">
-                      <span className="medium-btn">Play Game</span>
-                    </a>
-                  </div>
-                  {/* !isInLibrary */}
-                  <div className="addtocart-btn">
-                    <a href="" className="blue-btn">
-                      <span className="medium-btn">Add to Library</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : game.discount === "no-discount" ? (
-            <>
-              <h1>Buy {game.name}</h1>
-              <div className="game-purchase-action">
-                <div className="game-purchase-action-background">
-                  <div className="game-purchase-price"> {game.price} </div>
-                  {/* isInLibrary backend logic */}
-                  {/* <div className="play-game-btn">
-                        <a className="green-btn" href="">
-                          <span className="medium-btn">Play Game</span>
-                        </a>
-                      </div> */}
-
-                  {/* !isInLibrary */}
-                  <div className="addtocart-btn">
-                    {/* isNotInCart backend logic */}
-                    <a href="" className="green-btn">
-                      <span className="medium-btn">Add to Cart</span>
-                    </a>
-                    {/* !isNotInCart*/}
-                    {/* <a href="" className="green-btn">
-                          <span className="medium-btn">In Cart</span>
-                        </a> */}
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <h1>Buy {game.name}</h1>
-              <p className="dicount-countdown">
-                {game.offerType}! Offer ends {game.offerEndDate}
-              </p>
-              <div className="game-purchase-action">
-                <div className="game-purchase-action-background">
-                  <div className="game-purchase-discount">
-                    <div className="discount-precentage">
-                      {game.discountPercentage}
-                    </div>
-                    <div className="discount-prices">
-                      <div className="discount-original-price">
-                        {game.price}
-                      </div>
-                      <div className="discount-final-price">
-                        {game.discountPrice} USD
-                      </div>
-                    </div>
-                  </div>
-                  {/* isInLibrary backend logic */}
-                  {/* <div className="play-game-btn">
-                        <a className="green-btn" href="">
-                          <span className="medium-btn">Play Game</span>
-                        </a>
-                      </div> */}
-
-                  {/* !isInLibrary */}
-                  <div className="addtocart-btn">
-                    {/* isNotInCart backend logic */}
-                    <a href="" className="green-btn">
-                      <span className="medium-btn">Add to Cart</span>
-                    </a>
-                    {/* !isNotInCart*/}
-                    {/* <a href="" className="green-btn">
-                          <span className="medium-btn">In Cart</span>
-                        </a> */}
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
         </div>
-      </div>}
-      
+      )}
+
       {/* Game about */}
       <div className="autocollapse-container">
         <div className="autocollapse">
@@ -197,14 +201,32 @@ export const LeftContent: FC<{ game: gamesData, isMobileView630: boolean }> = ({
                         <strong>DirectX:</strong> {game.req.mini.dx}
                         <br />
                       </li>
-                      <li>
-                        <strong>Network:</strong> {game.req.mini.network}
-                        <br />
-                      </li>
+                      {game.req.mini.network && (
+                        <li>
+                          <strong>Network:</strong> {game.req.mini.network}
+                          <br />
+                        </li>
+                      )}
+                      {game.req.mini.storage && (
                       <li>
                         <strong>Storage:</strong> {game.req.mini.storage}
                         <br />
                       </li>
+                      )}
+                      {game.req.mini.soundCard && (
+                        <li>
+                          <strong>Sound card:</strong>{" "}
+                          {game.req.recommended.soundCard}
+                          <br />
+                        </li>
+                      )}
+                      {game.req.mini.additionalNotes && (
+                        <li>
+                          <strong>Additional Notes:</strong>{" "}
+                          {game.req.mini.additionalNotes}
+                          <br />
+                        </li>
+                      )}
                     </ul>
                   </ul>
                 </div>
@@ -239,14 +261,32 @@ export const LeftContent: FC<{ game: gamesData, isMobileView630: boolean }> = ({
                         <strong>DirectX:</strong> {game.req.recommended.dx}
                         <br />
                       </li>
-                      <li>
-                        <strong>Network:</strong> {game.req.recommended.network}
-                        <br />
-                      </li>
+                      {game.req.recommended.network && (
+                        <li>
+                          <strong>Network:</strong> {game.req.recommended.network}
+                          <br />
+                        </li>
+                      )}
+                      {game.req.recommended.storage && (
                       <li>
                         <strong>Storage:</strong> {game.req.recommended.storage}
                         <br />
                       </li>
+                      )}
+                      {game.req.recommended.soundCard && (
+                        <li>
+                          <strong>Sound card:</strong>{" "}
+                          {game.req.recommended.soundCard}
+                          <br />
+                        </li>
+                      )}
+                      {game.req.recommended.additionalNotes && (
+                        <li>
+                          <strong>Additional Notes:</strong>{" "}
+                          {game.req.recommended.additionalNotes}
+                          <br />
+                        </li>
+                      )}
                     </ul>
                   </ul>
                 </div>
@@ -258,17 +298,19 @@ export const LeftContent: FC<{ game: gamesData, isMobileView630: boolean }> = ({
           </div>
 
           {/* Game legal */}
-          <div className="autocollapse-container">
-            <div className="autocollapse">
-              <div className="legal-area">
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(game.legal),
-                  }}
-                />
+          {game.legal && (
+            <div className="autocollapse-container">
+              <div className="autocollapse">
+                <div className="legal-area">
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(game.legal),
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>
