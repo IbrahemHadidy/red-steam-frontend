@@ -155,15 +155,17 @@ const SteamMenu: React.FC = () => {
                 {/* User persona and profile link */}
                 <div className="responsive_menu_user_persona persona offline">
                   <div className="playerAvatar offline">
-                    <a href="https://steamcommunity.com/id/iTankDestroyer/">
+                  {/* TODO: use dynamic profile id */}
+                    <a href="/id/iTankDestroyer/">
                       <img
                         src="https://source.unsplash.com/user/c_v_r"
                         alt="User Avatar"
                       />
                     </a>
                   </div>
+                  {/* TODO: use dynamic profile id */}
                   <a
-                    href="https://steamcommunity.com/id/iTankDestroyer/"
+                    href="/id/iTankDestroyer/"
                     data-miniprofile="216405522"
                   >
                     Profile
@@ -173,7 +175,7 @@ const SteamMenu: React.FC = () => {
                 {/* User cart and cart link */}
                 <div className="responsive_menu_cartwallet_area persona offline">
                   <div className="responsive_menu_user_cart">
-                    <a href="https://store.steampowered.com/cart/">
+                    <a href="/cart/">
                       Cart&nbsp;<b>(0)</b>
                     </a>
                   </div>

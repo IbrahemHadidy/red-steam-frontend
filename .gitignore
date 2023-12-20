@@ -11,6 +11,7 @@ node_modules
 templates-for-later
 dist
 dist-ssr
+.env
 *.local
 
 # Editor directories and files

@@ -109,11 +109,11 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
             <div className={`review-box ${isPartial ? "partial" : ''}`} key={index}>
               <div className="leftcol">
                 <div className="avatar">
-                  {/* userId backend logic */}
+                  {/* TODO: userId backend logic */}
                   <a href={`/id/${{/*userId*/}}`}>
-                    {/* isOnline backend logic */}
+                    {/* TODO: isOnline backend logic */}
                     <div className={`player-avatar ${{/*isOnline ? "online" : "offline"*/}}`}>
-                      {/* profile pic backend logic */}
+                      {/* TODO: profile pic backend logic */}
                       <img src="https://source.unsplash.com/user/c_v_r" alt="pfp" />
                     </div>
                   </a> 

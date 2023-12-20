@@ -32,7 +32,7 @@ $color_1: white;
 		position: absolute;
 		bottom: 16px;
 		text-align: center;
-		width: 100%;
+		width: -webkit-fill-available;
 		padding: 1em;
 
 		>span {

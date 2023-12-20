@@ -34,7 +34,7 @@ const DefaultDesktopComponent: FC = () => {
                 <img src="/images/bell.svg" style={{ width: "14px" }} />
               </span>
             </Button>
-            {/* isLoggedIn Backend Logic */}
+            {/* TODO: isLoggedIn Backend Logic */}
             {/* isLoggedIn ? */}
             {/* User profile dropdown menu */}
             <ProfileDropdown />

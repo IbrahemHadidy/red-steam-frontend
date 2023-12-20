@@ -59,7 +59,7 @@ export const LeftContent: FC<{ game: gamesData; isMobileView630: boolean }> = ({
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
                     <div className="game-purchase-price"> {game.price} USD </div>
-                    {/* isInLibrary backend logic */}
+                    {/* TODO: isInLibrary backend logic */}
                     {/* <div className="play-game-btn">
                         <a className="green-btn" href="">
                           <span className="medium-btn">Play Game</span>
@@ -68,7 +68,7 @@ export const LeftContent: FC<{ game: gamesData; isMobileView630: boolean }> = ({
 
                     {/* !isInLibrary */}
                     <div className="addtocart-btn">
-                      {/* isNotInCart backend logic */}
+                      {/* TODO: isNotInCart backend logic */}
                       <a href="" className="green-btn">
                         <span className="medium-btn">Add to Cart</span>
                       </a>
@@ -101,7 +101,7 @@ export const LeftContent: FC<{ game: gamesData; isMobileView630: boolean }> = ({
                         </div>
                       </div>
                     </div>
-                    {/* isInLibrary backend logic */}
+                    {/* TODO: isInLibrary backend logic */}
                     {/* <div className="play-game-btn">
                         <a className="green-btn" href="">
                           <span className="medium-btn">Play Game</span>
@@ -110,7 +110,7 @@ export const LeftContent: FC<{ game: gamesData; isMobileView630: boolean }> = ({
 
                     {/* !isInLibrary */}
                     <div className="addtocart-btn">
-                      {/* isNotInCart backend logic */}
+                      {/* TODO: isNotInCart backend logic */}
                       <a href="" className="green-btn">
                         <span className="medium-btn">Add to Cart</span>
                       </a>

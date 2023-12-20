@@ -51,7 +51,7 @@ const Queue: FC = () => {
               <div className="queue-item-overlay"></div>
               <img
                 className="queue-item-img"
-                src="https://cdn.cloudflare.steamstatic.com/steam/apps/2375550/header.jpg?t=1699526840"
+                src="https://cdn.cloudflare.steamstatic.com/steam/apps/2375550/header.jpg"
               ></img>
             </div>
           </div>
@@ -60,7 +60,7 @@ const Queue: FC = () => {
           <span className="right-btn-queue-mobile">
             <a
               className="btn-queue-mobile"
-              href="https://store.steampowered.com/explore/?snr=1_4_4_"
+              href="#"
             >
               <span>Learn More</span>
             </a>

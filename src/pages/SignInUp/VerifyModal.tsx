@@ -1,9 +1,34 @@
-import { FC, useState } from "react";
+import { FC, useState, useRef, useEffect } from "react";
+import { animated, useSpring } from 'react-spring';
 
 export const VerifyModal: FC<{ storedEmailAddress: string }> = ({
   storedEmailAddress,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [totalHeight, setTotalHeight] = useState(0);
+  const animatedDivRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (animatedDivRef.current) {
+      const children = Array.from(animatedDivRef.current.children);
+      let sum = 0;
+
+      children.forEach((child) => {
+        sum += (child as HTMLDivElement).offsetHeight;
+      });
+
+      setTotalHeight(sum);
+    }
+  }, []); 
+
+  const divHeight = `${totalHeight + 24}px`;
+  console.log(divHeight);
+
+  const expandSpring = useSpring({
+		opacity: isExpanded ? 1 : 0,
+		height: isExpanded ? divHeight : "0",
+		overflow: "hidden",
+	});
 
   return (
     <>
@@ -41,13 +66,10 @@ export const VerifyModal: FC<{ storedEmailAddress: string }> = ({
                   className="expand-btn"
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
-                  <span>Expand&nbsp;<i /></span>
+                  <span>Expand&nbsp;<i className={`${isExpanded && "flipped"}`} /></span>
                 </div>
               </div>
-              <div
-                className="verification-troubleshooting"
-                style={{ height: isExpanded ? "auto" : "0" }}
-              >
+              <animated.div className="verification-troubleshooting" style={{...expandSpring}} ref={animatedDivRef}>
                 <div>
                   If you haven't gotten our email please try the below
                   troubleshooting steps:
@@ -60,8 +82,9 @@ export const VerifyModal: FC<{ storedEmailAddress: string }> = ({
                   </li>
                   <li>
                     Please check both your spam and trash folder for an email
+                    {/* TODO: add the used domain later */}
                     from "steampowered.com". Sometimes emails can be incorrectly
-                    identified as spam by your email provider.r
+                    identified as spam by your email provider.
                   </li>
                   <li>
                     Wait a few minutes. Sometimes email servers are slow and can
@@ -75,7 +98,7 @@ export const VerifyModal: FC<{ storedEmailAddress: string }> = ({
                   <span className="change-email">Click here</span>&nbsp;to
                   change your email address.
                 </div>
-              </div>
+              </animated.div>
             </div>
           </div>
         </div>

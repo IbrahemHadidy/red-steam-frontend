@@ -29,30 +29,30 @@ const Sidebar: FC = () => {
 
   const tagsLinks = [
     // Define tag links
-    { to: "https://store.steampowered.com/tags/en/Mod/", text: "Mod" },
+    { to: "/tags/en/Mod/", text: "Mod" },
     {
-      to: "https://store.steampowered.com/tags/en/Dark%20Fantasy/",
+      to: "/tags/en/Dark%20Fantasy/",
       text: "Dark Fantasy",
     },
     {
-      to: "https://store.steampowered.com/tags/en/Psychological/",
+      to: "/tags/en/Psychological/",
       text: "Psychological",
     },
     {
-      to: "https://store.steampowered.com/tags/en/Open%20World/",
+      to: "/tags/en/Open%20World/",
       text: "Open World",
     },
-    { to: "https://store.steampowered.com/tags/en/Fantasy/", text: "Fantasy" },
+    { to: "/tags/en/Fantasy/", text: "Fantasy" },
   ];
 
   const recommendedLinks = [
     // Define recommended links
     {
-      to: "https://store.steampowered.com/recommended/friendactivity/",
+      to: "/recommended/friendactivity/",
       text: "By Friends",
     },
-    { to: "https://store.steampowered.com/curators/", text: "By Curators" },
-    { to: "https://store.steampowered.com/tag/browse/#yours", text: "Tags" },
+    { to: "/curators/", text: "By Curators" },
+    { to: "/tag/browse/#yours", text: "Tags" },
   ];
 
   const categoryLinks = [
@@ -89,7 +89,7 @@ const Sidebar: FC = () => {
         <div>
           <a
             className="item"
-            href="https://store.steampowered.com/digitalgiftcards/"
+            href="/digitalgiftcards/"
           >
             <div className="gift-card">
               <img

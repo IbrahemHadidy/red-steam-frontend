@@ -30,17 +30,17 @@ export const GameOwned: FC<{ game: gamesData }> = ({ game }) => {
 								<a href="javascript:void(0)" onClick={() => window.open('https://www.w3schools.com/html/html_formatting.asp', 'formattinghelp', 'height=640,width=640,resize=yes,scrollbars=yes')}>Formatting help</a>
 							</div>
               <div className="avatar-block">
-                {/* logged in userId backend logic */}
+                {/* TODO: logged in userId backend logic */}
                 <a href={`/id/${{/*userId*/}}`}>
-                  {/* isOnline backend logic */}
+                  {/* TODO: isOnline backend logic */}
                   <div className={`avatar ${{/*isOnline ? "online" : "offline"*/}}`}>
-                    {/* profile pic backend logic */}
+                    {/* TODO: profile pic backend logic */}
                     <img src="https://source.unsplash.com/user/c_v_r" alt="pfp" />
                   </div>
                 </a> 
               </div>
               <div className="content">
-                {/* error backend logic */}
+                {/* TODO: error backend logic */}
                 {/* <div className="error-message">There seems to have been an error saving your review.  Please try again later. </div> */}
                 {/* content db logic */}
                 <textarea className="game-recommendation" name="" id="" maxLength={8000} />
@@ -60,7 +60,7 @@ export const GameOwned: FC<{ game: gamesData }> = ({ game }) => {
                   </div>
                   <div className="review-controls-right">
                     <div className="review-submit">
-                      {/* submit backend logic */}
+                      {/* TODO: submit backend logic */}
                       {/* onClick should handle the submition */}
                       <a href=""><span>Post Review</span></a>
                     </div>

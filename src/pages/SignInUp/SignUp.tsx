@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import useRecaptcha from "../../components/reCAPTCHA";
+import useResponsiveViewports from "../../components/useResponsiveViewports";
 import { validateEmail, validateName, validatePassword } from "../../components/InputValidations";
 import { countries } from "../../components/countries";
 import { VerifyModal } from "./VerifyModal";
@@ -14,6 +15,7 @@ const env = import.meta.env;
 
 const SignUp: FC = () => {
 	const navigate = useNavigate();
+	const { isMobileView740 } = useResponsiveViewports();
 	const { recaptchaRef, recaptchaValue } = useRecaptcha();
 	const [errorMessages, setErrorMessages] = useState<string[]>([]);
 	const [resetKey, setResetKey] = useState(0);
@@ -31,14 +33,15 @@ const SignUp: FC = () => {
 	const [noMatch, setNoMatch] = useState(false);
 	const [showVerificationModal, setShowVerificationModal] = useState(false);
 
+	const scrollToTop = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
 	useEffect(() => {
 		// this is responsible for the page background
 		document.body.style.background =
-			"radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429";
-		document.body.style.backgroundImage = "none";
+			"radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
 		// this is responsible for the tab title
 		document.title = `Create Your Account`;
-	}, []);
+	}, [isMobileView740]);
 
 	// handle storing error messages
 	const addErrorMessage = (newErrorMessage: string) => {
@@ -90,14 +93,17 @@ const SignUp: FC = () => {
 			document.getElementById("email")?.classList.add("error");
 			document.getElementById("reenter-email")?.classList.add("error");
 			addErrorMessage("- Please enter a valid email address.");
+			scrollToTop();
 		}
 		if (confirmedEmail !== email) {
 			document.getElementById("reenter-email")?.classList.add("error");
 			addErrorMessage("- Please enter the same address in both email address fields.");
+			scrollToTop();
 		}
 		if (!isCheckboxChecked) {
 			document.getElementById("agree-label")?.classList.add("error");
 			addErrorMessage("- Please agree to the terms and conditions.");
+			scrollToTop();
 		}
 		if (!isEmailValid || confirmedEmail !== email || !isCheckboxChecked)  {
 			return;	
@@ -121,6 +127,7 @@ const SignUp: FC = () => {
 		} catch (error) {
 			console.error("Error checking existing email:", error);
 			addErrorMessage("- An error occurred while trying to connect to the server. Please check your internet connection and try again.");
+			scrollToTop();
 		}
 	};
 
@@ -134,15 +141,18 @@ const SignUp: FC = () => {
 		if (!isNameValid) {
 			document.getElementById("accountname")?.classList.add("error");
 			addErrorMessage("- Please enter an account name that is at least 3 characters long and uses only a-z, A-Z, 0-9 or _ characters.");
+			scrollToTop();
 		}
 		if (!isPasswordValid) {
 			document.getElementById("password")?.classList.add("error");
 			document.getElementById("reenter-password")?.classList.add("error");
 			addErrorMessage("- Password must contain at least one digit, one letter, and one special character.");
+			scrollToTop();
 		}
 		if (password !== confirmPassword) {
 			document.getElementById("reenter-password")?.classList.add("error");
 			addErrorMessage("- Please enter the same address in both email address fields.");
+			scrollToTop();
 		}
 		if (!isNameValid || !isPasswordValid || password !== confirmPassword) {
 			return;
@@ -165,19 +175,20 @@ const SignUp: FC = () => {
 		} catch (error) {
 			console.error("Error checking existing email:", error);
 			addErrorMessage("- Internal server error while checking account existence. Please try again later.");
+			scrollToTop();
 		}
 	};
 
 	// handle existing account button
-  const handleExistingBtn = () => {
-    navigate("/reset-password");
-  };
-  // handle existing account button
-  const makeNewAccount = () => {
-    setExistingEmail(false);
+	const handleExistingBtn = () => {
+		navigate("/reset-password");
+	};
+	// handle existing account button
+	const makeNewAccount = () => {
+		setExistingEmail(false);
 		setErrorMessages([]);
 		setFirstStep(true);
-  };
+	};
 	
 	// Check name availability
 	useEffect(() => {
@@ -202,6 +213,7 @@ const SignUp: FC = () => {
 					console.error("Error checking account availability:", error);
 					setErrorMessages([]);
 					addErrorMessage("- Internal server error while checking account availability. Please try again later.");
+					scrollToTop();
 				}
 			}
 		};
@@ -265,6 +277,7 @@ const SignUp: FC = () => {
 			setShowVerificationModal(false);
 			console.error("Email verification took too long. Please try again later.");
 			addErrorMessage("- You've waited too long to verify your email. Please try creating your account and verifying your email again.");
+			scrollToTop();
 		};
 
 		// Use recaptchaValue along with other form data for submission
@@ -285,14 +298,17 @@ const SignUp: FC = () => {
 					// Verification failed
 					console.error("Email verification failed.");
 					addErrorMessage("- An error occurred while verifying your email, Please try again later.");
+					scrollToTop();
 				}
 			} catch (error) {
 				console.error("Error during form submission:", error);
 				addErrorMessage("- An error occurred while verifying your email, Please try again later.");
+				scrollToTop();
 			}
 		} else {
-			addErrorMessage("- You must verify your humanity before you can create a Steam account.");
 			console.error("reCAPTCHA not solved");
+			addErrorMessage("- You must verify your humanity before you can create a Steam account.");
+			scrollToTop();
 			// Optionally, display an error message to the user
 		}
 
@@ -314,8 +330,7 @@ const SignUp: FC = () => {
 			}
 		} catch (error) {
 			console.error("Error fetching waiting time:", error);
-			// Handle the error, show an error message, etc.
-			// Optionally, close the modal in case of an error (adjust based on your requirements)
+			addErrorMessage("- Internal server error while fetching waiting time, Please try again later.");
 			closeVerificationModal();
 		}
 	};

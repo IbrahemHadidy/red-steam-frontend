@@ -843,7 +843,7 @@ const gameData: gamesData[] = [
         os: "Windows 10/11",
         cpu: "INTEL CORE I7-8700K or AMD RYZEN 5 3600X",
         ram: "16 GB RAM",
-        gpu: "NVIDIA GEFORCE GTX 1070 8 GB or AMD RADEON RX VEGA 56 8 GB",
+        gpu: " NVIDIA GEFORCE GTX 1070 8 GB or AMD RADEON RX VEGA 56 8 GB",
         dx: "Version 12",
         network: "Broadband Internet connection",
         storage: "60 GB available space",
@@ -909,7 +909,7 @@ const gameData: gamesData[] = [
       },
     ],
     reason: "available", // "available" or "recommended"
-    discount: "no-discount", // "discount" or "no-discount"
+    discount: "discount", // "discount" or "no-discount"
     free: false,
     price: "$31.99",
     offerType: "SPECIAL PROMOTION",

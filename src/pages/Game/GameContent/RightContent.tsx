@@ -53,7 +53,7 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
             </span>
           </p><hr /></>
         )}
-        {/* top sellers backend logic */}
+        {/* TODO: top sellers backend logic */}
         {/* <p className="reason-for"> In the Top Sellers </p> 
              <hr /> */}
       </div>
@@ -222,7 +222,7 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
               <div className="game-purchase-action">
                 <div className="game-purchase-action-background">
                   <div className="game-purchase-price"> {game.price} </div>
-                  {/* isInLibrary backend logic */}
+                  {/* TODO: isInLibrary backend logic */}
                   {/* <div className="play-game-btn">
                         <a className="green-btn" href="">
                           <span className="medium-btn">Play Game</span>
@@ -231,7 +231,7 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
 
                   {/* !isInLibrary */}
                   <div className="addtocart-btn">
-                    {/* isNotInCart backend logic */}
+                    {/* TODO: isNotInCart backend logic */}
                     <a href="" className="green-btn">
                       <span className="medium-btn">Add to Cart</span>
                     </a>
@@ -264,7 +264,7 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
                       </div>
                     </div>
                   </div>
-                  {/* isInLibrary backend logic */}
+                  {/* TODO: isInLibrary backend logic */}
                   {/* <div className="play-game-btn">
                         <a className="green-btn" href="">
                           <span className="medium-btn">Play Game</span>
@@ -273,7 +273,7 @@ export const RightContent: FC<{ game: gamesData, isMobileView630: boolean }> = (
 
                   {/* !isInLibrary */}
                   <div className="addtocart-btn">
-                    {/* isNotInCart backend logic */}
+                    {/* TODO: isNotInCart backend logic */}
                     <a href="" className="green-btn">
                       <span className="medium-btn">Add to Cart</span>
                     </a>

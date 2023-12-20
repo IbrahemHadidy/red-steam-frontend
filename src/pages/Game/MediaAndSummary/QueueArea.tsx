@@ -5,7 +5,7 @@ export const QueueArea: FC<{ game: gamesData }> = (game) => {
   return (
     <div className="queue-area">
 
-      {/* isLoggedIn backend logic */}
+      {/* TODO: isLoggedIn backend logic */}
       {/* <div className="queue-actions">
         <a href="/login/">Sign in</a> to add this item to your wishlist, follow
         it, or mark it as ignored
@@ -20,7 +20,7 @@ export const QueueArea: FC<{ game: gamesData }> = (game) => {
           </span>
         </a>
 
-        {/* isInLibrary backend logic */}
+        {/* TODO: isInLibrary backend logic */}
         <div
           id="add-wishlist"
           className="queue-button-container"
@@ -45,7 +45,7 @@ export const QueueArea: FC<{ game: gamesData }> = (game) => {
 
         
         <div id="follow" className="queue-button-container">
-          {/* isFollowed backend logic */}
+          {/* TODO: isFollowed backend logic */}
           <div className="queue-button" style={{ display: "inline-block" }}>
             <span>Follow</span>
           </div>
@@ -57,7 +57,7 @@ export const QueueArea: FC<{ game: gamesData }> = (game) => {
           </div>
         </div>
 
-        {/* isNotIgnored backend logic */}
+        {/* TODO: isNotIgnored backend logic */}
         <div
           id="ignore"
           className="queue-button-container"

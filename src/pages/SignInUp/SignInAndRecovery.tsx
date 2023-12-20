@@ -25,9 +25,10 @@ const SignInAndRecovery: FC = () => {
 		// this is responsible for the page background
 		{!isMobileView740 ? (
 			document.body.style.background =
-			"radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
+				"radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
 		) : (
-			document.body.style.background = "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21"
+			document.body.style.background = 
+				"radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21"
 		)}
 		
 		// this is responsible for the tab title
@@ -58,14 +59,14 @@ const SignInAndRecovery: FC = () => {
 		width: showForgotPassword ? "332.5px" : "0",
 		paddingLeft: showForgotPassword ? "14px" : "0px",
 		marginLeft: showForgotPassword ? "14px" : "0px",
-		overflow: "hidden",
+		overflow: showForgotPassword ? "visible" : "hidden",
 	});
 	const springProps740 = useSpring({
 		opacity: showForgotPassword ? 1 : 0,
-		height: showForgotPassword ? "100%" : "0",
+		height: showForgotPassword ? "280.5px" : "0",
 		paddingTop: showForgotPassword ? "14px" : "0px",
 		marginTop: showForgotPassword ? "14px" : "0px",
-		overflow: "visible",
+		overflow: showForgotPassword ? "visible" : "hidden",
 	});
 
 	// Toggle the visibility of the "forgot-my-password" section

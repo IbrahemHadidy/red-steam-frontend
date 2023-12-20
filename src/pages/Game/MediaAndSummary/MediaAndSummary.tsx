@@ -325,7 +325,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
       </div>
       <QueueArea game={game} />
 
-      {/* isInLibrary backend logic */}
+      {/* TODO: isInLibrary backend logic */}
       {/* <GameOwned game={game} /> */}
 
       

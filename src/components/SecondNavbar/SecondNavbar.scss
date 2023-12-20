@@ -124,6 +124,7 @@ $background-color_3: transparent;
             rgba(50, 50, 51, 0) 50%),
           linear-gradient(180deg, #575860 11.6%, #3a4852 54.73%, #2c2d34 100%);
         padding: 8px 5px 8px 5px;
+        box-shadow: none;
       }
     }
 
@@ -479,20 +480,20 @@ $background-color_3: transparent;
   }
 
   .category-second-div {
-    margin-left: 0;
-    border-left: 0;
-    padding-left: 0;
+    margin-left: 0 !important;
+    border-left: 0 !important;
+    padding-left: 0 !important;
   }
 
   .category-fifth-div {
-    margin-left: 0;
-    border-left: 0;
-    padding-left: 0;
+    margin-left: 0 !important;
+    border-left: 0 !important;
+    padding-left: 0 !important;
   }
 
   .new-second-div {
-    margin-left: 0;
-    border-left: 0;
-    padding-left: 0;
+    margin-left: 0 !important;
+    border-left: 0 !important;
+    padding-left: 0 !important;
   }
 }
