@@ -1,60 +1,60 @@
 .game {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .page-content {
-  width: 940px;
-  margin: 0 auto;
-  position: relative;
+	width: 940px;
+	margin: 0 auto;
+	position: relative;
 }
 
 .game-tag {
-  display: inline-block;
-  line-height: 19px;
-  padding: 0 7px;
-  color: #67c1f5;
-  background-color: rgba(103, 193, 245, 0.2);
-  box-shadow: none;
-  margin-right: 2px;
-  border-radius: 2px;
-  cursor: pointer;
-  margin-bottom: 3px;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	display: inline-block;
+	line-height: 19px;
+	padding: 0 7px;
+	color: #67c1f5;
+	background-color: rgba(103, 193, 245, 0.2);
+	box-shadow: none;
+	margin-right: 2px;
+	border-radius: 2px;
+	cursor: pointer;
+	margin-bottom: 3px;
+	max-width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 
-  &:hover {
-    background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
-    text-decoration: none;
-    color: #ffffff;
-  }
+	&:hover {
+		background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
+		text-decoration: none;
+		color: #ffffff;
+	}
 }
 
 
 .game-review-summary {
-  &.positive {
-    color: #66c0f4;
-  }
+	&.positive {
+		color: #66c0f4;
+	}
 
-  &.mixed {
-    color: #b9a074;
-  }
+	&.mixed {
+		color: #b9a074;
+	}
 
-  &.negative {
-    color: #a34c25;
-  }
+	&.negative {
+		color: #a34c25;
+	}
 
-  &:hover {
-    cursor: pointer;
-  }
+	&:hover {
+		cursor: pointer;
+	}
 }
 
-@media screen and (max-width: 1000px) {
-  .page-content {
-    max-width: 940px;
-    width: auto;
-    margin: 0 2%;
-  }
+@media screen and (max-width: 960px) {
+	.page-content {
+		max-width: 940px;
+		width: auto;
+		margin: 0 2%;
+	}
 }

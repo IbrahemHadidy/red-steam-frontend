@@ -9,7 +9,7 @@ import "./SignInUp.scss";
 const env = import.meta.env;
 
 const SignInAndRecovery: FC = () => {
-	const { isMobileView740 } = useResponsiveViewports();
+	const isViewport740 = useResponsiveViewports(740);
 	const { recaptchaRef, recaptchaValue } = useRecaptcha();
 	const [title, setTitle] = useState("Sign In");
 	const [passwordPage, setPasswordPage] = useState(false);
@@ -23,7 +23,7 @@ const SignInAndRecovery: FC = () => {
 	
 	useEffect(() => {
 		// this is responsible for the page background
-		{!isMobileView740 ? (
+		{!isViewport740 ? (
 			document.body.style.background =
 				"radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
 		) : (
@@ -33,20 +33,19 @@ const SignInAndRecovery: FC = () => {
 		
 		// this is responsible for the tab title
 		document.title = `Sign In`;
-	}, [isMobileView740]);
+	}, [isViewport740]);
 
 	// Handle redirect to password reset page
-	const handlePasswordResetRedirect = () => {
-		setPasswordPage(true);
-		setTitle("Name / Password Recovery")
-		document.querySelector('.signin-form')?.remove();
-		document.querySelector('.forgot-my-password')?.classList.add('active');
-	}
 	useEffect(() => {
 		if (window.location.pathname.includes('/reset-password')) {
-			handlePasswordResetRedirect();
+			setPasswordPage(true);
+			setTitle("Name / Password Recovery")
+			document.querySelector('.signin-form')?.remove();
+			document.querySelector('.forgot-my-password')?.classList.add('active');
+			(document.querySelector('.signin-title .title') as HTMLElement).style.margin = 'auto';
+			isViewport740 && ((document.querySelector('.login-form-container') as HTMLElement).style.width = 'max-content');
 		}
-	}, []);
+	}, [isViewport740]);
 
 	// Toggle the state when the div is clicked
 	const handleRememberMeClick = () => {
@@ -56,17 +55,17 @@ const SignInAndRecovery: FC = () => {
 	// amimation of the "forgot-my-password" section
 	const springProps = useSpring({
 		opacity: showForgotPassword ? 1 : 0,
-		width: showForgotPassword ? "332.5px" : "0",
+		width: showForgotPassword ? "295px" : "0",
 		paddingLeft: showForgotPassword ? "14px" : "0px",
 		marginLeft: showForgotPassword ? "14px" : "0px",
-		overflow: showForgotPassword ? "visible" : "hidden",
+		overflow: "hidden",
 	});
 	const springProps740 = useSpring({
 		opacity: showForgotPassword ? 1 : 0,
 		height: showForgotPassword ? "280.5px" : "0",
 		paddingTop: showForgotPassword ? "14px" : "0px",
 		marginTop: showForgotPassword ? "14px" : "0px",
-		overflow: showForgotPassword ? "visible" : "hidden",
+		overflow: "hidden",
 	});
 
 	// Toggle the visibility of the "forgot-my-password" section
@@ -316,7 +315,7 @@ const SignInAndRecovery: FC = () => {
 									{showForgotPassword ? "Hide Forgot Password / Username" : "Forgot Password / Username?"}
 								</a>
 							</form>
-							<animated.div className="forgot-my-password " style={!isMobileView740 ? springProps : springProps740}>
+							<animated.div className="forgot-my-password " style={!isViewport740 ? springProps : springProps740}>
 								<form className="login-form" action="" onSubmit={handleResetPasswordFormSubmit}>
 									<div className="help-title">
 										I forgot my Steam Account name or password

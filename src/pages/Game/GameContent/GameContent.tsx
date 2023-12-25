@@ -6,20 +6,20 @@ import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import "./GameContent.scss";
 
 const GameContent: FC<{ game: gamesData }> = ({ game }) => {
-  const { isMobileView630 } = useResponsiveViewports();
+	const isViewport630 = useResponsiveViewports(630);
 
-  return (
-    <div className="page-content">
-      <RightContent 
-      game={game}
-      isMobileView630={isMobileView630}
-      />
-      <LeftContent 
-      game={game}
-      isMobileView630={isMobileView630} 
-      />
-    </div>
-  );
+	return (
+		<div className="page-content">
+			<RightContent 
+			game={game}
+			isViewport630={isViewport630}
+			/>
+			<LeftContent 
+			game={game}
+			isViewport630={isViewport630} 
+			/>
+		</div>
+	);
 };
 
 export default GameContent;

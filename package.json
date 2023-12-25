@@ -10,10 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/body-parser": "^1.19.4",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
@@ -24,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-multi-carousel": "^2.8.4",
     "react-router-dom": "^6.18.0",
+    "react-select": "^5.8.0",
     "react-slick": "^0.29.0",
     "react-spring": "^9.7.3",
     "sass": "^1.69.5",
@@ -32,7 +29,11 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
     "@types/babel__core": "^7.20.3",
+    "@types/body-parser": "^1.19.4",
     "@types/dompurify": "^3.0.5",
     "@types/grecaptcha": "^3.0.7",
     "@types/jest": "^29.5.7",
@@ -41,7 +42,6 @@
     "@types/react-slick": "^0.23.11",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",

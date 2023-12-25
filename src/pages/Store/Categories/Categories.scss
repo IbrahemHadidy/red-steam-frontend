@@ -33,6 +33,7 @@ $color_1: white;
 		bottom: 16px;
 		text-align: center;
 		width: -webkit-fill-available;
+		width: -moz-available;
 		padding: 1em;
 
 		>span {
@@ -53,7 +54,7 @@ $color_1: white;
 	width: 100%;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 960px) {
 	.category-item {
 		width: auto;
 	}

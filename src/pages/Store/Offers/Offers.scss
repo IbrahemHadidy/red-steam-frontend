@@ -1,221 +1,239 @@
 .offers-slides {
-  display: block;
-  position: relative;
-  padding: 0;
-  margin: 0;
+	display: block;
+	position: relative;
+	padding: 0;
+	margin: 0;
 
-  .offers-items {
-    display: block;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    clear: both;
+	.offers-items {
+		display: block;
+		padding: 0;
+		margin: 0;
+		position: relative;
+		clear: both;
 
-    .slick-list {
-      height: 395px !important;
-    }
+		.slick-list {
+			height: 395px !important;
+		}
 
-    .offers-row {
-      display: flex !important;
-      flex-direction: row;
-      margin-left: 1px;
-      margin-top: 1px;
+		.offers-row {
+			display: flex !important;
+			flex-direction: row;
+			margin-left: 1px;
+			margin-top: 1px;
 
 
-      .offer-bg {
-        display: block;
-        padding: 0;
-        margin: 0;
-        position: relative;
-        background-image: url("/images/background_spotlight.jpg");
-        width: 306px;
-        height: 388px;
-        box-shadow: 0 0 5px #000000;
-        margin-right: 11px;
+			.offer-bg {
+				display: block;
+				padding: 0;
+				margin: 0;
+				position: relative;
+				background-image: url("/images/background_spotlight.jpg");
+				width: 306px;
+				height: 388px;
+				box-shadow: 0 0 5px #000000;
+				margin-right: 11px;
 
-        .spotlight-img {
-          overflow: hidden;
-          width: 306px;
-          padding-left: 0px;
-          padding-top: 0px;
-        }
+				.spotlight-img {
+					overflow: hidden;
+					width: 306px;
+					padding-left: 0px;
+					padding-top: 0px;
+				}
 
-        .spotlight-content {
-          top: 277px;
-          padding: 8px 16px 12px 16px;
-          color: #9099a1;
-          font-size: 12px;
-          position: absolute;
-          bottom: 0;
-          width: 274px;
-          background: url("/images/spotlight_background.jpg") bottom center no-repeat;
-          background-image: url("/images/background_spotlight.jpg");
-          margin: 0px;
-          min-height: 23px;
-          background-size: cover;
+				.spotlight-content {
+					top: 277px;
+					padding: 8px 16px 12px 16px;
+					color: #9099a1;
+					font-size: 12px;
+					position: absolute;
+					bottom: 0;
+					width: 274px;
+					background: url("/images/spotlight_background.jpg") bottom center no-repeat;
+					background-image: url("/images/background_spotlight.jpg");
+					margin: 0px;
+					min-height: 23px;
+					background-size: cover;
 
-          .spotlight-body {
-            font-family: "Motiva Sans", Sans-serif;
-            font-weight: 300;
-            color: #acdbf5;
+					.spotlight-body {
+						font-family: "Motiva Sans", Sans-serif;
+						font-weight: 300;
+						color: #acdbf5;
 
-            &.spotlight-price {
-              margin-top: 10px;
-            }
-          }
-        }
+						&.spotlight-price {
+							margin-top: 10px;
+						}
+					}
+				}
 
-      }
+			}
 
-      .small-group {
-        margin-right: 11px;
+			.small-group {
+				margin-right: 11px;
 
-        .special-capsule {
-          display: inline-block;
-          position: relative;
-          vertical-align: top;
-          background: linear-gradient(-45deg,
-              rgba(64, 121, 153, 1) 5%,
-              rgba(42, 62, 89, 1) 95%);
-          margin-right: 0;
-          background-image: url("/images/background_spotlight.jpg");
-          width: 306px;
-          margin-bottom: 15px;
-          box-shadow: 0 0 5px #000000;
-          background-size: cover;
+				.special-capsule {
+					display: inline-block;
+					position: relative;
+					vertical-align: top;
+					background: linear-gradient(-45deg,
+							rgba(64, 121, 153, 1) 5%,
+							rgba(42, 62, 89, 1) 95%);
+					margin-right: 0;
+					background-image: url("/images/background_spotlight.jpg");
+					width: 306px;
+					margin-bottom: 15px;
+					box-shadow: 0 0 5px #000000;
+					background-size: cover;
 
-          .header-capsule {
-            vertical-align: top;
-            position: relative;
-            padding-top: 46.57534246575342%;
-            overflow: hidden;
+					.header-capsule {
+						vertical-align: top;
+						position: relative;
+						padding-top: 46.57534246575342%;
+						overflow: hidden;
 
-            >img {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: auto;
-              vertical-align: top;
-            }
-          }
+						>img {
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 100%;
+							height: auto;
+							vertical-align: top;
+						}
+					}
 
-          .discount-block-offers {
-            margin: 0;
-            text-align: right;
-            padding: 5px;
-            line-height: 17px;
-            min-height: 17px;
-            font-size: 12px;
-            float: right;
-          }
+					.discount-block-offers {
+						margin: 0;
+						text-align: right;
+						padding: 5px;
+						line-height: 17px;
+						min-height: 17px;
+						font-size: 12px;
+						float: right;
+					}
 
-        }
-      }
-    }
-    .mobile-offers {
-      position: relative;
-      clear: both;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      height: auto;
-      width: auto;
-      white-space: nowrap;
-      box-shadow: none;
-      overflow-x: scroll;
-      overflow-y: hidden;
-      box-sizing: content-box;
-      padding-bottom: 20px;
-      display: flex;
-      flex-wrap: nowrap;
-    
-      &::-webkit-scrollbar {
-        width: 1px;
-        scrollbar-width: 1px;
-      }
-    
-      &::-webkit-scrollbar-track {
-        background-color: transparent;
-      }
-    
-      &::-webkit-scrollbar-thumb {
-        border: 6px solid rgba(0, 0, 0, 0);
-        width: thin;
-        background-clip: content-box;
-        padding: 2px;
-      }
-    
-      &::-webkit-scrollbar-thumb:hover {
-        border: 6px solid rgba(0, 0, 0, 0);
-        width: thin;
-        background-clip: content-box;
-        padding: 2px;
-      }
-    }
-    
-
-  }
+				}
+			}
+		}
+		.mobile-offers {
+			position: relative;
+			clear: both;
+			scroll-snap-type: x mandatory;
+			-webkit-overflow-scrolling: touch;
+			-moz-overflow-scrolling: touch;
+			height: auto;
+			width: auto;
+			white-space: nowrap;
+			box-shadow: none;
+			overflow-x: scroll;
+			overflow-y: hidden;
+			box-sizing: content-box;
+			padding-bottom: 20px;
+			display: flex;
+			flex-wrap: nowrap;
+		
+			&::-webkit-scrollbar {
+				width: 1px;
+				scrollbar-width: 1px;
+			}
+			&::-moz-scrollbar {
+				width: 1px;
+				scrollbar-width: 1px;
+			}
+		
+			&::-webkit-scrollbar-track {
+				background-color: transparent;
+			}
+			&::-moz-scrollbar-track {
+				background-color: transparent;
+			}
+		
+			&::-webkit-scrollbar-thumb {
+				border: 6px solid rgba(0, 0, 0, 0);
+				width: thin;
+				background-clip: content-box;
+				padding: 2px;
+			}
+			&::-moz-scrollbar-thumb {
+				border: 6px solid rgba(0, 0, 0, 0);
+				width: thin;
+				background-clip: content-box;
+				padding: 2px;
+			}
+		
+			&::-webkit-scrollbar-thumb:hover {
+				border: 6px solid rgba(0, 0, 0, 0);
+				width: thin;
+				background-clip: content-box;
+				padding: 2px;
+			}
+			&::-moz-scrollbar-thumb:hover {
+				border: 6px solid rgba(0, 0, 0, 0);
+				width: thin;
+				background-clip: content-box;
+				padding: 2px;
+			}
+		}
+	}
 }
 
 
 .discount-block-offers {
-  position: relative;
-  display: flex;
+	position: relative;
+	display: flex;
 
-  .discount-Percentage-offers {
-    font-family: "Motiva Sans", Sans-serif;
-    font-weight: 500;
-    color: #beee11;
-    background: #4c6b22;
-    display: inline-block;
-    line-height: 34px;
-    padding: 0 5px;
-    font-size: 26px;
-  }
+	.discount-Percentage-offers {
+		font-family: "Motiva Sans", Sans-serif;
+		font-weight: 500;
+		color: #beee11;
+		background: #4c6b22;
+		display: inline-block;
+		line-height: 34px;
+		padding: 0 5px;
+		font-size: 26px;
+	}
 
-  .discount-prices-offers {
-    background: #344654;
-    line-height: 13px;
-    padding: 0 8px 0 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
+	.discount-prices-offers {
+		background: #344654;
+		line-height: 13px;
+		padding: 0 8px 0 8px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: center;
 
-    .original-price-offers {
-      position: relative;
-      width: fit-content;
-      color: #738895;
-      font-size: 11px;
-      line-height: 12px;
+		.original-price-offers {
+			position: relative;
+			width: fit-content;
+			color: #738895;
+			font-size: 11px;
+			line-height: 12px;
 
-      &::before {
-        content: '';
-        left: 0px;
-        right: 0px;
-        position: absolute;
-        top: 43%;
-        border-bottom: 1.5px solid #738895;
-        transform: skewY(-8deg);
-        box-shadow: 0 0 2px black;
-      }
-    }
+			&::before {
+				content: '';
+				left: 0px;
+				right: 0px;
+				position: absolute;
+				top: 43%;
+				border-bottom: 1.5px solid #738895;
+				transform: skewY(-8deg);
+				box-shadow: 0 0 2px black;
+			}
+		}
 
 
-    .final-price-offers {
-      color: #beee11;
-      line-height: 16px;
-      font-size: 15px;
-    }
+		.final-price-offers {
+			color: #beee11;
+			line-height: 16px;
+			font-size: 15px;
+		}
 
-  }
+	}
 }
 
 
 
 
-@media screen and (max-width: 1000px) {
-  .main-offers-content {
-    width: auto;
-  }
+@media screen and (max-width: 960px) {
+	.main-offers-content {
+		width: auto;
+	}
 }

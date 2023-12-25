@@ -29,7 +29,7 @@ $font-family_1: "Motiva Sans", Sans-serif;
 }
 
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 960px) {
 	.big-buttons {
 		.browse-buttons {
 			grid-template-columns: repeat(2, 1fr);

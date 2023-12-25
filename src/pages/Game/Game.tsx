@@ -10,37 +10,37 @@ import gameData from "./gameData";
 import "./Game.scss";
 
 interface GameProps {
-  gameId: string;
+	gameId: string;
 }
 
 const Game: FC<GameProps> = () => {
-  const { id } = useParams<{ id?: string }>();
-  const game = gameData.find((game) => game.id === id);
+	const { id } = useParams<{ id?: string }>();
+	const game = gameData.find((game) => game.id === id);
 
-  if (!game) {
-    console.error("Game not found");
-    return <Navigate to="/" />;
-  }
+	if (!game) {
+		console.error("Game not found");
+		return <Navigate to="/" />;
+	}
 
-  return (
-    <>
-      <Header />
-      <SecondNavbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="game">
-                <MediaAndSummary game={game} />
-                <GameContent game={game} />
-                <GameReviews game={game} />
-              </div>
-            }
-          />
-        </Routes>
-      <Footer />
-    </>
-  );
+	return (
+		<>
+			<Header />
+			<SecondNavbar />
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<div className="game">
+								<MediaAndSummary game={game} />
+								<GameContent game={game} />
+								<GameReviews game={game} />
+							</div>
+						}
+					/>
+				</Routes>
+			<Footer />
+		</>
+	);
 };
 
 export default Game;

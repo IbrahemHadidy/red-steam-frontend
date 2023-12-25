@@ -5,13 +5,13 @@ import useResponsiveViewports from "../useResponsiveViewports";
 import "./Header.scss";
 
 const Header: FC = () => {
-  const { isMobileView } = useResponsiveViewports();
+	const isViewport960  = useResponsiveViewports(960);
 
-  return (
-    <div>
-      {isMobileView ? <CustomMobileComponent /> : <DefaultDesktopComponent />}
-    </div>
-  );
+	return (
+		<div>
+			{isViewport960 ? <CustomMobileComponent /> : <DefaultDesktopComponent />}
+		</div>
+	);
 };
 
 export default Header;

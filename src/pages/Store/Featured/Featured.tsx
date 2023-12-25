@@ -5,13 +5,13 @@ import FeaturedMobile from "./Mobile/FeaturedMobile";
 import "./Featured.scss";
 
 const Featured: FC = () => {
-  const { isMobileView } = useResponsiveViewports();
+	const isViewport960 = useResponsiveViewports(960);
 
-  return (
-    <div>
-      {isMobileView ? <FeaturedMobile /> : <FeaturedDesktop />}
-    </div>
-  );
+	return (
+		<div>
+			{isViewport960 ? <FeaturedMobile /> : <FeaturedDesktop />}
+		</div>
+	);
 }
 
 export default Featured;

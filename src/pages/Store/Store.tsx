@@ -15,28 +15,28 @@ import "./Store.scss"
 
 const Store: FC = () => {
 
-  useEffect(() => {
-    document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"
-  }, []);
+	useEffect(() => {
+		document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"
+	}, []);
 
-  return(
-    <div className='store'>
-      <Header />
-      <Sidebar />
-      <SecondNavbar />
-      <Featured />
-      <Offers />
-      <Categories />
-      <div>
-        <Queue />
-        <Recommended />
-      </div>
-      <BrowseSteam />
-      <PopularVR />
-      <HomeTabs />
-      <Footer />
-    </div>
-  )
+	return(
+		<div className='store'>
+			<Header />
+			<Sidebar />
+			<SecondNavbar />
+			<Featured />
+			<Offers />
+			<Categories />
+			<div>
+				<Queue />
+				<Recommended />
+			</div>
+			<BrowseSteam />
+			<PopularVR />
+			<HomeTabs />
+			<Footer />
+		</div>
+	)
 }
 
 export default Store;

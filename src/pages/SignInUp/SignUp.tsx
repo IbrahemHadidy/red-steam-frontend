@@ -15,7 +15,7 @@ const env = import.meta.env;
 
 const SignUp: FC = () => {
 	const navigate = useNavigate();
-	const { isMobileView740 } = useResponsiveViewports();
+	const isViewport740 = useResponsiveViewports(740);
 	const { recaptchaRef, recaptchaValue } = useRecaptcha();
 	const [errorMessages, setErrorMessages] = useState<string[]>([]);
 	const [resetKey, setResetKey] = useState(0);
@@ -41,7 +41,7 @@ const SignUp: FC = () => {
 			"radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
 		// this is responsible for the tab title
 		document.title = `Create Your Account`;
-	}, [isMobileView740]);
+	}, [isViewport740]);
 
 	// handle storing error messages
 	const addErrorMessage = (newErrorMessage: string) => {
