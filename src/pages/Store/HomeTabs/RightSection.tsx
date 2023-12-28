@@ -44,7 +44,7 @@ const RightSection: FC<RightSectionProps> = ({ openedTab, hoveredTabIndex }) => 
 		function getHoverInfo(positiveCount: number, totalReviews: number) {
 			const positivePercentage = (positiveCount / totalReviews) * 100;
 		
-			return `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
+			return `${totalReviews === 0 ? "No reviews yet." : Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
 		}
 
 	return (

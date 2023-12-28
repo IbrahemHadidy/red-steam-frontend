@@ -75,7 +75,7 @@ const Recommended: FC = () => {
 		<div className="home-section">
 			<div className="home-contents">
 				<h2 className="main-btn-title">
-					RECOMMENDED BASED ON THE GAMES YOU PLAY
+					RECOMMENDED BASED ON GAMES OF TAGS &nbsp;YOU LIKE
 					<span className="right-btn">
 						<a className="view-more" href="">
 							{isViewport960 ? (

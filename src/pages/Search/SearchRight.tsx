@@ -52,6 +52,7 @@ export const SearchRight: FC<SearchRightProps> = ({
 								step={1}
 								min={0}
 								max={13}
+								defaultValue={rangeValue}
 								onChange={(e) => setRangeValue(Number(e.target.value))}
 								onMouseUp={(e) => {
 									handlePriceRangeChange(

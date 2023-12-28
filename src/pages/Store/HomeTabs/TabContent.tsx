@@ -6,8 +6,9 @@ const TabContent: FC<{
 		items: tabItem[];
 		title: string;
 		isOpened: boolean;
+		seeMore: string;
 		onTabHover: (index: number | null) => void;
-	}> = ({ items, title, isOpened, onTabHover }) => {
+	}> = ({ items, title, isOpened, seeMore, onTabHover }) => {
 		const [focusedTab, setFocusedTab] = useState<number | null>(null);
 		const [hasHovered, setHasHovered] = useState(false);
 	
@@ -31,7 +32,7 @@ const TabContent: FC<{
 			>
 				<div className="tab-see-more">
 					See more:
-					<a className="btn-white-transparent" href="">
+					<a className="btn-white-transparent" href={seeMore}>
 						<span>{title}</span>
 					</a>
 				</div>

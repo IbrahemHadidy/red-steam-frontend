@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Nav, NavDropdown } from "react-bootstrap";
 import sharedData from "../sharedData";
-import { useNavigate, useLocation } from "react-router-dom";
 
-interface NavigationLinksProps {}
-
-const NavigationLinks: React.FC<NavigationLinksProps> = () => {
+const NavigationLinks: FC = () => {
 	const [isOpen, setIsOpen] = useState<string | null>(null);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -52,7 +50,8 @@ const NavigationLinks: React.FC<NavigationLinksProps> = () => {
 		<Nav>
 			{renderNavDropdownWithHover("STORE", "1", "/", sharedData.subMenus[0].items)}
 			{renderNavDropdownWithHover("COMMUNITY", "2", "/community", sharedData.subMenus[1].items)}
-			{renderNavDropdownWithHover("PROFILE", "3", "/profile", sharedData.subMenus[2].items)}
+			{/* TODO: isLoggedIn Backend logic, render if logged in */}
+			{/* {renderNavDropdownWithHover("PROFILE", "3", "/profile", sharedData.subMenus[2].items)} */}
 			<Nav.Link href="/chat" className="main-dropdowns">CHAT</Nav.Link>
 			<Nav.Link href="/support" className="main-dropdowns">SUPPORT</Nav.Link>
 		</Nav>

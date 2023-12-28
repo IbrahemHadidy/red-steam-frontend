@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react";
+import { FC, useState, SetStateAction } from "react";
+import NavSearch from "../NavSearch";
 import { menuData, navigationItems } from "../menuData-mobile";
 
 type MenuItem = {
@@ -14,7 +15,7 @@ type GroupedMenuItem = {
 	categoryGroups: Record<string, MenuItem[]>;
 };
 
-type menuTitle = string | React.SetStateAction<null>;
+type menuTitle = string | SetStateAction<null>;
 
 const MobileSecondNav: FC = () => {
 	const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
@@ -54,16 +55,18 @@ const MobileSecondNav: FC = () => {
 			<nav className="navbar navbar-expand-sm navbarBg-mobile">
 				{groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
 					<div key={index}>
-						<img
-							className="profile_picture-mobile"
+						{/* TODO: render profile image when logged in backend logic */}
+						{/* <img
+							className="profile-picture"
 							src="https://source.unsplash.com/user/c_v_r"
 							alt="Avatar"
-						/>
+						/> */}
 						<ul className="navbar-nav navbar-nav-mobile">
 							<li className="nav-item nav-item-mobile dropdown">
 								<a
 									className={`nav-link navBarItem navBarItem-mobile ${
-										menuTitle === "Your Store" ? "special-class" : ""
+										/* TODO: add the special class when logged in backend logic */
+										/* menuTitle === "Your Store" && isloggedIn ? "special-class" : */ ""
 									}`}
 									href="#"
 									onClick={() => handleMenuClick(menuTitle)} // Handle click to open/close the menu
@@ -109,23 +112,7 @@ const MobileSecondNav: FC = () => {
 						</ul>
 					</div>
 				))}
-
-				<div id="search">
-					<form>
-						<input type="hidden" />
-						<div className="search">
-							<input
-								name="term"
-								type="text"
-								className="search-input"
-								placeholder="search"
-							/>
-							<a href="#" className="search-button">
-								<img alt="Search" src="/images/blank.gif" />
-							</a>
-						</div>
-					</form>
-				</div>
+				<NavSearch />
 			</nav>
 		</div>
 	);

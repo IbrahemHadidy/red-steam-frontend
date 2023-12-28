@@ -46,15 +46,16 @@ export const LeftSection: FC<LeftSectionProps> = ({
 			</div>
 			<div className="tabs-content">
 				{[
-					{ items: newAndTrending, title: "New & Trending" },
-					{ items: topSellers, title: "Top Sellers" },
-					{ items: popularUpcoming, title: "Popular Upcoming" },
-					{ items: specials, title: "Specials" },
+					{ items: newAndTrending, title: "New & Trending", seeMore: "/search?sort=Release%20date" },
+					{ items: topSellers, title: "Top Sellers", seeMore: "/search?sort=Relevance" },
+					{ items: popularUpcoming, title: "Popular Upcoming", seeMore: "/search?sort=Release%20date" },
+					{ items: specials, title: "Specials", seeMore: "/search?sort=Relevance" },
 				].map((tab, index) => (
 					<TabContent
 						key={index}
 						items={tab.items}
 						title={tab.title}
+						seeMore={tab.seeMore}
 						isOpened={openedTab === tab.title}
 						onTabHover={onTabHover}
 					/>

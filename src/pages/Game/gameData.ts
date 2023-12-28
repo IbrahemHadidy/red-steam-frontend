@@ -568,7 +568,7 @@ const gameData: gamesData[] = [
 		id: "5",
 		name: "Sekiro™: Shadows Die Twice - GOTY Edition",
 		category: "Action Games",
-		description: "Winner of over 175 Game of the Year Awards and recipient of over 250 perfect scores, RDR2 is the epic tale of outlaw Arthur Morgan and the infamous Van der Linde gang, on the run across America at the dawn of the modern age. Also includes access to the shared living world of Red Dead Online.Game of the Year - The Game Awards 2019 Best Action Game of 2019 - IGN Carve your own clever path to vengeance in the award winning adventure from developer FromSoftware, creators of Bloodborne and the Dark Souls series. Take Revenge. Restore Your Honor. Kill Ingeniously.",
+		description: "Game of the Year - The Game Awards 2019 Best Action Game of 2019 - IGN Carve your own clever path to vengeance in the award winning adventure from developer FromSoftware, creators of Bloodborne and the Dark Souls series. Take Revenge. Restore Your Honor. Kill Ingeniously.",
 		releaseDate: "21 Mar, 2019",
 		developer: { name: "FromSoftware", link: ""},
 		publisher: { name: "Activision", link: ""},
@@ -1527,12 +1527,6 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/ss_dd5444a5e384ffddd8fa98443bcef40ff5aaf088.1920x1080.jpg", featured: true},
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/ss_59744b227fbb8abca13bd4fb42cd5139d063575e.1920x1080.jpg"},
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/ss_fe55eaead3a844ed7728b1aa45413cd1a31e6338.1920x1080.jpg", featured: true},
-			{
-				type: "video",
-				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256928575/movie480_vp9.webm?t=1675424239",
-				posterLink:
-					"https://cdn.cloudflare.steamstatic.com/steam/apps/256928575/movie.293x165.jpg",
-			},
 		],
 		reason: "available", // "available" or "recommended"
 		discount: "no-discount", // "discount" or "no-discount"

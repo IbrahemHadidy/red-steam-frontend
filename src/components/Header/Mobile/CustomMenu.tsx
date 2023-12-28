@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import sharedData from "../sharedData";
 
@@ -43,7 +43,11 @@ const SteamMenu: React.FC = () => {
 				opacity: openedItems[menuItem.id] ? 1 : 0,
 				from: { height: 0, opacity: 0 },
 			});
-	
+
+			// TODO: If !isLoggedIn, remove "You & Friends" bakend logic
+			if (/* !isLoggedIn && */ menuItem.text === "You & Friends" ) {
+				return null;
+			}
 
 			return (
 				<div
@@ -57,7 +61,6 @@ const SteamMenu: React.FC = () => {
 				} ${openedItems[menuItem.id] ? "opened" : ""} ${
 					index === 0 ? "first" : ""
 				}`}
-				data-submenu={`submenu-${menuItem.id}`}
 				key={menuItem.id}
 			>
 					<div
@@ -120,12 +123,12 @@ const SteamMenu: React.FC = () => {
 							<p>Number of submenu items: {subMenuItemCount}</p>
 						</animated.div>
 					)}
-			</div>
+				</div>
 			);
-		});
+		}).filter(Boolean);
 	};
 
- const NotificationDropdown: React.FC = () => (
+ const NotificationDropdown: FC = () => (
 		<animated.div
 			className={`menuitem_submenu_wrapper notification-dropdown ${
 				showNotificationDropdown ? "active" : ""
@@ -151,28 +154,27 @@ const SteamMenu: React.FC = () => {
 				<div className="responsive_page_menu" id="responsive_page_menu">
 					<div className="mainmenu_contents">
 						<div className="mainmenu_contents_items">
-							<div className="responsive_menu_user_area">
-								{/* User persona and profile link */}
+							{/* TODO: Add user related menu items when logged in*/}
+							{/* <div className="responsive_menu_user_area">
+								// User persona and profile link
 								<div className="responsive_menu_user_persona persona offline">
 									<div className="playerAvatar offline">
-									{/* TODO: use dynamic profile id */}
-										<a href="/id/iTankDestroyer/">
+										<a href={`/user/${userId}/`}>
 											<img
-												src="https://source.unsplash.com/user/c_v_r"
+												src={userPFP}
 												alt="User Avatar"
 											/>
 										</a>
 									</div>
-									{/* TODO: use dynamic profile id */}
 									<a
-										href="/id/iTankDestroyer/"
+										href={`/user/${userId}/`}
 										data-miniprofile="216405522"
 									>
-										Profile
+										{userName}
 									</a>
 								</div>
 
-								{/* User cart and cart link */}
+								// User cart and cart link
 								<div className="responsive_menu_cartwallet_area persona offline">
 									<div className="responsive_menu_user_cart">
 										<a href="/cart/">
@@ -182,7 +184,7 @@ const SteamMenu: React.FC = () => {
 								</div>
 							</div>
 
-							{/* Notifications menu item with a dropdown */}
+							// Notifications menu item with a dropdown
 							<div
 								className={`menu-item supernav ${
 									showNotificationDropdown ? "opened" : ""
@@ -203,6 +205,13 @@ const SteamMenu: React.FC = () => {
 									<div className="chevron"></div>
 								</div>
 								{showNotificationDropdown && <NotificationDropdown />}
+							</div> */}
+
+							{/* TODO: if not logged in display login button */}
+							<div className="menu-item supernav">
+								<div onClick={() => {window.location.href = "/login"}} className="menu-item-content">
+									<span className="menu-item-text">login</span>
+								</div>
 							</div>
 
 							{/* Generate menu items based on shared data */}

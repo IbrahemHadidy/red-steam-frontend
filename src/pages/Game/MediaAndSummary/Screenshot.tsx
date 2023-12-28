@@ -58,7 +58,11 @@ export const ScreenshotModal: FC<ScreenshotModalProps> = ({
 						</a>
 					</div>
 					<div className="screenshot-img">
-						<img src={imgSrc} alt="Screenshot" />
+						<img
+							src={imgSrc}
+							alt="Screenshot"
+							onClick={() => handleModalClick("right")}
+						/>
 					</div>
 					<div className="modal--footer">
 						<div className="count">

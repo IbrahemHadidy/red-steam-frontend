@@ -25,7 +25,7 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
 	function getHoverInfo(positiveReviews: number, negativeReviews: number) {
 		const positivePercentage = (positiveReviews / negativeReviews) * 100;
 	
-		return `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
+		return  totalReviews === 0 ? "No reviews yet." : `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
 	}
 	
 	

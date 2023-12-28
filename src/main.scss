@@ -244,3 +244,27 @@ body {
 		pointer-events: auto;
 	}
 }
+
+.page-content {
+	width: 940px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.game-review-summary {
+	&.positive {
+		color: #66c0f4;
+	}
+
+	&.mixed {
+		color: #b9a074;
+	}
+
+	&.negative {
+		color: #a34c25;
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+}

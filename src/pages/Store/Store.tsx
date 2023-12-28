@@ -14,7 +14,6 @@ import Footer from "../../components/Footer/Footer";
 import "./Store.scss"
 
 const Store: FC = () => {
-
 	useEffect(() => {
 		document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"
 	}, []);
@@ -22,15 +21,19 @@ const Store: FC = () => {
 	return(
 		<div className='store'>
 			<Header />
-			<Sidebar />
+			{/* TODO: isLoggedIn Backend logic, render if logged in */}
+			{/* <Sidebar /> */}
 			<SecondNavbar />
 			<Featured />
 			<Offers />
 			<Categories />
-			<div>
-				<Queue />
-				<Recommended />
-			</div>
+			{/* TODO: isLoggedIn Backend logic, render if logged in else display the login div */}
+			{/* { !isLoggedIn ? 
+				<>
+					<Queue /><Recommended />
+				</>
+				: <LoginQueue /> 
+			} */}
 			<BrowseSteam />
 			<PopularVR />
 			<HomeTabs />

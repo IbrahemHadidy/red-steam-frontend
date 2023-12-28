@@ -22,6 +22,8 @@ const Game: FC<GameProps> = () => {
 		return <Navigate to="/" />;
 	}
 
+	// TODO: Add a function to send the user visited game and send it to the backend for the history
+
 	return (
 		<>
 			<Header />

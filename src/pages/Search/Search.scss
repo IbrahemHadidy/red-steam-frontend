@@ -239,7 +239,6 @@
 			font-weight: 300;
 			border: 1px solid rgba(139, 185, 224, 0);
 			height: 45px;
-			overflow: hidden;
 			transition: height 0.25s, margin 0.25s;
 
 			@media screen and (max-width: 695px) {
@@ -377,6 +376,27 @@
 						}
 					}
 
+					.review-tooltip {
+						background: #c2c2c2;
+						color: #3d3d3f;
+						font-size: 11px;
+						border-radius: 3px;
+						padding: 5px;
+						min-width: 275px;
+						white-space: normal;
+						box-shadow: 0 0 3px #000000;
+						word-wrap: break-word;
+						position: absolute;
+						z-index: 15000;
+						pointer-events: auto;
+						opacity: 1;
+						transition: opacity 0.2s ease-in-out;
+						bottom: 90%;
+						left: 74%;
+						pointer-events: none;
+						overflow: visible;
+						text-align: left;
+					}
 				}
 
 				.result-price {
@@ -545,6 +565,7 @@
 			border-bottom-left-radius: 2px;
 			padding: 4px 2px 4px 4px;
 			overflow: hidden;
+			transition: height 0.3s ease-in-out;
 
 			.range-container {
 				padding: 0 12px;

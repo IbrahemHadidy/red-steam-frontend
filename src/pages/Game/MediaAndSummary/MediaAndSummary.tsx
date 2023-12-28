@@ -246,9 +246,8 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 	useEffect(() => {
 		const video = videoRef.current;
 
+		// Check if the page is visible before swapping
 		const handleVideoEnded = () => {
-			console.log("Video ended. Swapping...");
-			// Check if the page is visible before swapping
 			if (isPageVisible.current) {
 				handleSwap();
 			}
@@ -328,7 +327,6 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 			{/* TODO: isInLibrary backend logic */}
 			{/* <GameOwned game={game} /> */}
 
-			
 			{isModalOpen && (
 				<ScreenshotModal imgSrc={selectedEntry?.link || ''}
 					onClose={closeModal}

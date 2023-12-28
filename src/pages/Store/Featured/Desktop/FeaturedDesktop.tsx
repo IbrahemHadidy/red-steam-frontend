@@ -86,7 +86,7 @@ const FeaturedDesktop: FC = () => {
 											<div>Now Available</div>
 										) : (
 											<>
-												<strong>Recommended</strong> because you played games
+												<strong>Recommended</strong> because you liked games
 												tagged with
 											</>
 										)}
@@ -100,7 +100,7 @@ const FeaturedDesktop: FC = () => {
 								</div>
 								{slide.discount === "no-discount" ? (
 									<div className="no-discount">
-										<div className="price">{slide.price} USD</div>
+										<div className="price">{slide.price} {slide.price === "Free to Play" ? "" : "USD"}</div>
 									</div>
 								) : (
 									<div className="discount">

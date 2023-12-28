@@ -83,7 +83,7 @@ export const VerifyModal: FC<{ storedEmailAddress: string }> = ({
 									<li>
 										Please check both your spam and trash folder for an email
 										{/* TODO: add the used domain later */}
-										from "steampowered.com". Sometimes emails can be incorrectly
+										from "redsteam.com". Sometimes emails can be incorrectly
 										identified as spam by your email provider.
 									</li>
 									<li>

@@ -146,13 +146,13 @@
 						white-space: normal;
 						box-shadow: 0 0 3px #000000;
 						word-wrap: break-word;
-						position: fixed;
+						position: absolute;
 						z-index: 15000;
 						pointer-events: auto;
 						opacity: 0;
+						top: 13.2%;
+						left: 71%;
 						transition: opacity 0.2s ease-in-out;
-						top: 48%;
-						left: 59%;
 						pointer-events: none;
 					}
 
@@ -397,8 +397,12 @@
 						}
 
 						.mini-img {
-							width: 116px;
-							height: 65px;
+							max-width: 100%;
+							max-height: 100%;
+							position: absolute;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, -50%);
 						}
 					}
 				}
