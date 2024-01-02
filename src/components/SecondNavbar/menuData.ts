@@ -1,5 +1,5 @@
 // Helper function to generate menu items
-function generateMenuItem(label: string, url: string, className: string = '', category: string = '', specialClass: string = '') {
+function generateMenuItem(label: string, url: string, className: string, category: string, specialClass: string = '') {
 	const item: { label: string, url: string, className: string, category?: string, specialClass?: string } = { label, url, className };
 	if (category) item.category = category;
 	if (specialClass) item.specialClass = specialClass;

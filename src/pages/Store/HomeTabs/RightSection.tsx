@@ -1,36 +1,44 @@
 import { FC } from "react";
-import { newAndTrending, popularUpcoming, specials, tabItem, topSellers } from "./homeTabsItems";
-import { renderScreenshots } from "./renderScreenshots";
+import { newAndTrending, popularUpcoming, specials, topSellers } from "./homeTabsItems";
+import { gamesData } from "../../Game/gameData";
 
 interface RightSectionProps {
 	openedTab: string | number;
 	hoveredTabIndex: number | null;
 }
 
-const getGameDetails = (_openedTab: string, hoveredTabIndex: number, data: tabItem) => {
+const getGameDetails = (hoveredTabIndex: number, data: gamesData[]) => {
 	
-	// @ts-expect-error "any"
 	const game = data[hoveredTabIndex];
 	return {
-		gameName: game?.gameName || "",
-		reviews: game?.reviews || { positive: 0, negative: 0 },
+		gameName: game.name,
+		reviews: game.reviews,
+		tags: game.tags,
+		screenshots: game.moviesAndImages.filter(item => item.type === "image" && item.featured).map(item => item.link),
 	};
 };
 
 const RightSection: FC<RightSectionProps> = ({ openedTab, hoveredTabIndex }) => {
-	const tabsData = {
+	const tabsData: { [key: string]: gamesData[] } = {
 		"New & Trending": newAndTrending,
 		"Top Sellers": topSellers,
 		"Popular Upcoming": popularUpcoming,
-		Specials: specials,
+		"Specials": specials,
 	};
 
-	// @ts-expect-error "any"
-	const data = tabsData[openedTab] || [];
+	const data = tabsData[openedTab];
 
-	const { gameName, reviews } = getGameDetails(openedTab as unknown as string, hoveredTabIndex as unknown as number, data);
+	const { gameName, reviews, tags, screenshots } = hoveredTabIndex !== null ? getGameDetails(hoveredTabIndex, data) : { gameName: "", reviews: [], tags: [], screenshots: [] };
 
-	const positivePercentage = (reviews.positive / (reviews.positive + reviews.negative)) * 100;
+	const positiveReviews = reviews.filter(
+		(review: { type: string; }) => review.type === "positive"
+	).length;
+	const negativeReviews = reviews.filter(
+		(review: { type: string; }) => review.type === "negative"
+	).length;
+	const totalReviews = positiveReviews + negativeReviews;
+	const positivePercentage =
+		(positiveReviews / (positiveReviews + negativeReviews)) * 100;
 
 	const reviewSummary =
 		positivePercentage >= 90 ? "Overwhelmingly Positive" :
@@ -41,10 +49,10 @@ const RightSection: FC<RightSectionProps> = ({ openedTab, hoveredTabIndex }) => 
 		positivePercentage <= 20 ? "Very Negative" :
 		positivePercentage <= 40 ? "Mostly Negative" : null;
 
-		function getHoverInfo(positiveCount: number, totalReviews: number) {
-			const positivePercentage = (positiveCount / totalReviews) * 100;
+		function getHoverInfo() {
+			const positivePercentage = (positiveReviews / totalReviews) * 100;
 		
-			return `${totalReviews === 0 ? "No reviews yet." : Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
+			return totalReviews === 0 ? "No reviews yet." : (`${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`);
 		}
 
 	return (
@@ -63,34 +71,36 @@ const RightSection: FC<RightSectionProps> = ({ openedTab, hoveredTabIndex }) => 
 								}`}>
 								{reviewSummary || "N/A"}
 							</span>
-							<span>&nbsp;({(reviews.positive + reviews.negative).toLocaleString()})</span>
+							<span>&nbsp;({(positiveReviews + negativeReviews).toLocaleString()})</span>
 							<span className="review-tooltip">
-								{getHoverInfo(
-									reviews.positive,
-									reviews.positive + reviews.negative
-								)}
+								{getHoverInfo()}
 							</span>
 						</div>
 						<div className="tab-tags">
-							{data.length > 0 &&
-								[...Array(5).keys()].map((index) => {
-									const tagText = data[hoveredTabIndex][`tag${index + 1}` as keyof tabItem];
-									return (
-										tagText && (
-											<a key={index} href="">
-												{tagText}
-											</a>
-										)
-									);
-								})}
+							{tags.map((tag, index) => (
+								<a
+									className="tab-tag"
+									key={index}
+									href=""
+								>
+									{tag}
+								</a>
+							))}
 						</div>
-						<div className="tabs-screenshots">{renderScreenshots(openedTab, hoveredTabIndex)}</div>
+						<div className="tabs-screenshots">
+							{screenshots.map((screenshot, index) => (
+								<div
+									className="tabs-screenshot"
+									style={{backgroundImage: `url(${screenshot})`}}
+									key={index}
+								></div>
+							))}
+						</div>
 					</div>
 				)}
 			</div>
 		</div>
 	);
 };
-
 
 export default RightSection;

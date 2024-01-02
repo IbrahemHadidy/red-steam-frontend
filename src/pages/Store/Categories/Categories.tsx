@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import Slider from "react-slick";
 import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import categories from "./categoryItems";
@@ -42,7 +42,7 @@ const Categories: FC = () => {
 	const renderCategoryGroup = (categoryGroup: Category[], groupIndex: number) => (
 		<>
 			{categoryGroup.map((category: Category, index: number) => (
-				renderCategory(category, (groupIndex * 1000 + index).toString()) 
+				renderCategory(category, (groupIndex * 1000 + index).toString())
 			))}
 		</>
 	);
@@ -60,9 +60,11 @@ const Categories: FC = () => {
 			<div className="home-contents">
 				{isViewport960 ? (
 					<div className="mobile-mini">
-						{categoryGroups.map((group, index) => (
-							renderCategoryGroup(group, index)
-						))}
+							{categoryGroups.map((group, index) => (
+								<Fragment key={index}>
+									{renderCategoryGroup(group, index)}
+								</Fragment>
+							))}
 					</div>
 				) : (
 					<>

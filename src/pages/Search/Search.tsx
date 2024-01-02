@@ -224,8 +224,9 @@ const Search: FC = () => {
 		// Remove trailing "&"
 		url = url.slice(0, -1);
 		
-		// Update the URL without reloading the page
-		window.history.pushState({}, '', url);
+		// Update the URL without reloading the page 
+		// Used replaceState instead of pushState so it doesn't affect the history and prevent navigating going to the previous page with the back button
+		window.history.replaceState({}, '', url);
 	
 		return url;
 	};

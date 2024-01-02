@@ -88,6 +88,7 @@
 
 		.right-game-summary {
 			width: 324px;
+			height: 429px;
 			margin-left: 0px;
 			float: right;
 
@@ -210,8 +211,7 @@
 				}
 
 				.glance-tags {
-					white-space: nowrap;
-					height: 22px;
+					line-height: normal;
 				}
 			}
 		}

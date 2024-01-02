@@ -1,6 +1,11 @@
 .search-header {
 	background: url('/images/s_cluster_bg.png') bottom center no-repeat;
 	padding-bottom: 60px;
+	.page-content {
+		@media screen and (max-width: 960px) {
+			width: auto;
+		}
+	}
 }
 
 .search-title {
@@ -47,6 +52,7 @@
 	background-color: #1b2838;
 	display: flex;
 	margin-top: -30px;
+	padding-bottom: 15px;
 
 	@media screen and (max-width: 960px) {
 		width: auto;
@@ -227,262 +233,291 @@
 
 	.search-results {
 		max-width: 686px;
-
-		.search-result {
-			position: relative;
-			background: rgba(0, 0, 0, 0.2);
-			margin-bottom: 5px;
-			display: block;
-			text-decoration: none;
-			color: #c6d4df;
-			font-family: "Motiva Sans", Sans-serif;
-			font-weight: 300;
-			border: 1px solid rgba(139, 185, 224, 0);
-			height: 45px;
-			transition: height 0.25s, margin 0.25s;
-
-			@media screen and (max-width: 695px) {
-				padding: 5px;
-				height: auto;
+		.search-result-container {
+			@media screen and (min-width: 1070px) {
+				display: flex;
+				flex-direction: column;
+				height: 50px;
+				width: 684px;
 			}
-
-			&:hover {
+		
+			.search-result {
 				position: relative;
+				background: rgba(0, 0, 0, 0.2);
 				margin-bottom: 5px;
 				display: block;
 				text-decoration: none;
 				color: #c6d4df;
 				font-family: "Motiva Sans", Sans-serif;
 				font-weight: 300;
-				border: 1px solid rgba(139, 185, 224, 0.2);
-				background: rgba(0, 0, 0, 0.4);
-			}
-
-			.s-col {
+				border: 1px solid rgba(139, 185, 224, 0);
 				height: 45px;
-				display: inline-block;
-				vertical-align: top;
+				transition: height 0.25s, margin 0.25s;
 
 				@media screen and (max-width: 695px) {
-					float: left;
+					padding: 5px;
+					height: auto;
+				}
+
+				&:hover {
+					position: relative;
+					margin-bottom: 5px;
 					display: block;
+					text-decoration: none;
+					color: #c6d4df;
+					font-family: "Motiva Sans", Sans-serif;
+					font-weight: 300;
+					border: 1px solid rgba(139, 185, 224, 0.2);
+					background: rgba(0, 0, 0, 0.4);
 				}
-			}
-
-
-			.reuslt-info {
-				display: inline-block;
-				vertical-align: top;
-
-				@media screen and (max-width: 695px) {
-					overflow: hidden;
-					padding-left: 12px;
-					display: block;
-				}
-
-				.result-name {
-					width: 275px;
-					margin-left: 10px;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-
+			
+				.s-col {
+					height: 45px;
+					display: inline-block;
+					vertical-align: top;
+				
 					@media screen and (max-width: 695px) {
-						float: none;
-						width: auto;
-						margin: 0;
-
-						.search-title {
-							margin-top: 0;
-						}
-					}
-
-					.result-title {
-						margin-top: 5px;
-						display: block;
-						text-overflow: ellipsis;
-						overflow: hidden;
-						color: #c7d5e0;
-					}
-
-					>div {
-						.platform-img {
-							display: inline-block;
-							width: 20px;
-							height: 20px;
-							background-repeat: no-repeat;
-							opacity: 0.3;
-
-							&.win {
-								background-image: url('/images/icon_platform_win.png');
-							}
-
-							&.mac {
-								background-image: url('/images/icon_platform_mac.png');
-							}
-						}
-					}
-				}
-
-				.result-date {
-					width: 85px;
-					color: #4c6c8c;
-					font-size: 11px;
-					line-height: 45px;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					overflow: hidden;
-
-					@media screen and (max-width: 695px) {
-						line-height: 18px;
-						height: 18px;
-					}
-				}
-
-				.result-rating {
-					width: 30px;
-					font-size: 11px;
-					line-height: 16px;
-					margin-left: 10px;
-					height: 16px;
-					padding: 14px 0 15px 0;
-					text-align: center;
-
-					@media screen and (max-width: 695px) {
-						padding: 0;
-						line-height: 18px;
-						height: 18px;
 						float: left;
 						display: block;
 					}
-
-					.search-review-summary {
-						display: inline-block;
-						height: 16px;
-						width: 16px;
-						vertical-align: middle;
-						background: no-repeat center center;
-
-						&.positive {
-							background-image: url('/images/user_reviews_positive.png');
-						}
-
-						&.negative {
-							background-image: url('/images/user_reviews_negative.png');
-						}
-
-						&.mixed {
-							background-image: url('/images/user_reviews_mixed.png');
-						}
-					}
-
-					.review-tooltip {
-						background: #c2c2c2;
-						color: #3d3d3f;
-						font-size: 11px;
-						border-radius: 3px;
-						padding: 5px;
-						min-width: 275px;
-						white-space: normal;
-						box-shadow: 0 0 3px #000000;
-						word-wrap: break-word;
-						position: absolute;
-						z-index: 15000;
-						pointer-events: auto;
-						opacity: 1;
-						transition: opacity 0.2s ease-in-out;
-						bottom: 90%;
-						left: 74%;
-						pointer-events: none;
-						overflow: visible;
-						text-align: left;
-					}
 				}
-
-				.result-price {
-					vertical-align: top;
-					height: 45px;
+			
+			
+				.reuslt-info {
 					display: inline-block;
-
+					vertical-align: top;
+				
 					@media screen and (max-width: 695px) {
-						float: right;
-						padding-right: 8px;
-						line-height: 18px;
-						height: 18px;
+						overflow: hidden;
 						display: block;
 					}
-
-					.s-discount-block {
-						width: 150px;
-						height: 100%;
-						align-items: center;
-						position: relative;
-						display: flex;
-
-						.discount-percentage {
-							font-family: "Motiva Sans", Sans-serif;
-							font-weight: 500;
-							color: #BEEE11;
-							background: #4c6b22;
-							display: inline-block;
-							padding: 5px;
-
-							@media screen and (max-width: 695px) {
-								padding: 1px 5px;
+				
+					.result-name {
+						width: 275px;
+						margin-left: 10px;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+					
+						@media screen and (max-width: 695px) {
+							float: none;
+							width: auto;
+							margin: 0;
+						
+							.search-title {
+								margin-top: 0;
 							}
 						}
-
-						.discount-prices {
+						@media screen and (max-width: 430px) {
+							.result-image {
+								padding-right: 5px;
+							}
+						}
+					
+						.result-title {
+							margin-top: 5px;
+							display: block;
+							text-overflow: ellipsis;
+							overflow: hidden;
+							color: #c7d5e0;
+							@media screen and (max-width: 970px) {
+								padding-left: 2px;
+							}
+						}
+					
+						>div {
+							.platform-img {
+								display: inline-block;
+								width: 20px;
+								height: 20px;
+								background-repeat: no-repeat;
+								opacity: 0.3;
+							
+								&.win {
+									background-image: url('/images/icon_platform_win.png');
+								}
+							
+								&.mac {
+									background-image: url('/images/icon_platform_mac.png');
+								}
+							}
+						}
+					}
+				
+					.result-date {
+						width: 85px;
+						color: #4c6c8c;
+						font-size: 11px;
+						line-height: 45px;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					
+						@media screen and (max-width: 695px) {
+							line-height: 18px;
+							height: 18px;
+						}
+						@media screen and (max-width: 430px) {
+							padding-top: 5px;
+						}
+					}
+				
+					.result-rating {
+						width: 30px;
+						font-size: 11px;
+						line-height: 16px;
+						height: 16px;
+						padding: 14px 0 15px 0;
+						text-align: center;
+					
+						@media screen and (max-width: 695px) {
+							padding: 0;
+							line-height: 18px;
+							height: 18px;
+							float: left;
+							display: block;
+						}
+						@media screen and (max-width: 430px) {
+							padding-top: 5px;
+							padding-left: 12px;
+						}
+					
+						.search-review-summary {
+							display: inline-block;
+							height: 16px;
+							width: 16px;
+							vertical-align: middle;
+							background: no-repeat center center;
+						
+							&.positive {
+								background-image: url('/images/user_reviews_positive.png');
+							}
+						
+							&.negative {
+								background-image: url('/images/user_reviews_negative.png');
+							}
+						
+							&.mixed {
+								background-image: url('/images/user_reviews_mixed.png');
+							}
+						}
+					
+						.review-tooltip {
+							background: #c2c2c2;
+							color: #3d3d3f;
+							font-size: 11px;
+							border-radius: 3px;
+							padding: 5px;
+							min-width: 275px;
+							white-space: normal;
+							box-shadow: 0 0 3px #000000;
+							word-wrap: break-word;
+							position: absolute;
+							z-index: 15000;
+							pointer-events: auto;
+							opacity: 1;
+							transition: opacity 0.2s ease-in-out;
+							bottom: 90%;
+							left: 74%;
+							pointer-events: none;
+							overflow: visible;
+							text-align: left;
+						}
+					}
+				
+					.result-price {
+						vertical-align: top;
+						height: 45px;
+						display: inline-block;
+					
+						@media screen and (max-width: 695px) {
+							float: right;
+							padding-right: 8px;
+							line-height: 18px;
+							height: 18px;
+							display: block;
+						}
+						@media screen and (max-width: 430px) {
+							padding-top: 5px;
+						}
+					
+						.s-discount-block {
+							width: 150px;
+							height: 100%;
+							align-items: center;
+							position: relative;
 							display: flex;
-							background: #344654;
-							flex-direction: column;
-							align-items: flex-end;
-							justify-content: center;
-							padding-left: 4px;
-							flex: 100px;
-							background-color: inherit;
-
-							@media screen and (max-width: 695px) {
-								flex-direction: row;
-								align-items: center;
-								justify-content: flex-end;
-
-								.discount-original-price {
-									margin-right: 4px !important;
-								}
-							}
-
-							.discount-original-price {
-								position: relative;
-								width: fit-content;
-								color: #888888;
-								font-size: 11px;
-								line-height: 12px;
-
-								&::before {
-									content: '';
-									left: 0px;
-									right: 0px;
-									position: absolute;
-									top: 43%;
-									border-bottom: 1.5px solid #738895;
-									transform: skewY(-8deg);
-									box-shadow: 0 0 2px black;
-								}
-							}
-
-							.discount-final-price {
+						
+							.discount-percentage {
+								font-family: "Motiva Sans", Sans-serif;
+								font-weight: 500;
 								color: #BEEE11;
-								line-height: 16px;
-								font-size: 13px;
-
-								&.s-no-discount {
-									color: #c6d4df;
+								background: #4c6b22;
+								display: inline-block;
+								padding: 5px;
+							
+								@media screen and (max-width: 695px) {
+									padding: 1px 5px;
+								}
+							}
+						
+							.discount-prices {
+								display: flex;
+								background: #344654;
+								flex-direction: column;
+								align-items: flex-end;
+								justify-content: center;
+								padding-left: 4px;
+								flex: 100px;
+								background-color: inherit;
+							
+								@media screen and (max-width: 695px) {
+									flex-direction: row;
+									align-items: center;
+									justify-content: flex-end;
+								
+									.discount-original-price {
+										margin-right: 4px !important;
+									}
+								}
+							
+								.discount-original-price {
+									position: relative;
+									width: fit-content;
+									color: #888888;
+									font-size: 11px;
+									line-height: 12px;
+								
+									&::before {
+										content: '';
+										left: 0px;
+										right: 0px;
+										position: absolute;
+										top: 43%;
+										border-bottom: 1.5px solid #738895;
+										transform: skewY(-8deg);
+										box-shadow: 0 0 2px black;
+									}
+								}
+							
+								.discount-final-price {
+									color: #BEEE11;
+									line-height: 16px;
+									font-size: 13px;
+								
+									&.s-no-discount {
+										color: #c6d4df;
+									}
 								}
 							}
 						}
 					}
 				}
+			}
+			.game-hover {
+				left: 100%;
+				margin-top: -125px;
+				position: relative;
 			}
 		}
 	}
@@ -565,7 +600,12 @@
 			border-bottom-left-radius: 2px;
 			padding: 4px 2px 4px 4px;
 			overflow: hidden;
-			transition: height 0.3s ease-in-out;
+			transition: height 0.3s ease-in-out, padding 0.3s ease-in-out;
+
+			&.closed {
+				padding-top: 0;
+				padding-bottom: 0;
+			}
 
 			.range-container {
 				padding: 0 12px;
@@ -716,6 +756,24 @@
 					img {
 						opacity: 0.1;
 					}
+				}
+			}
+
+			.search-filter {
+				background-color: rgba( 0, 0, 0, 0.2 );
+				color: #ffffff;
+				border-radius: 3px;
+				border: 1px solid rgba( 0, 0, 0, 0.3);
+				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.4);
+				box-shadow: 1px 1px 0px rgba( 255, 255, 255, 0.2);
+				width: 200px;
+				padding: 5px;
+				margin: 5px;
+				transition: top 1s ease-in-out;
+
+				&::placeholder {
+					font-style: italic;
+					color: #9fbbcb;
 				}
 			}
 		}

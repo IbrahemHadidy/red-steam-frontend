@@ -157,9 +157,10 @@
 						background: linear-gradient(to right, #c6e6f8 5%, #95bcd3 95%);
 						margin-right: -14px;
 						padding-right: 14px;
-
-						@media (max-width: 630px) {
+						@media screen and (max-width: 960px) {
 							margin-right: 0;
+						}
+						@media (max-width: 630px) {
 							.tab-item-discount {
 								margin-right: 1px;
 							}

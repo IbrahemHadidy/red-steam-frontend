@@ -38,7 +38,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 								<h1>Play {game.name}</h1>
 								<div className="game-purchase-action">
 									<div className="game-purchase-action-background">
-										<div className="game-purchase-price"> {game.price} </div>
+										<div className="game-purchase-price"> ${game.price} </div>
 										<div className="play-game-btn">
 											<a className="green-btn" href="">
 												<span className="medium-btn">Play Game</span>
@@ -53,12 +53,12 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 									</div>
 								</div>
 							</>
-						) : game.discount === "no-discount" ? (
+						) : !game.discount ? (
 							<>
 								<h1>Buy {game.name}</h1>
 								<div className="game-purchase-action">
 									<div className="game-purchase-action-background">
-										<div className="game-purchase-price"> {game.price} USD </div>
+										<div className="game-purchase-price"> ${game.price} USD </div>
 										{/* TODO: isInLibrary backend logic */}
 										{/* <div className="play-game-btn">
 												<a className="green-btn" href="">
@@ -90,14 +90,14 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 									<div className="game-purchase-action-background">
 										<div className="game-purchase-discount">
 											<div className="discount-precentage">
-												-{game.discountPercentage}
+												-{game.discountPercentage}%
 											</div>
 											<div className="discount-prices">
 												<div className="discount-original-price">
-													{game.price}
+													${game.price}
 												</div>
 												<div className="discount-final-price">
-													{game.discountPrice} USD
+													${game.discountPrice} USD
 												</div>
 											</div>
 										</div>
@@ -181,26 +181,36 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 													<br />
 												</li>
 											)}
-											<li>
-												<strong>OS:</strong> {game.req.mini.os}
-												<br />
-											</li>
-											<li>
-												<strong>Processor:</strong> {game.req.mini.cpu}
-												<br />
-											</li>
-											<li>
-												<strong>Memory:</strong> {game.req.mini.ram}
-												<br />
-											</li>
-											<li>
+											{game.req.mini.os && (
+												<li>
+													<strong>OS:</strong> {game.req.mini.os}
+													<br />
+												</li>
+											)}
+											{game.req.mini.cpu && (
+												<li>
+													<strong>Processor:</strong> {game.req.mini.cpu}
+													<br />
+												</li>
+											)}
+											{game.req.mini.ram && (
+												<li>
+													<strong>Memory:</strong> {game.req.mini.ram}
+													<br />
+												</li>
+											)}
+											{game.req.mini.gpu && (
+												<li>
 												<strong>Graphics:</strong> {game.req.mini.gpu}
 												<br />
 											</li>
-											<li>
-												<strong>DirectX:</strong> {game.req.mini.dx}
-												<br />
-											</li>
+											)}
+											{game.req.mini.dx && (
+												<li>
+													<strong>DirectX:</strong> {game.req.mini.dx}
+													<br />
+												</li>
+											)}
 											{game.req.mini.network && (
 												<li>
 													<strong>Network:</strong> {game.req.mini.network}
@@ -217,6 +227,13 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 												<li>
 													<strong>Sound card:</strong>{" "}
 													{game.req.recommended.soundCard}
+													<br />
+												</li>
+											)}
+											{game.req.mini.vrSupport && (
+												<li>
+													<strong>VR Support:</strong>{" "}
+														{game.req.mini.vrSupport}
 													<br />
 												</li>
 											)}
@@ -241,26 +258,36 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 													<br />
 												</li>
 											)}
-											<li>
-												<strong>OS:</strong> {game.req.recommended.os}
-												<br />
-											</li>
-											<li>
-												<strong>Processor:</strong> {game.req.recommended.cpu}
-												<br />
-											</li>
-											<li>
-												<strong>Memory:</strong> {game.req.recommended.ram}
-												<br />
-											</li>
-											<li>
-												<strong>Graphics:</strong> {game.req.recommended.gpu}
-												<br />
-											</li>
-											<li>
-												<strong>DirectX:</strong> {game.req.recommended.dx}
-												<br />
-											</li>
+											{game.req.recommended.os && (
+												<li>
+													<strong>OS:</strong> {game.req.recommended.os}
+													<br />
+												</li>
+											)}
+											{game.req.recommended.cpu && (
+												<li>
+													<strong>Processor:</strong> {game.req.recommended.cpu}
+													<br />
+												</li>
+											)}
+											{game.req.recommended.ram && (
+												<li>
+													<strong>Memory:</strong> {game.req.recommended.ram}
+														<br />
+												</li>
+											)}
+											{game.req.recommended.gpu && (
+												<li>
+													<strong>Graphics:</strong> {game.req.recommended.gpu}
+													<br />
+												</li>
+											)}
+											{game.req.recommended.dx && (
+												<li>
+													<strong>DirectX:</strong> {game.req.recommended.dx}
+													<br />
+												</li>
+											)}
 											{game.req.recommended.network && (
 												<li>
 													<strong>Network:</strong> {game.req.recommended.network}
@@ -277,6 +304,13 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 												<li>
 													<strong>Sound card:</strong>{" "}
 													{game.req.recommended.soundCard}
+													<br />
+												</li>
+											)}
+											{game.req.recommended.vrSupport && (
+												<li>
+													<strong>VR Support:</strong>{" "}
+														{game.req.recommended.vrSupport}
 													<br />
 												</li>
 											)}

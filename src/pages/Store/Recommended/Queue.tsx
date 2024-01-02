@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useResponsiveViewports from "../../../components/useResponsiveViewports";
-import queueGames from "./queueGames";
+import queueGames from "../Queue/queueGames";
 import "./Queue.scss";
 
 interface queueGame {
@@ -14,15 +14,7 @@ const Queue: FC = () => {
 	return (
 		<div className="home-section">
 			<div className="home-contents">
-				<h2 className="main-btn-title">
-				YOUR DISCOVERY QUEUE
-					<span className="right-btn">
-						<a className="view-more" href="">
-							{/* Render different button on mobile */}
-							{isViewport960 ? <></> : <span>Learn More</span>}
-						</a>
-					</span>
-				</h2>
+				<h2 className="main-btn-title">YOUR DISCOVERY QUEUE</h2>
 				<div className="static-queue">
 					<a className="static-queue-link" href="">
 						{isViewport960 ? (
@@ -56,16 +48,6 @@ const Queue: FC = () => {
 						</div>
 					</div>
 				</div>
-				{isViewport960 && (
-					<span className="right-btn-queue-mobile">
-						<a
-							className="btn-queue-mobile"
-							href="#"
-						>
-							<span>Learn More</span>
-						</a>
-					</span>
-				)}
 			</div>
 		</div>
 	);

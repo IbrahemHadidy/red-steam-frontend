@@ -74,7 +74,39 @@ const MobileSecondNav: FC = () => {
 									{menuTitle}
 								</a>
 								{/* Conditionally render the dropdown menu based on the openMenu state */}
-								{openMenu === menuTitle && (
+								{/* TODO: render full your store links when logged in backend logic */}
+									{/* {isLoggedIn && openMenu === "Your Store" && (
+										<div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
+											{Object.entries(categoryGroups).map(
+												([category, categoryItems], categoryIndex) => (
+													<div
+														key={categoryIndex}
+														className={`category-div ${category}`}
+													>
+														{categoryItems.map((categoryItem, itemIndex) => (
+															<a
+																key={itemIndex}
+																className={`menuItem ${categoryItem.className}`}
+																href={categoryItem.url}
+															>
+																{categoryItem.label}
+															</a>
+														))}
+													</div>
+												)
+											)}
+										</div>
+									)} */}
+									{{/* !isLoggedIn */} && openMenu === "Your Store" && (
+										<div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
+											<div className="category-div store-div" style={{marginTop: "-10px"}}>
+													<a className="menuItem custom-label" href="#">
+														Home
+													</a>
+											</div>
+										</div>
+									)}
+									{openMenu === menuTitle && openMenu !== "Your Store" && (
 									<div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
 										{Object.entries(categoryGroups).map(
 											([category, categoryItems], categoryIndex) => (

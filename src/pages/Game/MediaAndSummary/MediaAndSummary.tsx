@@ -43,7 +43,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 
 		// this is responsible for the tab title
 		document.title = `${
-			game.discount === "discount" && game.discountPercentage
+			!game.discount && game.discountPercentage
 				? `Save ${game.discountPercentage.replace(/^-(\d+)/, '$1')} on` : ""
 		} ${game.name} on Steam`;
 

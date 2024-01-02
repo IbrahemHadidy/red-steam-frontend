@@ -201,7 +201,7 @@ export const RightContent: FC<{ game: gamesData, isViewport630: boolean }> = ({ 
 							<h1>Play {game.name}</h1>
 							<div className="game-purchase-action">
 								<div className="game-purchase-action-background">
-									<div className="game-purchase-price"> {game.price} </div>
+									<div className="game-purchase-price"> ${game.price} </div>
 									<div className="play-game-btn">
 										<a className="green-btn" href="">
 											<span className="medium-btn">Play Game</span>
@@ -216,12 +216,12 @@ export const RightContent: FC<{ game: gamesData, isViewport630: boolean }> = ({ 
 								</div>
 							</div>
 						</>
-					) : game.discount === "no-discount" ? (
+					) : !game.discount ? (
 						<>
 							<h1>Buy {game.name}</h1>
 							<div className="game-purchase-action">
 								<div className="game-purchase-action-background">
-									<div className="game-purchase-price"> {game.price} </div>
+									<div className="game-purchase-price"> ${game.price} </div>
 									{/* TODO: isInLibrary backend logic */}
 									{/* <div className="play-game-btn">
 												<a className="green-btn" href="">
@@ -253,14 +253,14 @@ export const RightContent: FC<{ game: gamesData, isViewport630: boolean }> = ({ 
 								<div className="game-purchase-action-background">
 									<div className="game-purchase-discount">
 										<div className="discount-precentage">
-											{game.discountPercentage}
+											-{game.discountPercentage}%
 										</div>
 										<div className="discount-prices">
 											<div className="discount-original-price">
-												{game.price}
+												${game.price}
 											</div>
 											<div className="discount-final-price">
-												{game.discountPrice} USD
+												${game.discountPrice} USD
 											</div>
 										</div>
 									</div>

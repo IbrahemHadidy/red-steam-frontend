@@ -42,7 +42,7 @@ const NavSearch: FC = () => {
 								<img src={game.searchImage} alt={game.name} />
 							</div>
 							<div className="match-price">
-								{game.discountPrice ? game.discountPrice : game.price}
+								{!game.free && "$"}{game.discountPrice ? game.discountPrice : game.price}
 							</div>
 						</a>
 					))}

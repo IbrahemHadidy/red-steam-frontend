@@ -7,6 +7,7 @@
 	padding-right: 2%;
 	padding-bottom: 0;
 	padding-top: 20px;
+	overflow-x: hidden;
 
 	.main-carousel-content {
 		display: block;
@@ -19,25 +20,39 @@
 
 			.slick-track {
 				left: 5px;
+				pointer-events: none;
 
 				.slick-slide {
 					top: 3px;
 					width: 940px !important;
 					margin-right: 10px;
 
-					.slide {
-						.main-card {
-							display: block;
-							flex-shrink: 0;
-							background-color: #000;
-							position: relative;
-							z-index: 2;
-							margin-right: 10px;
-							width: 616px;
-							height: 353px;
-							background-size: 616px 353px;
-							background-position: center center;
-							box-shadow: 5px 1px 5px 0 #000;
+					.slides-container {
+						display: flex;
+						flex-direction: column;
+						height: 50px;
+						width: 684px;
+
+						.slide {
+							.main-card {
+								display: block;
+								flex-shrink: 0;
+								background-color: #000;
+								position: relative;
+								z-index: 2;
+								margin-right: 10px;
+								width: 616px;
+								height: 353px;
+								background-size: 616px 353px;
+								background-position: center center;
+								box-shadow: 5px 1px 5px 0 #000;
+							}
+						}
+
+						.game-hover {
+							left: 100%;
+							margin-top: -45px;
+							overflow: visible;
 						}
 					}
 				}
@@ -248,7 +263,9 @@
 				margin-top: 5px;
 				font-size: 14px;
 				display: block;
-		
+				height: 27px;
+				overflow: hidden;
+				
 				>span {
 					margin: 3px 0;
 					display: inline-block;
@@ -315,7 +332,7 @@
 		}
 	}
 
-	@media (min-width: 1000px) {
+	@media (min-width: 960px) {
 		.discount {
 			display: flex;
 			line-height: 15px;
@@ -354,17 +371,20 @@
 				background: linear-gradient(180deg, #0a141d 0%, rgba(10, 20, 29, 0.2) 100%);
 				min-height: 70px;
 				height: 90px;
+				font-size: 18px;
+				font-weight: 600;
 	
 				.app-name {
 					margin-top: 0;
+				}
+
+				.platform {
+					bottom: 0px !important;
 				}
 	
 				div {
 					line-height: unset;
 				}
-	
-				font-size: 18px;
-				font-weight: 600;
 			}
 	
 		}

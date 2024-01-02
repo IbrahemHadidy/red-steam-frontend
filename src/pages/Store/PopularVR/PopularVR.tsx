@@ -1,19 +1,13 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Slider from "react-slick";
 import useResponsiveViewports from "../../../components/useResponsiveViewports";
 import popularVRGames from "./popularVRGames";
-
-interface vrGame {
-	link: string;
-	img: string;
-	discount: "no-discount" | "discount";
-	discountPercentage?: string;
-	price: string;
-	discountPrice?: string;
-}
+import { gamesData } from "../../Game/gameData";
+import HoverSummary from "../../../components/HoverSummary/HoverSummary";
 
 const PopularVR: FC = () => {
 	const isViewport960 = useResponsiveViewports(960);
+	const [gameHoverStates, setGameHoverStates] = useState<{[key: string]: boolean}>({});
 
 	const vrGamesSettings = {
 		dots: true,
@@ -25,32 +19,57 @@ const PopularVR: FC = () => {
 		fade: true,
 	};
 
-	const renderGameItem = (game: vrGame, index: number) => (
-		<a className="mini-item" href={game.link} key={index}>
-			<div className="mini-capsule">
-				<img src={game.img} alt={game.link} />
-			</div>
-			<div className="mini-price">
-				<div className={game.discount}>
-					<div className="price">
-						{game.discount === "no-discount" ? (
-							game.price
-						) : (
-							<div className="mini-discount-block">
-								<div className="discount-percentage">
-									{game.discountPercentage}
-								</div>
-								<div className="discount-prices">
-									<div className="original-price">{game.price}</div>
-									<div className="final-price">{game.discountPrice}</div>
-								</div>
-							</div>
-						)}
+	const renderGameItem = (game: gamesData, index: number) => {
+		const positiveCount = game.reviews.filter(review => review.type === "positive").length;
+		const totalReviews = game.reviews.length;
+		const positivePercentage = (positiveCount / totalReviews) * 100;
+		return (
+			<div className="mini-item-container" key={index}>
+				<a 
+					className="mini-item" 
+					href={`/game/${game.id}`}
+					onMouseEnter={() => setGameHoverStates(prevState => ({ ...prevState, [game.id]: true }))}
+					onMouseLeave={() => setGameHoverStates(prevState => ({ ...prevState, [game.id]: false }))}
+				>
+					<div className="mini-capsule">
+						<img src={game.smallHeaderImage} alt={game.name} />
 					</div>
-				</div>
+					<div className="mini-price">
+						<div className={game.discount?"discount":"no-discount"}>
+							<div className="price">
+								{!game.discount ? (
+									`${!game.free?"$":""}${game.price}`
+								) : (
+									<div className="mini-discount-block">
+										<div className="discount-percentage">
+											-{game.discountPercentage}%
+										</div>
+										<div className="discount-prices">
+											<div className="original-price">${game.price}</div>
+											<div className="final-price">${game.discountPrice}</div>
+										</div>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				</a>
+				{!isViewport960 && gameHoverStates[game.id] && <div>
+						<HoverSummary
+							title={game.name}
+							date={game.releaseDate}
+							screenshots={game.moviesAndImages.filter(item => item.type === "image" && item.featured).map(item => item.link)}
+							description={game.description}
+							positivePercentage={positivePercentage}
+							totalReviews={totalReviews}
+							tags={game.tags}
+							leftArrow={!isViewport960}
+							rightArrow={!isViewport960}
+						/>
+				</div>}
 			</div>
-		</a>
-	);
+		)
+	};
 
 	const renderCategorySlide = (start: number, end: number) => {
 		const categoryGames = popularVRGames.slice(start, end);
@@ -62,8 +81,8 @@ const PopularVR: FC = () => {
 	const renderAllCategories = () => {
 		const categorySlides = [];
 
-		// Edit `the i < "num"` for how much slide sections you want
-		for (let i = 0; i < 3; i++) {
+		const slides = Math.floor(popularVRGames.length / 4);
+		for (let i = 0; i < slides; i++) {
 			const start = i * 4;
 			const end = start + 4;
 			categorySlides.push(renderCategorySlide(start, end));
@@ -77,7 +96,7 @@ const PopularVR: FC = () => {
 				<h2 className="main-btn-title">
 					POPULAR VR GAMES
 					<span className="right-btn">
-						<a className="view-more" href="">
+						<a className="view-more" href="/search?tags=VR">
 							{isViewport960 ? (
 								<div className="mobile-more">
 									<div className="mobile-more-dive">

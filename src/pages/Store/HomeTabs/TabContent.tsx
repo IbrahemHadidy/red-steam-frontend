@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { tabItem } from "./homeTabsItems";
+import { gamesData } from "../../Game/gameData";
 
 
 const TabContent: FC<{
-		items: tabItem[];
+		items: gamesData[];
 		title: string;
 		isOpened: boolean;
 		seeMore: string;
@@ -36,45 +36,45 @@ const TabContent: FC<{
 						<span>{title}</span>
 					</a>
 				</div>
-				{items.map((tabItem: tabItem, index) => (
+				{items.map((tabItem: gamesData, index) => (
 					<a
 						className={`tab-item ${index === focusedTab ? "focus" : ""}`}
-						href={tabItem.gameLink}
+						href={`/game/${tabItem.id}`}
 						key={index}
 						onMouseEnter={() => handleMouseEnter(index)}
 					>
 						<div className="tab-item-cap">
 							<img
 								className="tab-item-cap-img"
-								src={tabItem.mainImage}
-								alt={tabItem.gameName}
+								src={tabItem.tabImage}
+								alt={tabItem.name}
 							/>
 						</div>
 						<div className="tab-item-discount">
-							{tabItem.discount === "no-discount" ? (
-								<div className="tab-final-price">{tabItem.price}</div>
+							{!tabItem.discount ? (
+								<div className="tab-final-price">{!tabItem.free && "$"}{tabItem.price}</div>
 							) : (
 								<>
 									<div className="discount-prices">
-										<div className="original-price">{tabItem.price}</div>
-										<div className="final-price">{tabItem.discountPrice}</div>
+										<div className="original-price">${tabItem.price}</div>
+										<div className="final-price">${tabItem.discountPrice}</div>
 									</div>
 									<div className="discount-percentage">
-										{tabItem.discountPercentage}
+										-{tabItem.discountPercentage}%
 									</div>
 								</>
 							)}
 						</div>
 						<div className="tab-item-content">
-							<div className="tab-item-name">{tabItem.gameName}</div>
+							<div className="tab-item-name">{tabItem.name}</div>
 							<div className="tab-item-details">
 								<span className={tabItem.win || ""}></span>
 								<span className={tabItem.mac || ""}></span>
 								<div className="tab-item-top-tags">
-									<span className="tab-top-tag">{tabItem.tag1}</span>
-									<span className="tab-top-tag">{(tabItem.tag2)&&", "}{tabItem.tag2}</span>
-									<span className="tab-top-tag">{(tabItem.tag3)&&", "}{tabItem.tag3}</span>
-									<span className="tab-top-tag">{(tabItem.tag4)&&", "}{tabItem.tag4}</span>
+									<span className="tab-top-tag">{tabItem.tags[0]}</span>
+									<span className="tab-top-tag">{(tabItem.tags[1])&&", "}{tabItem.tags[1]}</span>
+									<span className="tab-top-tag">{(tabItem.tags[2])&&", "}{tabItem.tags[2]}</span>
+									<span className="tab-top-tag">{(tabItem.tags[3])&&", "}{tabItem.tags[3]}</span>
 								</div>
 							</div>
 						</div>

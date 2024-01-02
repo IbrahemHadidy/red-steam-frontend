@@ -8,30 +8,30 @@ const FeaturedMobile: FC = () => {
 				<h2 className="home-titles">Featured & Recommended</h2>
 				<div className="mobile-carousel">
 					{featuredGames.map((slide, index) => (
-						<a key={index} className="mobile-capsule" href={slide.gameLink}>
+						<a key={index} className="mobile-capsule" href={`/game/${slide.id}`}>
 							<div
 								className="mobile-capsule-content"
 								style={{ backgroundImage: `url(${slide.mainImage})` }}
 							></div>
 							<div className="info-card">
 								<div className="app-name">
-									<div>{slide.gameName}</div>
+									<div>{slide.name}</div>
 								</div>
-								{slide.discount === "no-discount" ? (
+								{!slide.discount ? (
 									<div className="no-discount">
-										<div className="price">{slide.price}</div>
+										<div className="price">${slide.price}</div>
 									</div>
 								) : (
 									<div className="discount">
 										<div className="price">
 											<div className="discount-block">
 												<div className="discount-percentage">
-													{slide.discountPercentage}
+													-{slide.discountPercentage}%
 												</div>
 												<div className="discount-prices">
-													<div className="original-price">{slide.price}</div>
+													<div className="original-price">${slide.price}</div>
 													<div className="final-price">
-														{slide.discountPrice}
+														${slide.discountPrice}
 													</div>
 												</div>
 											</div>
@@ -39,8 +39,8 @@ const FeaturedMobile: FC = () => {
 									</div>
 								)}
 								<div className="platform">
-									<span className={slide.win ? "some-win-class" : ""}></span>
-									<span className={slide.mac ? "some-mac-class" : ""}></span>
+									{slide.win && <span className="platform-image win"/>}
+									{slide.mac && <span className="platform-image mac"/>}
 								</div>
 							</div>
 						</a>

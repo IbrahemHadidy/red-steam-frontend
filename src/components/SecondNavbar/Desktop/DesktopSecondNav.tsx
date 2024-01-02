@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import NavSearch from "../NavSearch";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated, SpringValue } from "react-spring";
 import { menuData, navigationItems } from "../menuData";
 
 type MenuItem = {
@@ -37,8 +37,7 @@ const DesktopSecondNav: FC = () => {
 		}
 	);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const fadeAnimations: Record<string, any> = {};
+	const fadeAnimations: Record<string, { opacity: SpringValue<number> }> = {};
 
 	groupedMenuItems.forEach(({ menuTitle }) => {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -88,8 +87,36 @@ const DesktopSecondNav: FC = () => {
 								<animated.div
 									className={`dropdown-menu ${menuTitle}-div ${/* isLoggedIn && "categoryfix" */""}`}
 									style={fadeAnimations[menuTitle]}
-								>
-									{openMenu === menuTitle && (
+								>	
+									{/* TODO: render full your store links when logged in backend logic */}
+									{/* {isLoggedIn && openMenu === "Your Store" && (
+											{Object.entries(categoryGroups).map(
+												([category, categoryItems], categoryIndex) => (
+													<div
+														key={categoryIndex}
+														className={`category-div ${category}`}
+													>
+														{categoryItems.map((categoryItem, itemIndex) => (
+															<a
+																key={itemIndex}
+																className={`menuItem ${categoryItem.className}`}
+																href={categoryItem.url}
+															>
+																{categoryItem.label}
+															</a>
+														))}
+													</div>
+												)
+											)}
+									)} */}
+									{{/* !isLoggedIn */} && openMenu === "Your Store" && (
+										<div className="category-div store-div" style={{marginTop: "-10px"}}>
+												<a className="menuItem custom-label" href="#">
+													Home
+												</a>
+										</div>
+									)}
+									{openMenu === menuTitle && openMenu !== "Your Store" && (
 										<>
 											{Object.entries(categoryGroups).map(
 												([category, categoryItems], categoryIndex) => (

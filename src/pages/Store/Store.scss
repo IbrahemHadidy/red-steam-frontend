@@ -1,10 +1,14 @@
+.store {
+	overflow: hidden;
+}
+
 .home-section {
 	display: block;
 	padding-left: 2%;
 	padding-right: 2%;
 	padding-bottom: 20px;
 	padding-top: 20px;
-	overflow: hidden;
+	overflow: visible;
 }
 
 .home-titles {
@@ -13,7 +17,6 @@
 	font-size: 14px;
 	text-transform: uppercase;
 	color: #fff;
-	;
 	letter-spacing: 0.03em;
 	font-weight: normal;
 	padding-top: 2px;
@@ -111,6 +114,10 @@
 	position: relative;
 	width: 940px;
 	margin: 0 auto;
+}
+
+.slick-track {
+	pointer-events: none;
 }
 
 .slick-slide {
@@ -256,18 +263,102 @@
 .slick-list {
 	height: 360px !important;
 	width: 950px;
+	z-index: 4;
+	overflow: visible;
 }
 
-.mini-item {
-	margin-right: 8px;
-	flex-shrink: 0;
-	box-shadow: 0 0 5px #000;
-	display: inline-block;
-	position: relative;
-	vertical-align: top;
-	width: 229px;
-	background: linear-gradient(-45deg, rgba(64, 121, 153, 1) 5%, rgba(42, 62, 89, 1) 95%);
+.mini-row {
+	display: flex !important;
+	margin-bottom: 5px;
+	flex-direction: row;
+	justify-content: space-between;
+	box-sizing: border-box;
+	width: 940px !important;
+	pointer-events: auto;
+	transition: opacity 400ms;
 }
+
+.mini-item-container {
+	width: 237px;
+	@media screen and (min-width: 1070px) {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.game-hover {
+		left: 60.7%;
+		position: relative;
+		top: -147px;
+		margin-bottom: -500px;
+	}
+
+	&:first-of-type {
+		@media screen and (min-width: 1600px) {
+			.game-hover {
+				margin-left: -470px;
+			}
+			.hover-arrow-left {
+				display: none;
+			}
+		}
+
+		@media screen and (max-width: 1600px) {
+			.game-hover {
+				margin-left: 81px;
+			}
+			.hover-arrow-right {
+				display: none;
+			}
+		}
+	}
+
+	&:nth-child(2),
+	&:nth-child(3) {
+		.game-hover {
+			margin-left: 81px;
+		}
+		.hover-arrow-right {
+			display: none;
+		}
+
+		@media screen and (max-width: 1600px) {
+			.hover-arrow-right {
+				display: none;
+			}
+		}
+	}
+	&:nth-child(4) {
+		.game-hover {
+			margin-left: 81px;
+		}
+		.hover-arrow-right {
+			display: none;
+		}
+
+		@media screen and (max-width: 1600px) {
+			.game-hover {
+				margin-left: -469px;
+			}
+			.hover-arrow-left {
+				display: none;
+			}
+			.hover-arrow-right {
+				display: block;
+			}
+		}
+	}
+	.mini-item {
+		margin-right: 8px;
+		flex-shrink: 0;
+		box-shadow: 0 0 5px #000;
+		display: inline-block;
+		position: relative;
+		vertical-align: top;
+		width: 229px;
+		background: linear-gradient(-45deg, rgba(64, 121, 153, 1) 5%, rgba(42, 62, 89, 1) 95%);
+	}
+}
+
 
 .mini-price {
 	margin: 0;
@@ -301,17 +392,6 @@
 	.slick-list {
 		height: auto !important;
 	}
-}
-
-.mini-row {
-	display: flex !important;
-	margin-bottom: 5px;
-	flex-direction: row;
-	justify-content: space-between;
-	box-sizing: border-box;
-	width: 940px !important;
-	pointer-events: auto;
-	transition: opacity 400ms;
 }
 
 .mobile-mini {

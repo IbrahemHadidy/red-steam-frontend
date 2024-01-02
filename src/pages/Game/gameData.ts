@@ -3,26 +3,11 @@ export interface VideoEntry { type: "video", link: string, posterLink: string }
 export interface ImageEntry { type: "image", link: string, featured?: boolean }
 export interface FeatureEntry { link: string, icon: string, label: string }
 export interface LanguageEntry { name: string, interface: boolean, fullAudio: boolean, subtitles: boolean }
-export interface SystemRequirements {
-	req64?: boolean;
-	mini: SystemRequirementsDetails;
-	recommended: SystemRequirementsDetails;
-}
-export interface SystemRequirementsDetails {
-	os: string;
-	cpu: string;
-	ram: string;
-	gpu: string;
-	dx: string;
-	network?: string;
-	storage?: string;
-	additionalNotes?: string;
-	soundCard?: string;
-}
-
+export interface SystemRequirements { req64?: boolean; mini: SystemRequirementsDetails; recommended: SystemRequirementsDetails }
+export interface SystemRequirementsDetails {os?: string; cpu?: string; ram?: string; gpu?: string; dx?: string; network?: string; storage?: string; additionalNotes?: string; soundCard?: string; vrSupport?: string }
 export interface ReviewEntry {user: string, type: "negative" | "positive", date: string, content: string }
-
 export interface gamesData {
+	[index: number]: gamesData;
 	id: string;
 	name: string;
 	category: string;
@@ -33,12 +18,15 @@ export interface gamesData {
 	mainImage: string;
 	backgroundImage: string;
 	menuImg: string;
-	headerImage: string;
+	horizontalHeaderImage: string;
+	verticalHeaderImage: string;
+	smallHeaderImage: string;
 	searchImage: string;
+	tabImage: string;
 	moviesAndImages: MovieEntry[];
 	reason?: "available" | "recommended";
 	tags: string[];
-	discount: "no-discount" | "discount";
+	discount: boolean;
 	discountPercentage?: string;
 	free: boolean;
 	price: string;
@@ -69,10 +57,13 @@ const gameData: gamesData[] = [
 		developer: { name: "KRAFTON, Inc.", link: ""},
 		publisher: { name: "KRAFTON, Inc.", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/578080/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
+		verticalHeaderImage: "https://cdn.akamai.steamstatic.com/steam/apps/578080/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/578080/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/578080/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/578080/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -106,14 +97,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.akamai.steamstatic.com/steam/apps/578080/ss_e34bcd20c7e3f5244c17b5af5d192b2149e11d33.1920x1080.jpg"},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: true,
 		price: "Free to Play",
 		// offerType: "",
 		// offerEndDate: "",
 		// discountPrice:"",
 		// discountPercentage: "",
-		tags: ["Battle Royal", "Multiplayer", "Martial Arts", "PvP"], // Array of tags
+		tags: ["Survival", "Shooter", "Battle Royale", "Multiplayer", "FPS", "PvP", "Third-Person Shooter", "Action", "Online Co-Op", "Tactical", "Co-op", "First-Person", "Strategy", "Early Access", "Competitive", "Third Person", "Team-Based", "Difficult", "Simulation", "Stealth"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -197,10 +188,13 @@ const gameData: gamesData[] = [
 		developer: { name: "24 Entertainment", link: ""},
 		publisher: { name: "NetEase Games Global", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1203220/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1203220/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1203220/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1203220/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -230,14 +224,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1203220/ss_801635e241c3d2bec0305135e33576ac9c18c3ce.1920x1080.jpg"},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: true,
 		price: "Free to Play",
 		// offerType: "",
 		// offerEndDate: "",
 		// discountPrice:"",
 		// discountPercentage: "",
-		tags: ["Survival", "Shooter", "Battle Royale", "Multiplayer"], // Array of tags
+		tags: ["Battle Royale", "Multiplayer", "PvP", "Action", "Female Protagonist", "Massively Multiplayer", "Third Person", "Survival", "Character Customization", "Fighting", "Hack and Slash", "Swordplay", "Parkour", "Anime", "Adventure", "Mature", "Violent", "Free to Play", "Gore"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -335,10 +329,13 @@ const gameData: gamesData[] = [
 		developer: { name: "ZeniMax Online Studios", link: ""},
 		publisher: { name: "Bethesda Softworks", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/306130/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/306130/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/306130/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/306130/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/306130/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -366,14 +363,14 @@ const gameData: gamesData[] = [
 			},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: false,
-		price: "$11.99",
+		price: "11.99",
 		// offerType: "",
 		// offerEndDate: "",
 		// discountPrice:"",
 		// discountPercentage: "",
-		tags: ["RPG", "MMORPG", "Open World", "Adventure", "PvP"], // Array of tags
+		tags: ["RPG", "MMORPG", "Open World", "Adventure", "Fantasy", "Exploration", "Multiplayer", "Singleplayer", "Massively Multiplayer", "Action", "Character Customization", "PvP", "PvE", "Lore-Rich", "Choose Your Own Adventure", "Story Rich", "Magic", "Action RPG", "Class-Based", "Atmospheric"], // Array of tags
 		win: "platform-image win",
 		mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -454,10 +451,13 @@ const gameData: gamesData[] = [
 		developer: { name: "Rockstar Games", link: ""},
 		publisher: { name: "Rockstar Games", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1174180/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1174180/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1174180/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1174180/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -478,14 +478,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/ss_d1a8f5a69155c3186c65d1da90491fcfd43663d9.1920x1080.jpg"},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "discount", // "discount" or "no-discount"
+		discount: true,
 		free: false,
-		price: "$59.99",
+		price: "59.99",
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "21 December",
-		discountPrice:"$19.79",
-		discountPercentage: "67%",
-		tags: ["Open World", "Story Rich", "Westren", "Adventure"], // Array of tags
+		discountPrice:"19.79",
+		discountPercentage: "67",
+		tags: ["Open World", "Story Rich", "Westren", "Adventure", "Multiplayer", "Action", "Realistic", "Singleplayer", "Shooter", "Atmospheric", "Horses", "Beautiful", "Mature", "Third-Person Shooter", "Great Soundtrack", "Third Person", "Gore", "Sandbox", "First-Person", "FPS"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -573,10 +573,13 @@ const gameData: gamesData[] = [
 		developer: { name: "FromSoftware", link: ""},
 		publisher: { name: "Activision", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/814380/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/814380/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/814380/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/814380/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/814380/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -627,14 +630,14 @@ const gameData: gamesData[] = [
 			},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: false,
-		price: "$59.99",
+		price: "59.99",
 		// offerType: "SPECIAL PROMOTION",
 		// offerEndDate: "21 December",
-		// discountPrice:"$19.79",
-		// discountPercentage: "67%",
-		tags: ["Souls-like", "Difficult", "Action", "Singleplayer", "Ninja"], // Array of tags
+		// discountPrice:"19.79",
+		// discountPercentage: "67",
+		tags: ["Souls-like", "Difficult", "Action", "Singleplayer", "Ninja", "Stealth", "Adventure", "Third Person", "Open World", "Story Rich", "Violent", "Atmospheric", "Assassin", "Dark Fantasy", "Hack and Slash", "RPG", "Great Soundtrack", "Gore", "Rhythm", "Dark"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -736,10 +739,13 @@ const gameData: gamesData[] = [
 		developer: { name: "FromSoftware Inc.", link: ""},
 		publisher: { name: "FromSoftware Inc.", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1245620/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1245620/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -783,14 +789,14 @@ const gameData: gamesData[] = [
 			},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: false,
-		price: "$39.99",
+		price: "39.99",
 		// offerType: "SPECIAL PROMOTION",
 		// offerEndDate: "21 December",
-		// discountPrice:"$19.79",
-		// discountPercentage: "67%",
-		tags: ["Souls-like", "Dark Fantasy", "Open World", "RPG"], // Array of tags
+		// discountPrice:"19.79",
+		// discountPercentage: "67",
+		tags: ["Souls-like", "Dark Fantasy", "Open World", "RPG", "Difficult", "Action RPG", "Third Person", "Multiplayer", "Fantasy", "Singleplayer", "Online Co-Op", "Action", "Co-op", "PvP", "Atmospheric", "Violent", "Great Soundtrack", "3D", "Character Customization", "Family Friendly"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -882,10 +888,13 @@ const gameData: gamesData[] = [
 		developer: { name: "Square Enix", link: ""},
 		publisher: { name: "Square Enix", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/524220/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/524220/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/524220/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/524220/hero_capsule.jpg",
+		smallHeaderImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/524220/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/524220/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/524220/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/524220/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/524220/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -917,14 +926,14 @@ const gameData: gamesData[] = [
 			},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "discount", // "discount" or "no-discount"
+		discount: true,
 		free: false,
-		price: "$31.99",
+		price: "31.99",
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "21 May",
-		discountPrice:"$12.79",
-		discountPercentage: "60%",
-		tags: ["Great Soundtrack", "Story Rich", "Female Protagonist"], // Array of tags
+		discountPrice:"12.79",
+		discountPercentage: "60",
+		tags: ["Great Soundtrack", "Story Rich", "Female Protagonist", "Hack and Slash", "Action", "RPG", "Open World", "JRPG", "Anime", "Post-apocalyptic", "Singleplayer", "Robots", "Atmospheric", "Sci-fi", "Adventure", "Bullet Hell", "Spectacle fighter", "Character Action Game", "Violent"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -1035,10 +1044,13 @@ const gameData: gamesData[] = [
 		developer: { name: "Studio Wildcard", link: ""},
 		publisher: { name: "Studio Wildcard", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/2399830/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/2399830/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/2399830/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/2399830/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -1062,14 +1074,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2399830/ss_f0ed123c9b3916e8d4af8b77936d7230091a6f48.1920x1080.jpg"},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: false,
-		price: "$20.99",
+		price: "20.99",
 		// offerType: "",
 		// offerEndDate: "",
 		// discountPrice:"",
 		// discountPercentage: "",
-		tags: ["Battle Royal", "Multiplayer", "Martial Arts", "PvP"], // Array of tags
+		tags: ["Early Access", "Survival", "Open World", "Dinosaurs", "Adventure", "Action", "Building", "Multiplayer", "Crafting", "Base Building", "Sandbox", "Character Customization", "PvP", "PvE", "Inventory Management", "Singleplayer", "Massively Multiplayer", "RPG", "Sci-fi", "Fantasy"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -1167,10 +1179,13 @@ const gameData: gamesData[] = [
 		developer: { name: "Avalanche Software", link: ""},
 		publisher: { name: "Warner Bros. Games", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/990080/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/990080/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/990080/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/990080/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/990080/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -1185,14 +1200,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/ss_d4930d675af053dc1e61a876a34fc003e85e261f.1920x1080.jpg"},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: false,
-		price: "$59.99",
+		price: "59.99",
 		// offerType: "",
 		// offerEndDate: "",
 		// discountPrice:"",
 		// discountPercentage: "",
-		tags: ["RPG", "MMORPG", "Open World", "Adventure", "PvP"], // Array of tags
+		tags: ["Magic", "Fantasy", "Open World", "Singleplayer", "Adventure", "RPG", "Character Customization", "Exploration", "Story Rich", "Third Person", "Action-Adventure", "Atmospheric", "Action RPG", "Action", "Combat", "Choices Matter", "Puzzle", "Great Soundtrack", "Dark", "Family Friendly"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -1274,10 +1289,13 @@ const gameData: gamesData[] = [
 		developer: { name: "CAPCOM Co., Ltd.", link: ""},
 		publisher: { name: "CAPCOM Co., Ltd.", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/2050650/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/2050650/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/2050650/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/2050650/capsule_184x69.jpg",
 		moviesAndImages: [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/ss_59d1b19964cc532213df92c8287b75a0bffeb33c.1920x1080.jpg"},
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/ss_ab807f8ad9e968a620777caf483cb6020367b9ee.1920x1080.jpg"},
@@ -1297,14 +1315,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/ss_2f026b10ab2facd11820737453512b3b88c5a863.1920x1080.jpg", featured: true},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "discount", // "discount" or "no-discount"
+		discount: true,
 		free: false,
-		price: "$44.99",
+		price: "44.99",
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "21 December",
-		discountPrice:"$22.49",
-		discountPercentage: "43%",
-		tags: ["Action", "Horror", "Survival Horror", "Zombies", "Dark"], // Array of tags
+		discountPrice:"22.49",
+		discountPercentage: "43",
+		tags: ["Action", "Horror", "Survival Horror", "Zombies", "Singleplayer", "Survival", "Story Rich", "Cinematic", "Dark", "Realistic", "Resource Management", "Remake", "Gore", "3D", "Adventure", "Psychological Horror", "Third Person", "Action-Adventure", "Violent"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -1391,10 +1409,13 @@ const gameData: gamesData[] = [
 		developer: { name: "Ubisoft Montreal", link: ""},
 		publisher: { name: "Ubisoft", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/2208920/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/2208920/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/2208920/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/2208920/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -1409,14 +1430,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/ss_83a5e49815eed62911f27240390c6735b898c13e.1920x1080.jpg"},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "discount", // "discount" or "no-discount"
+		discount: true,
 		free: false,
-		price: "$47.99",
+		price: "47.99",
 		offerType: "WEEKEND DEAL",
 		offerEndDate: "15 December",
-		discountPrice:"$11.99",
-		discountPercentage: "75%",
-		tags: ["Action", "Open World", "RPG", "Adventure", "Vikings"], // Array of tags
+		discountPrice:"11.99",
+		discountPercentage: "75",
+		tags: ["Action", "Open World", "RPG", "Adventure", "Singleplayer", "Vikings", "Action-Adventure", "Multiplayer", "Third Person", "Violent", "Action RPG", "Stealth", "Assassin", "Gore", "Story Rich", "Historical", "Female Protagonist", "Atmospheric"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -1497,10 +1518,13 @@ const gameData: gamesData[] = [
 		developer: { name: "Hotta Studio", link: ""},
 		publisher: { name: "Level Infinite", link: ""},
 		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/2064650/capsule_616x353.jpg",
-		headerImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/header.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/2064650/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/header_292x136.jpg",
 		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/2064650/page_bg_generated_v6b.jpg",
 		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/capsule_231x87.jpg",
 		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/2064650/capsule_184x69.jpg",
 		moviesAndImages: [
 			{
 				type: "video",
@@ -1529,14 +1553,14 @@ const gameData: gamesData[] = [
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/2064650/ss_fe55eaead3a844ed7728b1aa45413cd1a31e6338.1920x1080.jpg", featured: true},
 		],
 		reason: "available", // "available" or "recommended"
-		discount: "no-discount", // "discount" or "no-discount"
+		discount: false,
 		free: true,
-		price: "Free To Play",
+		price: "Free to Play",
 		// offerType: "",
 		// offerEndDate: "",
 		// discountPrice:"",
 		// discountPercentage: "",
-		tags: ["RPG", "MMORPG", "Open World", "Anime", "Action"], // Array of tags
+		tags: ["MMORPG", "Anime", "RPG", "Open World", "Action", "Action-Adventure", "Action RPG", "3D Platformer", "Cinematic", "Free to Play", "Cartoony", "Drama", "Sci-fi", "Post-apocalyptic", "Futuristic", "Cyberpunk", "Massively Multiplayer", "Character Customization", "Story Rich", "Bullet Time"], // Array of tags
 		win: "platform-image win",
 		mac: "platform-image mac", // Comment the varibale if the platform is not available
 		features: [
@@ -1628,6 +1652,1485 @@ const gameData: gamesData[] = [
 		©2022 Proxima Beta Pte. Ltd. All rights reserved.`,
 		reviews: [
 
+
+		]
+	},
+	//13- Microsoft Flight Simulator 40th Anniversary Edition
+	{
+		id: "13",
+		name: "Microsoft Flight Simulator 40th Anniversary Edition",
+		category: "Simulation Games",
+		description: "From gliders and helicopters to wide-body jets, fly highly detailed and accurate aircraft in the Microsoft Flight Simulator 40th Anniversary Edition. The world is at your fingertips.",
+		releaseDate: "18 Aug, 2020",
+		developer: { name: "Asobo Studio", link: ""},
+		publisher: { name: "Xbox Game Studios", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1250410/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1250410/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1250410/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1250410/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256915896/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256915896/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_d31fefd20eda54107d0414c779d0058c8b030233.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_7bef6695583570c8714dab5acda6f08128e02f22.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_28e2168df0f5a96a0f7f90e04d6a2059fa09d32c.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_56be1573715370c1f3d4abfef38e2fa5cc9cfc08.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_8f9298573c188569875bfd96361e9d977d6dfe9a.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_abe01d181b76e98b1a1d0d837a0a69eb62f78cb0.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_72521adf4cbe068279aa8164dc32ceb63a8506b2.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_b962d1b93b3d457bc26d38e3228f60df9d877b08.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_5deecf6aec75b49ca536ec7b23a029643a240dd5.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_460489fa1a95b7e2225cefc0563a5b8a39b1371c.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_787f57f3b6b28495d167f076e651bc5220baf0f1.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_472202fe22c1dce44d7cbe962e4dde0e6dddd4d6.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_7c04f7a4875352b336a5ce9d84ca58440307c866.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_65f69dc7c5e8b95534b6ce02baf9ac0210c9aed3.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_4e21663722e39ee7c2e54c4dd3576abe35e6d2a2.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_220a62d62d14c0e5058cdb81da20ced1a64d0b65.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_674c8c0019c934e65d6e128a8dba9729d31e0be4.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_85f936740bebd09faec65aa63d4e3a6b86c69336.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_df1f00e6d78d52b95a4dddffb9ce8344240275f1.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_5ed5be21412a4f147d8f1fc3fce905cc85f5967d.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_3f7151927aa6e226f497b11c20f40e10c9262ff4.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_59dc043296ef2547f9accaca1ebe7a09d16e7032.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/ss_bf0dbbcf4fc2c28bc559f6c4558aab8c4bce1ab5.1920x1080.jpg"},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "59.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice:"35.99",
+		discountPercentage: "40",
+		tags: ["Simulation", "Flight", "Realistic", "Open World", "Multiplayer", "VR", "Singleplayer", "Atmospheric", "Real-Time", "Physics", "Adventure", "Colorful", "Family Friendly", "Beautiful", "TrackIR", "Surreal", "Controller", "Epic", "Short", "Psychological Horror"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac", // Comment the varibale if the platform is not available
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_support.png",  label: "VR Supported"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_cart.png",        label: "in-App Purchases"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_hdr.png",         label: "HDR available"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Italian",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Japanese",            interface: true, fullAudio: false, subtitles: false },
+			{ name: "Russian",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: false, subtitles: false },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Polish",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Portguese",           interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Turkish",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Traditional Chinese", interface: true, fullAudio: false, subtitles: false },
+			{ name: "Ukrainian",           interface: true, fullAudio: false, subtitles: false },
+		],
+		link: "www.flightsimulator.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `The <strong>Microsoft Flight Simulator 40th Anniversary Edition</strong> will feature, for the first time since 2006, helicopters and gliders, the most requested enhancements by our community. 
+		In addition to the helicopters and gliders, we will introduce another highly requested community feature: a true-to-life airliner, the sophisticated Airbus A-310, where nearly every single button works just as expected. 
+		<br><br>Celebrate the storied history of aviation with seven famous historical aircraft in the <strong>Microsoft Flight Simulator 40th Anniversary Edition</strong>. 
+		These aircraft include the 1903 Wright Flyer, the 1915 Curtiss JN-4 Jenny, the 1927 Ryan NYP Spirit of St. Louis, the 1935 Douglas DC-3, the beautiful 1937 Grumman G-21 Goose, the 1947 Havilland DHC-2 Beaver, and the famous 1947 Hughes H-4 Hercules (the largest seaplane and largest wooden plane ever made), also known as the Spruce Goose.
+		<br><br>We are also adding four classic airports, including Meigs Field in Chicago, a traditional starting airport for the Microsoft Flight Simulator franchise. It is an exciting update full of aviation history to celebrate our community and the beauty of aviation! The sky is calling!
+		<br><br>In summary, the <strong>40th Anniversary Edition</strong> will introduce:<br>•	4 classic commercial airports<br>•	10 glider airports<br>•	12 new aircraft<br>•	14 heliports<br>•	20 classic missions from the franchise’s past<br><br>
+		The <strong>Deluxe Edition</strong> includes everything from Microsoft Flight Simulator plus 5 additional highly accurate planes with unique flight models and 5 additional handcrafted international airports.
+		<br><br><strong>Deluxe Additional Aircraft</strong><br>• Diamond Aircraft DA40-TDI<br>• Diamond Aircraft DV20<br>• Textron Aviation Beechcraft Baron G58<br>• Textron Aviation Cessna 152 Aerobat<br>• Textron Aviation Cessna 172 Skyhawk<br><br><strong>Deluxe Additional Handcrafted Airports</strong><br>• Amsterdam Airport Schiphol (Netherlands)<br>• Cairo International Airport (Egypt)<br>• Cape Town International Airport (South Africa)<br>• O’Hare International Airport (USA)<br>• Adolfo Suárez Madrid–Barajas Airport (Spain)<br><br>The <strong>Premium Deluxe Edition</strong> includes everything from the Microsoft Flight Simulator Deluxe edition plus 5 additional highly accurate planes with unique flight models and 5 additional handcrafted international airports.
+		<br><br><strong>Premium Deluxe Additional Aircraft</strong><br>• Boeing 787-10 Dreamliner<br>• Cirrus Aircraft SR22<br>• Pipistrel Virus SW 121<br>• Textron Aviation Cessna Citation Longitude<br>• Zlin Aviation Shock Ultra<br><br><strong>Premium Deluxe Additional Airports</strong><br>• Denver International Airport (USA)<br>• Dubai International Airport (United Arab Emirates)<br>• Frankfurt Airport (Germany)<br>• Heathrow Airport (United Kingdom)<br>• San Francisco International Airport (USA)`,
+		mature: false,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content</i></p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 10",
+				cpu: "Intel i5-4460 | AMD Ryzen 3 1200",
+				ram: "8 GB RAM",
+				gpu: "NVIDIA GTX 770 | AMD Radeon RX 570",
+				dx: "Version 11",
+				storage: "150 GB available space",
+				vrSupport: "SteamVR, Oculus PC, or OpenXR. Keyboard and mouse required"
+			},
+			recommended: {
+				os: "Windows 10",
+				cpu: "Intel i5-8400 | AMD Ryzen 5 1500X",
+				ram: "16 GB RAM",
+				gpu: "NVIDIA GTX 970 | AMD Radeon RX 590",
+				dx: "Version 11",
+				storage: "150 GB available space",
+			}
+		},
+		legal: "Microsoft Studios © 2020 Microsoft Corporation",
+		reviews: [
+			{user:"Mazen", type:"negative", date: "2/12/2022", content:"meh game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"Very nice gameplay and graphics"},
+		]
+	},
+	//14- Phasmophobia
+	{
+		id: "14",
+		name: "Phasmophobia",
+		category: "Indie Games",
+		description: "Phasmophobia is a 4 player online co-op psychological horror. Paranormal activity is on the rise and it’s up to you and your team to use all the ghost-hunting equipment at your disposal in order to gather as much evidence as you can.",
+		releaseDate: "18 Sep, 2020",
+		developer: { name: "Asobo Studio", link: ""},
+		publisher: { name: "Xbox Game Studios", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/739630/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/739630/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/739630/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/739630/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/739630/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256906135/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256906135/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256776660/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256776660/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_c88170bed9bf8690963323d20e3f9e836cb9aed9.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_f0377c02897de8831a5f032f13a6dc0f994516d5.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_ce1062b9312afbc12000f980087ede8fa718445d.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_8032ff1ebe2aad6871c45b30458d7a6c868f2212.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_b446d0ca191cf5a183ac3cc9538a59aa7575c14c.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_dcf3fde71a8104c068d9fd1c122361af9677737a.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/739630/ss_d33aaa88ff7429590a1ead0b9cced32df2c38696.1920x1080.jpg"},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "7.79",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "6.23",
+		discountPercentage: "20",
+		tags: ["Horror", "Online Co-Op", "Multiplayer", "Psychological Horror", "Co-op", "VR", "Supernatural", "First-Person", "Investigation", "Dark", "Adventure", "Detective", "Mystery", "3D", "Early Access", "Thriller", "Indie", "Action", "Tactical", "Singleplayer"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac", // Comment the varibale if the platform is not available
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=38", icon: "/images/ico_coop.png",           label: "Online Co-op"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_input_motion.png",label: "Tracked Controller Support"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_support.png",     label: "VR Supported"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on Phone"},
+			{ link: "https://store.steampowered.com/search/?category2=42", icon: "/images/ico_remote_play.png",    label: "Remote Play on Tablet"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "French",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Italian",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "German",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Japanese",            interface: true, fullAudio: false, subtitles: false },
+			{ name: "Russian",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: false, subtitles: false },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Polish",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Portguese",           interface: true, fullAudio: false, subtitles: false },
+			{ name: "Turkish",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Traditional Chinese", interface: true, fullAudio: false, subtitles: false },
+			{ name: "Ukrainian",           interface: true, fullAudio: false, subtitles: false },
+		],
+		link: "http://kineticgames.co.uk",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `Phasmophobia is a 4-player, online co-op, psychological horror game. 
+		You and your team of paranormal investigators will enter haunted locations filled with paranormal activity and try to gather as much evidence as you can. 
+		Use your ghost-hunting equipment to find and record evidence to sell on to a ghost removal team.
+		<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/739630/extras/investigate.png?t=1702309974"><br><br>
+		<ul class="bb_ul"><li><strong>Immersive Experience:</strong> Realistic graphics and sounds as well as a minimal user interface ensure a totally immersive experience that will keep you on your toes.
+		<br></li><li><strong>Unique Ghosts:</strong> Identify over 20 different ghost types, each with unique traits, personalities, and abilities to make each investigation feel different from the last.
+		<br></li><li><strong>Equipment:</strong> Use well-known ghost-hunting equipment such as EMF Readers, Spirit Boxes, Thermometers, and Night Vision Cameras to find clues and gather as much paranormal evidence as you can. 
+		Find Cursed Possessions that grant information or abilities in exchange for your sanity.
+		<br></li><li><strong>Full Voice Recognition: </strong> The Ghosts are listening! Use your actual voice to interact with the Ghosts through Ouija Boards and EVP Sessions using a Spirit Box.
+		</li></ul><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/739630/extras/play_your_way.png?t=1702309974"><br><br><ul class="bb_ul"><li><strong>Locations:</strong> Choose from over 10 different haunted locations, each with unique twists, hiding spots, and layouts.
+		<br></li><li><strong>Game Modes:</strong> With 5 default difficulties and hand crafted weekly challenges, there are plenty of ways to test your skills.<br></li><li><strong>Teamwork:</strong> Dive in head first, get your hands dirty searching for evidence while fighting for your life. 
+		If you're not feeling up to the task, play it safe and support your team from the truck by monitoring the investigation with CCTV and motion sensors.
+		<br></li><li><strong>Custom Difficulty:</strong> Create your own games to tailor the difficulty to your or your group's needs, with proportional rewards and come up with crazy game modes of your own!
+		</li></ul><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/739630/extras/multiplayer.png?t=1702309974"><br><br><ul class="bb_ul"><li><strong>Co-operate:</strong> Play alongside your friends with up to 4 players in this co-op horror where teamwork is key to your success.
+		<br></li><li><strong>Play together:</strong> Phasmophobia supports all players together, play with your friends with any combination of input types.</li></ul>`,
+		mature: false,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content</i></p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 10 64Bit",
+				cpu: "Intel Core i5-4590 / AMD Ryzen 5 2600",
+				ram: "8 GB RAM",
+				gpu: "NVIDIA GTX 970 / AMD Radeon R9 390",
+				dx: "Version 11",
+				storage: "150 GB available space",
+				vrSupport: "SteamVR, Oculus PC, or OpenXR. Keyboard and mouse required",
+				additionalNotes: "Minimum Specs are for VR, lower specs may work for Non-VR."
+			},
+			recommended: {
+				os: "Windows 10 64Bit",
+				cpu: "Intel Core i5-10600 / AMD Ryzen 5 3600",
+				ram: "8 GB RAM",
+				gpu: "NVIDIA RTX 2060 / AMD Radeon RX 5700",
+				dx: "Version 11",
+				network: "Broadband Internet connection",
+				storage: "150 GB available space",
+			}
+		},
+		legal: "Phasmophobia, the Phasmophobia logo and Kinetic Games are either ® or TM, Kinetic Games Limited.",
+		reviews: [
+			{user:"Mazen", type:"negative", date: "2/12/2022", content:"meh game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"Very nice gameplay and graphics"},
+		]
+	},
+	//15- Half-Life: Alyx
+	{
+		id: "15",
+		name: "Half-Life: Alyx",
+		category: "Action Games",
+		description: "Half-Life: Alyx is Valve’s VR return to the Half-Life series. It’s the story of an impossible fight against a vicious alien race known as the Combine, set between the events of Half-Life and Half-Life 2. Playing as Alyx Vance, you are humanity’s only chance for survival.",
+		releaseDate: "23 Mar, 2020",
+		developer: { name: "Valve", link: ""},
+		publisher: { name: "Valve", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/546560/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/546560/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/546560/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/546560/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/546560/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256767815/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256767815/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256776744/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256776744/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_d61365e93f20ceb5a94a1e5b2811cf504cbfa303.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_fe7066404a704aa20f7c6f251facb7aef2606bda.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_6868ae1644628f857e7df4b72a00fdf506f79c7f.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_4236773ab28112613bd7d4c6282331c861bc222a.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_5d228b092e93ff148e6a998c33e751fb968cc956.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_70fce3236bf252d3814f793744f648cbe35164e4.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_fcc7a64234b8b26cac3d69dfc4779dd438582f15.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_0360004603a7861cf6781d5449e641f916f1ee07.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_e5152f19710aaa91c4a4ab161785af3e1f8d850d.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_ac80dfaacaade35a1da835dadd52ab420607603b.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_ddc667aa2687543c0baa1a63c6bdb5fa59e0617e.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/546560/ss_4912f4c3d259a472e9898f0a7b1f819a533d2c1e.1920x1080.jpg"},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256776745/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256776745/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256776746/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256776746/movie.293x165.jpg",
+			},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "26.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "9.17",
+		discountPercentage: "66",
+		tags: ["VR", "FPS", "Multiplayer", "Story Rich", "Horror", "Female Protagonist", "Shooter", "Singleplayer", "First-Person", "Action", "Sci-fi", "Atmospheric", "Zombies", "Beautiful", "Aliens", "Futuristic", "Psychological Horror", "Memes", "Great Soundtrack", "Gore"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac", // Comment the varibale if the platform is not available
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_input_motion.png",label: "Tracked Controller Support"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_support.png",     label: "VR Only"},
+			{ link: "https://store.steampowered.com/search/?category2=13", icon: "/images/ico_cc.png",             label: "Captions available"},
+			{ link: "https://store.steampowered.com/search/?category2=17", icon: "/images/ico_editor.png",         label: "Includes level editor"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "French",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "German",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: false, subtitles: true },
+			{ name: "Russian",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: false, subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "Polish",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Portguese",           interface: true, fullAudio: false, subtitles: true },
+			{ name: "Turkish",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "Traditional Chinese", interface: true, fullAudio: false, subtitles: true },
+			{ name: "Ukrainian",           interface: true, fullAudio: false, subtitles: true },
+		],
+		link: "http://half-life.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `Half-Life: Alyx is Valve’s VR return to the Half-Life series. 
+		It’s the story of an impossible fight against a vicious alien race known as the Combine, set between the events of Half-Life and Half-Life 2.  
+		<br><br>Playing as Alyx Vance, you are humanity’s only chance for survival. 
+		The Combine’s control of the planet since the Black Mesa incident has only strengthened as they corral the remaining population in cities.  
+		Among them are some of Earth’s greatest scientists: you and your father, Dr. Eli Vance. 
+		<br><br>As founders of a fledgling resistance, you’ve continued your clandestine scientific activity—performing critical research, and building invaluable tools for the few humans brave enough to defy the Combine.  
+		<br><br>Every day, you learn more about your enemy, and every day you work toward finding a weakness. 
+		<br><br><strong>ABOUT GAMEPLAY IN VR: </strong><br><br>Valve’s return to the Half-Life universe that started it all was built from the ground up for virtual reality. 
+		VR was built to enable the gameplay that sits at the heart of Half-Life. <br><br>Immerse yourself in deep environmental interactions, puzzle solving, world exploration, and visceral combat.  
+		<br><br>Lean to aim around a broken wall and under a Barnacle to make an impossible shot. Rummage through shelves to find a healing syringe and some shotgun shells. 
+		Manipulate tools to hack alien interfaces. Toss a bottle through a window to distract an enemy. Rip a Headcrab off your face and throw it out the window.
+		<br><br><strong>COMMUNITY-BUILT ENVIRONMENTS</strong><br><br>A set of Source 2 <a href="https://developer.valvesoftware.com/wiki/Half-Life:_Alyx_Workshop_Tools" target="_blank" rel="">tools</a> for building new levels is included with the game, enabling any player to build and contribute new environments for the community to enjoy through <a href="https://steamcommunity.com/app/546560/workshop/" target="_blank" rel="">Half-Life: Alyx's Steam Workshop</a>. Hammer, Valve’s level authoring tool, has been updated with all of the game's virtual reality gameplay tools and components.`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		Includes violence and gore.</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 10",
+				cpu: "Core i5-7500 / Ryzen 5 1600",
+				ram: "12 GB RAM",
+				gpu: "GTX 1060 / RX 580 - 6GB VRAM",
+				vrSupport: "SteamVR",
+			},
+			recommended: {
+			}
+		},
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"I love this game"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"nice game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"Very nice gameplay and graphics"},
+		]
+	},
+	//17- No Man's Sky
+	{
+		id: "17",
+		name: "No Man's Sky",
+		category: "Action Games",
+		description: "No Man's Sky is a game about exploration and survival in an infinite procedurally generated universe.",
+		releaseDate: "12 Aug, 2016",
+		developer: { name: "Hello Games", link: ""},
+		publisher: { name: "Hello Games", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/275850/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/275850/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/275850/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/275850/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/275850/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256965743/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256965743/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_af9a71c9ef2300ea533c37df38c006f16c584f96.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_ef1ebfa0119410cb66bb5adc04f0f47826d50325.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_94f081d2657d0ad11cc9444c55f21a94647213a7.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_d2027a00193c4a2e02cbb031e3933093b3710abe.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_d2027a00193c4a2e02cbb031e3933093b3710abe.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_05c34e42834a06e11c610b6f8f49d5b7771c1bb9.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_3a346ebce3327c450dae1a15d24a34bab4c84a72.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_be95330d3ca2d045620c5082b95aefdef7fe456c.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_a41ba1dc7aefc88839a24b568cdf7f7d3f19ee03.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_c6cdb73bea4293f76078eeecd7b5ee42d87a1e4b.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_507de3c67bbf1f3f50a1372c66ed590f93bb7efe.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/ss_2ecad95f182c80b12eb545a93555157b78af7c8d.1920x1080.jpg"},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256733437/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256733437/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256723484/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256723484/movie.293x165.jpg",
+			},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "59.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "29.99",
+		discountPercentage: "50",
+		tags: ["Open World", "Open World Survival Craft", "Space", "Exploration", "Sci-fi", "Survival", "Procedural Generation", "Adventure", "Sandbox", "Singleplayer", "Multiplayer", "Atmospheric", "Crafting", "Space Sim", "Space Sim", "Indie", "Action", "Simulation", "FPS", "VR"], // Array of tags
+		win: "platform-image win",
+		mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=36", icon: "/images/ico_multiPlayer.png",    label: "Online PvP"},
+			{ link: "https://store.steampowered.com/search/?category2=38", icon: "/images/ico_coop.png",           label: "Online Co-op"},
+			{ link: "https://store.steampowered.com/search/?category2=27", icon: "/images/ico_multiPlayer.png",    label: "Cross-Platform Multiplayer"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_input_motion.png",label: "Tracked Controller Support"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_support.png",     label: "VR Supported"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on Phone"},
+			{ link: "https://store.steampowered.com/search/?category2=42", icon: "/images/ico_remote_play.png",    label: "Remote Play on Tablet"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Italian",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Russian",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Dutch",               interface: true, fullAudio: false, subtitles: false },
+			{ name: "Korean",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Spanish",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Polish",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Portguese",           interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Turkish",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Traditional Chinese", interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Ukrainian",           interface: true, fullAudio: true,  subtitles: false },
+		],
+		link: "www.no-mans-sky.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `Inspired by the adventure and imagination that we love from classic science-fiction, No Man's Sky presents you with a galaxy to explore, filled with unique planets and lifeforms, and constant danger and action.
+		<br><br>In No Man's Sky, every star is the light of a distant sun, each orbited by planets filled with life, and you can go to any of them you choose. Fly smoothly from deep space to planetary surfaces, with no loading screens, and no limits. In this infinite procedurally generated universe, you'll discover places and creatures that no other players have seen before - and perhaps never will again.
+		<h2 class="bb_tag">Now including...</h2>Play with all major updates since launch: Foundation, Pathfinder, Atlas Rises, NEXT, The Abyss, Visions, the 2.0 BEYOND update, Synthesis, Living Ship, Exo Mech, Desolation and the 3.0 update, ORIGINS, Next Generation, Companions, Expeditions, Prisms, Frontiers, Sentinel, Outlaws, Endurance, Waypoint (4.0),  Fractal, Interceptor and Echoes.
+		<br><br>Available for PC and Mac (see recommended and minimum specs for details).
+		<br><br>An epic voyage to the centre of a shared universe awaits, allowing you to explore, trade, fight and survive alone or with friends.
+		<h2 class="bb_tag">Embark on an epic voyage</h2>At the centre of the galaxy lies a irresistible pulse which draws you on a journey towards it to learn the true nature of the cosmos. But, facing hostile creatures and fierce pirates, you'll know that death comes at a cost, and survival will be down to the choices you make over how you upgrade your ship, your weapon and suit.
+		<h2 class="bb_tag">Find your own destiny</h2>Your voyage through No Man's Sky is up to you. Will you be a fighter, preying on the weak and taking their riches, or taking out pirates for their bounties? Power is yours if you upgrade your ship for speed and weaponry.
+		<br><br><br>Or a trader? Find rich resources on forgotten worlds and exploit them for the highest prices. Invest in more cargo space and you'll reap huge rewards.
+		<br><br>Or perhaps an explorer? Go beyond the known frontier and discover places and things that no one has ever seen before. Upgrade your engines to jump ever farther, and strengthen your suit for survival in toxic environments that would kill the unwary.
+		<h2 class="bb_tag">Share your journey</h2>The galaxy is a living, breathing place. Trade convoys travel between stars, factions vie for territory, pirates hunt the unwary, and the police are ever watching. Every other player lives in the same galaxy, and you can choose to share your discoveries with them on a map that spans known space. Perhaps you will see the results of their actions as well as your own...`,
+		mature: false,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		Includes violence and gore.</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 10/11 (64-bit versions)",
+				cpu: "Intel Core i3",
+				ram: "8 GB RAM",
+				gpu: "Nvidia GTX 1060 3GB, AMD RX 470 4GB, Intel UHD graphics 630",
+				storage: "15 GB available space",
+				vrSupport: "SteamVR",
+			},
+			recommended: {
+			}
+		},
+		legal: `No Man's Sky - © 2016 Hello Games Ltd. Developed by Hello Games Ltd. All rights reserved.`,
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"I love this game"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"nice game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"negative", date: "6/12/2022", content:"boring"},
+		]
+	},
+	//18- Resident Evil Village
+	{
+		id: "18",
+		name: "Resident Evil Village",
+		category: "Action Games",
+		description: "Experience survival horror like never before in the 8th major installment in the Resident Evil franchise - Resident Evil Village. With detailed graphics, intense first-person action and masterful storytelling, the terror has never felt more realistic.",
+		releaseDate: "7 May, 2021",
+		developer: { name: "CAPCOM Co., Ltd.", link: ""},
+		publisher: { name: "CAPCOM Co., Ltd.", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1196590/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1196590/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1196590/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1196590/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256825282/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256825282/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256825268/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256825268/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_d25704b01be292d1337df4fea0fba2aab322b58a.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_8113ec993ec474055c4cdce5ee86f91f7cf6663f.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_50283e6df9d2f3f24ff4a1a36a94ae307e21cee8.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_363d9c05ee0a974b766938610a3352e7a89b9c92.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_e2bdaa9a0eeae714b3ad3ba49c9ae83a3930f08e.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_d296efbc9a5d87bf20b2ea19134f35ba203ae813.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_d6c5bfb48d7fda343ed583750372b0d3e513ae17.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_b790b617004b92423a855d5526a1eb29e05b6c78.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_7579d4a7916fb16607eae522844b307a74bd95ec.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/ss_5cba45b96c65e0209c269e8d1d8865537927af33.1920x1080.jpg"},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256788743/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256788743/movie.293x165.jpg",
+			},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "29.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "11.99",
+		discountPercentage: "60",
+		tags: ["Survival Horror", "Horror", "First-Person", "Singleplayer", "Action", "Zombies", "Gore", "Story Rich", "Atmospheric", "FPS", "Violent", "Dark", "Survival", "Psychological Horror", "Adventure", "Open World", "VR", "Multiplayer"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_hdr.png",            label: "HDR available"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Russian",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Dutch",               interface: true, fullAudio: false, subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "Polish",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Arabic",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Portguese",           interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Turkish",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Traditional Chinese", interface: true, fullAudio: false, subtitles: true },
+			{ name: "Ukrainian",           interface: true, fullAudio: true,  subtitles: true },
+		],
+		link: "www.residentevil.com/village",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `Experience survival horror like never before in the eighth major installment in the storied Resident Evil franchise - <i>Resident Evil Village</i>.
+		<br><br>Set a few years after the horrifying events in the critically acclaimed <i>Resident Evil 7 biohazard</i>, the all-new storyline begins with Ethan Winters and his wife Mia living peacefully in a new location, free from their past nightmares. Just as they are building their new life together, tragedy befalls them once again.
+		<br><br><ul class="bb_ul"><li><strong>First-Person Action</strong> – Players will assume the role of Ethan Winters and experience every up-close battle and terrifying pursuit through a first-person perspective. 
+		<br></li><li><strong>Familiar Faces and New Foes</strong> – Chris Redfield has typically been a hero in the Resident Evil series, but his appearance in Resident Evil Village seemingly shrouds him in sinister motives. A host of new adversaries inhabiting the village will relentlessly hunt Ethan and hinder his every move as he attempts to make sense of the new nightmare he finds himself in.</li></ul>`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content				</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 10 (64 bit)",
+				cpu: "AMD Ryzen 3 1200 ／ Intel Core i5-7500",
+				ram: "8 GB RAM",
+				gpu: "AMD Radeon RX 560 with 4GB VRAM ／ NVIDIA GeForce GTX 1050 Ti with 4GB VRAM",
+				dx: "Version 12",
+				storage: "15 GB available space",
+				additionalNotes:"Estimated performance (when set to Prioritize Performance): 1080p/60fps. ・Framerate might drop in graphics-intensive scenes. ・AMD Radeon RX 6700 XT or NVIDIA GeForce RTX 2060 required to support ray tracing.",
+			},
+			recommended: {
+				os: "Windows 10 (64 bit)",
+				cpu: "AMD Ryzen 5 3600 ／ Intel Core i7 8700",
+				ram: "16 GB RAM",
+				gpu: "AMD Radeon RX 5700 ／ NVIDIA GeForce GTX 1070",
+				additionalNotes:"Estimated performance: 1080p/60fps ・Framerate might drop in graphics-intensive scenes. ・AMD Radeon RX 6700 XT or NVIDIA GeForce RTX 2070 required to support ray tracing.",
+			}
+		},
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"I love this game"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"nice game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"good"},
+		]
+	},
+	//19- Beat Saber
+	{
+		id: "19",
+		name: "Beat Saber",
+		category: "Indie Games",
+		description: "Beat Saber is a VR rhythm game where you slash the beats of adrenaline-pumping music as they fly towards you, surrounded by a futuristic world.",
+		releaseDate: "21 May, 2019",
+		developer: { name: "Beat Games", link: ""},
+		publisher: { name: "Beat Games, Ltd.", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/620980/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/620980/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/620980/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/620980/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/620980/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256736673/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256736673/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/ss_1881ae4f153faf0d1ccecca60fbdac5b43ad57eb.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/ss_114dc9a9f27666b2d56801ba49a1db8fa202b6ee.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/ss_b65444cc4513f34bd41fa6b0fe96cf11d94fea8d.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/ss_542d092f42c779c866167bec05c1da488bcd91f8.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/620980/ss_910fb7ad48bfdd918b0396b14f3dd45fc7f2e847.1920x1080.jpg", featured: true},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256788743/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256788743/movie.293x165.jpg",
+			},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: false,
+		free: false,
+		price: "14.99",
+		// offerType: "SPECIAL PROMOTION",
+		// offerEndDate: "4 January",
+		// discountPrice: "11.99",
+		// discountPercentage: "60",
+		tags: ["VR", "Rhythm", "Music", "Moddable", "Fast-Paced", "First-Person", "Singleplayer", "Indie", "Difficult", "Multiplayer", "Swordplay", "Action", "Sports", "Futuristic", "Casual", "Music-Based Procedural Generation", "Games Workshop", "PvP", "Great Soundtrack", "Early Access"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=36", icon: "/images/ico_multiPlayer.png",    label: "Online PvP"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_input_motion.png",label: "Tracked Controller Support"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_vr_support.png",     label: "VR Only"},
+			{ link: "https://store.steampowered.com/search/?category2=25", icon: "/images/ico_leaderboards.png",   label: "Steam Leaderboards"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Italian",             interface: true, fullAudio: true,  subtitles: false },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Korean",              interface: true, fullAudio: true,  subtitles: false },
+			{ name: "Spanish",             interface: true, fullAudio: true,  subtitles: false },
+		],
+		link: "http://beatsaber.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `Beat Saber is an immersive rhythm experience you have never seen before! Enjoy tons of handcrafted levels and swing your way through the pulsing music beats, surrounded by a futuristic world. 
+		Use your sabers to slash the beats as they come flying at you – every beat indicates which saber you need to use and the direction you need to match. 
+		With Beat Saber you become a dancing superhero!<h2 class="bb_tag">Features</h2><ul class="bb_ul"><li>Feel the Rhythm: Immerse yourself in the smoothest combination of music beats and visual effects in Beat Saber’s truly unique gameplay.
+		<br></li><li>Handcrafted Levels &amp; Music: Unlike other rhythm games with generated content, music and levels in Beat Saber are drawn precisely by hand to enhance the music experience.
+		<br></li><li>Compete in Multiplayer: Challenge your friends or random opponents around the world. 
+		<br></li><li>Challenging Campaign: Get better every day while completing objectives and challenges in the Campaign.
+		<br></li><li>Rise Up the Global Leaderboards: Compete against other Beat Saberists around the world in various difficulties. 
+		<br></li><li>Easy to Learn, Fun to Master: Everyone can understand the basic game mechanics. It's easy for anyone to pick up and play.
+		<br></li><li>Great Exercise: Exercise while dancing and slashing the beats, Beat Saber gets you moving.</li></ul>`,
+		mature: false,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content				</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 7/8.1/10 (64bit)",
+				cpu: "Intel Core i5 Sandy Bridge or equivalent",
+				ram: "4 GB RAM",
+				gpu: "Nvidia GTX 960 or equivalent",
+				dx: "Version 11",
+				storage: "200 MB available space",
+				vrSupport: "SteamVR"
+			},
+			recommended: {
+				os: "Windows 7/8.1/10 (64bit)",
+				cpu: "Intel Core i7 Skylake or equivalent",
+				ram: "8 GB RAM",
+				gpu: "Nvidia GTX 1060 or equivalent",
+				dx: "Version 12",
+				storage: "200 MB available space",
+			}
+		},
+		reviews: [
+			{user:"Ibrahim", type:"negative", date: "12/11/2022", content:"bad game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"I love this game"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"nice game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"good"},
+		]
+	},
+	//20- Battlefield™ V
+	{
+		id: "20",
+		name: "Battlefield™ V",
+		category: "Action Games",
+		description: "This is the ultimate Battlefield V experience. Enter mankind’s greatest conflict with the complete arsenal of weapons, vehicles, and gadgets plus the best customization content of Year 1 and 2.",
+		releaseDate: "9 Nov, 2018",
+		developer: { name: "DICE", link: ""},
+		publisher: { name: "Electronic Arts", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1238810/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1238810/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1238810/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1238810/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256806061/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256806061/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_0c20c45d2e00feae5b9edfb6526662cc3c669164.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_d1952d018415b94bed85a503713a05ab12a407d6.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_0569f81cafd8b18870d6d5bc296ad557f5576067.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_818562302f3d6fdcab1689e5618a52e4b53a71f6.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_1d38895ccc9beb342a0759fdaa7bd98a0c57d024.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_a933e1c44fa328825219907f1dd84718da671f28.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_409e2c952aedae360bb2f64736cad845c3cae510.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_431ae8bbb5ff7e7cc6740e49c584e1015c6ea8e1.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/ss_79d886247bd93e4762f3ece00acc4f75e21cc126.1920x1080.jpg"},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256787467/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256787467/movie.293x165.jpg",
+			},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "49.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "4.00",
+		discountPercentage: "90",
+		tags: ["FPS", "Multiplayer", "World War II", "Singleplayer", "Shooter", "War", "Military", "First-Person", "PvP", "Combat", "Massively Multiplayer", "Open World", "Historical", "Destruction", "Battle Royale", "Atmospheric", "Violent", "Female Protagonist"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=36", icon: "/images/ico_multiPlayer.png",    label: "Online PvP"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_hdr.png",            label: "HDR available"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: false },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: false, subtitles: false },
+			{ name: "Traditional Chinese", interface: true, fullAudio: false, subtitles: false },
+			{ name: "Arabic",              interface: true, fullAudio: false, subtitles: false },
+			{ name: "Polish",              interface: true, fullAudio: false, subtitles: false },
+		],
+		link: "https://www.ea.com/games/battlefield/battlefield-5",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/extras/BFV_Definitive_Edition_Beautyshot_EN.png?t=1701356409">
+		<br>
+		This is the ultimate Battlefield V experience. Enter mankind’s greatest conflict across land, air, and sea with all gameplay content unlocked from the get-go. Choose from the complete arsenal of weapons, vehicles, and gadgets, and immerse yourself in the hard-fought battles of World War II. Stand out on the battlefield with the complete roster of Elites and the best customization content of Year 1 and Year 2. 
+		<br><br>
+		Battlefield V Definitive Edition contains the Battlefield V base game and the definitive collection of content:
+		<br>
+		<ul class="bb_ul"><li>All gameplay content (weapons, vehicles, and gadgets) from launch, Year 1, and Year 2<br></li><li>All Elites<br></li><li>84 immersive outfit variations for the British and German armies to enhance the WWII sandbox<br></li><li>8 soldier outfits from Year 2<br></li><li>2 weapon skins from Year 2, applicable to 10 and 4 weapons respectively<br></li><li>3 vehicle dressings<br></li><li>33 Chapter Reward items from Year 1</li></ul>`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content				</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "64-bit Windows 10",
+				cpu: "AMD FX-8350/ Core i5 6600K",
+				ram: "8 GB RAM",
+				gpu: "NVIDIA GeForce® GTX 1050 / NVIDIA GeForce® GTX 660 2GB or AMD Radeon™ RX 560 / HD 7850 2GB",
+				dx: "Version 11",
+				storage: "50 GB available space",
+			},
+			recommended: {
+				os: "64-bit Windows 10 or later",
+				cpu: "AMD Ryzen 3 1300X/Intel Core i7 4790",
+				ram: "16 GB RAM",
+				gpu: "NVIDIA GeForce® GTX 1060 6GB/AMD Radeon™ RX 580 8GB",
+				dx: "Version 11",
+				storage: "50 GB available space",
+			}
+		},
+		legal: `Germany, Austria, and Switzerland only: EA’S PRIVACY &amp; COOKIE POLICY (privacy.ea.com/de) APPLIES. <br>
+		Other EU, United Kingdom, Norway, Iceland, Andorra, Bosnia and Herzegovina, Georgia, Kosovo, Macedonia (FYROM), Moldova, Monaco, Montenegro, San Marino, Serbia, Turkey, Vatican City (Holy See), Liechtenstein only: ACKNOWLEDGEMENT OF EA's PRIVACY &amp; COOKIE POLICY (privacy.ea.com) REQUIRED TO PLAY. <br>
+		All other residents: ACCEPTANCE OF EA PRIVACY &amp; COOKIE POLICY (privacy.ea.com) REQUIRED TO PLAY. <br>
+		<br>
+		INTERNET CONNECTION; EA ACCOUNT; STEAM ACCOUNT; ACCEPTANCE OF EA USER AGREEMENT (terms.ea.com) &amp; ORIGIN END USER LICENSE AGREEMENT (ea.com/legal); AND DOWNLOAD &amp; INSTALLATION OF THE ORIGIN CLIENT SOFTWARE (origin.com/download) REQUIRED TO PLAY. YOU MUST LINK YOUR EA AND STEAM ACCOUNTS TO PLAY; EA WILL SHARE YOUR ACCOUNT ID AND INDIVIDUAL GAME AND PLAY RECORDS WITH STEAM TO VALIDATE YOUR PURCHASE AND/OR REFUND REQUEST. ACCESS TO SOFTWARE CONTENT IS LIMITED TO ONE EA &amp; ONE STEAM ACCOUNT &amp; IS NON-TRANSFERABLE AFTER PURCHASE. YOU MAY NEED TO BE 13+ or 16+ TO REGISTER FOR AN EA ACCOUNT (AGE MAY VARY, SEE http://o.ea.com/ea/child-access FOR DETAILS). SOME CONTENT MAY REQUIRE GAMEPLAY TO UNLOCK. CONTENT UPDATES MAY BE DOWNLOADED AUTOMATICALLY, REQUIRE ADDITIONAL STORAGE, AND INCUR BANDWIDTH USAGE FEES. EA MAY PROVIDE CERTAIN FREE INCREMENTAL CONTENT &amp;/OR UPDATES. EA MAY RETIRE ONLINE FEATURES AFTER 30 DAYS NOTICE POSTED ON ea.com/service-updates.<br>
+		<br>
+		EA User Agreement: terms.ea.com/de for German residents and terms.ea.com for all other residents<br>
+		EA Privacy &amp; Cookie Policy: privacy.ea.com/de for German residents and privacy.ea.com for all other residents<br>
+		Origin EULA: ea.com/de-de/legal for German residents and ea.com/legal for all other residents`,
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"I love this game"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"nice game"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"good"},
+		]
+	},
+	//21- Starfield
+	{
+		id: "21",
+		name: "Starfield",
+		category: "RPG Games",
+		description: "Starfield is the first new universe in 25 years from Bethesda Game Studios, the award-winning creators of The Elder Scrolls V: Skyrim and Fallout 4.",
+		releaseDate: "6 Sep, 2023",
+		developer: { name: "Bethesda Game Studios", link: ""},
+		publisher: { name: "Bethesda Softworks", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1716740/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1716740/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1716740/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1716740/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256969669/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256969669/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256952210/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256952210/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_4887dc140a637684ddcfca518458668409f946dc.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_b2821283cb140cd5a6289a8160016b6a60d8f96e.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_68f15d580bf91971f637be5e464bc803482d78f7.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_aae99c177004bb5ec653d2fcb65a5d30489ec7b8.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_c8594798fadfd8e042b2fc8afff7bcf4872c5198.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_2288919a390c0147b7d2226354a61452016fd087.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_45c1dc3cd5399eb16230ed85dab25ce945c46726.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_930710a45c08eaa4c10fa0be7c0663900e1d32f3.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/ss_177d2492278d3ccc5b1c58bc96dcb63aacddb1a5.1920x1080.jpg"},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256965293/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256965293/movie.293x165.jpg",
+			},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "41.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "29.39",
+		discountPercentage: "90",
+		tags: ["Space", "Singleplayer", "Open World", "RPG", "Sci-fi", "First-Person", "Story Rich", "Action-Adventure", "Character Customization", "Third Person", "Adventure", "Action RPG", "Atmospheric", "Space Sim", "Action", "Moddable", "Cinematic", "Realistic", "Great Soundtrack"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: false, subtitles: true },
+		],
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `Starfield is the first new universe in over 25 years from Bethesda Game Studios, the award-winning creators of The Elder Scrolls V: Skyrim and Fallout 4. In this next generation role-playing game set amongst the stars, create any character you want and explore with unparalleled freedom as you embark on an epic journey to answer humanity’s greatest mystery.
+		<br><br>In the year 2330, humanity has ventured beyond our solar system, settling new planets, and living as a spacefaring people. You will join Constellation – the last group of space explorers seeking rare artifacts throughout the galaxy – and navigate the vast expanse of space in Bethesda Game Studios’ biggest and most ambitious game.
+		<h2 class="bb_tag">Tell Your story </h2>In Starfield the most important story is the one you tell with your character. Start your journey by customizing your appearance and deciding your Background and Traits. Will you be an experienced explorer, a charming diplomat, a stealthy cyber runner, or something else entirely? The choice is yours. Decide who you will be and what you will become.
+		<br><br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/extras/TellYourStory_v3.gif?t=1700075960"><h2 class="bb_tag">Explore Outer Space </h2>Venture through the stars and explore more than 1000 planets. Navigate bustling cities, explore dangerous bases, and traverse wild landscapes. Meet and recruit a memorable cast of characters, join in the adventures of various factions, and embark on quests across the Settled Systems. A new story or experience is always waiting to be discovered.  
+		<br><br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/extras/ExploreSpace_v3.gif?t=1700075960"><h2 class="bb_tag">Captain the Ship Of Your Dreams </h2>Pilot and command the ship of your dreams. Personalize the look of your ship, modify critical systems including weapons and shields, and assign crew members to provide unique bonuses. 
+		In deep space you will engage in high-stakes dogfights, encounter random missions, dock at star stations, and even board and commandeer enemy ships to add to your collection.  
+		<br><br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/extras/CaptainShip_v3.gif?t=1700075960"><h2 class="bb_tag">Discover, Collect, Build</h2>Explore planets and discover the fauna, flora, and resources needed to craft everything from medicine and food to equipment and weapons. Build outposts and hire a crew to passively extract materials and establish cargo links to transfer resources between them. Invest these raw materials into research projects to unlock unique crafting recipes. 
+		<br><br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/extras/DiscoverCollectBuild_v3.gif?t=1700075960"><h2 class="bb_tag">Lock and Load</h2>Space can be a dangerous place. A refined combat system gives you the tools to deal with any situation. Whether you prefer long-range rifles, laser weapons, or demolitions, each weapon type can be modified to complement your playstyle. Zero G environments add a chaotic spectacle to combat, while boost packs give players freedom to maneuver like never before.
+		<br><br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/extras/LockandLoad_v3.gif?t=1700075960">`,
+		mature: true,
+		matureDescription: `<i>
+		Violence<br>
+		Blood<br>
+		Suggestive Themes<br>
+		Strong Language <br>
+		Use of Drugs</i>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 10 version 21H1 (10.0.19043)",
+				cpu: "AMD Ryzen 5 2600X, Intel Core i7-6800K",
+				ram: "16 GB RAM",
+				gpu: "AMD Radeon RX 5700, NVIDIA GeForce 1070 Ti",
+				dx: "Version 12",
+				storage: "125 GB available space",
+				additionalNotes: "SSD Required"
+			},
+			recommended: {
+				os: "Windows 10/11 with updates",
+				cpu: "AMD Ryzen 5 3600X, Intel i5-10600K",
+				ram: "16 GB RAM",
+				gpu: "AMD Radeon RX 6800 XT, NVIDIA GeForce RTX 2080",
+				dx: "Version 12",
+				network: "Broadband Internet connection",
+				storage: "125 GB available space",
+				additionalNotes: "SSD Required"
+			}
+		},
+		legal: `© 2023 ZeniMax Media Inc. Starfield, Bethesda, Bethesda Game Studios, Bethesda Softworks, ZeniMax and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in the U.S. and/or other countries. All Rights Reserved.`,
+		reviews: [
+			{user:"Ibrahim", type:"negative", date: "12/11/2022", content:"good at first, boring later"},
+			{user:"Samy", type:"negative", date: "1/12/2022", content:"bad game"},
+			{user:"Mazen", type:"negative", date: "2/12/2022", content:"too repetitive"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"good"},
+			{user:"firstplayer", type:"positive", date: "6/12/2022", content:"good but nvm"},
+		]
+	},
+	//22- Dying Light 2 Stay Human
+	{
+		id: "22",
+		name: "Dying Light 2 Stay Human",
+		category: "Action Games",
+		description: "Humanity is fighting a losing battle against the virus. Experience a post-apocalyptic open world overrun by hordes of zombies, where your parkour and combat skills are key to survival. Traverse the City freely during the day, but watch the monsters take over during the night.",
+		releaseDate: "4 Feb, 2022",
+		developer: { name: "DICE", link: ""},
+		publisher: { name: "Electronic Arts", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/534380/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/534380/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/534380/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/534380/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/534380/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256873177/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256873177/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256921118/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256921118/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_d7906b3946d4857d28c159e7a1555a003a4426f8.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_6b8d4cc1f7d657745cfd7aab941d3be0067dec00.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_fe9a52a60f4739a44cbd8b0c0856033ea6996624.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_84ca00f3d3b48e0a1fa6b96b17f02a65f1447950.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_28860dda506d28aea744a08744bad8afb1b506c5.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_64ba1a8bd42d3d0a34bc894d6faa0e57a1328aef.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_38ca559ee79b64ef65f6d5c5c722778f6447425e.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_1c3c5764cc6d6a9a86122a0de643973c0c8dca1b.1920x1080.jpg"},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "39.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "19.99",
+		discountPercentage: "50",
+		tags: ["Co-op", "Zombies", "Parkour", "Multiplayer", "Exploration", "Horror", "Combat", "Gore", "Post-apocalyptic", "First-Person", "Action RPG", "Survival", "Singleplayer", "Adventure", "Action-Adventure", "Action", "Violent", "Multiple Endings", "Choices Matter"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=38", icon: "/images/ico_coop.png",           label: "Online Co-op"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on TV"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false, subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: false, subtitles: true },
+		],
+		link: "https://pilgrimoutpost.techlandgg.com/?utm_source=steam&amp;utm_medium=store&amp;utm_campaign=dying_light_2",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `It’s been 20 years since the events of the original game. The virus won, and humanity is slowly dying. You play as Aiden Caldwell, a wandering Pilgrim who delivers goods, brings news, and connects the few remaining survivor settlements in barren lands devastated by the zombie virus. However, your true goal is to find your little sister Mia, who you left behind as a kid to escape Dr. Waltz's torturous experiments. Haunted by the past, you eventually make the decision to confront it when you learn that Mia may still be alive in Villedor — the last city standing on Earth. 
+		<br><br>You quickly find yourself in a settlement torn by conflict. You’ll need to engage in creative and gory combat, so hone your skills to defeat hordes of zombies and make allies. Roam the city, free run across Villedor’s buildings and rooftops in search of loot in remote areas, and be wary of the night. With every sunset, monsters take control of the streets.
+		<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/534380/extras/dl_2_sh_steam.gif?t=1703065463"><h2 class="bb_tag">A WORLD AFTER THE APOCALYPSE</h2>Fifteen years ago, humanity was devastated by the Fall — a catastrophic event that would change the world forever. With the Harran virus spreading around the globe, people quickly found out that all hope for tomorrow is lost. By 2036, only a few settlements remain, and humanity is slowly dying, making way for the new species out there — a horde of relentless zombies.
+		<h2 class="bb_tag">DAY’S FOR THE LIVING, NIGHT’S FOR THE DEAD</h2>Welcome to Villedor, one of the last bastions of humanity. During the day, survivors still try to have a life here and find a false sense of normalcy. Relationships are formed, dreams are dreamed, and life carries on. On the surface, everything seems… fine. Until sunset, that is. With the last ray of light dying out, other, more dreadful, dwellers of The City crawl out of their gloomy interiors, taking over the streets. If you are not vigilant and stay out too long in the dark, you may never return.
+		<h2 class="bb_tag">YOU HAVE TO MOVE TO SURVIVE</h2>Not all fights can be won. Sometimes it’s best to run and, thankfully, you have the skills for it. Parkour lets you escape when odds are not in your favor. Jump from rooftop to rooftop, swing across the cityscape, ride ziplines, and much more. Whatever you do, experience a unique sense of freedom as you freerun across Villedor’s buildings and rooftops in search of loot or while running away from the dangers of the night.
+		<h2 class="bb_tag">GET BRUTAL AND BE CREATIVE ABOUT IT</h2>In a world as dangerous as this one, only the strongest survive. Whether you prefer to smash, slice or dismember those who stand in your way, you have to be creative about it to make it through. And who says you need weapons? Utilize the entirety of your parkour moveset to get the jump on your enemies. Learn the ways of combat and parkour to feel the crunch of skulls and slices of flesh as you swing weapons or use your moves to fend off any forms of danger. And let’s not forget that Villedor has weapons that put the most advanced post-apocalyptic armories to shame.
+		<h2 class="bb_tag">FOUR PILGRIMS ARE BETTER THAN ONE</h2>Surviving in Villedor is easier with friends. Team up with up to 3 other players and increase your chances out there. Unravel the story together, take on Pilgrim Outpost challenges, or simply wreak havoc on the city streets.
+		<br><br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/534380/extras/steam_footer_dying_light2.jpg?t=1703065463">`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+			<p><i>
+			This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content				</i>
+			</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows® 7",
+				cpu: "Intel Core i3-9100 / AMD Ryzen 3 2300X",
+				ram: "8 GB RAM",
+				gpu: "NVIDIA® GeForce® GTX 1050 Ti / AMD Radeon™ RX 560 (4GB VRAM)",
+				storage: "60 GB available space",
+			},
+			recommended: {
+				os: "Windows® 10",
+				cpu: "AMD / Intel CPU running at 3.6 GHz or higher: AMD Ryzen 5 3600X or Intel i5-8600K or newer",
+				ram: "16 GB RAM",
+				gpu: "NVIDIA® GeForce RTX™ 2060 6GB or AMD RX Vega 56 8GB or newer",
+				storage: "60 GB available space",
+			}
+		},
+		legal: `Dying Light 2 © Techland S.A. Published and developed by Techland S.A. All other trademarks, copyrights and logos are property of their respective owners. All rights reserved.`,
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"gg"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"very good"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"negative", date: "6/12/2022", content:"too bloody"},
+		]
+	},
+	//23- Control Ultimate Edition
+	{
+		id: "23",
+		name: "Control Ultimate Edition",
+		category: "Action Games",
+		description: "Winner of over 80 awards, Control is a visually stunning third-person action-adventure that will keep you on the edge of your seat.",
+		releaseDate: "27 Aug, 2020",
+		developer: { name: "Remedy Entertainment", link: ""},
+		publisher: { name: "505 Games", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/870780/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/870780/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/870780/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/870780/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/870780/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256795678/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256795678/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256795958/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256795958/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_8376498631b089e52fb5c75ffe119e0de5e6aed1.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_5a16ce565951479e142c56a23f19d88333d84945.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_c038bb7b20d72ba5d33cc95f7235aefa0b84a706.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_949cf39deee737fec3aadff903ec5311dd22bdab.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_455ab81ea90f5668ff384d60d68baef1e2e74e55.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_165fb4ca28f4db79b878e8c56ba6502e782c0bb2.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_06b7e4baac0ac7f2ecfcc8d3198f707339c6296f.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/ss_f99238da0d48a784c675c464bf1d83d9cb3ff5ac.1920x1080.jpg"},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "19.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "4.74",
+		discountPercentage: "75",
+		tags: [ "Co-op", "Zombies", "Parkour", "Multiplayer", "Exploration", "Horror", "Combat", "Gore", "Post-apocalyptic", "First-Person", "Action RPG", "Survival", "Singleplayer", "Adventure", "Action-Adventure", "Action", "Violent", "Multiple Endings", "Choices Matter"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on Phone"},
+			{ link: "https://store.steampowered.com/search/?category2=42", icon: "/images/ico_remote_play.png",    label: "Remote Play on Tablet"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on TV"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_hdr.png",            label: "HDR available"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: false, subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: true,  subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: true,  subtitles: true },
+		],
+		link: "controlgame.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/870780/extras/Control_UE_Steam_Vanity.jpg?t=1700566825">
+		<br><br><strong>Control Ultimate Edition</strong>
+		<br><br>Control Ultimate Edition contains the main game and all previously released Expansions ("The Foundation" and "AWE") in one great value package.
+		<br><br>A corruptive presence has invaded the Federal Bureau of Control…Only you have the power to stop it. The world is now your weapon in an epic fight to annihilate an ominous enemy through deep and unpredictable environments. Containment has failed, humanity is at stake. Will you regain control?
+		<br><br>Winner of over 80 awards, Control is a visually stunning third-person action-adventure that will keep you on the edge of your seat. Blending open-ended environments with the signature world-building and storytelling of renowned developer, Remedy Entertainment, Control presents an expansive and intensely gratifying gameplay experience.
+		<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/870780/extras/CONTROL-01-V2.gif?t=1700566825"><br><br><strong>Key features</strong><br><br><strong>Uncover the mysteries</strong><br>Can you handle the bureau’s dark secrets? Unfold an epic supernatural<br>struggle, filled with unexpected characters and bizarre events, as you<br>search for your missing brother, and discover the truth that has brought<br>you here.
+		<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/870780/extras/CONTROL-04-V2.gif?t=1700566825"><br><br><strong>Everything is your weapon</strong><br>Unleash destruction through transforming weaponry and telekinetic<br>powers. 
+		Discover new ways to annihilate your enemies as you harness<br>powerful abilities to turn everything around you into a lethal weapon.
+		<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/870780/extras/CONTROL-03-V2.gif?t=1700566825"><br><br><strong>Explore a hidden world</strong><br>Delve deep into the ominous expanses of a secretive government<br>agency. 
+		Explore the Bureau’s shifting environments only to discover<br>that there is always more than meets the eye…<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/870780/extras/CONTROL-02-V2.gif?t=1700566825"><br><br>
+		<strong>Fight for control</strong><br>Battle a relentless enemy through exciting missions and challenging<br>boss fights to earn powerful upgrades that maximize abilities and<br>customize your weaponry.`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		Blood<br>
+		Violence<br>
+		Strong Language</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 7, 64-bit",
+				cpu: "Intel Core i5-4690 / AMD FX 4350",
+				ram: "8 GB RAM",
+				gpu: "NVIDIA GeForce GTX 780 / AMD Radeon R9 280X",
+				dx: "Version 11",
+				storage: "42 GB available space",
+				additionalNotes: "Additional Features: Widescreen support 21:9 / Remappable controls / Uncapped frame-rate / G-Sync / Freesync support"
+			},
+			recommended: {
+				os: "Windows 10, 64-bit",
+				cpu: "Intel Core i5-7600K / AMD Ryzen 5 1600X",
+				ram: "16 GB RAM",
+				gpu: "NVIDIA GeForce GTX 1660/1060 / AMD Radeon RX 580 AMD | For Ray Tracing: GeForce RTX 2060",
+				dx: "Version 11",
+				storage: "42 GB available space",
+				additionalNotes: "Additional Features: Widescreen support 21:9 / Remappable controls / Uncapped frame-rate / G-Sync / Freesync support"
+			}
+		},
+		legal: `Developed by Remedy Entertainment PLC. Published by 505 Games. The Remedy logo and Northlight are trademarks of Remedy Entertainment Oyj, registered in the U.S. and other countries. Control is a registered trademark of Remedy Entertainment Oyj. 505 Games and the 505 Games logo are trademarks of 505 Games SpA, and may be registered in the United States and other countries. All other marks and trademarks are the property of their respective owners. All rights reserved.`,
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"gg"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"very good"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"nice"},
+		]
+	},
+	//24- Shadow of the Tomb Raider: Definitive Edition
+	{
+		id: "24",
+		name: "Shadow of the Tomb Raider: Definitive Edition",
+		category: "Adventure Games",
+		description: "As Lara Croft races to save the world from a Maya apocalypse, she must become the Tomb Raider she is destined to be.",
+		releaseDate: "14 Sep, 2018",
+		developer: { name: "Crystal Dynamics", link: ""},
+		publisher: { name: "Crystal Dynamics", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/750920/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/750920/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/750920/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/750920/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/750920/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256728364/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256728364/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256744566/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256744566/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256742780/movie480.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256742780/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_3f370f69eef0caeceb533d06925cc48f0f26c83c.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_3fcd62a2831bcc1e557a0fe2a061b6369ba030d1.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_06a2446b7ccef5eaac1ef4200acdb3f02dac9ae0.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_794a3ecd4ae51313f8cfffbc6b3d8b91c665b12b.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_8907e0a624a1113be01fa1b426d0e3ab0971e7d2.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_191adc1f11bf9d13498cb411ac71f29221732e86.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_04b30aaa0ce083b1bcff63d06432707ab9c35c74.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_7496de2518ddb1b58db0004d1386b4e48c442367.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_e6f6fc32892cd8463199dd37040995011f06311b.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/750920/ss_a98e6f581b293d80e722a143a038c22bb11e1a0d.1920x1080.jpg"},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "19.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "4.74",
+		discountPercentage: "75",
+		tags: ["Adventure", "Action", "Female Protagonist", "Singleplayer", "Open World", "Third Person", "Story Rich", "Puzzle", "Stealth", "Action-Adventure", "Exploration", "Survival", "Violent", "Atmospheric", "Shooter", "Gore", "Great Soundtrack", "Dark", "Multiplayer", "Heist"], // Array of tags
+		win: "platform-image win",
+		mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",   label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",   label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=29", icon: "/images/ico_cards.png",          label: "Steam Trading Cards"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",          label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on Phone"},
+			{ link: "https://store.steampowered.com/search/?category2=42", icon: "/images/ico_remote_play.png",    label: "Remote Play on Tablet"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",    label: "Remote Play on TV"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Arabic",              interface: true, fullAudio: true, subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true, subtitles: true },
+			{ name: "Russian",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: true, subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false,subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true, subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true, subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Polish",              interface: true, fullAudio: true, subtitles: true },
+			{ name: "Portguese",           interface: true, fullAudio: true, subtitles: true },
+			{ name: "Turkish",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Thai",                interface: true, fullAudio: true, subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Traditional Chinese", interface: true, fullAudio: true, subtitles: true },
+			{ name: "Ukrainian",           interface: true, fullAudio: true, subtitles: true },
+		],
+		link: "www.tombraider.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `<img src="https://cdn.cloudflare.steamstatic.com/steam/apps/750920/extras/Shadow_DE_616X_Agnostic.jpg?t=1699903168">
+		<br>In Shadow of the Tomb Raider Definitive Edition experience the final chapter of Lara’s origin as she is forged into the Tomb Raider she is destined to be. Combining the base game, all seven DLC challenge tombs, as well as all downloadable weapons, outfits, and skills, Shadow of the Tomb Raider Definitive Edition is the ultimate way to experience Lara’s defining moment.
+		<br><br><strong>Survive and Thrive In the Deadliest Place on Earth: </strong>Master an unforgiving jungle setting in order to survive. Explore underwater environments filled with crevasses and deep tunnel systems.
+		<br><br><strong>Become One With the Jungle:</strong> Outgunned and outnumbered, Lara must use the jungle to her advantage. Strike suddenly and disappear like a jaguar, use mud as camouflage, and instill fear in enemies to sow chaos.
+		<br><br><strong>Discover Dark and Brutal Tombs:</strong> Tombs are more terrifying than ever before, requiring advanced traversal techniques to reach them, and once inside they are filled with deadly puzzles.
+		<br><br><strong>Uncover Living History:</strong> Discover a hidden city and explore the biggest hub space ever found in a Tomb Raider game.
+		<br><br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/750920/extras/SOTTR-Combat1-616x213_-_Copy.jpg?t=1699903168">`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content				</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 7, 64-bit",
+				cpu: "i3-3220 INTEL or AMD Equivalent",
+				ram: "8 GB RAM",
+				gpu: "Nvidia GTX 660/GTX 1050 or AMD Radeon HD 7770",
+				dx: "Version 11",
+				storage: "40 GB available space",
+			},
+			recommended: {
+				os: "Windows 10 64-bit",
+				cpu: "Intel Core i7 4770K, 3.40 Ghz or AMD Ryzen 5 1600, 3.20 Ghz",
+				ram: "16 GB RAM",
+				gpu: "Nvidia GTX 1060 6GB or AMD Radeon RX 480, 8GB",
+				dx: "Version 12",
+				storage: "40 GB available space",
+			}
+		},
+		legal: `SHADOW OF THE TOMB RAIDER © 2018 Crystal Dynamics group of companies. All rights reserved. RISE OF THE TOMB RAIDER, TOMB RAIDER, LARA CROFT, CRYSTAL DYNAMICS, the CRYSTAL DYNAMICS logo, EIDOS, and the EIDOS logo are trademarks of the Crystal Dynamics and Eidos Interactive Corp. group of companies.`,
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"gg"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"very good"},
+			{user:"mr_assassin", type:"positive", date: "5/12/2022", content:"best"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"nice"},
+			{user:"cringyGaming", type:"positive", date: "12/12/2022", content:"good"},
+			{user:"x_gaming", type:"positive", date: "11/12/2022", content:"gg"},
+		]
+	},
+	//25- Mortal Kombat 1
+	{
+		id: "25",
+		name: "Mortal Kombat 1",
+		category: "Action Games",
+		description: "Discover a reborn Mortal Kombat™ Universe created by the Fire God Liu Kang. Mortal Kombat™ 1 ushers in a new era of the iconic franchise with a new fighting system, game modes, and fatalities!",
+		releaseDate: "19 Sep, 2023",
+		developer: { name: "NetherRealm Studios", link: ""},
+		publisher: { name: "Warner Bros. Games", link: ""},
+		mainImage:"https://cdn.akamai.steamstatic.com/steam/apps/1971870/capsule_616x353.jpg",
+		horizontalHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg",
+		verticalHeaderImage:"https://cdn.akamai.steamstatic.com/steam/apps/1971870/hero_capsule.jpg",
+		smallHeaderImage: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header_292x136.jpg",
+		backgroundImage: "https://cdn.akamai.steamstatic.com/steam/apps/1971870/page_bg_generated_v6b.jpg",
+		menuImg: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/capsule_231x87.jpg",
+		searchImage:"https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/capsule_sm_120.jpg",
+		tabImage: "https://cdn.akamai.steamstatic.com/steam/apps/1971870/capsule_184x69.jpg",
+		moviesAndImages: [
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256962783/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256962783/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256960742/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256960742/movie.293x165.jpg",
+			},
+			{
+				type: "video",
+				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256961704/movie480_vp9.webm",
+				posterLink:
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/256961704/movie.293x165.jpg",
+			},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_7eb14734a264570367c607698371e492415f48a4.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_29b0a9e87d5a4981d7403994b661c43117a87d84.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_18eadd6859ed15531d25cd67fe1d2402e9bf75b3.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_02b8c4f08fbf4d1a5affb9e6e64716d63df16760.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_2509da69bd12d209bd0ef9eed13f25cfa551f8e5.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_fc0fd6c946a9f182bf8f0059bf4260ff07b0fec7.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_535045ba6877519d2d95a3c89716a72c174eab7e.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_1b8e7526d3f50e06c1283ee651dc7f868ef0474a.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_224cb713d0e9dcc0028f5ad275cf6f4925d3dca5.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_92b72baad7981e46d9717991510ff28b04186b23.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_a991cfaf5752d48c1374b635deb041ab2d1332d2.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_49224d656949ca50dc48d4256e7e7d4a10eb1855.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_a94918c36b35d9754fa0ef0eeb115a4bffeb7260.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_2ef7ddaed885dd5e2e60f29615b32c984d41a8f6.1920x1080.jpg"},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_829f376e1954eab50fc366bbcbc5a1cee5777116.1920x1080.jpg", featured: true},
+			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/ss_015808ceccbf9006b92702bacb78d5ca0cc3ebe5.1920x1080.jpg", featured: true},
+		],
+		reason: "available", // "available" or "recommended"
+		discount: true,
+		free: false,
+		price: "19.99",
+		offerType: "SPECIAL PROMOTION",
+		offerEndDate: "4 January",
+		discountPrice: "4.74",
+		discountPercentage: "75",
+		tags: ["Adventure", "Action", "Female Protagonist", "Singleplayer", "Open World", "Third Person", "Story Rich", "Puzzle", "Stealth", "Action-Adventure", "Exploration", "Survival", "Violent", "Atmospheric", "Shooter", "Gore", "Great Soundtrack", "Dark", "Multiplayer", "Heist"], // Array of tags
+		win: "platform-image win",
+		// mac: "platform-image mac",
+		features: [
+			{ link: "https://store.steampowered.com/search/?category2=2",  icon: "/images/ico_singlePlayer.png",         label: "Single-player"},
+			{ link: "https://store.steampowered.com/search/?category2=36", icon: "/images/ico_multiPlayer.png",          label: "Online PvP"},
+			{ link: "https://store.steampowered.com/search/?category2=39", icon: "/images/ico_coop.png",                 label: "Shared/Split Screen Co-op"},
+			{ link: "https://store.steampowered.com/search/?category2=22", icon: "/images/ico_achievements.png",         label: "Steam Achievements"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_cart.png",                 label: "In-App Purchases"},
+			{ link: "https://store.steampowered.com/search/?category2=23", icon: "/images/ico_cloud.png",                label: "Steam Cloud"},
+			{ link: "https://store.steampowered.com/search/?category2=41", icon: "/images/ico_remote_play.png",          label: "Remote Play on TV"},
+			{ link: "https://store.steampowered.com/search/?category2=44", icon: "/images/ico_remote_play_together.png", label: "Remote Play Together"},
+			{ link: "https://store.steampowered.com/search/?category2=35", icon: "/images/ico_hdr.png",                   label: "HDR available"},
+		],
+		languages: [
+			{ name: "English",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Japanese",            interface: true, fullAudio: true, subtitles: true },
+			{ name: "Russian",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Simplified Chinese",  interface: true, fullAudio: true, subtitles: true },
+			{ name: "Korean",              interface: true, fullAudio: false,subtitles: true },
+			{ name: "French",              interface: true, fullAudio: true, subtitles: true },
+			{ name: "German",              interface: true, fullAudio: true, subtitles: true },
+			{ name: "Spanish",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Arabic",              interface: true, fullAudio: false,subtitles: true },
+			{ name: "Polish",              interface: true, fullAudio: false,subtitles: true },
+			{ name: "Portguese",           interface: true, fullAudio: true, subtitles: true },
+			{ name: "Turkish",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Thai",                interface: true, fullAudio: true, subtitles: true },
+			{ name: "Italian",             interface: true, fullAudio: true, subtitles: true },
+			{ name: "Traditional Chinese", interface: true, fullAudio: true, subtitles: true },
+			{ name: "Ukrainian",           interface: true, fullAudio: true, subtitles: true },
+		],
+		link: "www.mortalkombat.com",
+		// You can use your own HTML and CSS but scripts are not allowed for security reasons
+		about: `<h2 class="bb_tag"><strong>It’s In Our Blood!</strong>
+		</h2>Discover a reborn Mortal Kombat™ Universe created by the Fire God Liu Kang. 
+		<br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/extras/MK1_FaceOff_KitMil_610x160.png?t=1702393935">
+		<h2 class="bb_tag"><strong>New Origins</strong></h2>Reflecting Fire God Liu Kang’s vision of perfection, Mortal Kombat 1’s brand new universe is familiar, yet radically altered.
+		<br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/extras/MK1_Blood_Animation_2.gif?t=1702393935">
+		<h2 class="bb_tag"><strong>Invasions</strong></h2>Invasions is a dynamic single player campaign with a variety of distinct challenges. With built in progression and RPG mechanics, mixed with MK1’s incredible fighting action, Invasions provides deep, and engaging challenges, and a ton of rewards along the way.
+		<br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/extras/MK1_Invasions_Animation_2.gif?t=1702393935">
+		<h2 class="bb_tag"><strong>Kameos</strong></h2>Kameos dramatically enhance every fight, assisting teammates with their own Special Moves, Throws and defensive Breakers.
+		<br><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/extras/MK1_Kameo_Animation.gif?t=1702393935">`,
+		mature: true,
+		matureDescription: `<p>The developers describe the content like this:</p>
+		<p><i>
+		This Game may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content				</i>
+		</p>`,
+		req: {
+			req64: true,
+			mini: {
+				os: "Windows 7, 64-bit",
+				cpu: "Intel® Core™ i5-6600 | AMD Ryzen™ 3 3100 or Ryzen™ 5 2600",
+				ram: "8 GB RAM",
+				gpu: "Nvidia GeForce® GTX 980 or AMD Radeon™ RX 470 or Intel® Arc™ A750",
+				dx: "Version 12",
+				storage: "100 GB available space",
+			},
+			recommended: {
+				os: "Windows 10/11 64-bit",
+				cpu: "Intel® Core™ i5-8400 | AMD Ryzen™ 5 3600X",
+				ram: "8 GB RAM",
+				gpu: "Nvidia GeForce® GTX 1080 Ti or AMD Radeon™ RX 5700 XT or Intel® Arc™ A770",
+				dx: "Version 12",
+				storage: "100 GB available space",
+			}
+		},
+		legal: `MORTAL KOMBAT 1 Software © 2023 Warner Bros. Entertainment Inc. Developed by NetherRealm Studios. All other trademarks and copyrights are the property of their respective owners. All rights reserved.  <br>
+		NETHERREALM STUDIOS LOGO, MORTAL KOMBAT, THE DRAGON LOGO, and all related characters and elements are trademarks of and © 2023 Warner Bros. Entertainment Inc. <br>
+		 <br>
+		WARNER BROS. GAMES LOGO, WARNER BROS. INTERACTIVE LOGO, WB SHIELD: ™ &amp; © Warner Bros. Entertainment Inc. (s23)`,
+		reviews: [
+			{user:"Ibrahim", type:"positive", date: "12/11/2022", content:"good game"},
+			{user:"Samy", type:"positive", date: "1/12/2022", content:"gg"},
+			{user:"Mazen", type:"positive", date: "2/12/2022", content:"very good"},
+			{user:"mr_assassin", type:"positive", date: "5/12/2022", content:"best"},
+			{user:"Player20", type:"positive", date: "4/12/2022", content:"kinda good game"},
+			{user:"idiotgaming99", type:"positive", date: "6/12/2022", content:"nice"},
+			{user:"cringyGaming", type:"negative", date: "12/12/2022", content:"bad"},
+			{user:"x_gaming", type:"positive", date: "11/12/2022", content:"gg"},
 		]
 	},
 ];

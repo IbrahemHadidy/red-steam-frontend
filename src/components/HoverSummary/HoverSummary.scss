@@ -1,0 +1,138 @@
+.game-hover {
+    position: absolute;
+    width: 306px;
+    z-index: 2000;
+    top: 40px;
+    left: 400px;
+    padding: 5px 12px 0 12px;
+    pointer-events: none;
+    overflow: visible;
+
+    .hover-box {
+        width: 306px;
+        color: #30455a;
+        font-size: 12px;
+        overflow: hidden;
+        box-shadow: 0 0 12px #000000;
+        background: linear-gradient(to bottom,  rgba(227,234,239,1) 0%,rgba(199,213,224,1) 100%);
+        margin-top: 8px;
+        margin-bottom: 8px;
+
+        .hover-content {
+            padding: 16px;
+
+            .hover-title {
+                color: #222d3d;
+                font-size: 15px;
+                font-family: "Motiva Sans", Sans-serif;
+                font-weight: normal;
+                text-transform: unset;
+                letter-spacing: 0px;
+                margin-top: -4px;
+                line-height: 17px;
+                margin-bottom: 4px;
+            }
+
+            .hover-release {
+                font-size: 10px;
+            }
+
+            .hover-screenshots {
+                position: relative;
+                width: 274px;
+                height: 153px;
+                margin: 5px 0;
+
+                .hover-screenshot {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    background-size: cover;
+                    background-position: center center;
+                    opacity: 0;
+                    transition: opacity 300ms;
+                    animation: screenshot_hover_fadein 4s linear;
+                    animation-iteration-count: infinite;
+
+                    &:nth-child(1) {
+                        animation-delay: 0s;
+                    }
+                    &:nth-child(2) {
+                        animation-delay: 1s;
+                    }
+                    &:nth-child(3) {
+                        animation-delay: 2s;
+                    }
+                    &:nth-child(4) {
+                        animation-delay: 3s;
+                    }
+                }
+            }
+
+            .hover-description {
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+
+            .hover-review-summary {
+                margin-bottom: 16px;
+                border-radius: 2px;
+                padding: 4px;
+                color: #c6d4df;
+                background-color: rgba( 38, 54, 69, 0.6);
+            }
+
+            .hover-tag-body {
+                clear: left;
+                margin-bottom: 6px;
+
+                .hover-tag-row {
+                    overflow: hidden;
+                    height: 19px;
+                    margin-top: 2px;
+
+                    .game-tag {
+                        display: inline-block;
+                        line-height: 19px;
+                        background-color: #96a3ae;
+                        color: rgba(227,234,239,1);
+                        box-shadow: none;
+                        padding: 0 4px;
+                        font-size: 11px;
+                        margin-right: 2px;
+                        border-radius: 2px;
+                        cursor: pointer;
+                        margin-bottom: 3px;
+                        max-width: 200px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+
+    .hover-arrow-right, .hover-arrow-left {
+        width: 7px;
+        height: 15px;
+        background: url( '/images/hover_arrows.png' ) no-repeat top;
+        position: absolute;
+        top: 48px;
+    }
+    .hover-arrow-right {
+        background-position: right;
+        right: 5px;
+    }
+    .hover-arrow-left {
+        background-position: left;
+        left: 5px;
+    }
+}
+
+@keyframes screenshot_hover_fadein {
+    0% { opacity: 0; }
+    3% { opacity: 1; }
+    28% { opacity: 1; }
+    31% { opacity: 0; }
+}

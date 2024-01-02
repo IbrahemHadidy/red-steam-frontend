@@ -29,11 +29,11 @@ const DefaultDesktopComponent: FC = () => {
 
 						{/* "Notifications" button */}
 						{/* isLoggedIn ? */}
-						<Button variant="secondary" className="compact-button">
+						{/* <Button variant="secondary" className="compact-button">
 							<span className="button-content button-text bell">
 								<img src="/images/bell.svg" style={{ width: "14px" }} />
 							</span>
-						</Button>
+						</Button> */}
 						{/* TODO: isLoggedIn Backend Logic */}
 						{/* isLoggedIn ? */}
 						{/* User profile dropdown menu */}

@@ -6,9 +6,10 @@ const SignInAndRecovery = lazy(() => import('./pages/SignInUp/SignInAndRecovery'
 const SignUp = lazy(() => import('./pages/SignInUp/SignUp'));
 const Search = lazy(() => import('./pages/Search/Search'));
 
-// import the necessary components by default
+// import the necessary component styles by default
 import "./components/Header/Header.scss";
 import "./components/SecondNavbar/SecondNavbar.scss";
+import "./components/HoverSummary/HoverSummary.scss";
 
 const App: FC = () => {
 	return (

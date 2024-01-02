@@ -33,7 +33,7 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
 	return (
 		<div className="right-game-summary">
 			<div className="game-image">
-				<img className="image-full" src={game.headerImage} alt="" />
+				<img className="image-full" src={game.horizontalHeaderImage} alt="" />
 			</div>
 			{isViewport630 && <div className="game-name-mobile">{game.name}</div>}
 			<div className="game-discription">{game.description}</div>
@@ -90,17 +90,20 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
 					Popular user-defined tags for this product:
 				</div>
 				<div className="glance-tags">
-					<a className="game-tag" href="">
+					<a className="game-tag" href={`/search?tags=${game.tags[0]}`}>
 						{game.tags[0]}
 					</a>
-					<a className="game-tag" href="">
+					<a className="game-tag" href={`/search?tags=${game.tags[1]}`}>
 						{game.tags[1]}
 					</a>
-					<a className="game-tag" href="">
+					<a className="game-tag" href={`/search?tags=${game.tags[2]}`}>
 						{game.tags[2]}
 					</a>
-					<a className="game-tag" href="">
+					<a className="game-tag" href={`/search?tags=${game.tags[3]}`}>
 						{game.tags[3]}
+					</a>
+					<a className="game-tag" href={`/search?tags=${game.tags[0]}`}>
+						+
 					</a>
 				</div>
 			</div>
