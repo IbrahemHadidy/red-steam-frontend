@@ -467,6 +467,7 @@
 				overflow: hidden;
 				font-family: "Motiva Sans", Sans-serif;
 				font-weight: normal;
+				transition: height 0.5s ease-in-out;
 
 				>h2 {
 					&:first-of-type {
@@ -501,14 +502,36 @@
 			}
 
 			.autocollapse-fade {
-				display: none;
+				display: block;
 				position: absolute;
 				left: 0;
 				right: 0;
 				bottom: 0;
-				height: 73px;
+				height: 53px;
 				z-index: 1;
 				background: url('/images/fade.png') top repeat-x;
+
+				&.hidden {
+					display: none;
+				}
+
+				.autocollapse-readmore {
+					position: absolute;
+					right: 0;
+					bottom: 0;
+					height: 20px;
+					line-height: 20px;
+					cursor: pointer;
+					color: #537ca6;
+					font-size: 10px;
+					padding-right: 12px;
+					top: 53px;
+					background: url( '/images/readmore.png' ) right center no-repeat;
+
+					&:hover {
+						color: #ffffff;
+					}
+				}
 			}
 
 			&.sys-req {
@@ -517,6 +540,7 @@
 				color: #acb2b8;
 				font-size: 14px;
 				margin-top: 30px;
+				transition: height 0.5s ease-in-out;
 
 				h2 {
 					&:first-of-type {
@@ -600,7 +624,7 @@
 				color: #566168;
 				font-size: 11px;
 				margin-bottom: 10px;
-				margin-top: 8px;
+				margin-top: 20px;
 				line-height: 1.1;
 			}
 		}

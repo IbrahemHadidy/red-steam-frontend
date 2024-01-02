@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { gamesData } from "../gameData";
 import DOMPurify from "dompurify";
 
@@ -19,6 +19,41 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 	isViewport630,
 }) => {
 	const platform = getPlatform();
+
+	const [isAboutExpanded, setIsAboutExpanded] = useState(true);
+	const [isMatureExpanded, setIsMatureExpanded] = useState(true);
+	const [isSysReqExpanded, setIsSysReqExpanded] = useState(true);
+
+	const aboutRef = useRef<HTMLDivElement>(null);
+	const matureRef = useRef<HTMLDivElement>(null);
+	const sysReqRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (aboutRef.current && aboutRef.current.scrollHeight >= 850) {
+			setIsAboutExpanded(false);
+		}
+		if (matureRef.current && matureRef.current.scrollHeight >= 120) {
+			setIsMatureExpanded(false);
+		}
+		if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250) {
+			setIsSysReqExpanded(false);
+		}
+	}, []);
+	
+
+	// Functions to toggle the visibility of each section
+	const toggleAboutExpand = () => {
+		setIsAboutExpanded(!isAboutExpanded);
+	};
+
+	const toggleMatureExpand = () => {
+		setIsMatureExpanded(!isMatureExpanded);
+	};
+
+	const toggleSysReqExpand = () => {
+		setIsSysReqExpanded(!isSysReqExpanded);
+	};
+
 
 	return (
 		<div className="game-content-left">
@@ -130,7 +165,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 			{/* Game about */}
 			<div className="autocollapse-container">
 				<div className="autocollapse">
-					<div className="game-description">
+					<div className="game-description" style={{ height: isAboutExpanded ? `${aboutRef.current?.scrollHeight}px` : "850px" }} ref={aboutRef}>
 						<h2>ABOUT THIS GAME</h2>
 						<div
 							dangerouslySetInnerHTML={{
@@ -138,8 +173,8 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 							}}
 						/>
 					</div>
-					<div className="autocollapse-fade">
-						<div className="autocollapse-readmore">READ MORE</div>
+					<div className={`autocollapse-fade ${isAboutExpanded ? 'hidden' : ''}`}>
+						<div className="autocollapse-readmore" onClick={toggleAboutExpand}>READ MORE</div>
 					</div>
 				</div>
 			</div>
@@ -148,7 +183,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 			{game.mature && game.matureDescription && (
 				<div className="autocollapse-container">
 					<div className="autocollapse">
-						<div className="game-description">
+						<div className="game-description" style={{ height: isMatureExpanded ? `${matureRef.current?.scrollHeight}px` : "120px" }} ref={matureRef}>
 							<h2>MATURE CONTENT DESCRIPTION</h2>
 							<div
 								dangerouslySetInnerHTML={{
@@ -156,8 +191,8 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 								}}
 							/>
 						</div>
-						<div className="autocollapse-fade">
-							<div className="autocollapse-readmore">READ MORE</div>
+						<div className={`autocollapse-fade ${isMatureExpanded ? 'hidden' : ''}`}>
+							<div className="autocollapse-readmore" onClick={toggleMatureExpand}>READ MORE</div>
 						</div>
 					</div>
 				</div>
@@ -166,7 +201,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 			{/* Game System Requirements */}
 			{game.mac && platform === "darwin" ? null : (
 				<div className="autocollapse-container">
-					<div className="autocollapse sys-req">
+					<div className="autocollapse sys-req" style={{ height: isSysReqExpanded ? `${sysReqRef.current?.scrollHeight}px` : "250px", overflow: "hidden" }} ref={sysReqRef}>
 						<h2>SYSTEM REQUIREMENTS</h2>
 						<div className="sysreq-contents">
 							<div className="sysreq-content">
@@ -326,25 +361,24 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 								</div>
 							</div>
 						</div>
-						<div className="autocollapse-fade">
-							<div className="autocollapse-readmore">READ MORE</div>
+						<div className={`autocollapse-fade ${isSysReqExpanded ? 'hidden' : ''}`}>
+							<div className="autocollapse-readmore" onClick={toggleSysReqExpand}>READ MORE</div>
 						</div>
 					</div>
-
-					{/* Game legal */}
-					{game.legal && (
-						<div className="autocollapse-container">
-							<div className="autocollapse">
-								<div className="legal-area">
-									<p
-										dangerouslySetInnerHTML={{
-											__html: DOMPurify.sanitize(game.legal),
-										}}
-									/>
-								</div>
-							</div>
+				</div>
+			)}
+			{/* Game legal */}
+			{game.legal && (
+				<div className="autocollapse-container">
+					<div className="autocollapse">
+						<div className="legal-area">
+							<p
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(game.legal),
+								}}
+							/>
 						</div>
-					)}
+					</div>
 				</div>
 			)}
 		</div>
