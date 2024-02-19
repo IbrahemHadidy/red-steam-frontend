@@ -1,5 +1,3 @@
-// UserStatus.tsx
-
 import  { useState, useEffect } from 'react';
 
 interface UserData {
@@ -57,40 +55,3 @@ const UserStatus = () => {
 };
 
 export default UserStatus;
-
-
-// const App = () => {
-//     useEffect(() => {
-//       const getUserInfo = async () => {
-//         try {
-//           // Invoke the UserStatus function to get user information
-//           const userInfo = await UserStatus();
-	
-//           if (userInfo) {
-//             // Use the user information as needed
-//             console.log('Username:', userInfo.username);
-//             console.log('Email:', userInfo.email);
-//             console.log('Country:', userInfo.country);
-//             console.log('Phone Number:', userInfo.phoneNumber);
-//             console.log('Profile Picture:', userInfo.profilePicture);
-//             // Add other user information as needed
-//           } else {
-//             // User is not logged in or user data is not available
-//             console.log('User is not logged in or data is not available');
-//           }
-//         } catch (error) {
-//           console.error('Error getting user information:', error);
-//           // Handle error (e.g., redirect to login page)
-//         }
-//       };
-	
-//       getUserInfo();
-//     }, []);
-	
-		
-//   return (
-//     <div>
-//       {/* Your component content */}
-//     </div>
-//   );
-// };

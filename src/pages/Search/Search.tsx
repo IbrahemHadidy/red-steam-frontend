@@ -15,7 +15,7 @@ import Header from "../../components/Header/Header";
 import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
 import { SearchRight } from "./SearchRight";
 import { SearchLeft } from "./SearchLeft";
-import useResponsiveViewports from "../../components/UseResponsiveViewports";
+import useResponsiveViewports from "../../tools/UseResponsiveViewports";
 import "./Search.scss";
 
 // TODO: send filters to backend then fetch the requested data

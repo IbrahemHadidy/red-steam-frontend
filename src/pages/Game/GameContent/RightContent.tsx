@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { ReviewEntry, gamesData } from "../gameData";
-import useResponsiveViewports from "../../../components/UseResponsiveViewports";
+import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
 
 export const RightContent: FC<{ game: gamesData, isViewport630: boolean }> = ({ game, isViewport630 }) => {
 	const [showAllLanguages, setShowAllLanguages] = useState(false);

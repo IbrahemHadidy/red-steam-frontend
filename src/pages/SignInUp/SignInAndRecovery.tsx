@@ -1,17 +1,17 @@
 import { FC, useEffect, useState, FormEvent } from "react";
-import $ from "../../components/$selector";
+import ReCAPTCHA from 'react-google-recaptcha';
+import $ from "../../tools/$selector";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import useResponsiveViewports from "../../components/UseResponsiveViewports";
-import useRecaptcha from "../../components/reCAPTCHA";
-import { validateEmail, validateName, validatePassword, validatePhone } from "../../components/InputValidations";
+import useResponsiveViewports from "../../tools/UseResponsiveViewports";
+import { validateEmail, validateName, validatePassword, validatePhone } from "../../tools/InputValidations";
 import { useSpring, animated } from "react-spring";
 import "./SignInUp.scss";
 const env = import.meta.env;
 
 const SignInAndRecovery: FC = () => {
 	const isViewport740 = useResponsiveViewports(740);
-	const { recaptchaRef, recaptchaValue } = useRecaptcha();
+    const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 	const [title, setTitle] = useState("Sign In");
 	const [passwordPage, setPasswordPage] = useState(false);
 	const [isChecked, setIsChecked] = useState(false);
@@ -21,6 +21,10 @@ const SignInAndRecovery: FC = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [resetErrorMessage, setResetErrorMessage] = useState("");
 	const [isSearching, setIsSearching] = useState(false);
+
+	const handleRecaptchaChange = (value: string | null) => {
+  	  setRecaptchaValue(value);
+  	};
 	
 	useEffect(() => {
 		// this is responsible for the page background
@@ -273,102 +277,154 @@ const SignInAndRecovery: FC = () => {
 	};
 
 	return (
-		<>
-			<Header />
-			<div className="page-content-sign">
-				<div className="login-container">
-					<div className="new-login">
-						<div className="signin-title">
-							<div className="title">{title}</div>
-						</div>
-						<div className="login-form-container">
-							<form className="login-form signin-form" action="" onSubmit={handleFormSubmit}>
-								<div className="login-dialog-field">
-									<div className="field-label account">
-										Sign in with account name
-									</div>
-									<input className="field-input" id="field-input-account" type="text" />
-								</div>
-								<div className="login-dialog-field">
-									<div className="field-label">Password</div>
-									<input className="field-input" id="field-input-password" type="password" />
-								</div>
-								<div className="remember-me" onClick={handleRememberMeClick}>
-								<div className="check" tabIndex={0}>
-									{isChecked && <img src="images/check.svg" alt="Checkmark" />}
-								</div>
-									<div className="check-label">Remember me</div>
-								</div>
-								<div className="login-dialog-field">
-									<button className={`submit-button ${isLoading && 'loading'}`} type="submit" disabled={isLoading}>
-										Sign in
-										{isLoading && (<div className="loading-container"><div className="loading-spinner" /></div>)}
-									</button>
-								</div>
-								<div
-									className="form-error"
-									style={ errorMessage !== "" ? {display: "block"} : undefined }
-								>
-									{errorMessage}
-								</div>
-								<a
-									className="forgot-password"
-									onClick={handleForgotPasswordClick}
-								>
-									{showForgotPassword ? "Hide Forgot Password / Username" : "Forgot Password / Username?"}
-								</a>
-							</form>
-							<animated.div className="forgot-my-password " style={!isViewport740 ? springProps : springProps740}>
-								<form className="login-form" action="" onSubmit={handleResetPasswordFormSubmit}>
-									<div className="help-title">
-										I forgot my Steam Account name or password
-									</div>
-									<div className="login-dialog-field">
-										<div className="field-label account">
-											Enter your email address or phone number
-										</div>
-										<input className="field-input" type="text" />
-									</div>
-									<div className="g-recaptcha" data-sitekey={env.VITE_RECAPTCHA_SITE_KEY} ref={recaptchaRef} />
-									<div className="recovery-submit">
-										<div
-											className="form-error"
-											style={ notFound ? {display: "block"} : undefined }
-										>
-											{resetErrorMessage}
-										</div>
-										<button className={`submit-button search ${isSearching && 'loading'}`} style={isSearching ? {color: "transparent"} : {}} type="submit" disabled={isSearching}>
-											Search
-											{isSearching && (<div className="loading-container"><div className="loading-spinner" /></div>)}
-										</button>
-									</div>
-									{passwordPage && <a href="/login" className="forgot-password">Login instead</a>}
-								</form>
-							</animated.div>
-						</div>
-					</div>
-				</div>
-				<div className="new-user">
-					<div className="new-user-item create-acc">
-						<div className="headline">New to Steam?</div>
-						<a className="signup-btn" target="_top" href="/join">
-							<span>Create an account</span>
-						</a>
-					</div>
-					<div className="new-user-item">
-						<div className="subtext">
-							It's free and easy. Discover thousands of<br />games to play with
-							millions of new friends.<br />
-							<a className="join-desc" href="#">
-								Learn more about Steam
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<Footer />
-		</>
-	);
+    <>
+      <Header />
+      <div className="page-content-sign">
+        <div className="login-container">
+          <div className="new-login">
+            <div className="signin-title">
+              <div className="title">{title}</div>
+            </div>
+            <div className="login-form-container">
+              <form
+                className="login-form signin-form"
+                action=""
+                onSubmit={handleFormSubmit}
+              >
+                <div className="login-dialog-field">
+                  <div className="field-label account">
+                    Sign in with account name
+                  </div>
+                  <input
+                    className="field-input"
+                    id="field-input-account"
+                    type="text"
+                  />
+                </div>
+                <div className="login-dialog-field">
+                  <div className="field-label">Password</div>
+                  <input
+                    className="field-input"
+                    id="field-input-password"
+                    type="password"
+                  />
+                </div>
+                <div className="remember-me" onClick={handleRememberMeClick}>
+                  <div className="check" tabIndex={0}>
+                    {isChecked && (
+                      <img src="images/check.svg" alt="Checkmark" />
+                    )}
+                  </div>
+                  <div className="check-label">Remember me</div>
+                </div>
+                <div className="login-dialog-field">
+                  <button
+                    className={`submit-button ${isLoading && 'loading'}`}
+                    type="submit"
+                    disabled={isLoading}
+                  >
+                    Sign in
+                    {isLoading && (
+                      <div className="loading-container">
+                        <div className="loading-spinner" />
+                      </div>
+                    )}
+                  </button>
+                </div>
+                <div
+                  className="form-error"
+                  style={errorMessage !== '' ? { display: 'block' } : undefined}
+                >
+                  {errorMessage}
+                </div>
+                <a
+                  className="forgot-password"
+                  onClick={handleForgotPasswordClick}
+                >
+                  {showForgotPassword
+                    ? 'Hide Forgot Password / Username'
+                    : 'Forgot Password / Username?'}
+                </a>
+              </form>
+              <animated.div
+                className="forgot-my-password "
+                style={!isViewport740 ? springProps : springProps740}
+              >
+                <form
+                  className="login-form"
+                  action=""
+                  onSubmit={handleResetPasswordFormSubmit}
+                >
+                  <div className="help-title">
+                    I forgot my Steam Account name or password
+                  </div>
+                  <div className="login-dialog-field">
+                    <div className="field-label account">
+                      Enter your email address or phone number
+                    </div>
+                    <input className="field-input" type="text" />
+                  </div>
+                  <ReCAPTCHA
+                    sitekey={env.VITE_RECAPTCHA_SITE_KEY}
+                    onChange={handleRecaptchaChange}
+                    theme="dark"
+                  />
+                  <div className="recovery-submit">
+                    <div
+                      className="form-error"
+                      style={notFound ? { display: 'block' } : undefined}
+                    >
+                      {resetErrorMessage}
+                    </div>
+                    <button
+                      className={`submit-button search ${
+                        isSearching && 'loading'
+                      }`}
+                      style={isSearching ? { color: 'transparent' } : {}}
+                      type="submit"
+                      disabled={isSearching}
+                    >
+                      Search
+                      {isSearching && (
+                        <div className="loading-container">
+                          <div className="loading-spinner" />
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                  {passwordPage && (
+                    <a href="/login" className="forgot-password">
+                      Login instead
+                    </a>
+                  )}
+                </form>
+              </animated.div>
+            </div>
+          </div>
+        </div>
+        <div className="new-user">
+          <div className="new-user-item create-acc">
+            <div className="headline">New to Steam?</div>
+            <a className="signup-btn" target="_top" href="/join">
+              <span>Create an account</span>
+            </a>
+          </div>
+          <div className="new-user-item">
+            <div className="subtext">
+              It's free and easy. Discover thousands of
+              <br />
+              games to play with millions of new friends.
+              <br />
+              <a className="join-desc" href="#">
+                Learn more about Steam
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
 };
 
 export default SignInAndRecovery;

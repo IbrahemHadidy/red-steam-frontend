@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { gamesData, ReviewEntry } from "../gameData";
 import DOMPurify from "dompurify";
-import useResponsiveViewports from "../../../components/UseResponsiveViewports";
+import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
 import "./GameReviews.scss";
 
 

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import useResponsiveViewports from "../../../components/UseResponsiveViewports";
+import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
 import { offeredGames, specialOffers } from "./OfferedGames";
 import Slider from "react-slick";
 import "./Offers.scss";

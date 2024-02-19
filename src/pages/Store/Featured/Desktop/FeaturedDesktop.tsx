@@ -1,6 +1,6 @@
 import { FC, SetStateAction, useState } from "react";
 import Slider from "react-slick";
-import useResponsiveViewports from "../../../../components/UseResponsiveViewports";
+import useResponsiveViewports from "../../../../tools/UseResponsiveViewports";
 import HoverSummary from "../../../../components/HoverSummary/HoverSummary";
 import featuredGames from "../featuredGames";
 

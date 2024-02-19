@@ -1,5 +1,5 @@
 import { FC, ReactNode, useState } from "react";
-import useResponsiveViewports from '../../../components/UseResponsiveViewports';
+import useResponsiveViewports from '../../../tools/UseResponsiveViewports';
 import { ReviewEntry, gamesData } from "../gameData";
 import TagsModal from "./TagsModal";
 

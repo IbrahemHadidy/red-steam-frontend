@@ -1,5 +1,5 @@
 import { FC } from "react";
-import useResponsiveViewports from "../../../components/UseResponsiveViewports";
+import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
 import queueGames from "./queueGames";
 import "./Queue.scss";
 

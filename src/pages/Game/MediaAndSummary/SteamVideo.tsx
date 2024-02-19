@@ -10,7 +10,7 @@ import {
   SyntheticEvent,
   ChangeEvent,
 } from 'react';
-import $ from '../../../components/$selector';
+import $ from '../../../tools/$selector';
 
 interface SteamVideoProps {
   videoRef: RefObject<HTMLVideoElement | null>;
