@@ -15,7 +15,7 @@ import Header from "../../components/Header/Header";
 import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
 import { SearchRight } from "./SearchRight";
 import { SearchLeft } from "./SearchLeft";
-import useResponsiveViewports from "../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../components/UseResponsiveViewports";
 import "./Search.scss";
 
 // TODO: send filters to backend then fetch the requested data
@@ -516,9 +516,7 @@ const Search: FC = () => {
 
 	return (
 		<>
-			{isViewport960 && (
-				searchRight
-			)}
+			{isViewport960 && searchRight}
 			<Header />
 			<div className="search-header">
 				<SecondNavbar />

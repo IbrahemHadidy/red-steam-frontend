@@ -1,11 +1,12 @@
 import { FC, useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent } from "react";
+import $ from "../../components/$selector";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import useRecaptcha from "../../components/reCAPTCHA";
-import useResponsiveViewports from "../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../components/UseResponsiveViewports";
 import { validateEmail, validateName, validatePassword } from "../../components/InputValidations";
-import { countries } from "../../components/countries";
+import { countries } from "../../components/Countries";
 import { VerifyModal } from "./VerifyModal";
 import { useNavigate } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
@@ -87,7 +88,7 @@ const SignUp: FC = () => {
 		setErrorMessages([]);
 
 		const isEmailValid = validateEmail(email);
-		const isCheckboxChecked = (document.querySelector("#i-agree-check") as HTMLInputElement)?.checked;
+		const isCheckboxChecked = ($('#i-agree-check') as HTMLInputElement)?.checked;
 
 		if (!isEmailValid) {
 			document.getElementById("email")?.classList.add("error");

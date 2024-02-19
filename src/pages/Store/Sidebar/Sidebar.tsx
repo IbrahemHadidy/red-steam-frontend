@@ -1,3 +1,8 @@
+
+
+//!! TODO: CHANGE THE TAGS AND GENRES TO AVAILABLE TAGS/SORT OPTIONS USED IN THE SITE
+
+
 import { FC } from "react";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -27,24 +32,37 @@ const Sidebar: FC = () => {
 		{ to: "/game/Call_of_Duty", text: "Call of Duty®" },
 	];
 
-	const tagsLinks = [
-		// Define tag links
-		{ to: "/tags/en/Mod/", text: "Mod" },
-		{
-			to: "/tags/en/Dark%20Fantasy/",
-			text: "Dark Fantasy",
-		},
-		{
-			to: "/tags/en/Psychological/",
-			text: "Psychological",
-		},
-		{
-			to: "/tags/en/Open%20World/",
-			text: "Open World",
-		},
-		{ to: "/tags/en/Fantasy/", text: "Fantasy" },
-	];
+	// TODO: isLoggedIn Backend logic, render tags dynamically depending on user's tags selection (most 5 tags having games)
+	// const tagsLinks = [
+	// 	// Define tag links
+	// 	{ to: "/tags/en/Mod/", text: "Mod" },
+	// 	{
+	// 		to: "/tags/en/Dark%20Fantasy/",
+	// 		text: "Dark Fantasy",
+	// 	},
+	// 	{
+	// 		to: "/tags/en/Psychological/",
+	// 		text: "Psychological",
+	// 	},
+	// 	{
+	// 		to: "/tags/en/Open%20World/",
+	// 		text: "Open World",
+	// 	},
+	// 	{ to: "/tags/en/Fantasy/", text: "Fantasy" },
+	// ];
 
+	// TODO: isLoggedIn Backend logic, conditional redirection
+	// const recommendedLinks = [
+	// 	// Define recommended links
+	// 	{
+	// 		to: {isLoggedIn ? "/recommended/friendactivity/" : "/login"},
+	// 		text: "By Friends",
+	// 	},
+	// 	{ to: {isLoggedIn ? "/curators/" : "/login"}, text: "By Curators" },
+	// 	{ to: {isLoggedIn ? "/tag/browse/#yours" : "/login"}, text: "Tags" },
+	// ];
+
+	// TODO: delete this temprorary part after backend implementation
 	const recommendedLinks = [
 		// Define recommended links
 		{
@@ -110,10 +128,11 @@ const Sidebar: FC = () => {
 				</div>
 
 				{/* Your Tags section */}
-				<div>
+				{/* TODO: Add isLoggedIn backend logic */}
+				{/* <div>
 					<div className="header tag">Your Tags</div>
 					<div>{generateLinks(tagsLinks)}</div>
-				</div>
+				</div> */}
 
 				{/* Recommended section */}
 				<div>

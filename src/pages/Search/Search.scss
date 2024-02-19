@@ -635,17 +635,14 @@
 							border-radius: 50%;
 							cursor: pointer;
 						}
-
 						&::-moz-range-thumb {
 							appearance: none;
-							-webkit-appearance: none;
 							width: 12px;
 							height: 12px;
-							margin-top: -4px;
+							cursor: pointer;
+							border-radius: 50%;
 							background: #ffffff;
 							box-shadow: 0 0 5px 1px #000000;
-							border-radius: 50%;
-							cursor: pointer;
 						}
 
 						&::-webkit-slider-runnable-track {
@@ -655,7 +652,7 @@
 							border-radius: 3px;
 						}
 
-						&::-moz-range-track {
+						&::-moz-range-progress {
 							width: 100%;
 							height: 4px;
 							background: #67c1f5;

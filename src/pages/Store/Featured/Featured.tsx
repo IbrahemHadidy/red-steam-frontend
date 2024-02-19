@@ -1,5 +1,5 @@
 import { FC } from "react";
-import useResponsiveViewports from "../../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../../components/UseResponsiveViewports";
 import FeaturedDesktop from "./Desktop/FeaturedDesktop";
 import FeaturedMobile from "./Mobile/FeaturedMobile";
 import "./Featured.scss";

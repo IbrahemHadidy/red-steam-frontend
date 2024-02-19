@@ -302,8 +302,8 @@ export const SearchRight: FC<SearchRightProps> = ({
 					/>
 				</div>
 			</div>
-			<div className="filter-block" onClick={() => setIsOSDropdownOpened(!isOSDropdownOpened)}>
-				<div className="filter-header">
+			<div className="filter-block">
+				<div className="filter-header" onClick={() => setIsOSDropdownOpened(!isOSDropdownOpened)}>
 					<div>Narrow by OS</div>
 				</div>
 				<div className={`filter-content ${!isOSDropdownOpened ? "closed" : ""}`} style={{ 

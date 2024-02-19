@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useState, useRef, useEffect, useCallback, MouseEventHandler } from "react";
+import $ from "../../../components/$selector"
 import { GameTitleArea } from "./GameTitleArea";
 import { RightGameSummary } from "./RightGameSummary";
 import { LeftGameSummary } from "./LeftGameSummary/LeftGameSummary";
@@ -7,7 +8,7 @@ import { QueueArea } from "./QueueArea";
 import { GameOwned } from "./GameOwned";
 import { ScreenshotModal } from "./Screenshot";
 import gameData, { gamesData, MovieEntry } from "../gameData";
-import useResponsiveViewports from "../../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../../components/UseResponsiveViewports";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
 
@@ -96,7 +97,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 		const indicatorPosition =
 			game.moviesAndImages.findIndex((entry) => entry.link === selectedItem) * 120;
 	
-		const slideArea = document.querySelector(".slide-area");
+		const slideArea = $('.slide-area');
 		if (slideArea) {
 			// Calculate visible width dynamically
 			const visibleWidth = slideArea.clientWidth;
@@ -133,7 +134,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 			const nextIndex = (currentScreenshotIndex - 1 + totalScreenshots) % totalScreenshots;
 			setCurrentScreenshotIndex(nextIndex)
 
-			const slideArea = document.querySelector(".slide-area");
+			const slideArea = $('.slide-area');
 			if (slideArea) {
 				const indicatorPosition = currentIndex * 120;
 
@@ -227,11 +228,9 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 		const screenshotIntervalId = setInterval(() => {
 			if (
 				selectedItem &&
-				typeof selectedItem === "string" &&
 				game.moviesAndImages.find((entry) => entry.link === selectedItem)
 					?.type !== "video" &&
-				!isModalOpen && // Check if the modal is open
-				isPageVisible.current // Check if the page is visible
+				!isModalOpen &&	isPageVisible.current
 			) {
 				handleSwap();
 			}
@@ -272,8 +271,8 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 			if (!isAutoplay && firstVideo && selectedItem === firstVideo.link) {
 				const videoSwapTimeout = setTimeout(() => {
 					handleSwap();
-					setInitialRender(false); // Update the state to indicate that the initial render has occurred
-				}, 0); // Adjust the duration as needed
+					setInitialRender(false);
+				}, 0);
 
 				return () => {
 					clearTimeout(videoSwapTimeout);
@@ -293,52 +292,50 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
 	);
 
 	return (
-		<div className="MeidaAndSummary" key={game.id}>
-			<GameTitleArea category={game.category} name={game.name} />
-			<div className="game-background">
-				<div className="game-page-content">
-					<div className="media-summary-block">
-						<RightGameSummary 
-							game={game}
-							isViewport630={isViewport630}
-						/>
-						<LeftGameSummary
-							selectedItem={selectedItem}
-							selectedEntry={selectedEntry}
-							videoRef={videoRef}
-							isAutoplay={isAutoplay}
-							setAutoplay={setAutoplay}
-							autoplayInitialized={autoplayInitialized}
-							setAutoplayInitialized={setAutoplayInitialized}
-							isMouseOverScreenshot={isMouseOverScreenshot}
-							setIsMouseOverScreenshot={setIsMouseOverScreenshot}
-							game={game}
-							setSelectedItem={setSelectedItem}
-							handleSliderClick={handleSliderClick}
-							openModal={openModal}
-							wasPausedBeforeSwap={wasPausedBeforeSwap}
-							setWasPausedBeforeSwap={setWasPausedBeforeSwap}
-						/>
-					</div>
-				</div>
-			</div>
-			<QueueArea game={game} />
+    <div className="MeidaAndSummary" key={game.id}>
+      <GameTitleArea category={game.category} name={game.name} />
+      <div className="game-background">
+        <div className="game-page-content">
+          <div className="media-summary-block">
+            <RightGameSummary game={game} isViewport630={isViewport630} />
+            <LeftGameSummary
+              selectedItem={selectedItem}
+              selectedEntry={selectedEntry}
+              isAutoplay={isAutoplay}
+              setAutoplay={setAutoplay}
+              autoplayInitialized={autoplayInitialized}
+              setAutoplayInitialized={setAutoplayInitialized}
+              isMouseOverScreenshot={isMouseOverScreenshot}
+              setIsMouseOverScreenshot={setIsMouseOverScreenshot}
+              game={game}
+              setSelectedItem={setSelectedItem}
+              handleSliderClick={handleSliderClick}
+              openModal={openModal}
+              wasPausedBeforeSwap={wasPausedBeforeSwap}
+              setWasPausedBeforeSwap={setWasPausedBeforeSwap}
+              videoRef={videoRef}
+            />
+          </div>
+        </div>
+      </div>
+      <QueueArea game={game} />
 
-			{/* TODO: isInLibrary backend logic */}
-			{/* <GameOwned game={game} /> */}
+      {/* TODO: isInLibrary backend logic */}
+      {/* <GameOwned game={game} /> */}
 
-			{isModalOpen && (
-				<ScreenshotModal imgSrc={selectedEntry?.link || ''}
-					onClose={closeModal}
-					currentScreenshotIndex={selectedEntryIndex}
-					game={game}
-					selectedItem={selectedItem}
-					setSelectedItem={setSelectedItem}
-					selectedEntry={selectedEntry}
-				/>
-			)}
-		</div>
-	);
+      {isModalOpen && (
+        <ScreenshotModal
+          imgSrc={selectedEntry?.link || ''}
+          onClose={closeModal}
+          currentScreenshotIndex={selectedEntryIndex}
+          game={game}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+          selectedEntry={selectedEntry}
+        />
+      )}
+    </div>
+  );
 };
 
 export default MediaAndSummary;

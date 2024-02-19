@@ -12,9 +12,9 @@ const useRecaptcha = () => {
 	// Load reCAPTCHA script dynamically
 	useEffect(() => {
 		const script = document.createElement("script");
-		script.src = `https://www.google.com/recaptcha/api.js?render=${
-			import.meta.env.RECAPTCHA_SITE_KEY
-		}`;
+		script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${
+    	  import.meta.env.RECAPTCHA_SITE_KEY
+    	}`;
 		script.async = true;
 		document.head.appendChild(script);
 
@@ -45,9 +45,9 @@ const useRecaptcha = () => {
 		} else {
 			// Load reCAPTCHA script dynamically
 			const script = document.createElement("script");
-			script.src = `https://www.google.com/recaptcha/api.js?render=${
-				import.meta.env.RECAPTCHA_SITE_KEY
-			}`;
+			script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${
+      		  import.meta.env.RECAPTCHA_SITE_KEY
+      		}`;
 			script.async = true;
 			document.head.appendChild(script);
 
@@ -58,7 +58,7 @@ const useRecaptcha = () => {
 		}
 	}, [recaptchaRef]);
 
-	// Set the reCAPTCHA theme when the component mounts
+	// Set the reCAPTCHA dark theme when the component mounts
 	useEffect(() => {
 		const setRecaptchaTheme = () => {
 			if (recaptchaRef.current) {

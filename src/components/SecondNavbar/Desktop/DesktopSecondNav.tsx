@@ -111,7 +111,7 @@ const DesktopSecondNav: FC = () => {
 									)} */}
 									{{/* !isLoggedIn */} && openMenu === "Your Store" && (
 										<div className="category-div store-div" style={{marginTop: "-10px"}}>
-												<a className="menuItem custom-label" href="#">
+												<a className="menuItem custom-label" href="/">
 													Home
 												</a>
 										</div>

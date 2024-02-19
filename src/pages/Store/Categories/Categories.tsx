@@ -1,6 +1,6 @@
 import { FC, Fragment } from "react";
 import Slider from "react-slick";
-import useResponsiveViewports from "../../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../../components/UseResponsiveViewports";
 import categories from "./categoryItems";
 import "./Categories.scss";
 

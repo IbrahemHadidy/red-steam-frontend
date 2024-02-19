@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { gamesData } from "../gameData";
 
-export const QueueArea: FC<{ game: gamesData }> = (game) => {
+export const QueueArea: FC<{ game: gamesData }> = (game, isViewport630) => {
 	return (
 		<div className="queue-area">
 
@@ -13,12 +13,12 @@ export const QueueArea: FC<{ game: gamesData }> = (game) => {
 
 			{/* !isLoggedIn */}
 			<div className="queue-actions">
-				<a className="view-queue-button" href="">
+				{!isViewport630 && <a className="view-queue-button" href="">
 					<span>
 						View Your Queue&nbsp;&nbsp;&nbsp;
 						<i className="arrow-next" />
 					</span>
-				</a>
+				</a> }
 
 				{/* TODO: isInLibrary backend logic */}
 				<div

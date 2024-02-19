@@ -1,7 +1,8 @@
 import { FC, useEffect, useState, FormEvent } from "react";
+import $ from "../../components/$selector";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import useResponsiveViewports from "../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../components/UseResponsiveViewports";
 import useRecaptcha from "../../components/reCAPTCHA";
 import { validateEmail, validateName, validatePassword, validatePhone } from "../../components/InputValidations";
 import { useSpring, animated } from "react-spring";
@@ -40,10 +41,12 @@ const SignInAndRecovery: FC = () => {
 		if (window.location.pathname.includes('/reset-password')) {
 			setPasswordPage(true);
 			setTitle("Name / Password Recovery")
-			document.querySelector('.signin-form')?.remove();
-			document.querySelector('.forgot-my-password')?.classList.add('active');
-			(document.querySelector('.signin-title .title') as HTMLElement).style.margin = 'auto';
-			isViewport740 && ((document.querySelector('.login-form-container') as HTMLElement).style.width = 'max-content');
+			$('.signin-form')?.remove();
+			$('.forgot-my-password')?.classList.add('active');
+			($('.signin-title .title') as HTMLElement).style.margin = 'auto';
+			isViewport740 &&
+        	(($('.login-form-container') as HTMLElement).style.width =
+          	'max-content');
 		}
 	}, [isViewport740]);
 

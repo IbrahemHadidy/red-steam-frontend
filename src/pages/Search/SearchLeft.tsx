@@ -1,5 +1,5 @@
 import { FC, RefObject, ChangeEvent, useState, MouseEvent } from "react";
-import useResponsiveViewports from "../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../components/UseResponsiveViewports";
 import gameData from "../Game/gameData";
 import HoverSummary from "../../components/HoverSummary/HoverSummary";
 

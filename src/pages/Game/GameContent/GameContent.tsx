@@ -2,7 +2,7 @@ import { FC } from "react";
 import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
 import { gamesData } from "../gameData";
-import useResponsiveViewports from "../../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../../components/UseResponsiveViewports";
 import "./GameContent.scss";
 
 const GameContent: FC<{ game: gamesData }> = ({ game }) => {

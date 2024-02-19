@@ -5,22 +5,26 @@
 * {
 	padding: 0;
 	margin: 0;  
+	scroll-behavior: smooth;
 }
 *, ::after, ::before {
 	box-sizing: unset;
+  	@supports (-moz-appearance: none) {
+  		scrollbar-width: thin;
+  		scrollbar-color: #434953 transparent;
+	}
 }
 
 html {
 	height: 100%;
 }
 
-
 body {
 	padding: 0;
 	margin: 0;
+  	width: 100%;
 	min-height: 100vh;
 	display: block;
-	height: auto;
 	position: relative;
 	color: #969696;
 	font-family: "Motiva Sans", "Arial", "Helvetica", "sans-serif";
@@ -29,6 +33,7 @@ body {
 	color: #c6d4df;
 	letter-spacing: -0.2px;
 	word-spacing: -1px;
+	
 
 	@media screen and (min-width: 1001px) {
 		margin-bottom: 151.5px;
@@ -59,7 +64,7 @@ body {
 		&:hover {
 			text-decoration: none;
 			color: #66c0f4;
-	}
+		}
 	}
 }
 
@@ -70,45 +75,26 @@ body {
 }
 
 ::-webkit-scrollbar {
-	width: 12px;
-	background: rgba(0, 0, 0, 0);
-}
-::-moz-scrollbar-thumb  {
-	width: 12px;
-	background: rgba(0, 0, 0, 0);
+  width: 12px;
+  background: rgba(0, 0, 0, 0);
 }
 
 ::-webkit-scrollbar-corner {
-	background: #202020;
-}
-::-moz-scrollbar-corner {
-	background: #202020;
+  background: #202020;
 }
 
 ::-webkit-scrollbar-track {
-	background: #1b2838;
-}
-::-moz-scrollbar-track {
-	background: #1b2838;
+  background: #1b2838;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #434953;
-	border-radius: 20px;
-	border: 3px solid #1b2838;
+  background-color: #434953;
+  border-radius: 20px;
+  border: 3px solid #1b2838;
 
-	&:hover {
-		background: #4e5157;
-	}
-}
-::-moz-scrollbar-thumb {
-	background-color: #434953;
-	border-radius: 20px;
-	border: 3px solid #1b2838;
-
-	&:hover {
-		background: #4e5157;
-	}
+  &:hover {
+    background: #4e5157;
+  }
 }
 
 @keyframes throbber {

@@ -73,7 +73,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
 								<h1>Play {game.name}</h1>
 								<div className="game-purchase-action">
 									<div className="game-purchase-action-background">
-										<div className="game-purchase-price"> ${game.price} </div>
+										<div className="game-purchase-price"> {game.price} </div>
 										<div className="play-game-btn">
 											<a className="green-btn" href="">
 												<span className="medium-btn">Play Game</span>

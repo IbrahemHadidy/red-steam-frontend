@@ -2562,7 +2562,7 @@ const gameData: gamesData[] = [
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "4 January",
 		discountPrice: "29.39",
-		discountPercentage: "90",
+		discountPercentage: "30",
 		tags: ["Space", "Singleplayer", "Open World", "RPG", "Sci-fi", "First-Person", "Story Rich", "Action-Adventure", "Character Customization", "Third Person", "Adventure", "Action RPG", "Atmospheric", "Space Sim", "Action", "Moddable", "Cinematic", "Realistic", "Great Soundtrack"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac",
@@ -2782,7 +2782,7 @@ const gameData: gamesData[] = [
 		reason: "available", // "available" or "recommended"
 		discount: true,
 		free: false,
-		price: "19.99",
+		price: "18.99",
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "4 January",
 		discountPrice: "4.74",
@@ -2910,11 +2910,11 @@ const gameData: gamesData[] = [
 		reason: "available", // "available" or "recommended"
 		discount: true,
 		free: false,
-		price: "19.99",
+		price: "44.96",
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "4 January",
-		discountPrice: "4.74",
-		discountPercentage: "75",
+		discountPrice: "4.95",
+		discountPercentage: "89",
 		tags: ["Adventure", "Action", "Female Protagonist", "Singleplayer", "Open World", "Third Person", "Story Rich", "Puzzle", "Stealth", "Action-Adventure", "Exploration", "Survival", "Violent", "Atmospheric", "Shooter", "Gore", "Great Soundtrack", "Dark", "Multiplayer", "Heist"], // Array of tags
 		win: "platform-image win",
 		mac: "platform-image mac",
@@ -3046,11 +3046,11 @@ const gameData: gamesData[] = [
 		reason: "available", // "available" or "recommended"
 		discount: true,
 		free: false,
-		price: "19.99",
+		price: "69.99",
 		offerType: "SPECIAL PROMOTION",
 		offerEndDate: "4 January",
-		discountPrice: "4.74",
-		discountPercentage: "75",
+		discountPrice: "34.99",
+		discountPercentage: "50",
 		tags: ["Adventure", "Action", "Female Protagonist", "Singleplayer", "Open World", "Third Person", "Story Rich", "Puzzle", "Stealth", "Action-Adventure", "Exploration", "Survival", "Violent", "Atmospheric", "Shooter", "Gore", "Great Soundtrack", "Dark", "Multiplayer", "Heist"], // Array of tags
 		win: "platform-image win",
 		// mac: "platform-image mac",

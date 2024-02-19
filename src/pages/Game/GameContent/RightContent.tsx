@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { ReviewEntry, gamesData } from "../gameData";
-import useResponsiveViewports from "../../../components/useResponsiveViewports";
+import useResponsiveViewports from "../../../components/UseResponsiveViewports";
 
 export const RightContent: FC<{ game: gamesData, isViewport630: boolean }> = ({ game, isViewport630 }) => {
 	const [showAllLanguages, setShowAllLanguages] = useState(false);
@@ -201,7 +201,7 @@ export const RightContent: FC<{ game: gamesData, isViewport630: boolean }> = ({ 
 							<h1>Play {game.name}</h1>
 							<div className="game-purchase-action">
 								<div className="game-purchase-action-background">
-									<div className="game-purchase-price"> ${game.price} </div>
+									<div className="game-purchase-price"> {game.price} </div>
 									<div className="play-game-btn">
 										<a className="green-btn" href="">
 											<span className="medium-btn">Play Game</span>

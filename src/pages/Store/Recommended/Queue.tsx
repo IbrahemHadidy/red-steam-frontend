@@ -1,6 +1,6 @@
 import { FC } from "react";
-import useResponsiveViewports from "../../../components/useResponsiveViewports";
-import queueGames from "../Queue/queueGames";
+import useResponsiveViewports from "../../../components/UseResponsiveViewports";
+import queueGames from "./queueGames";
 import "./Queue.scss";
 
 interface queueGame {
