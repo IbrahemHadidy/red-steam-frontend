@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { newAndTrending, popularUpcoming, specials, topSellers } from "./homeTabsItems";
-import { gamesData } from "../../Game/gameData";
+import { gamesData } from "services/gameData";
 
 interface RightSectionProps {
 	openedTab: string | number;

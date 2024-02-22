@@ -1,4 +1,4 @@
-import gameData from "../../Game/gameData";
+import gameData from "services/gameData";
 
 // Sort by positive reviews first
 const sortedByReviews = gameData.sort((a, b) => {

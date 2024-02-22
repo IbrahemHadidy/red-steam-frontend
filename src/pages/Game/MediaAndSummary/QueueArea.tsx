@@ -1,17 +1,18 @@
-import { FC } from "react";
-import { gamesData } from "../gameData";
+import { FC, useContext } from "react";
+import { AuthContext } from 'contexts/AuthContext';
+import { gamesData } from "services/gameData";
 
-export const QueueArea: FC<{ game: gamesData }> = (game, isViewport630) => {
+export const QueueArea: FC<{ game: gamesData }> = ({game}, isViewport630) => {
+  	const { isLoggedIn } = useContext(AuthContext);
+	// TODO: match the user data with current game and complete the rest of the logic
 	return (
 		<div className="queue-area">
-
-			{/* TODO: isLoggedIn backend logic */}
-			{/* <div className="queue-actions">
-				<a href="/login/">Sign in</a> to add this item to your wishlist, follow
+			{!isLoggedIn && <div className="queue-actions">
+				<a href="/login">Sign in</a> to add this item to your wishlist, follow
 				it, or mark it as ignored
-			</div> */}
+			</div> }
 
-			{/* !isLoggedIn */}
+			{ isLoggedIn &&
 			<div className="queue-actions">
 				{!isViewport630 && <a className="view-queue-button" href="">
 					<span>
@@ -79,7 +80,7 @@ export const QueueArea: FC<{ game: gamesData }> = (game, isViewport630) => {
 						</span>
 					</div>
 				</div>
-			</div>
+			</div>}
 		</div>
 	);
 };

@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { useParams, Navigate, Routes, Route } from "react-router-dom";
-import Header from "../../components/Header/Header";
-import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
+import Header from "components/Header/Header";
+import SecondNavbar from "components/SecondNavbar/SecondNavbar";
 import MediaAndSummary from "./MediaAndSummary/MediaAndSummary";
 import GameContent from "./GameContent/GameContent";
 import GameReviews from "./GameReviews/GameReviews";
-import Footer from "../../components/Footer/Footer";
-import gameData from "./gameData";
+import Footer from "components/Footer/Footer";
+import gameData from "services/gameData";
 import "./Game.scss";
 
 interface GameProps {

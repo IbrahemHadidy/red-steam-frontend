@@ -1,4 +1,5 @@
-import { FC, useState, SetStateAction } from "react";
+import { FC, useState, SetStateAction, useContext } from "react";
+import { AuthContext } from 'contexts/AuthContext';
 import NavSearch from "../NavSearch";
 import { menuData, navigationItems } from "../menuData-mobile";
 
@@ -18,7 +19,14 @@ type GroupedMenuItem = {
 type menuTitle = string | SetStateAction<null>;
 
 const MobileSecondNav: FC = () => {
+  	const { isLoggedIn } = useContext(AuthContext);
 	const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
+	// TODO: Add real user image
+  	const [imgSrc, setImgSrc] = useState('image_link');
+	const handleNoImage = (e: { stopPropagation: () => void; }) => {
+  	  e.stopPropagation();
+  	  setImgSrc('/images/default-pfp.png');
+  	};
 
 	const handleMenuClick = (menuTitle: menuTitle) => {
 		if (openMenu === menuTitle) {
@@ -51,103 +59,122 @@ const MobileSecondNav: FC = () => {
 	);
 
 	return (
-		<div className="second-nav-mobile">
-			<nav className="navbar navbar-expand-sm navbarBg-mobile">
-				{groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
-					<div key={index}>
-						{/* TODO: render profile image when logged in backend logic */}
-						{/* <img
-							className="profile-picture"
-							src="https://source.unsplash.com/user/c_v_r"
-							alt="Avatar"
-						/> */}
-						<ul className="navbar-nav navbar-nav-mobile">
-							<li className="nav-item nav-item-mobile dropdown">
-								<a
-									className={`nav-link navBarItem navBarItem-mobile ${
-										/* TODO: add the special class when logged in backend logic */
-										/* menuTitle === "Your Store" && isloggedIn ? "special-class" : */ ""
-									}`}
-									href="#"
-									onClick={() => handleMenuClick(menuTitle)} // Handle click to open/close the menu
-								>
-									{menuTitle}
-								</a>
-								{/* Conditionally render the dropdown menu based on the openMenu state */}
-								{/* TODO: render full your store links when logged in backend logic */}
-									{/* {isLoggedIn && openMenu === "Your Store" && (
-										<div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
-											{Object.entries(categoryGroups).map(
-												([category, categoryItems], categoryIndex) => (
-													<div
-														key={categoryIndex}
-														className={`category-div ${category}`}
-													>
-														{categoryItems.map((categoryItem, itemIndex) => (
-															<a
-																key={itemIndex}
-																className={`menuItem ${categoryItem.className}`}
-																href={categoryItem.url}
-															>
-																{categoryItem.label}
-															</a>
-														))}
-													</div>
-												)
-											)}
-										</div>
-									)} */}
-									{{/* !isLoggedIn */} && openMenu === "Your Store" && (
-										<div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
-											<div className="category-div store-div" style={{marginTop: "-10px"}}>
-													<a className="menuItem custom-label" href="#">
-														Home
-													</a>
-											</div>
-										</div>
-									)}
-									{openMenu === menuTitle && openMenu !== "Your Store" && (
-									<div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
-										{Object.entries(categoryGroups).map(
-											([category, categoryItems], categoryIndex) => (
-												<div key={categoryIndex} className={`category-div ${category}`}>
-													{categoryItems.map((categoryItem, itemIndex) => (
-														<a
-															key={itemIndex}
-															className={`menuItem ${categoryItem.className} ${
-																categoryItem.specialClass || ""
-															}`}
-															href={categoryItem.url}
-															onClick={preventDefault}
-														>
-															{categoryItem.label}
-														</a>
-													))}
-												</div>
-											)
-										)}
-									</div>
-								)}
-							</li>
-						</ul>
-					</div>
-				))}
+    <div className="second-nav-mobile">
+      <nav className="navbar navbar-expand-sm navbarBg-mobile">
+        <div>
+          <ul className="navbar-nav navbar-nav-mobile">
+            {/* TODO: render real profile image from server */}
+            {isLoggedIn && (
+              <img
+                className="profile_picture-mobile"
+                src={imgSrc}
+                onError={handleNoImage}
+                alt="Avatar"
+              />
+            )}
+            {groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
+              <li key={index} className="nav-item nav-item-mobile dropdown">
+                <a
+                  className={`nav-link navBarItem navBarItem-mobile ${
+                    menuTitle === 'Your Store' && isLoggedIn
+                      ? 'special-class'
+                      : ''
+                  }`}
+                  href="#"
+                  onClick={() => handleMenuClick(menuTitle)} // Handle click to open/close the menu
+                >
+                  {menuTitle}
+                </a>
+                {/* Conditionally render the dropdown menu based on the openMenu state */}
+                {/* TODO: render full your store links when logged in backend logic */}
+                {isLoggedIn && openMenu === 'Your Store' && (
+                  <div
+                    className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
+                  >
+                    {Object.entries(categoryGroups).map(
+                      ([category, categoryItems], categoryIndex) => (
+                        <div
+                          key={categoryIndex}
+                          className={`category-div ${category}`}
+                        >
+                          {categoryItems.map((categoryItem, itemIndex) => (
+                            <a
+                              key={itemIndex}
+                              className={`menuItem ${categoryItem.className}`}
+                              href={categoryItem.url}
+                            >
+                              {categoryItem.label}
+                            </a>
+                          ))}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                )}
+                {!isLoggedIn && openMenu === 'Your Store' && (
+                  <div
+                    className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
+                  >
+                    <div
+                      className="category-div store-div"
+                      style={{ marginTop: '-10px' }}
+                    >
+                      <a className="menuItem custom-label" href="#">
+                        Home
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {openMenu === menuTitle && openMenu !== 'Your Store' && (
+                  <div
+                    className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
+                  >
+                    {Object.entries(categoryGroups).map(
+                      ([category, categoryItems], categoryIndex) => (
+                        <div
+                          key={categoryIndex}
+                          className={`category-div ${category}`}
+                        >
+                          {categoryItems.map((categoryItem, itemIndex) => (
+                            <a
+                              key={itemIndex}
+                              className={`menuItem ${categoryItem.className} ${
+                                categoryItem.specialClass || ''
+                              }`}
+                              href={categoryItem.url}
+                              onClick={preventDefault}
+                            >
+                              {categoryItem.label}
+                            </a>
+                          ))}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-				{navigationItems.map((item, index) => (
-					<div key={index}>
-						<ul className="navbar-nav">
-							<li className="nav-item navbar-nav-mobile">
-								<a className="nav-link navBarItem navBarItem-mobile" href={item.url}>
-									{item.label}
-								</a>
-							</li>
-						</ul>
-					</div>
-				))}
-				<NavSearch />
-			</nav>
-		</div>
-	);
+        {navigationItems.map((item, index) => (
+          <div key={index}>
+            <ul className="navbar-nav">
+              <li className="nav-item navbar-nav-mobile">
+                <a
+                  className="nav-link navBarItem navBarItem-mobile"
+                  href={item.url}
+                >
+                  {item.label}
+                </a>
+              </li>
+            </ul>
+          </div>
+        ))}
+        <NavSearch />
+      </nav>
+    </div>
+  );
 };
 
 export default MobileSecondNav;

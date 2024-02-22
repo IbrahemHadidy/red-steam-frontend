@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from "react";
-import useResponsiveViewports from '../../../tools/UseResponsiveViewports';
-import { ReviewEntry, gamesData } from "../gameData";
+import useResponsiveViewports from 'hooks/useResponsiveViewports';
+import { ReviewEntry, gamesData } from "services/gameData";
 import TagsModal from "./TagsModal";
 
 export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }> = ({ game, isViewport630 }) => {  

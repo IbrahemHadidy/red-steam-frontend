@@ -1,4 +1,4 @@
-import gameData from "../../Game/gameData";
+import gameData from "services/gameData";
 
 const recommended = gameData.sort((a, b) => {
     const positiveReviewsA = a.reviews.filter((review) => review.type === "positive").length;

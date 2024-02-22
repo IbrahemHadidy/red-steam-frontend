@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import Slider from "react-slick";
-import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
 import recommendedGames from "./recommendedGames";
-import { gamesData } from "../../Game/gameData";
-import HoverSummary from "../../../components/HoverSummary/HoverSummary";
+import { gamesData } from "services/gameData";
+import HoverSummary from "components/HoverSummary/HoverSummary";
 
 const Recommended: FC = () => {
 	const isViewport960 = useResponsiveViewports(960);

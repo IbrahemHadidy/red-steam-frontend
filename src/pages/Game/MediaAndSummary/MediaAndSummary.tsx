@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useState, useRef, useEffect, useCallback, MouseEventHandler } from "react";
-import $ from "../../../tools/$selector"
+import $ from "tools/$selector"
 import { GameTitleArea } from "./GameTitleArea";
 import { RightGameSummary } from "./RightGameSummary";
 import { LeftGameSummary } from "./LeftGameSummary/LeftGameSummary";
 import { QueueArea } from "./QueueArea";
 import { GameOwned } from "./GameOwned";
 import { ScreenshotModal } from "./Screenshot";
-import gameData, { gamesData, MovieEntry } from "../gameData";
-import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
+import gameData, { gamesData, MovieEntry } from "services/gameData";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
 

@@ -1,5 +1,5 @@
 import { FC, Suspense, lazy } from "react";
-import useResponsiveViewports from "../../tools/UseResponsiveViewports";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
 const DesktopSecondNav = lazy(() => import("./Desktop/DesktopSecondNav"));
 const MobileSecondNav = lazy(() => import("./Mobile/MobileSecondNav"));
 

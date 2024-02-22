@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { gamesData } from "../../Game/gameData";
+import { gamesData } from "services/gameData";
 
 
 const TabContent: FC<{

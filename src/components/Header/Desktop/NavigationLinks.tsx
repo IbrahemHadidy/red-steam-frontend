@@ -1,12 +1,14 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Nav, NavDropdown } from "react-bootstrap";
+import { AuthContext } from 'contexts/AuthContext';
 import sharedData from "../sharedData";
 
 const NavigationLinks: FC = () => {
-	const [isOpen, setIsOpen] = useState<string | null>(null);
+  	const { isLoggedIn } = useContext(AuthContext);
 	const navigate = useNavigate();
-	const location = useLocation();
+ 	const location = useLocation();
+	const [isOpen, setIsOpen] = useState<string | null>(null);
 
 	const handleDropdownToggle = (eventKey: string) => {
 		setIsOpen(eventKey === isOpen ? null : eventKey);
@@ -50,8 +52,7 @@ const NavigationLinks: FC = () => {
 		<Nav>
 			{renderNavDropdownWithHover("STORE", "1", "/", sharedData.subMenus[0].items)}
 			{renderNavDropdownWithHover("COMMUNITY", "2", "/community", sharedData.subMenus[1].items)}
-			{/* TODO: isLoggedIn Backend logic, render if logged in */}
-			{/* {renderNavDropdownWithHover("PROFILE", "3", "/profile", sharedData.subMenus[2].items)} */}
+			{isLoggedIn && renderNavDropdownWithHover("PROFILE", "3", "/profile", sharedData.subMenus[2].items)}
 			<Nav.Link href="/chat" className="main-dropdowns">CHAT</Nav.Link>
 			<Nav.Link href="/support" className="main-dropdowns">SUPPORT</Nav.Link>
 		</Nav>

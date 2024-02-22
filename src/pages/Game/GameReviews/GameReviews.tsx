@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import { gamesData, ReviewEntry } from "../gameData";
+import { gamesData, ReviewEntry } from "services/gameData";
 import DOMPurify from "dompurify";
-import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
 import "./GameReviews.scss";
 
 
@@ -10,6 +10,12 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
 	const isViewport630 = useResponsiveViewports(630);
 	const [selectedFilter, setSelectedFilter] = useState<string>("All");
 	const [isPartial, setIsPartial] = useState<boolean>(false);
+	// TODO: Add real users images and customize the state to handle many users
+  	const [imgSrc, setImgSrc] = useState('image_link');
+	const handleNoImage = (e: { stopPropagation: () => void; }) => {
+  	  e.stopPropagation();
+  	  setImgSrc('/images/default-pfp.png');
+  	};
 
 	let positivePercentage: number = 0;
 
@@ -114,8 +120,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
 									<a href={`/id/${{/*userId*/}}`}>
 										{/* TODO: isOnline backend logic */}
 										<div className={`player-avatar ${{/*isOnline ? "online" : "offline"*/}}`}>
-											{/* TODO: profile pic backend logic */}
-											<img src="https://source.unsplash.com/user/c_v_r" alt="pfp" />
+											<img src={imgSrc} onError={handleNoImage} alt="pfp" />
 										</div>
 									</a> 
 								</div>

@@ -42,10 +42,11 @@ const sharedData = {
 		},
 	],
 	minorMenuItems: [
+		{ id: 'view-profile', text: 'View my profile', link: '/user' },
 		{ id: 'account-details', text: 'Account details', link: '/account' },
 		{ id: 'store-preferences', text: 'Store preferences', link: '/account/preferences' },
 		{ id: 'change-language', text: 'Change language', link: '#'},
-		{ id: 'change-user', text: 'Change User', link: '#'},
+		{ id: 'change-user', text: 'Sign out of account...', link: '/logout'},
 	],
 	privacyPolicy: { id: 'privacy-policy', text: 'My GitHub', link: 'https://github.com/IbrahemHadidy/' },
 	legal: { id: 'legal', text: 'Repository', link: 'https://github.com/IbrahemHadidy/node-steam/' },

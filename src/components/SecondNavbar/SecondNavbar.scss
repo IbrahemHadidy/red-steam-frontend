@@ -67,6 +67,7 @@ $background-color_3: transparent;
 		display: flex;
 		position: absolute;
 		top: 28px;
+		width: inherit;
 		background: linear-gradient(90deg,
 				rgba(62, 103, 150, 0.919) 11.38%,
 				rgba(58, 120, 177, 0.8) 25.23%,
@@ -84,7 +85,7 @@ $background-color_3: transparent;
 			width: 15px;
 			height: 15px;
 			left: 10px;
-			top: 10px;
+			top: 9px;
 			z-index: 200;
 			pointer-events: none;
 		}
@@ -265,7 +266,7 @@ $background-color_3: transparent;
     position: relative;
     padding-bottom: 20px;
     left: -243.6% !important;
-    width: 916px;
+    width: 926px;
 
 	&.categoryfix {
 		left: -268.6% !important;
@@ -343,7 +344,7 @@ $background-color_3: transparent;
 
 .before-search-space {
 	flex: 1;
-	width: 250px;
+	width: 260px;
 }
 .search-area {
 	flex-grow: 1;
@@ -587,6 +588,7 @@ $background-color_3: transparent;
 	.navbar-nav-mobile {
 		width: -webkit-fill-available;
 		width: -moz-available;
+		flex-direction: column !important;
 		cursor: pointer;
 
 		.navBarItem-mobile {

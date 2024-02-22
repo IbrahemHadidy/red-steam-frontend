@@ -1,7 +1,7 @@
 import { FC, SetStateAction, useState } from "react";
 import Slider from "react-slick";
-import useResponsiveViewports from "../../../../tools/UseResponsiveViewports";
-import HoverSummary from "../../../../components/HoverSummary/HoverSummary";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
+import HoverSummary from "components/HoverSummary/HoverSummary";
 import featuredGames from "../featuredGames";
 
 const FeaturedDesktop: FC = () => {

@@ -1,7 +1,7 @@
 import { FC, RefObject, ChangeEvent, useState, MouseEvent } from "react";
-import useResponsiveViewports from "../../tools/UseResponsiveViewports";
-import gameData from "../Game/gameData";
-import HoverSummary from "../../components/HoverSummary/HoverSummary";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
+import gameData from "services/gameData";
+import HoverSummary from "components/HoverSummary/HoverSummary";
 
 interface SearchLeftProps {
 		toggleDropdown: () => void;

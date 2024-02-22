@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler, Dispatch, SetStateAction } from "react";
-import { ImageEntry, MovieEntry, gamesData } from "../gameData";
+import { ImageEntry, MovieEntry, gamesData } from "services/gameData";
 
 interface ScreenshotModalProps {
 	imgSrc: string;

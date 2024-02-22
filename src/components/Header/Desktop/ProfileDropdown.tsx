@@ -1,16 +1,20 @@
-import React, { useState, MouseEvent } from "react";
+import { FC, useState, MouseEvent } from "react";
 import { NavDropdown } from "react-bootstrap";
-
-interface ProfileDropdownProps {}
-
-const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
+import sharedData from "../sharedData";
+const ProfileDropdown: FC = () => {
 	const [isOpen, setIsOpen] = useState<string | null>(null);
+	// TODO: Add real user image
+  	const [imgSrc, setImgSrc] = useState('image_link');
+	const handleNoImage = (e: { stopPropagation: () => void; }) => {
+  	  e.stopPropagation();
+  	  setImgSrc('/images/default-pfp.png');
+  	};
 
 	const handleDropdownToggle = (eventKey: string) => {
 		setIsOpen((prevIsOpen) => (eventKey === prevIsOpen ? null : eventKey));
 	};
 
-	const renderNavDropdownWithClick = (title: string, renderKey: string, items: string[]) => {
+	const renderNavDropdownWithClick = (title: string, renderKey: string, links: string[], items: string[]) => {
 		return (
 			<NavDropdown
 				title={title}
@@ -18,49 +22,50 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
 				className="profile-dropdown"
 				renderMenuOnMount
 				onClick={(e: MouseEvent) => {
-					e.stopPropagation(); // Prevent event propagation
+					e.stopPropagation();
 					handleDropdownToggle(renderKey);
 				}}
 				show={isOpen === renderKey}
 				key={renderKey}
 			>
-				{items.map((item, index) => (
-					<NavDropdown.Item
-						key={index}
-						href={`#action/${renderKey}.${index + 1}`}
-					>
-						{item}
-					</NavDropdown.Item>
-				))}
+				{links.map((link, index) => (
+        		 <NavDropdown.Item
+        		   href={link}
+        		   key={index}
+        		 >
+        		   {items[index]}
+        		 </NavDropdown.Item>
+        		))}
 			</NavDropdown>
 		);
 	};
 
 	return (
-		<>
-			{renderNavDropdownWithClick("Profile", "4", [
-				"View my profile",
-				"Account Details",
-				"Store preferences",
-				"Change language",
-				"Sign out of account...",
-			])}
-			<a
-				href="https://github.com/Joeyryanbridges"
-				target="_blank"
-				rel="noreferrer"
-				className="compact-profile-link"
-			>
-				<img
-					src="https://source.unsplash.com/user/c_v_r"
-					alt="Profile"
-					width="40"
-					height="40"
-					className="profile-pic"
-				/>
-			</a>
-		</>
-	);
+    <>
+      {renderNavDropdownWithClick(
+        'Profile',
+        '4',
+		sharedData.minorMenuItems.map(item => item.link),
+        sharedData.minorMenuItems.map(item => item.text),
+      )}
+	  {/* TODO: Add real user link */}
+      <a
+        href="user_link"
+        target="_blank"
+        rel="noreferrer"
+        className="compact-profile-link"
+      >
+        <img
+          src={imgSrc}
+          onError={handleNoImage}
+          alt="Profile"
+          width="40"
+          height="40"
+          className="profile-pic"
+        />
+      </a>
+    </>
+  );
 };
 
 export default ProfileDropdown;

@@ -1,4 +1,4 @@
-import gameData from "../../Game/gameData";
+import gameData from "services/gameData";
 
 // IMPORTANT !!
 // Change the slice values if you will change the style of the slides to suit it

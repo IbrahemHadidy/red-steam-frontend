@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { gamesData } from "../gameData";
+import { gamesData } from "services/gameData";
 import DOMPurify from "dompurify";
 
 const getPlatform = () => {

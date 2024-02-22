@@ -1,7 +1,14 @@
-import { FC } from "react";
-import { gamesData } from "../gameData";
+import { FC, useState } from "react";
+import { gamesData } from "services/gameData";
 
 export const GameOwned: FC<{ game: gamesData }> = ({ game }) => {
+	// TODO: Add real user image
+  	const [imgSrc, setImgSrc] = useState('image_link');
+	const handleNoImage = (e: { stopPropagation: () => void; }) => {
+  	  e.stopPropagation();
+  	  setImgSrc('/images/default-pfp.png');
+  	};
+
 	return (
 		<>
 			<div className="game-owned">
@@ -35,7 +42,7 @@ export const GameOwned: FC<{ game: gamesData }> = ({ game }) => {
 									{/* TODO: isOnline backend logic */}
 									<div className={`avatar ${{/*isOnline ? "online" : "offline"*/}}`}>
 										{/* TODO: profile pic backend logic */}
-										<img src="https://source.unsplash.com/user/c_v_r" alt="pfp" />
+										<img src={imgSrc} onError={handleNoImage} alt="pfp" />
 									</div>
 								</a> 
 							</div>

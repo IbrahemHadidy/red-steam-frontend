@@ -1,10 +1,10 @@
 import { FC, useState } from "react";
-import useResponsiveViewports from "../../../tools/UseResponsiveViewports";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
 import { offeredGames, specialOffers } from "./OfferedGames";
 import Slider from "react-slick";
 import "./Offers.scss";
-import { gamesData } from "../../Game/gameData";
-import HoverSummary from "../../../components/HoverSummary/HoverSummary";
+import { gamesData } from "services/gameData";
+import HoverSummary from "components/HoverSummary/HoverSummary";
 
 const Offers: FC = () => {
 	const isViewport960 = useResponsiveViewports(960);

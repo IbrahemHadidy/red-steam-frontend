@@ -10,12 +10,12 @@
 
 
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
-import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
+import Footer from "components/Footer/Footer";
+import Header from "components/Header/Header";
+import SecondNavbar from "components/SecondNavbar/SecondNavbar";
 import { SearchRight } from "./SearchRight";
 import { SearchLeft } from "./SearchLeft";
-import useResponsiveViewports from "../../tools/UseResponsiveViewports";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
 import "./Search.scss";
 
 // TODO: send filters to backend then fetch the requested data

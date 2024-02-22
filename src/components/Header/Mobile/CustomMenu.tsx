@@ -1,5 +1,6 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { useSpring, animated } from "react-spring";
+import { AuthContext } from 'contexts/AuthContext';
 import sharedData from "../sharedData";
 
 interface MenuItem {
@@ -8,11 +9,16 @@ interface MenuItem {
 	link: string;
 }
 
-const SteamMenu: React.FC = () => {
+const SteamMenu: FC = () => {
+  	const { isLoggedIn } = useContext(AuthContext);
 	const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 	const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
-	const [showNotificationDropdown, setShowNotificationDropdown] =
-		useState(false);
+	const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  	// const [imgSrc, setImgSrc] = useState(userPFP);
+    // const handleNoImage = (e: { stopPropagation: () => void }) => {
+    //   e.stopPropagation();
+    //   setImgSrc('/images/default-pfp.png');
+    // };
 
 	const dropdownAnimation = useSpring({
 		height: showNotificationDropdown ? 42 : 0,
@@ -44,87 +50,87 @@ const SteamMenu: React.FC = () => {
 				from: { height: 0, opacity: 0 },
 			});
 
-			// TODO: If !isLoggedIn, remove "You & Friends" bakend logic
-			if (/* !isLoggedIn && */ menuItem.text === "You & Friends" ) {
+			if ( !isLoggedIn &&  menuItem.text === "You & Friends" ) {
 				return null;
 			}
 
 			return (
-				<div
-				className={`menu-item ${menuClass} ${
-					menuItem.id === "account-details" ||
-					menuItem.id === "store-preferences" ||
-					menuItem.id === "change-language" ||
-					menuItem.id === "change-user"
-						? "has-dropdown"
-						: ""
-				} ${openedItems[menuItem.id] ? "opened" : ""} ${
-					index === 0 ? "first" : ""
-				}`}
-				key={menuItem.id}
-			>
-					<div
-						onClick={() => {
-							if (
-								menuItem.id === "support" ||
-								menuItem.id === "account-details" ||
-								menuItem.id === "store-preferences" ||
-								menuItem.id === "change-language" ||
-								menuItem.id === "change-user"
-							) {
-								window.location.href = menuItem.link;
-							} else {
-								toggleSubmenu(menuItem.id);
-							}
-						}}
-						className={`menu-item-content ${
-							menuItem.id === "supernav" ? "supernav" : ""
-						}`}
-					>
-						<span className="menu-item-text">{menuItem.text}</span>
-						{menuItem.id === "notifications" ||
-						menuItem.id === "store" ||
-						menuItem.id === "you-and-friends" ||
-						menuItem.id === "community" ? (
-							<img
-								src="/images/dropdown.png"
-								alt="Rotate Icon"
-								className={`rotate-icon ${
-									openedItems[menuItem.id] ? "rotated" : ""
-								}`}
-							/>
-						) : null}
-					</div>
-					{openedItems[menuItem.id] &&
-					menuItem.id !== "support" &&
-					menuItem.id !== "account-details" &&
-					menuItem.id !== "store-preferences" &&
-					menuItem.id !== "change-language" &&
-					menuItem.id !== "change-user" && (
-						<animated.div
-							className={`submenu-wrapper inner-menu ${
-								menuItem.id === "supernav" ? "supernav-opened" : ""
-							}`}
-							style={{
-								height: dropdownAnimation.height,
-								opacity: dropdownAnimation.opacity,
-							}}
-						>
-							{submenu?.items.map((subMenuItem) => (
-								<a
-									className="submenuitem"
-									href={subMenuItem.link}
-									key={subMenuItem.id}
-								>
-									{subMenuItem.text}
-								</a>
-							))}
-							{/* Display the count of submenu items */}
-							<p>Number of submenu items: {subMenuItemCount}</p>
-						</animated.div>
-					)}
-				</div>
-			);
+        <div
+          className={`menu-item ${menuClass} ${
+            menuItem.id === 'view-profile' ||
+            menuItem.id === 'account-details' ||
+            menuItem.id === 'store-preferences' ||
+            menuItem.id === 'change-language' ||
+            menuItem.id === 'change-user'
+              ? 'has-dropdown'
+              : ''
+          } ${openedItems[menuItem.id] ? 'opened' : ''} ${
+            index === 0 ? 'first' : ''
+          }`}
+          key={menuItem.id}
+        >
+          <div
+            onClick={() => {
+              if (
+                menuItem.id === 'support' ||
+                menuItem.id === 'account-details' ||
+                menuItem.id === 'store-preferences' ||
+                menuItem.id === 'change-language' ||
+                menuItem.id === 'change-user'
+              ) {
+                window.location.href = menuItem.link;
+              } else {
+                toggleSubmenu(menuItem.id);
+              }
+            }}
+            className={`menu-item-content ${
+              menuItem.id === 'supernav' ? 'supernav' : ''
+            }`}
+          >
+            <span className="menu-item-text">{menuItem.text}</span>
+            {menuItem.id === 'notifications' ||
+            menuItem.id === 'store' ||
+            menuItem.id === 'you-and-friends' ||
+            menuItem.id === 'community' ? (
+              <img
+                src="/images/dropdown.png"
+                alt="Rotate Icon"
+                className={`rotate-icon ${
+                  openedItems[menuItem.id] ? 'rotated' : ''
+                }`}
+              />
+            ) : null}
+          </div>
+          {openedItems[menuItem.id] &&
+            menuItem.id !== 'support' &&
+            menuItem.id !== 'account-details' &&
+            menuItem.id !== 'store-preferences' &&
+            menuItem.id !== 'change-language' &&
+            menuItem.id !== 'change-user' && (
+              <animated.div
+                className={`submenu-wrapper inner-menu ${
+                  menuItem.id === 'supernav' ? 'supernav-opened' : ''
+                }`}
+                style={{
+                  height: dropdownAnimation.height,
+                  opacity: dropdownAnimation.opacity,
+                }}
+              >
+                {submenu?.items.map(subMenuItem => (
+                  <a
+                    className="submenuitem"
+                    href={subMenuItem.link}
+                    key={subMenuItem.id}
+                  >
+                    {subMenuItem.text}
+                  </a>
+                ))}
+                {/* Display the count of submenu items */}
+                <p>Number of submenu items: {subMenuItemCount}</p>
+              </animated.div>
+            )}
+        </div>
+      );
 		}).filter(Boolean);
 	};
 
@@ -149,19 +155,20 @@ const SteamMenu: React.FC = () => {
 
 	// Render the SteamMenu component
 	return (
-		<div className="steam-menu">
-			<div className="responsive_page_menu_ctn mainmenu">
-				<div className="responsive_page_menu" id="responsive_page_menu">
-					<div className="mainmenu_contents">
-						<div className="mainmenu_contents_items">
-							{/* TODO: Add user related menu items when logged in*/}
-							{/* <div className="responsive_menu_user_area">
+    <div className="steam-menu">
+      <div className="responsive_page_menu_ctn mainmenu">
+        <div className="responsive_page_menu" id="responsive_page_menu">
+          <div className="mainmenu_contents">
+            <div className="mainmenu_contents_items">
+              {/* TODO: Add user related menu items when logged in*/}
+              {/* <div className="responsive_menu_user_area">
 								// User persona and profile link
 								<div className="responsive_menu_user_persona persona offline">
 									<div className="playerAvatar offline">
 										<a href={`/user/${userId}/`}>
 											<img
-												src={userPFP}
+												src={imgSrc}
+          										onError={handleNoImage}
 												alt="User Avatar"
 											/>
 										</a>
@@ -207,72 +214,77 @@ const SteamMenu: React.FC = () => {
 								{showNotificationDropdown && <NotificationDropdown />}
 							</div> */}
 
-							{/* TODO: if not logged in display login button */}
-							<div className="menu-item supernav">
-								<div onClick={() => {window.location.href = "/login"}} className="menu-item-content">
-									<span className="menu-item-text">login</span>
-								</div>
-							</div>
+              {/* TODO: if not logged in display login button */}
+              <div className="menu-item supernav">
+                <div
+                  onClick={() => {
+                    window.location.href = '/login';
+                  }}
+                  className="menu-item-content"
+                >
+                  <span className="menu-item-text">login</span>
+                </div>
+              </div>
 
-							{/* Generate menu items based on shared data */}
-							{generateMenuItems(sharedData.menuItems, "supernav")}
+              {/* Generate menu items based on shared data */}
+              {generateMenuItems(sharedData.menuItems, 'supernav')}
 
-							{/* Generate minor menu items based on shared data */}
-							{generateMenuItems(sharedData.minorMenuItems, "smallnav")}
-						</div>
+              {/* Generate minor menu items based on shared data */}
+              {generateMenuItems(sharedData.minorMenuItems, 'smallnav')}
+            </div>
 
-						<div className="mainmenu_footer_spacer"></div>
-						<div className="mainmenu_footer">
-							<div className="mainmenu_footer_logo">
-								<img
-									src="/images/logo_valve_footer.png"
-									alt="Valve Footer Logo"
-								/>
-							</div>
-							{/* Copyright and legal information */}
-							This website is an educational project replicating the Steam site
-							for learning purposes and is not affiliated with Valve
-							Corporation.
-							<br />
-							<span className="mainmenu_valve_links">
-								<a
-									href={sharedData.privacyPolicy.link}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{sharedData.privacyPolicy.text}
-								</a>
-								&nbsp;|&nbsp;
-								<a
-									href={sharedData.legal.link}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{sharedData.legal.text}
-								</a>
-								&nbsp;|&nbsp;
-								<a
-									href={sharedData.steamSubscriberAgreement.link}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{sharedData.steamSubscriberAgreement.text}
-								</a>
-								&nbsp;|&nbsp;
-								<a
-									href={sharedData.refunds.link}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{sharedData.refunds.text}
-								</a>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+            <div className="mainmenu_footer_spacer"></div>
+            <div className="mainmenu_footer">
+              <div className="mainmenu_footer_logo">
+                <img
+                  src="/images/logo_valve_footer.png"
+                  alt="Valve Footer Logo"
+                />
+              </div>
+              {/* Copyright and legal information */}
+              This website is an educational project replicating the Steam site
+              for learning purposes and is not affiliated with Valve
+              Corporation.
+              <br />
+              <span className="mainmenu_valve_links">
+                <a
+                  href={sharedData.privacyPolicy.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.privacyPolicy.text}
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                  href={sharedData.legal.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.legal.text}
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                  href={sharedData.steamSubscriberAgreement.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.steamSubscriberAgreement.text}
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                  href={sharedData.refunds.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {sharedData.refunds.text}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 // Export the SteamMenu component

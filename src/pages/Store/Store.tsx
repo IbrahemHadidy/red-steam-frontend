@@ -1,6 +1,7 @@
-import { FC, useEffect } from 'react';
-import Header from "../../components/Header/Header";
-import SecondNavbar from "../../components/SecondNavbar/SecondNavbar";
+import { FC, useContext, useEffect } from 'react';
+import { AuthContext } from 'contexts/AuthContext';
+import Header from "components/Header/Header";
+import SecondNavbar from "components/SecondNavbar/SecondNavbar";
 import Sidebar from "./Sidebar/Sidebar";
 import Featured from "./Featured/Featured";
 import Offers from "./Offers/Offers"
@@ -11,10 +12,12 @@ import LoginQueue from './Recommended/LoginQueue';
 import PopularVR from './PopularVR/PopularVR';
 import BrowseSteam from './BrowseSteam/BrowseSteam';
 import HomeTabs from './HomeTabs/HomeTabs';
-import Footer from "../../components/Footer/Footer";
+import Footer from "components/Footer/Footer";
 import "./Store.scss"
 
 const Store: FC = () => {
+  	const { isLoggedIn } = useContext(AuthContext);
+	
 	useEffect(() => {
 		document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"
 	}, []);
@@ -27,13 +30,9 @@ const Store: FC = () => {
 			<Featured />
 			<Offers />
 			<Categories />
-			{/* TODO: isLoggedIn Backend logic, render if logged in else display the login div */}
-			{/* { !isLoggedIn ? 
-				<>
-					<Queue /><Recommended />
-				</>
-				: <LoginQueue /> 
-			} */}
+			{ isLoggedIn ? 
+				<><Queue /><Recommended /></> : <LoginQueue /> 
+			}
 			<BrowseSteam />
 			<PopularVR />
 			<HomeTabs />

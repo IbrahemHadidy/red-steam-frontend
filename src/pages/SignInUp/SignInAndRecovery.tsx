@@ -1,15 +1,21 @@
-import { FC, useEffect, useState, FormEvent } from "react";
+import { FC, useEffect, useState, FormEvent, useRef, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from 'contexts/AuthContext';
+import { authenticateUser, checkAccountExists, initiatePasswordReset, submitLoginForm } from 'src/services/authentication';
 import ReCAPTCHA from 'react-google-recaptcha';
-import $ from "../../tools/$selector";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import useResponsiveViewports from "../../tools/UseResponsiveViewports";
-import { validateEmail, validateName, validatePassword, validatePhone } from "../../tools/InputValidations";
+import $ from "tools/$selector";
+import Header from "components/Header/Header";
+import Footer from "components/Footer/Footer";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
+import { validateEmail, validateName, validatePassword, validatePhone } from "tools/inputValidations";
 import { useSpring, animated } from "react-spring";
 import "./SignInUp.scss";
+import { toast } from "react-toastify";
 const env = import.meta.env;
 
 const SignInAndRecovery: FC = () => {
+	const navigate = useNavigate();
+  	const { login } = useContext(AuthContext);
 	const isViewport740 = useResponsiveViewports(740);
     const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 	const [title, setTitle] = useState("Sign In");
@@ -21,6 +27,8 @@ const SignInAndRecovery: FC = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [resetErrorMessage, setResetErrorMessage] = useState("");
 	const [isSearching, setIsSearching] = useState(false);
+
+	const captchaRef = useRef<ReCAPTCHA | null>(null);
 
 	const handleRecaptchaChange = (value: string | null) => {
   	  setRecaptchaValue(value);
@@ -51,6 +59,8 @@ const SignInAndRecovery: FC = () => {
 			isViewport740 &&
         	(($('.login-form-container') as HTMLElement).style.width =
           	'max-content');
+			const formErrorElement = $('.form-error') as HTMLElement | null;
+      		formErrorElement && (formErrorElement.style.transform = 'translateY(-6px)');
 		}
 	}, [isViewport740]);
 
@@ -79,38 +89,19 @@ const SignInAndRecovery: FC = () => {
 	const handleForgotPasswordClick = () => {
 		setShowForgotPassword((prevShowForgotPassword) => !prevShowForgotPassword);
 	};
-
-	const authenticateUser = async (accountName: string, password: string) => {
-		try {
-			const response = await fetch(`${env.VITE_BACKEND_API_URL}/authenticate`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ accountName, password }),
-			});
 	
-			if (response.ok) {
-				const result = await response.json();
-				return result.isAuthenticated;
-			} else {
-				console.error('Error during authentication:', response.statusText);
-				return false;
-			}
-		} catch (error) {
-			console.error('Error during authentication:', error);
-			return false;
-		}
-	};
-
 	const handleFormSubmit = async (event: { preventDefault: () => void; currentTarget: { querySelector: (arg0: string) => HTMLInputElement; }; }) => {
 		event.preventDefault();
+
+    	const token = captchaRef.current?.getValue();
 	
 		const accountNameInput = event.currentTarget.querySelector('#field-input-account') as HTMLInputElement;
 		const passwordInput = event.currentTarget.querySelector('#field-input-password') as HTMLInputElement;
 
 		if (!validateName(accountNameInput.value) || !validatePassword(passwordInput.value) ) {
 			setErrorMessage("Please provide a valid name and password");
+    		captchaRef.current?.reset();
+      		setRecaptchaValue(null);
 			return;
 		}
 	
@@ -126,27 +117,30 @@ const SignInAndRecovery: FC = () => {
 			if (isAuthenticated) {
 				console.log('Authentication successful');
 				const formData = {
-					accountName,
-					password,
-					rememberMe: rememberMeValue,
-				};
+        		  accountName,
+        		  password,
+        		  rememberMe: rememberMeValue,
+        		  recaptchaToken: token,
+        		};
 		
-				// Make a POST request to your backend
-				const response = await fetch(`${env.VITE_BACKEND_API_URL}/submitForm`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(formData),
-				});
+				const response = await submitLoginForm(formData);
 		
-				if (response.ok) {
-					// Handle success, e.g., show a success message
-					console.log('Form submitted successfully');
-				} else {
-					// Handle errors, e.g., show an error message
-					console.error('Error submitting form:', response.statusText);
-				}
+				if (response.status === 200) {
+        		  // Assuming the response data contains a property 'accessToken'
+        		  const { accessToken } = response.data;
+
+        		  // Authenticate the user
+        		  login(accessToken);
+
+        		  // Redirect the user to the home page or any other appropriate page
+        		  navigate('/');
+				  toast.success('Login successful');
+        		  console.log('Form submitted successfully');
+        		} else {
+        		  // Handle errors, e.g., show an error message
+        		  console.error('Error submitting form:', response.statusText);
+				  toast.error('Error submitting form, Please try again later');
+        		}
 			} else {
 				console.error('Authentication failed');
 				setErrorMessage("Authentication failed, Please try again later");
@@ -156,29 +150,52 @@ const SignInAndRecovery: FC = () => {
 			setErrorMessage("Error during authentication, Please try again later");
 		} finally {
 			setIsLoading(false);
+    		captchaRef.current?.reset();
+        	setRecaptchaValue(null);
 		}
 	};
 
 	const handleResetPasswordFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		const token = captchaRef.current?.getValue();
 	
 		// Access the selectedCountry state here and include it in your form data
 		const formData = {
-			email: '',
-			phoneNumber: '',
-		};
+    	  email: '',
+    	  phoneNumber: '',
+    	  recaptchaToken: token,
+    	};
 	
 		// Get the input value for email or phone number
 		const inputElement = event.currentTarget.querySelector('.field-input') as HTMLInputElement;
 		const inputValue = inputElement ? inputElement.value : '';
 
 		// Check if the user didn't write anything
+		if (!inputValue && !recaptchaValue) {
+    	  	setResetErrorMessage(
+          	  `Please provide a valid email or phone number<br>Please verify that you're not a robot.`,
+          	);
+    	  	setNotFound(true);
+			captchaRef.current?.reset();
+      		setRecaptchaValue(null);
+    	  	return;
+    	}
 		if (!inputValue) {
 			setResetErrorMessage("Please provide a valid email or phone number");
 			setNotFound(true);
+			captchaRef.current?.reset();
+        	setRecaptchaValue(null);
 			return;
 		}
-
+		if (!recaptchaValue) {
+    	  	setResetErrorMessage(`Please verify that you're not a robot.`);
+    	  	setNotFound(true);
+			captchaRef.current?.reset();
+        	setRecaptchaValue(null);
+    	  	return;
+    	}
+    		
 		// Determine whether the input is an email or a phone number
 		if (validateEmail(inputValue)) {
 			formData.email = inputValue;
@@ -187,6 +204,8 @@ const SignInAndRecovery: FC = () => {
 		} else {
 			setResetErrorMessage("Invalid email or phone number");
 			setNotFound(true);
+			captchaRef.current?.reset();
+      		setRecaptchaValue(null);
 			return;
 		}
 	
@@ -222,57 +241,14 @@ const SignInAndRecovery: FC = () => {
 				setNotFound(true);
 			} finally {
 				setIsSearching(false);
+				captchaRef.current?.reset();
+      			setRecaptchaValue(null);
 			}
 		} else {
 			setResetErrorMessage("Please provide a valid email or phone number");
 			setNotFound(true);
-		}
-	};
-
-	// Simulate an asynchronous function to initiate password reset
-	const initiatePasswordReset = async (email: string) => {
-		try {
-			const response = await fetch(`${env.VITE_BACKEND_API_URL}/initiate-password-reset`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email }),
-			});
-	
-			if (response.ok) {
-				// Password reset initiation successful
-				console.log('Password reset initiated successfully');
-			} else {
-				// Password reset initiation failed, handle the error
-				console.error('Error initiating password reset:', response.statusText);
-			}
-		} catch (error) {
-			console.error('Error initiating password reset:', error);
-		}
-	};
-	
-	// Simulate an asynchronous function to check if the account exists in the database
-	const checkAccountExists = async (email: string): Promise<boolean> => {
-		try {
-			const response = await fetch(`${env.VITE_BACKEND_API_URL}/checkAccountExists`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email }),
-			});
-		
-			if (response.ok) {
-				const result = await response.json();
-				return result.exists; // Assuming your backend responds with a property named 'exists'
-			} else {
-				console.error('Error checking account existence:', response.statusText);
-				return false;
-			}
-		} catch (error) {
-			console.error('Error checking account existence:', error);
-			return false;
+			captchaRef.current?.reset();
+      		setRecaptchaValue(null);
 		}
 	};
 
@@ -368,14 +344,14 @@ const SignInAndRecovery: FC = () => {
                     sitekey={env.VITE_RECAPTCHA_SITE_KEY}
                     onChange={handleRecaptchaChange}
                     theme="dark"
+                    ref={captchaRef}
                   />
                   <div className="recovery-submit">
                     <div
                       className="form-error"
                       style={notFound ? { display: 'block' } : undefined}
-                    >
-                      {resetErrorMessage}
-                    </div>
+                  	  dangerouslySetInnerHTML={{ __html: resetErrorMessage }}
+                    />
                     <button
                       className={`submit-button search ${
                         isSearching && 'loading'

@@ -3,9 +3,10 @@
 //!! TODO: CHANGE THE TAGS AND GENRES TO AVAILABLE TAGS/SORT OPTIONS USED IN THE SITE
 
 
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { AuthContext } from 'contexts/AuthContext';
 import "./Sidebar.scss";
 
 interface LinkItem {
@@ -14,17 +15,18 @@ interface LinkItem {
 }
 
 const Sidebar: FC = () => {
+  	const { isLoggedIn } = useContext(AuthContext);
+
 	// Helper function to generate links
 	const generateLinks = (links: LinkItem[]) => {
-		return links.map((link: LinkItem) => (
-			<Link key={link.to} className="item" to={link.to}>
-				{link.text}
-			</Link>
-		));
+		return links.map((link: LinkItem, index: number) => (
+    	  <Link key={index} className="item" to={link.to}>
+    	    {link.text}
+    	  </Link>
+    	));
 	};
 
-	// Define various sets of links
-
+	// TODO: Backend logic, render recently viewed games, max 5 latest viewed games, remove them from database after 4 days
 	const recentlyViewedLinks = [
 		// Define recently viewed game links
 		{ to: "/game/PUBG_BATTLEGROUNDS", text: "PUBG: BATTLEGROUNDS" },
@@ -32,48 +34,37 @@ const Sidebar: FC = () => {
 		{ to: "/game/Call_of_Duty", text: "Call of Duty®" },
 	];
 
-	// TODO: isLoggedIn Backend logic, render tags dynamically depending on user's tags selection (most 5 tags having games)
-	// const tagsLinks = [
-	// 	// Define tag links
-	// 	{ to: "/tags/en/Mod/", text: "Mod" },
-	// 	{
-	// 		to: "/tags/en/Dark%20Fantasy/",
-	// 		text: "Dark Fantasy",
-	// 	},
-	// 	{
-	// 		to: "/tags/en/Psychological/",
-	// 		text: "Psychological",
-	// 	},
-	// 	{
-	// 		to: "/tags/en/Open%20World/",
-	// 		text: "Open World",
-	// 	},
-	// 	{ to: "/tags/en/Fantasy/", text: "Fantasy" },
-	// ];
-
-	// TODO: isLoggedIn Backend logic, conditional redirection
-	// const recommendedLinks = [
-	// 	// Define recommended links
-	// 	{
-	// 		to: {isLoggedIn ? "/recommended/friendactivity/" : "/login"},
-	// 		text: "By Friends",
-	// 	},
-	// 	{ to: {isLoggedIn ? "/curators/" : "/login"}, text: "By Curators" },
-	// 	{ to: {isLoggedIn ? "/tag/browse/#yours" : "/login"}, text: "Tags" },
-	// ];
-
-	// TODO: delete this temprorary part after backend implementation
-	const recommendedLinks = [
-		// Define recommended links
+	// TODO: Backend logic, render tags dynamically depending on user's tags selection (most 5 tags having games)
+	const tagsLinks = [
+		// Define tag links
+		{ to: "/tags/en/Mod/", text: "Mod" },
 		{
-			to: "/recommended/friendactivity/",
-			text: "By Friends",
+			to: "/tags/en/Dark%20Fantasy/",
+			text: "Dark Fantasy",
 		},
-		{ to: "/curators/", text: "By Curators" },
-		{ to: "/tag/browse/#yours", text: "Tags" },
+		{
+			to: "/tags/en/Psychological/",
+			text: "Psychological",
+		},
+		{
+			to: "/tags/en/Open%20World/",
+			text: "Open World",
+		},
+		{ to: "/tags/en/Fantasy/", text: "Fantasy" },
 	];
 
-	const categoryLinks = [
+	// TODO: Backend logic, conditional redirection
+	const recommendedLinks = [
+		// Define recommended links
+		// TODO: Not working link need to add code for handling friend activity
+		{
+			to: isLoggedIn ? "/recommended/friendactivity/" : "/login",
+			text: "By Friends",
+		},
+		{ to: isLoggedIn ? "/tag/browse/#yours" : "/login", text: "Tags" },
+	];
+
+		const categoryLinks = [
 		// Define category links
 		{ to: "/category/topsellers", text: "Top Sellers" },
 		{ to: "/category/new", text: "New Releases" },
@@ -128,11 +119,10 @@ const Sidebar: FC = () => {
 				</div>
 
 				{/* Your Tags section */}
-				{/* TODO: Add isLoggedIn backend logic */}
-				{/* <div>
+				{isLoggedIn && <div>
 					<div className="header tag">Your Tags</div>
 					<div>{generateLinks(tagsLinks)}</div>
-				</div> */}
+				</div> }
 
 				{/* Recommended section */}
 				<div>

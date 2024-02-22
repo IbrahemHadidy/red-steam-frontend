@@ -1,4 +1,4 @@
-import gameData, { gamesData } from "../../Game/gameData";
+import gameData, { gamesData } from "services/gameData";
 
 export const newAndTrending: gamesData[] = gameData.sort((a, b) => {
     const dateA = Date.parse(a.releaseDate);

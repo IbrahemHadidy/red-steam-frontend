@@ -3,7 +3,7 @@ import { useTransition, animated } from 'react-spring';
 import { SteamVideo } from "../SteamVideo";
 import { Screenshot } from "../Screenshot";
 import { SlidesArea, SliderButtons } from "./SlidesArea";
-import { MovieEntry, gamesData } from "../../gameData";
+import { MovieEntry, gamesData } from "services/gameData";
 
 interface LeftGameSummaryProps {
   videoRef: RefObject<HTMLVideoElement | null>;

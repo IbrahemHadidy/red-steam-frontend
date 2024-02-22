@@ -1,5 +1,5 @@
 import { FC, useState, ChangeEvent} from "react";
-import gameData from "../../pages/Game/gameData";
+import gameData from "src/services/gameData";
 
 
 const NavSearch: FC = () => {

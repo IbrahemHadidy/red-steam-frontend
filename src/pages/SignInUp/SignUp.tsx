@@ -1,21 +1,26 @@
-import { FC, useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent } from "react";
+import { FC, useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent, useRef, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from 'contexts/AuthContext';
 import { useSpring, animated } from 'react-spring';
+import { checkExistingEmailUtil, checkAccountAvailability, createAccountStep2 } from 'src/services/authentication';
 import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
-import $ from "../../tools/$selector";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import useResponsiveViewports from "../../tools/UseResponsiveViewports";
-import { validateEmail, validateName, validatePassword } from "../../tools/InputValidations";
-import { countries } from "../../tools/Countries";
+import $ from "tools/$selector";
+import Header from "components/Header/Header";
+import Footer from "components/Footer/Footer";
+import useResponsiveViewports from "hooks/useResponsiveViewports";
+import { validateEmail, validateName, validatePassword } from "tools/inputValidations";
+import { countries } from "tools/countries";
 import { VerifyModal } from "./SignUpVerifyModal";
 import "./SignInUp.scss";
+import { fetchUserCountry } from "src/services/country";
+import { toast } from "react-toastify";
 
 const env = import.meta.env;
 
 const SignUp: FC = () => {
 	const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 	const isViewport740 = useResponsiveViewports(740);
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 	const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -34,6 +39,8 @@ const SignUp: FC = () => {
 	const [noMatch, setNoMatch] = useState(false);
 	const [showVerificationModal, setShowVerificationModal] = useState(false);
 
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
+  
   const handleRecaptchaChange = (value: string | null) => {
     setRecaptchaValue(value);
   };
@@ -66,18 +73,14 @@ const SignUp: FC = () => {
 
 	// Fetch the user's current location
 	useEffect(() => {
-		const fetchUserCountry = async () => {
-			try {
-				const country = (
-        		  await axios.get(`https://api.ipbase.com/v1/json/`)
-        		).data.country_code;
-				setSelectedCountry(country);
-			} catch (error) {
-				console.error("Error fetching country code:", error);
-			}
-		};
-		fetchUserCountry();
-	}, []);
+    const fetchData = async () => {
+      const country = await fetchUserCountry();
+      if (country) {
+        setSelectedCountry(country);
+      }
+    };
+    fetchData();
+  }, []);
 
 	// handle country change
 	const OnCountryChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -90,6 +93,8 @@ const SignUp: FC = () => {
 	const checkExistingEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessages([]);
+
+    const token = captchaRef.current?.getValue();
 
     const isEmailValid = validateEmail(email);
     const isCheckboxChecked = ($('#i-agree-check') as HTMLInputElement)
@@ -123,16 +128,15 @@ const SignUp: FC = () => {
       !isCheckboxChecked ||
       !recaptchaValue
     ) {
+      captchaRef.current?.reset();
+      setRecaptchaValue(null);
       return;
     }
 
     try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/checkExistingEmail`,
-        { email },
-      );
+      const exists = await checkExistingEmailUtil(email, token ?? null);
 
-      if (response.data.exists) {
+      if (exists) {
         // Email already exists
         setExistingEmail(true);
       } else {
@@ -146,6 +150,9 @@ const SignUp: FC = () => {
         '- An error occurred while trying to connect to the server. Please check your internet connection and try again.',
       );
       scrollToTop();
+    } finally {
+      captchaRef.current?.reset();
+      setRecaptchaValue(null);
     }
   };
 
@@ -215,12 +222,9 @@ const SignUp: FC = () => {
 				return;
 			} else {
 				try {
-					const response = await axios.post(
-						`${env.VITE_BACKEND_API_URL}/checkAccountAvailability`,
-						{ accountName }
-					);
+					const available = await checkAccountAvailability(accountName);
 			
-					if (response.data.available) {
+					if (available) {
 						setNameAvailable(true);
 						setErrorMessages([]);
 					} else {
@@ -339,7 +343,7 @@ const SignUp: FC = () => {
 				`${env.VITE_BACKEND_API_URL}/waitingTime`
 			);
 			
-			const waitingTime = waitingTimeResponse.data.time; // Adjust this based on your backend response structure
+			const waitingTime = waitingTimeResponse.data.time;
 			
 			// Close the modal if either the waiting time has ended or the modal has been open for too long
 			if (waitingTime <= 0 || elapsedTime > verifyModalTimeout) {
@@ -370,27 +374,28 @@ const SignUp: FC = () => {
 			accountName,
 			password,
 		};
+    
+    try {
+      // Perform your second-step account creation logic here
+      const { data , success, error } = await createAccountStep2(secondStepFormData);
 
-		try {
-			// Perform your second-step account creation logic here
-			const response = await axios.post(
-				`${env.VITE_BACKEND_API_URL}/createAccountStep2`,
-				secondStepFormData
-			);
+      if (success) {
+        toast.success('Account created successfully!');
+        const { accessToken } = data;
 
-			if (response.data.success) {
-				console.log("Account created successfully!");
-				// You might want to redirect the user to another page or perform additional actions after the second step is completed.
-				// Example: Redirect to a success page
-				navigate("/");
-			} else {
-				console.error("Account creation failed:", response.data.error);
-				// Handle the error, show an error message, etc.
-			}
-		} catch (error) {
-			console.error("Error creating account:", error);
-			// Handle the error, show an error message, etc.
-		}
+        // Authenticate the user
+        login(accessToken);
+
+        // Redirect the user to tags selection page
+        navigate('/user/tags');
+      } else {
+        console.error('Account creation failed:', error);
+        addErrorMessage('Account creation failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating account:', error);
+      addErrorMessage('An error occurred while creating your account. Please try again later.');
+    }
 	};
 
 	return (
@@ -472,6 +477,7 @@ const SignUp: FC = () => {
                           sitekey={env.VITE_RECAPTCHA_SITE_KEY}
                           onChange={handleRecaptchaChange}
                           theme="dark"
+                          ref={captchaRef}
                         />
                       </div>
                       <div className="form-row">
