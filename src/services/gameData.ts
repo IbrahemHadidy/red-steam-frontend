@@ -2631,10 +2631,10 @@ const gameData: gamesData[] = [
 			{user:"firstplayer", type:"positive", date: "6/12/2022", content:"good but nvm"},
 		]
 	},
-	//22- Dying Light 2 Stay Human
+	//22- Dying Light 2 Stay Human: Reloaded Edition
 	{
 		id: "22",
-		name: "Dying Light 2 Stay Human",
+		name: "Dying Light 2 Stay Human: Reloaded Edition",
 		category: "Action Games",
 		description: "Humanity is fighting a losing battle against the virus. Experience a post-apocalyptic open world overrun by hordes of zombies, where your parkour and combat skills are key to survival. Traverse the City freely during the day, but watch the monsters take over during the night.",
 		releaseDate: "4 Feb, 2022",
@@ -2651,15 +2651,9 @@ const gameData: gamesData[] = [
 		moviesAndImages: [
 			{
 				type: "video",
-				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256873177/movie480_vp9.webm",
+				link: "https://cdn.akamai.steamstatic.com/steam/apps/257002864/movie480_vp9.webm",
 				posterLink:
-					"https://cdn.cloudflare.steamstatic.com/steam/apps/256873177/movie.293x165.jpg",
-			},
-			{
-				type: "video",
-				link: "https://cdn.cloudflare.steamstatic.com/steam/apps/256921118/movie480_vp9.webm",
-				posterLink:
-					"https://cdn.cloudflare.steamstatic.com/steam/apps/256921118/movie.293x165.jpg",
+					"https://cdn.cloudflare.steamstatic.com/steam/apps/257002864/movie.293x165.jpg",
 			},
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_d7906b3946d4857d28c159e7a1555a003a4426f8.1920x1080.jpg"},
 			{ type: "image", link: "https://cdn.cloudflare.steamstatic.com/steam/apps/534380/ss_6b8d4cc1f7d657745cfd7aab941d3be0067dec00.1920x1080.jpg", featured: true},

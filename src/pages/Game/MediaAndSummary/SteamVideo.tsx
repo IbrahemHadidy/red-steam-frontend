@@ -351,6 +351,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
         <video
           className="highlight-movie"
           {...videoSettings}
+          disablePictureInPicture={false}
           ref={videoRef as RefObject<HTMLVideoElement>}
           controls={false}
           onTimeUpdate={handleTimeUpdate}
