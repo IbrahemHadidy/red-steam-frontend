@@ -79,8 +79,9 @@ const App: FC = () => {
             />
 
             {/* User settings route */}
+            <Route path="/user" element={<Navigate to="/user/settings" />} />
             <Route
-              path="/user/settings"
+              path={'/user/settings'}
               element={<RedirectIfNotLoggedIn element={<UserSettings />} />}
             />
 

@@ -21,10 +21,10 @@ interface UserData {
   email: string;
   country: string;
   tagsSelected: boolean;
+  wishList?: string[];
   tags?: string[];
   phoneNumber?: string;
   profilePicture?: string;
-  // Add other properties as needed
 }
 
 // TODO: add check if the user is had selected the tags if not redirect to the tags selection page (the logic isn't necessarily in this file)

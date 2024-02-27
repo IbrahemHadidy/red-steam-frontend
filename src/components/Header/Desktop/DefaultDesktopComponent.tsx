@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { AuthContext } from 'contexts/AuthContext';
 import ProfileDropdown from "./ProfileDropdown";
 import NavigationLinks from "./NavigationLinks";
+import { toast } from "react-toastify";
 
 const DefaultDesktopComponent: FC = () => {
   const { isLoggedIn } = useContext(AuthContext);
@@ -20,6 +21,11 @@ const DefaultDesktopComponent: FC = () => {
             <Button
               variant="secondary"
               className={`mr-2 compact-button ${!isLoggedIn && 'login'}`}
+              onClick={() =>
+                toast.warning(
+                  'This is not the real Steam website, It is just a clone for learning purposes.',
+                )
+              }
             >
               <span className="button-content button-text">
                 <img
@@ -33,7 +39,15 @@ const DefaultDesktopComponent: FC = () => {
 
             {/* "Notifications" button */}
             {isLoggedIn && (
-              <Button variant="secondary" className="compact-button">
+              <Button
+                variant="secondary"
+                className="compact-button"
+                onClick={() =>
+                  toast.info(
+                    `This feature is not implemented yet and may not be implemented in the future.`,
+                  )
+                }
+              >
                 <span className="button-content button-text bell">
                   <img src="/images/bell.svg" style={{ width: '14px' }} />
                 </span>

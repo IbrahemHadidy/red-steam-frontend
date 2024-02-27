@@ -5,7 +5,7 @@ import { AuthContext } from 'contexts/AuthContext';
 import sharedData from "../sharedData";
 
 const NavigationLinks: FC = () => {
-  	const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, userData} = useContext(AuthContext);
 	const navigate = useNavigate();
  	const location = useLocation();
 	const [isOpen, setIsOpen] = useState<string | null>(null);
@@ -20,12 +20,16 @@ const NavigationLinks: FC = () => {
 	};
 
 	const renderNavDropdownWithHover = (title: string, renderKey: string, mainLink: string, items: { link: string; text: string }[]) => {
-		const isActive = location.pathname.startsWith(mainLink);
-		const dropdownClassName = isActive ? "active-title" : "";
+		const isStoreActive =
+      location.pathname.startsWith(mainLink) &&
+      !location.pathname.startsWith('/user');
+    const dropdownStoreClassName = isStoreActive ? 'active-title' : '';
 
+		const isUserActive = location.pathname.startsWith('/user');
+    const dropdownUserClassName = isUserActive ? 'active-title' : '';
 		return (
 			<NavDropdown
-				title={<span className={`main-dropdowns ${dropdownClassName}`}>{title}</span>}
+				title={<span className={`main-dropdowns ${title === 'STORE' ? dropdownStoreClassName : dropdownUserClassName}`}>{title}</span>}
 				id={renderKey}
 				className="main-dropdowns"
 				renderMenuOnMount
@@ -49,14 +53,28 @@ const NavigationLinks: FC = () => {
 	}, [location]);
 
 	return (
-		<Nav>
-			{renderNavDropdownWithHover("STORE", "1", "/", sharedData.subMenus[0].items)}
-			{renderNavDropdownWithHover("COMMUNITY", "2", "/community", sharedData.subMenus[1].items)}
-			{isLoggedIn && renderNavDropdownWithHover("PROFILE", "3", "/profile", sharedData.subMenus[2].items)}
-			<Nav.Link href="/chat" className="main-dropdowns">CHAT</Nav.Link>
-			<Nav.Link href="/support" className="main-dropdowns">SUPPORT</Nav.Link>
-		</Nav>
-	);
+    <Nav>
+      {renderNavDropdownWithHover(
+        'STORE',
+        '1',
+        '/',
+        sharedData.subMenus[0].items,
+      )}
+      {isLoggedIn &&
+        renderNavDropdownWithHover(
+          `${userData?.username ? userData.username : 'Profile'}`,
+          '3',
+          '/user',
+          sharedData.subMenus[1].items,
+        )}
+      <Nav.Link
+        href="https://github.com/IbrahemHadidy/red-steam/issues"
+        className="main-dropdowns"
+      >
+        report an issue
+      </Nav.Link>
+    </Nav>
+  );
 };
 
 export default NavigationLinks;
