@@ -99,7 +99,6 @@ export const checkAccountAvailability = async (accountName: string) => {
     const response = await axios.post(`${env.VITE_BACKEND_API_URL}/checkAccountAvailability`, { accountName });
     return response.data.available;
   } catch (error) {
-    toast.error('Error checking account availability');
     throw new Error('Error checking account availability');
   }
 };
@@ -111,5 +110,28 @@ export const createAccountStep2 = async (formData: {accountName: string; passwor
   } catch (error) {
     toast.error('Error creating account');
     throw new Error('Error creating account');
+  }
+};
+
+export const waitingTimeResponse = async () => {
+  try {
+    const response = await axios.get(`${env.VITE_BACKEND_API_URL}/waitingTimeResponse`);
+    return response.data.time;
+  } catch (error) {
+    toast.error('Error waiting time response');
+    throw new Error('Error waiting time response');
+  }
+}
+
+export const checkEmailExistence = async (email: string) => {
+  try {
+    const response = await axios.post(
+      `${env.VITE_BACKEND_API_URL}/checkEmailExistence`,
+      { email },
+    );
+    return response.data.exists;
+  } catch (error) {
+    toast.error('Error checking existing email');
+    throw new Error('Error checking existing email');
   }
 };

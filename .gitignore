@@ -12,6 +12,9 @@ templates-for-later
 dist
 dist-ssr
 .env
+certificate.crt
+csr.pem
+private.key
 *.local
 
 # Editor directories and files

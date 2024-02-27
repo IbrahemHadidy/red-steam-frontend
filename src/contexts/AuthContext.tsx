@@ -6,6 +6,7 @@ import {
   useCallback,
 } from 'react';
 import { toast } from 'react-toastify';
+const env = import.meta.env;
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -48,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchUserData = useCallback(
     async (token: string) => {
       try {
-        const response = await fetch('https://api.example.com/user', {
+        const response = await fetch(`${env.VITE_BACKEND_API_URL}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

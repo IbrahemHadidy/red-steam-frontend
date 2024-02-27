@@ -1,5 +1,5 @@
 import { FC, SetStateAction, useState } from "react";
-import Slider from "react-slick";
+import Slider, { LazyLoadTypes, Settings } from "react-slick";
 import useResponsiveViewports from "hooks/useResponsiveViewports";
 import HoverSummary from "components/HoverSummary/HoverSummary";
 import featuredGames from "../featuredGames";
@@ -17,16 +17,17 @@ const FeaturedDesktop: FC = () => {
 		setHoveredImage(null);
 	};
 
-	const featuredSettings = {
-		dots: true,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 5000,
-		fade: true,
-	};
+	const featuredSettings: Settings = {
+  	  dots: true,
+  	  lazyLoad: 'ondemand' as LazyLoadTypes,
+  	  infinite: true,
+  	  speed: 500,
+  	  slidesToShow: 1,
+  	  slidesToScroll: 1,
+  	  autoplay: true,
+  	  autoplaySpeed: 5000,
+  	  fade: true,
+  	};
 
 	return (
 		<div className="featured-carousel">

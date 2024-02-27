@@ -1,96 +1,106 @@
-.user-tags-warning {
-  display: block;
-  margin-top: 20px;
-  text-align: center;
-  font-size: 35px;
-}
-
-.tags-search-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.tags-search-input {
-  padding: 10px;
-  border: 1px solid transparent;
-  background-color: rgba(103, 193, 245, 0.2);
-  color: #67c1f5;
-  border-radius: 2px;
-  width: 30%;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: #ffffff
-  }
-
-  &:focus,
-  &:focus-visible {
-    outline: 1px solid #67c1f5;
-  }
-}
-
-.tag-options {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.tag-option {
-  display: inline-block;
-  font-size: 15px;
-  line-height: 19px;
-  padding: 7px 16px;
-  color: #67c1f5;
-  background-color: rgba(103, 193, 245, 0.2);
-  box-shadow: none;
-  margin-right: 2px;
-  border-radius: 2px;
-  cursor: pointer;
-  margin-bottom: 3px;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  user-select: none;
-  transition: background-color 0.3s ease;
-  &.selected {
-    background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
-    text-decoration: none;
-    color: #ffffff;
-  }
-}
-
-.user-tags-warning {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.tags-submit {
+.tag-select-container {
   display: block;
   position: relative;
-  background: linear-gradient(90deg, #06bfff 0%, #2d73ff 100%);
-  border-radius: 2px;
-  border: none;
-  outline: none;
-  padding: 12px;
-  margin: 20px auto;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 400;
-  font-family: inherit;
-  text-align: center;
-  cursor: pointer;
-  width: 270px;
-  &:hover {
-    background: linear-gradient(90deg, #06bfff 30%, #2d73ff 100%);
+  width: 940px;
+  margin: 0 auto;
+
+  .user-tags-warning {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 35px;
+  }
+
+  .tags-search-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .tags-search-input {
+    padding: 10px;
+    border: 1px solid transparent;
+    background-color: rgba(103, 193, 245, 0.2);
+    color: #67c1f5;
+    border-radius: 2px;
+    width: 35%;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #ffffff;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: 1px solid #67c1f5;
+    }
+  }
+
+  .tag-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .tag-option {
+    display: inline-block;
+    font-size: 15px;
+    line-height: 19px;
+    padding: 7px 16px;
+    color: #67c1f5;
+    background-color: rgba(103, 193, 245, 0.2);
+    box-shadow: none;
+    margin-right: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 3px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    &.selected {
+      background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
+      text-decoration: none;
+      color: #ffffff;
+    }
+  }
+
+  .user-tags-warning {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .tags-submit {
+    display: block;
+    position: relative;
+    background: linear-gradient(90deg, #06bfff 0%, #2d73ff 100%);
+    border-radius: 2px;
+    border: none;
+    outline: none;
+    padding: 12px;
+    margin: 20px auto;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: inherit;
+    text-align: center;
+    cursor: pointer;
+    width: 270px;
+    &:hover {
+      background: linear-gradient(90deg, #06bfff 30%, #2d73ff 100%);
+    }
   }
 }
 
-
-
 @media screen and (max-width: 960px) {
-  .user-tags-warning {
+  .tag-select-container {
+    width: auto;
+    margin: auto;
+    
+    .user-tags-warning {
       margin-top: 70px;
+    }
   }
 }

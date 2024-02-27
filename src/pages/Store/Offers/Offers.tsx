@@ -31,11 +31,9 @@ const Offers: FC = () => {
 				onMouseEnter={() => setOfferHoverStates(prevState => ({ ...prevState, [offer.id]: true }))}
 				onMouseLeave={() => setOfferHoverStates(prevState => ({ ...prevState, [offer.id]: false }))}
 			>
-				<div className="offer-bg">
+				<a href={`/game/${offer.id}`} className="offer-bg">
 					<div className="spotlight-img">
-						<a href={`/game/${offer.id}`}>
-							<img src={offer.verticalHeaderImage} alt={offer.name} />
-						</a>
+						<img src={offer.verticalHeaderImage} alt={offer.name} />
 					</div>
 					<div className="spotlight-content">
 						<h2>{offer.offerType}</h2>
@@ -54,7 +52,7 @@ const Offers: FC = () => {
 							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 				{!isViewport960 && offerHoverStates[offer.id] && <div>
 					<HoverSummary
 						title={offer.name}

@@ -1,6 +1,6 @@
 {
   "name": "red-steam",
-  "description": "a steam clone website clone built for educational purposes",
+  "description": "This is a steam clone website clone built for educational purposes.",
   "author": "Ibrahim Elhadidy",
   "homepage": "https://ibrahemhadidy.github.io/red-steam",
   "private": true,
@@ -56,6 +56,8 @@
     "gh-pages": "^6.1.1",
     "prettier": "^3.2.5",
     "typescript": "^5.0.2",
-    "vite": "^5.1.3"
+    "vite": "^5.1.3",
+    "vite-plugin-pwa": "^0.19.0",
+    "workbox-window": "^7.0.0"
   }
 }

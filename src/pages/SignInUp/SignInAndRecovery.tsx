@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, FormEvent, useRef, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from 'contexts/AuthContext';
-import { authenticateUser, checkAccountExists, initiatePasswordReset, submitLoginForm } from 'src/services/authentication';
+import { authenticateUser, checkAccountExists, initiatePasswordReset, submitLoginForm } from 'services/authentication';
 import ReCAPTCHA from 'react-google-recaptcha';
 import $ from "tools/$selector";
 import Header from "components/Header/Header";

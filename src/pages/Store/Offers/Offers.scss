@@ -138,15 +138,9 @@
 
 				.spotlight-img {
 					overflow: hidden;
-					width: 306px;
 					padding-left: 0px;
-					padding-top: 0px;
-
-					a img {
-						height: 320px;
-						margin-top: -15px;
-						width: -webkit-fill-available;
-					}
+    			mask-image: linear-gradient(to bottom, rgba(0,0,0,1)70%, rgba(0,0,0,0));
+    			-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1)70%, rgba(0,0,0,0));
 				}
 
 				.spotlight-content {
@@ -158,11 +152,9 @@
 					bottom: 0;
 					width: 274px;
 					height: 91px;
-					background: url("/images/spotlight_background.jpg") bottom center no-repeat;
-					background-image: url("/images/background_spotlight.jpg");
 					margin: 0px;
 					min-height: 23px;
-					background-size: cover;
+					pointer-events: none;
 
 					.spotlight-body {
 						font-family: "Motiva Sans", Sans-serif;

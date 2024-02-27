@@ -16,7 +16,7 @@ import Footer from "components/Footer/Footer";
 import "./Store.scss"
 
 const Store: FC = () => {
-  	const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
 	
 	useEffect(() => {
 		document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"

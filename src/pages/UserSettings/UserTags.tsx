@@ -1,16 +1,16 @@
 import { FC, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import useResponsiveViewports from 'hooks/useResponsiveViewports';
-import { submitSelectedUserTagsToBackend, fetchUserTagsFromBackend } from 'src/services/tags';
+import { submitSelectedUserTagsToBackend, fetchUserTagsFromBackend } from 'services/tags';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
 import './UserTags.scss';
-import 'react-toastify/dist/ReactToastify.css';
 
 const UserTags: FC = () => {
   const isViewport740 = useResponsiveViewports(740);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  // TODO: Delete the demo tags
   const [initialTags, setInitialTags] = useState<string[]>([
     'tag1',
     'tag2',
@@ -30,8 +30,9 @@ const UserTags: FC = () => {
   // TODO: Import tags from backend database
   // Fetch tags from the backend when the component mounts
   // useEffect(() => {
-  //   fetchUserTagsFromBackend().then((tags: SetStateAction<string[]>) => {
+  //   fetchUserTagsFromBackend().then(({ tags, selectedTags }) => {
   //     setInitialTags(tags);
+  //     setSelectedTags(selectedTags);
   //   });
   // }, []);
 
@@ -90,35 +91,37 @@ const UserTags: FC = () => {
   return (
     <>
       <Header />
-      <div className="user-tags-warning">
-        <h2>Please select at least 3 tags to proceed.</h2>
+      <div className="tag-select-container">
+        <div className="user-tags-warning">
+          <h2>Please select at least 3 tags to proceed.</h2>
+        </div>
+        <div className="tags-search-container">
+          <input
+            type="text"
+            className="tags-search-input"
+            placeholder="Search tags..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+        </div>
+        {/* Render tag options */}
+        <div className="tag-options">
+          {filteredSortedTags.map(tag => (
+            <div
+              key={tag}
+              className={`tag-option ${
+                selectedTags.includes(tag) ? 'selected' : ''
+              }`}
+              onClick={() => handleTagSelect(tag)}
+            >
+              {tag}
+            </div>
+          ))}
+        </div>
+        <button className="tags-submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
-      <div className="tags-search-container">
-        <input
-          type="text"
-          className="tags-search-input"
-          placeholder="Search tags..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-      </div>
-      {/* Render tag options */}
-      <div className="tag-options">
-        {filteredSortedTags.map(tag => (
-          <div
-            key={tag}
-            className={`tag-option ${
-              selectedTags.includes(tag) ? 'selected' : ''
-            }`}
-            onClick={() => handleTagSelect(tag)}
-          >
-            {tag}
-          </div>
-        ))}
-      </div>
-      <button className="tags-submit" onClick={handleSubmit}>
-        Submit
-      </button>
       <Footer />
     </>
   );

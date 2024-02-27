@@ -2,19 +2,18 @@ import { FC, useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent, useRef,
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from 'contexts/AuthContext';
 import { useSpring, animated } from 'react-spring';
-import { checkExistingEmailUtil, checkAccountAvailability, createAccountStep2 } from 'src/services/authentication';
+import { checkExistingEmailUtil, checkAccountAvailability, createAccountStep2, waitingTimeResponse, checkEmailExistence } from 'services/authentication';
 import ReCAPTCHA from 'react-google-recaptcha';
-import axios from 'axios';
 import $ from "tools/$selector";
 import Header from "components/Header/Header";
 import Footer from "components/Footer/Footer";
 import useResponsiveViewports from "hooks/useResponsiveViewports";
 import { validateEmail, validateName, validatePassword } from "tools/inputValidations";
-import { countries } from "tools/countries";
+import { countries } from 'services/countries';
 import { VerifyModal } from "./SignUpVerifyModal";
+import { fetchUserCountry } from 'services/countryCode';
+import { toast } from 'react-toastify';
 import "./SignInUp.scss";
-import { fetchUserCountry } from "src/services/country";
-import { toast } from "react-toastify";
 
 const env = import.meta.env;
 
@@ -83,9 +82,8 @@ const SignUp: FC = () => {
   }, []);
 
 	// handle country change
-	const OnCountryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const selectedValue = event.target.value;
-		console.log("Selected Country:", selectedValue);
+	const onCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+		const selectedValue = e.target.value;
 		setSelectedCountry(selectedValue);
 	};
 
@@ -184,19 +182,16 @@ const SignUp: FC = () => {
 		}
 
 		try {
-			const response = await axios.post(
-				`${env.VITE_BACKEND_API_URL}/checkExistingEmail`,
-				{ email }
-			);
+			const isExisting = await checkEmailExistence(email);
 
-			if (response.data.exists) {
-				// Email already exists
-				setExistingEmail(true);
-			} else {
-				// Email does not exist, proceed with the form submission
-				setExistingEmail(false);
-				submitSecondStep(e);
-			}
+			if (isExisting) {
+        // Email already exists
+        setExistingEmail(true);
+      } else {
+        // Email does not exist, proceed with the form submission
+        setExistingEmail(false);
+        submitSecondStep(e);
+      }
 		} catch (error) {
 			console.error("Error checking existing email:", error);
 			addErrorMessage("- Internal server error while checking account existence. Please try again later.");
@@ -339,11 +334,7 @@ const SignUp: FC = () => {
 			
 		// Add a backend request for waiting time
 		try {
-			const waitingTimeResponse = await axios.get(
-				`${env.VITE_BACKEND_API_URL}/waitingTime`
-			);
-			
-			const waitingTime = waitingTimeResponse.data.time;
+			const waitingTime = await waitingTimeResponse();
 			
 			// Close the modal if either the waiting time has ended or the modal has been open for too long
 			if (waitingTime <= 0 || elapsedTime > verifyModalTimeout) {
@@ -461,7 +452,7 @@ const SignUp: FC = () => {
                             name="country"
                             id="country"
                             className="country-selector"
-                            onChange={OnCountryChange}
+                            onChange={onCountryChange}
                             value={selectedCountry}
                           >
                             {countries.map(([countryCode, countryName]) => (
