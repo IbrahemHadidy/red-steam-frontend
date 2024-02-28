@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { newAndTrending, popularUpcoming, specials, topSellers } from "./homeTabsItems";
+import { newAndTrending, popularUpcoming, specials, topSellers } from "../../../services/homeTabsItems";
 import { gamesData } from "services/gameData";
 
 interface RightSectionProps {

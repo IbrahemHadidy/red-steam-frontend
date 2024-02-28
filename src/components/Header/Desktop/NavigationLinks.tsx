@@ -22,7 +22,8 @@ const NavigationLinks: FC = () => {
 	const renderNavDropdownWithHover = (title: string, renderKey: string, mainLink: string, items: { link: string; text: string }[]) => {
 		const isStoreActive =
       location.pathname.startsWith(mainLink) &&
-      !location.pathname.startsWith('/user');
+      !location.pathname.startsWith('/user') &&
+			!location.pathname.startsWith('/notfound');
     const dropdownStoreClassName = isStoreActive ? 'active-title' : '';
 
 		const isUserActive = location.pathname.startsWith('/user');

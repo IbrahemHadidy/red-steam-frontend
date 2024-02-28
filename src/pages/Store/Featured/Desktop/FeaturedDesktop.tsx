@@ -2,7 +2,7 @@ import { FC, SetStateAction, useState } from "react";
 import Slider, { LazyLoadTypes, Settings } from "react-slick";
 import useResponsiveViewports from "hooks/useResponsiveViewports";
 import HoverSummary from "components/HoverSummary/HoverSummary";
-import featuredGames from "../featuredGames";
+import featuredGames from "services/featuredGames";
 
 const FeaturedDesktop: FC = () => {
 	const isViewport1600  = useResponsiveViewports(1600);

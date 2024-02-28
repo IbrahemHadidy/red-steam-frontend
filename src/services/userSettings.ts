@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import { toast } from 'react-toastify';
 const env = import.meta.env;
 
@@ -14,7 +14,7 @@ export const changeUserName = async (newName: string) => {
     toast.error('An error occurred. Please try again later.');
     throw error;
   }
-}
+};
 
 export const changeUserAvatar = async (avatarFile: File) => {
   try {
@@ -63,13 +63,11 @@ export const deleteAccount = async (
   }
 };
 
-export const deletePhone = async (
-  onClose: () => void,
-) => {
+export const deletePhone = async (onClose: () => void) => {
   try {
     const response = await axios.post(
       `${env.VITE_BACKEND_API_URL}/api/deletePhone`,
-    )
+    );
     if (response.data.success) {
       toast.success('Phone deleted successfully');
       onClose();
@@ -80,7 +78,7 @@ export const deletePhone = async (
     console.error('Error deleting phone:', error);
     toast.error('An error occurred. Please try again later.');
   }
-}
+};
 
 export const changeEmail = async (
   password: string,
@@ -153,6 +151,25 @@ export const changePassword = async (
       toast.error('Incorrect password. Please try again.');
       setErrorMessage(response.data.message);
       onClose();
+    }
+  } catch (error) {
+    console.error('Error changing password:', error);
+    toast.error('An error occurred. Please try again later.');
+  }
+};
+
+export const handleDeleteWishlistItem = async (id: string, userId: number) => {
+  try {
+    const response = await axios.post(`${env.VITE_BACKEND_API_URL}/wishlist`, {
+      id,
+      userId,
+    });
+
+    if (response.data.success) {
+      toast.success('Item deleted successfully');
+      window.location.reload();
+    } else {
+      toast.error('An error occurred. Please try again later.');
     }
   } catch (error) {
     console.error('Error changing password:', error);

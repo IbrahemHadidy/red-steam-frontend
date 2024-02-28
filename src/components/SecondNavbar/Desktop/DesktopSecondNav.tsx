@@ -2,7 +2,7 @@ import { FC, useContext, useState } from "react";
 import NavSearch from "../NavSearch";
 import { useSpring, animated, SpringValue } from "react-spring";
 import { AuthContext } from 'contexts/AuthContext';
-import { menuData, navigationItems } from "../menuData";
+import { menuData, navigationItems } from "services/menuData";
 
 type MenuItem = {
 	label: string;
@@ -60,7 +60,7 @@ const DesktopSecondNav: FC = () => {
       <div className="d-none d-md-block mx-auto myNavSec">
         {isLoggedIn && (
           <div className="wishlist-Link-div">
-            <a className="wishlist-link" href="/wishlist/">
+            <a className="wishlist-link" href="/wishlist">
               Wishlist
             </a>
           </div>

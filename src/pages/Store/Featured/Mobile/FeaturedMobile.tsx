@@ -1,5 +1,5 @@
 import { FC } from "react";
-import featuredGames from "../featuredGames";
+import featuredGames from "../../../../services/featuredGames";
 
 const FeaturedMobile: FC = () => {
 	return (

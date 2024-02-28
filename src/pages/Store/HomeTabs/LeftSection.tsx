@@ -4,7 +4,7 @@ import {
 	popularUpcoming,
 	specials,
 	topSellers,
-} from "./homeTabsItems";
+} from "../../../services/homeTabsItems";
 import Tab from "./Tab";
 import TabContent from "./TabContent";
 

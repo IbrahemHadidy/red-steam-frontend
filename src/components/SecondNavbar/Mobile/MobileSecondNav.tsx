@@ -1,7 +1,7 @@
 import { FC, useState, SetStateAction, useContext } from "react";
 import { AuthContext } from 'contexts/AuthContext';
+import { menuData, navigationItems } from 'services/menuData-mobile';
 import NavSearch from "../NavSearch";
-import { menuData, navigationItems } from "../menuData-mobile";
 
 type MenuItem = {
 	label: string;

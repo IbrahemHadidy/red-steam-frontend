@@ -49,10 +49,10 @@ export default defineConfig({
   plugins: [react(), VitePWA(manifestForPlugin)],
   server: {
     port: 3000,
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'private.key')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'certificate.crt')),
-    },
+    // https: {
+    //   key: fs.readFileSync(path.resolve(__dirname, 'private.key')),
+    //   cert: fs.readFileSync(path.resolve(__dirname, 'certificate.crt')),
+    // },
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

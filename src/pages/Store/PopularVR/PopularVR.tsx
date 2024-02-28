@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import Slider from "react-slick";
 import useResponsiveViewports from "hooks/useResponsiveViewports";
-import popularVRGames from "./popularVRGames";
+import popularVRGames from "services/popularVRGames";
 import { gamesData } from "services/gameData";
 import HoverSummary from "components/HoverSummary/HoverSummary";
 

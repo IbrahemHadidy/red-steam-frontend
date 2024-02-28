@@ -6,7 +6,12 @@ import {
   useCallback,
 } from 'react';
 import { toast } from 'react-toastify';
+import { gamesData } from 'services/gameData';
 const env = import.meta.env;
+
+interface wishlist extends gamesData {
+  addedOn: string;
+}
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -21,7 +26,7 @@ interface UserData {
   email: string;
   country: string;
   tagsSelected: boolean;
-  wishList?: string[];
+  wishList?: wishlist[];
   tags?: string[];
   phoneNumber?: string;
   profilePicture?: string;

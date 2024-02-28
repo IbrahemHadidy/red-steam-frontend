@@ -1,0 +1,263 @@
+@media screen and (max-width: 960px) {
+  .page-content {
+    width: auto;
+  }
+}
+
+.wishlist-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 15px 0 25px 0;
+
+  img {
+    width: 67px;
+    height: 67px;
+  }
+
+  h2 {
+    color: #fff;
+    font-size: 26px;
+    margin-left: 15px;
+    margin-bottom: 0px;
+  }
+
+  @media screen and (max-width: 960px) {
+    margin-top: 80px;
+    margin-left: 10px;
+  }
+}
+
+.nothing-to-see {
+  text-align: center;
+  padding: 75px 0;
+
+  h2 {
+    color: #e5e5e5;
+  }
+  p {
+    font-size: 12px;
+    color: #e5e5e5;
+    margin-top: 8px;
+  }
+}
+
+.wishlist-container {
+  position: relative;
+
+  .wishlist-row {
+    will-change: transform, top;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    padding: 16px 16px 8px 16px;
+    background-color: rgba(64, 81, 99, 0.9);
+    color: #b2b8bd;
+    margin-bottom: 10px;
+    width: calc(100% - 32px);
+    transition:
+      background-color 300ms,
+      top 300ms;
+    font-family: 'Motiva Sans', Sans-serif;
+    font-weight: 200;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+
+    .capsule {
+      position: relative;
+      margin-left: 5px;
+      margin-right: 19px;
+      width: 292px;
+      height: 136px;
+      transition: margin 300ms;
+
+      img {
+        width: 292px;
+        height: 136px;
+      }
+
+      .screenshots {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 292px;
+        height: 136px;
+        background-size: cover;
+        background-position: center center;
+        transition: opacity 300ms;
+
+        div {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 292px;
+          height: 136px;
+          background-size: cover;
+          background-position: center center;
+          opacity: 0;
+          transition: opacity 300ms;
+          animation: screenshot_hover_fadein 4s linear;
+          animation-iteration-count: infinite;
+
+          &:nth-child(1) {
+            animation-delay: 0s;
+          }
+          &:nth-child(2) {
+            animation-delay: 1s;
+          }
+          &:nth-child(3) {
+            animation-delay: 2s;
+          }
+          &:nth-child(4) {
+            animation-delay: 3s;
+          }
+        }
+      }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-grow: 1;
+
+      .wishlist-title {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 400;
+        margin: 0 0 15px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .mid-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        .stats {
+          flex-grow: 1;
+          flex-shrink: 1;
+          display: grid;
+          grid-template-columns: 140px auto;
+          grid-template-rows: auto;
+          margin-bottom: 10px;
+          text-transform: uppercase;
+          white-space: nowrap;
+          font-size: 11px;
+
+          .value {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+          }
+        }
+
+        .purchase-container {
+          min-height: 36px;
+
+          .purchase-area {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 2px;
+            display: flex;
+            .game-purchase-action {
+              position: static;
+              overflow: hidden;
+
+              .game-purchase-action-background,
+              .game-purchase-price {
+                background: none;
+              }
+            }
+          }
+        }
+      }
+
+      .lower-container {
+        margin-top: 5px;
+
+        .platform-icons {
+          margin-bottom: 10px;
+          
+          .platform-img {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-repeat: no-repeat;
+
+            &.win {
+              background-image: url('/images/icon_platform_win.png');
+            }
+
+            &.mac {
+              background-image: url('/images/icon_platform_mac.png');
+            }
+          }
+
+          > * {
+            vertical-align: top;
+          }
+        }
+
+        .lower-columns {
+          display: flex;
+          justify-content: space-between;
+
+          .tags {
+            font-size: 11px;
+            overflow: hidden;
+            height: 19px;
+
+            .tag {
+              display: inline-block;
+              margin-right: 3px;
+              padding: 2px 5px;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: #8f98a0;
+              border-radius: 3px;
+              cursor: pointer;
+              height: 13px;
+            }
+          }
+
+          .added-on {
+            margin-top: 5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-size: 11px;
+            overflow: hidden;
+            height: 19px;
+
+            .delete {
+              display: inline;
+              cursor: pointer;
+              text-decoration: none;
+              border-bottom: 1px dotted rgba(178, 184, 189, 0.6);
+
+              &:hover {
+                color: #d8dde2;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes screenshot_hover_fadein {
+  0% {
+    opacity: 0;
+  }
+  3% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 1;
+  }
+  31% {
+    opacity: 0;
+  }
+}
