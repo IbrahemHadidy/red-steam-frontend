@@ -1,77 +1,101 @@
-import { FC, useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent, useRef, useContext } from "react";
+import {
+  FC,
+  useEffect,
+  useState,
+  ChangeEvent,
+  KeyboardEvent,
+  FormEvent,
+  useRef,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from 'contexts/AuthContext';
 import { useSpring, animated } from 'react-spring';
-import { checkExistingEmailUtil, checkAccountAvailability, createAccountStep2, waitingTimeResponse, checkEmailExistence } from 'services/authentication';
+import {
+  checkEmailExists,
+  checkUsernameExists,
+  registerUser,
+  verificationStatus,
+  waitingTimeResponse,
+} from 'services/user/auth';
 import ReCAPTCHA from 'react-google-recaptcha';
-import $ from "tools/$selector";
-import Header from "components/Header/Header";
-import Footer from "components/Footer/Footer";
-import useResponsiveViewports from "hooks/useResponsiveViewports";
-import { validateEmail, validateName, validatePassword } from "tools/inputValidations";
+import $ from 'tools/$selector';
+import Header from 'components/Header/Header';
+import Footer from 'components/Footer/Footer';
+import useResponsiveViewports from 'hooks/useResponsiveViewports';
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from 'tools/inputValidations';
 import { countries } from 'services/countries';
-import { VerifyModal } from "./SignUpVerifyModal";
+import { VerifyModal } from './SignUpVerifyModal';
 import { fetchUserCountry } from 'services/countryCode';
 import { toast } from 'react-toastify';
-import "./SignInUp.scss";
+import './SignInUp.scss';
 
 const env = import.meta.env;
 
 const SignUp: FC = () => {
-	const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
-	const isViewport740 = useResponsiveViewports(740);
+  const isViewport740 = useResponsiveViewports(740);
+  const navigate = useNavigate();
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
-	const [errorMessages, setErrorMessages] = useState<string[]>([]);
-	const [resetKey, setResetKey] = useState(0);
-	const [selectedCountry, setSelectedCountry] = useState("PS");
-	const [email, setEmail] = useState("");
-	const [confirmedEmail, setConfirmedEmail] = useState("");
-	const [existingEmail, setExistingEmail] = useState(false);
-	const [firstStep, setFirstStep] = useState(true);
-	const [nameAvailable, setNameAvailable] = useState(false);
-	const [accountName, setAccountName] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [passwordError, setPasswordError] = useState(false);
-	const [passwordWarning, setPasswordWarning] = useState(false);
-	const [noMatch, setNoMatch] = useState(false);
-	const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [resetKey, setResetKey] = useState(0);
+  const [selectedCountry, setSelectedCountry] = useState('PS');
+  const [email, setEmail] = useState('');
+  const [confirmedEmail, setConfirmedEmail] = useState('');
+  const [existingEmail, setExistingEmail] = useState(false);
+  const [firstStep, setFirstStep] = useState(true);
+  const [nameAvailable, setNameAvailable] = useState(false);
+  const [accountName, setAccountName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordWarning, setPasswordWarning] = useState(false);
+  const [noMatch, setNoMatch] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   const captchaRef = useRef<ReCAPTCHA | null>(null);
-  
+
   const handleRecaptchaChange = (value: string | null) => {
     setRecaptchaValue(value);
   };
 
-	const scrollToTop = () => window.scrollTo({top: 0, behavior: 'smooth'});
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-	useEffect(() => {
-		// this is responsible for the page background
-		document.body.style.background =
-			"radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
-		// this is responsible for the tab title
-		document.title = `Create Your Account`;
-	}, [isViewport740]);
+  useEffect(() => {
+    // this is responsible for the page background
+    document.body.style.background =
+      "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429";
+    // this is responsible for the tab title
+    document.title = `Create Your Account`;
+  }, [isViewport740]);
 
-	// handle storing error messages
-	const addErrorMessage = (newErrorMessage: string) => {
-		setErrorMessages((prevErrorMessages: string[]) => [...prevErrorMessages, newErrorMessage]);
-	};
+  // handle storing error messages
+  const addErrorMessage = (newErrorMessage: string) => {
+    setErrorMessages((prevErrorMessages: string[]) => [
+      ...prevErrorMessages,
+      newErrorMessage,
+    ]);
+  };
 
-	// fading animation for error message
-	useEffect(() => {
-		setResetKey((prevKey) => prevKey + 1);
-	}, [errorMessages]);
-	const springProps = useSpring({
-		key: resetKey,
-		from: { backgroundColor: "rgba(244, 183, 134, 1)" },
-		to: { backgroundColor: errorMessages.length !== 0 ? "rgba(0, 0, 0, 0.5)" : "rgba(244, 183, 134, 1)" },
-		config: { duration: 1000 },
-	});
+  // fading animation for error message
+  useEffect(() => {
+    setResetKey(prevKey => prevKey + 1);
+  }, [errorMessages]);
+  const springProps = useSpring({
+    key: resetKey,
+    from: { backgroundColor: 'rgba(244, 183, 134, 1)' },
+    to: {
+      backgroundColor:
+        errorMessages.length !== 0
+          ? 'rgba(0, 0, 0, 0.5)'
+          : 'rgba(244, 183, 134, 1)',
+    },
+    config: { duration: 1000 },
+  });
 
-	// Fetch the user's current location
-	useEffect(() => {
+  // Fetch the user's current location
+  useEffect(() => {
     const fetchData = async () => {
       const country = await fetchUserCountry();
       if (country) {
@@ -81,18 +105,16 @@ const SignUp: FC = () => {
     fetchData();
   }, []);
 
-	// handle country change
-	const onCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		const selectedValue = e.target.value;
-		setSelectedCountry(selectedValue);
-	};
+  // handle country change
+  const onCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    setSelectedCountry(selectedValue);
+  };
 
-	// Function to check for an existing email
-	const checkExistingEmail = async (e: FormEvent<HTMLFormElement>) => {
+  // Function to check for an existing email
+  const checkExistingEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessages([]);
-
-    const token = captchaRef.current?.getValue();
 
     const isEmailValid = validateEmail(email);
     const isCheckboxChecked = ($('#i-agree-check') as HTMLInputElement)
@@ -132,7 +154,7 @@ const SignUp: FC = () => {
     }
 
     try {
-      const exists = await checkExistingEmailUtil(email, token ?? null);
+      const exists = await checkEmailExists(email);
 
       if (exists) {
         // Email already exists
@@ -140,7 +162,7 @@ const SignUp: FC = () => {
       } else {
         // Email does not exist, proceed with the form submission
         setExistingEmail(false);
-        createAccount(e);
+        firstStepForm(e);
       }
     } catch (error) {
       console.error('Error checking existing email:', error);
@@ -154,37 +176,43 @@ const SignUp: FC = () => {
     }
   };
 
-	const checkNameAndPassword = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setErrorMessages([]);
+  const checkNameAndPassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessages([]);
 
-		const isNameValid = validateName(accountName);
-		const isPasswordValid = validatePassword(password);
+    const isNameValid = validateName(accountName);
+    const isPasswordValid = validatePassword(password);
 
-		if (!isNameValid) {
-			$("#accountname")?.classList.add("error");
-			addErrorMessage("- Please enter an account name that is at least 3 characters long and uses only a-z, A-Z, 0-9 or _ characters.");
-			scrollToTop();
-		}
-		if (!isPasswordValid) {
-			$("#password")?.classList.add("error");
-			$("#reenter-password")?.classList.add("error");
-			addErrorMessage("- Password must contain at least one digit, one letter, and one special character.");
-			scrollToTop();
-		}
-		if (password !== confirmPassword) {
-			$("#reenter-password")?.classList.add("error");
-			addErrorMessage("- Please enter the same address in both email address fields.");
-			scrollToTop();
-		}
-		if (!isNameValid || !isPasswordValid || password !== confirmPassword) {
-			return;
-		}
+    if (!isNameValid) {
+      $('#accountname')?.classList.add('error');
+      addErrorMessage(
+        '- Please enter an account name that is at least 3 characters long and uses only a-z, A-Z, 0-9 or _ characters.',
+      );
+      scrollToTop();
+    }
+    if (!isPasswordValid) {
+      $('#password')?.classList.add('error');
+      $('#reenter-password')?.classList.add('error');
+      addErrorMessage(
+        '- Password must contain at least one digit, one letter, and one special character.',
+      );
+      scrollToTop();
+    }
+    if (password !== confirmPassword) {
+      $('#reenter-password')?.classList.add('error');
+      addErrorMessage(
+        '- Please enter the same address in both email address fields.',
+      );
+      scrollToTop();
+    }
+    if (!isNameValid || !isPasswordValid || password !== confirmPassword) {
+      return;
+    }
 
-		try {
-			const isExisting = await checkEmailExistence(email);
+    try {
+      const isExisting = await checkEmailExists(email);
 
-			if (isExisting) {
+      if (isExisting) {
         // Email already exists
         setExistingEmail(true);
       } else {
@@ -192,204 +220,177 @@ const SignUp: FC = () => {
         setExistingEmail(false);
         submitSecondStep(e);
       }
-		} catch (error) {
-			console.error("Error checking existing email:", error);
-			addErrorMessage("- Internal server error while checking account existence. Please try again later.");
-			scrollToTop();
-		}
-	};
+    } catch (error) {
+      console.error('Error checking existing email:', error);
+      addErrorMessage(
+        '- Internal server error while checking account existence. Please try again later.',
+      );
+      scrollToTop();
+    }
+  };
 
-	// handle existing account button
-	const handleExistingBtn = () => {
-		navigate("/reset-password");
-	};
-	// handle existing account button
-	const makeNewAccount = () => {
-		setExistingEmail(false);
-		setErrorMessages([]);
-		setFirstStep(true);
-	};
-	
-	// Check name availability
-	useEffect(() => {
-		const checkAvailability = async () => {
-			if (accountName.length === 0) {
-				return;
-			} else {
-				try {
-					const available = await checkAccountAvailability(accountName);
-			
-					if (available) {
-						setNameAvailable(true);
-						setErrorMessages([]);
-					} else {
-						setNameAvailable(false);
-						setErrorMessages([]);
-					}
-				} catch (error) {
-					console.error("Error checking account availability:", error);
-					setErrorMessages([]);
-					addErrorMessage("- Internal server error while checking account availability. Please try again later.");
-					scrollToTop();
-				}
-			}
-		};
-		checkAvailability();
-	}, [accountName]);
+  // handle existing account button
+  const makeNewAccount = () => {
+    setExistingEmail(false);
+    setErrorMessages([]);
+    setFirstStep(true);
+  };
 
-	// check password criteria
-	const checkPassword = (
-		event: ChangeEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>
-	) => {
-		const enteredPassword = (event.target as HTMLInputElement).value;
+  // Check name availability
+  useEffect(() => {
+    const checkAvailability = async () => {
+      if (accountName.length === 0) {
+        return;
+      } else {
+        try {
+          const exists = await checkUsernameExists(accountName);
 
-		// Reset previous states
-		setPasswordError(false);
-		setPasswordWarning(false);
+          if (!exists) {
+            setNameAvailable(true);
+            setErrorMessages([]);
+          } else {
+            setNameAvailable(false);
+            setErrorMessages([]);
+          }
+        } catch (error) {
+          console.error('Error checking account availability:', error);
+          setErrorMessages([]);
+          addErrorMessage(
+            '- Internal server error while checking account availability. Please try again later.',
+          );
+          scrollToTop();
+        }
+      }
+    };
+    checkAvailability();
+  }, [accountName]);
 
-		if (0 === enteredPassword.length) {
-			setPasswordError(false);
-		} else if (enteredPassword.length < 8  && 0 < enteredPassword.length) {
-			setPasswordError(true);
-		} else {
-			// Check for more complex password criteria
-			if (
-				!/\d/.test(enteredPassword) ||
-				!/[a-zA-Z]/.test(enteredPassword) ||
-				!/[!@#$%^&*(),.?":{}|<>]/.test(enteredPassword)
-			) {
-				setPasswordWarning(true);
-			}
-		}
-	};
+  // check password criteria
+  const checkPassword = (
+    event: ChangeEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>,
+  ) => {
+    const enteredPassword = (event.target as HTMLInputElement).value;
 
-	// chack password confirmation matching
-	useEffect(() => {
-		const confirmPasswordCheck = () => {
-			if (confirmPassword.length === 0) {
-				setNoMatch(false);
-			} else {
-				setNoMatch(password !== confirmPassword);
-			}
-		};
-		confirmPasswordCheck();
-	}, [confirmPassword, password]);
+    // Reset previous states
+    setPasswordError(false);
+    setPasswordWarning(false);
 
-	// submit first form
-	const createAccount = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setErrorMessages([]);
+    if (0 === enteredPassword.length) {
+      setPasswordError(false);
+    } else if (enteredPassword.length < 8 && 0 < enteredPassword.length) {
+      setPasswordError(true);
+    } else {
+      // Check for more complex password criteria
+      if (
+        !/\d/.test(enteredPassword) ||
+        !/[a-zA-Z]/.test(enteredPassword) ||
+        !/[!@#$%^&*(),.?":{}|<>]/.test(enteredPassword)
+      ) {
+        setPasswordWarning(true);
+      }
+    }
+  };
 
-		const formData = {
-			email,
-			country: selectedCountry,
-		};
+  // chack password confirmation matching
+  useEffect(() => {
+    const confirmPasswordCheck = () => {
+      if (confirmPassword.length === 0) {
+        setNoMatch(false);
+      } else {
+        setNoMatch(password !== confirmPassword);
+      }
+    };
+    confirmPasswordCheck();
+  }, [confirmPassword, password]);
 
-		// Display the verification modal
-		setShowVerificationModal(true);
-		const verificationStartTime = Date.now();
+  // first step
+  const firstStepForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessages([]);
 
-		// Function to close the modal and show an error if it takes too long
-		const closeVerificationModal = () => {
-			setShowVerificationModal(false);
-			console.error("Email verification took too long. Please try again later.");
-			addErrorMessage("- You've waited too long to verify your email. Please try creating your account and verifying your email again.");
-			scrollToTop();
-		};
+    // Check if reCAPTCHA is solved
+    if (!recaptchaValue) {
+      toast.error('reCAPTCHA not solved');
+      addErrorMessage(
+        '- You must verify your humanity before you can create a Red Steam account.',
+      );
+      scrollToTop();
+      return;
+    }
 
-		// Use recaptchaValue along with other form data for submission
-		if (recaptchaValue) {
-			try {
-				// Perform your form submission logic here
-				console.log("Form data:", formData);
+    // Move to next step
+    setFirstStep(false);
+  };
 
-				// Simulate the email verification process (replace this with actual logic)
-				const verificationResult = await simulateEmailVerification();
+  // submit second form
+  const submitSecondStep = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-				if (verificationResult === "success") {
-					console.log("Email verification successful!");
-
-					setShowVerificationModal(false);
-					setFirstStep(false);
-				} else {
-					// Verification failed
-					console.error("Email verification failed.");
-					addErrorMessage("- An error occurred while verifying your email, Please try again later.");
-					scrollToTop();
-				}
-			} catch (error) {
-				console.error("Error during form submission:", error);
-				addErrorMessage("- An error occurred while verifying your email, Please try again later.");
-				scrollToTop();
-			}
-		} else {
-			console.error("reCAPTCHA not solved");
-			addErrorMessage("- You must verify your humanity before you can create a Steam account.");
-			scrollToTop();
-		}
-
-		// Check if the modal has been open for too long
-		const verifyModalTimeout = 30 * 60 * 1000;
-		const elapsedTime = Date.now() - verificationStartTime;
-			
-		// Add a backend request for waiting time
-		try {
-			const waitingTime = await waitingTimeResponse();
-			
-			// Close the modal if either the waiting time has ended or the modal has been open for too long
-			if (waitingTime <= 0 || elapsedTime > verifyModalTimeout) {
-				closeVerificationModal();
-			}
-		} catch (error) {
-			console.error("Error fetching waiting time:", error);
-			addErrorMessage("- Internal server error while fetching waiting time, Please try again later.");
-			closeVerificationModal();
-		}
-	};
-
-	// Simulate email verification (replace this with actual logic)
-	const simulateEmailVerification = async (): Promise<"success" | "failure"> => {
-		// Simulate a delay for email verification
-		await new Promise((resolve) => setTimeout(resolve, 5000));
-
-		// Simulate a 50% chance of success
-		return Math.random() < 0.5 ? "success" : "failure";
-	};
-
-
-	// submit second form
-	const submitSecondStep = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		const secondStepFormData = {
-			accountName,
-			password,
-		};
-    
     try {
       // Perform your second-step account creation logic here
-      const { data , success, error } = await createAccountStep2(secondStepFormData);
+      const response = await registerUser(accountName, email, password, selectedCountry);
 
-      if (success) {
+      if (response.status === 201) {
         toast.success('Account created successfully!');
-        const { accessToken } = data;
 
-        // Authenticate the user
-        login(accessToken);
+        // Display the verification modal
+        setShowVerificationModal(true);
 
-        // Redirect the user to tags selection page
-        navigate('/user/tags');
-      } else {
-        console.error('Account creation failed:', error);
-        addErrorMessage('Account creation failed. Please try again.');
+        // Function to close the modal and show an error if it takes too long
+        const closeVerificationModal = () => {
+          setShowVerificationModal(false);
+          toast.error(
+            'Email verification took too long. Please try again later.',
+          );
+          setErrorMessages(
+            ["- You've waited too long to verify your email. Please try creating your account and verifying your email again."]
+          );
+          scrollToTop();
+        };
+
+        // Fetch waiting time from the backend
+        const waitingTime = await waitingTimeResponse();
+
+        const checkVerificationStatus = async () => {
+          try {
+            // Verify email
+            const verificationResult = await verificationStatus(email);
+
+            // If verification is successful, close the verification modal
+            if (verificationResult) {
+              clearInterval(intervalId);
+              toast.success('Email verification successful!');
+              setShowVerificationModal(false);
+              // Redirect the user to login page
+              navigate('/login');
+            }
+          } catch (error) {
+            // If verification fails, display an error message
+            console.error('Error during form submission:', error);
+            addErrorMessage(
+              '- An error occurred while verifying your email, Please try again later.',
+            );
+            scrollToTop();
+          }
+        };
+
+        // Periodically check verification status and waiting time
+        const intervalId = setInterval(checkVerificationStatus, 5000);
+
+        setTimeout(() => {
+          closeVerificationModal();
+          clearInterval(intervalId);
+        }, waitingTime);
       }
     } catch (error) {
       console.error('Error creating account:', error);
-      addErrorMessage('An error occurred while creating your account. Please try again later.');
+      addErrorMessage(
+        'An error occurred while creating your account. Please try again later.',
+      );
     }
-	};
+  };
 
-	return (
+  return (
     <>
       <Header />
       <div className="page-content-sign" style={{ width: '940px' }}>
@@ -436,6 +437,7 @@ const SignUp: FC = () => {
                           <input
                             type="text"
                             className="reenter-email"
+                            autoComplete=""
                             name="reenter-email"
                             id="reenter-email"
                             value={confirmedEmail}
@@ -482,16 +484,13 @@ const SignUp: FC = () => {
                             name="i-agree-check"
                             id="i-agree-check"
                           />
-                          &nbsp; I am 13 years of age or older and agree to the
-                          terms of the &nbsp;
-                          <a href="#" target="_blank">
-                            <s>Steam Subscriber Agreement</s>
-                          </a>
-                          &nbsp; and the &nbsp;
-                          <a href="#" target="_blank">
-                            <s>Valve Privacy Policy</s>
-                          </a>
-                          .
+                          &nbsp; By checking this box, I confirm that I
+                          understand this website is for educational purposes
+                          only. I certify that I have not provided any personal
+                          or sensitive information during registration and
+                          acknowledge that this site is not affiliated with the
+                          official Steam platform or its parent company, Valve
+                          Corporation.
                         </label>
                         <button className="joinsteam-btn" type="submit">
                           <span>Continue</span>
@@ -510,6 +509,7 @@ const SignUp: FC = () => {
                             maxLength={64}
                             id="accountname"
                             name="accountname"
+                            value={accountName}
                             onChange={e => setAccountName(e.target.value)}
                           />
                         </div>
@@ -551,6 +551,7 @@ const SignUp: FC = () => {
                             id="password"
                             name="password"
                             maxLength={64}
+                            value={password}
                             onChange={e => {
                               setPassword(e.target.value);
                               checkPassword(e);
@@ -637,11 +638,11 @@ const SignUp: FC = () => {
               <div className="use-existing-account">
                 <button
                   className="use-existing-btn"
-                  onClick={handleExistingBtn}
+                  onClick={() => navigate('/login')}
                 >
                   <span>Use existing account</span>
                 </button>
-                <a href="#">Recover my account</a>
+                <a href="/reset-password">Recover my account</a>
               </div>
               <div className="existingacc-ruler" />
               <div className="create-newaccount-instead">
@@ -654,7 +655,13 @@ const SignUp: FC = () => {
           )}
         </div>
       </div>
-      {showVerificationModal && <VerifyModal storedEmailAddress={email} />}
+      {showVerificationModal && (
+        <VerifyModal
+          storedEmailAddress={email}
+          setShowVerificationModal={setShowVerificationModal}
+          setFirstStep={setFirstStep}
+        />
+      )}
       <Footer />
     </>
   );

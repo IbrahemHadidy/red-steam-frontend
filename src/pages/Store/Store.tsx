@@ -20,6 +20,7 @@ const Store: FC = () => {
 	
 	useEffect(() => {
 		document.body.style.background = "url('/images/colored_body_top.png') center top no-repeat #1b2838"
+		document.title = "Welcome to Red Steam";
 	}, []);
 
 	return(

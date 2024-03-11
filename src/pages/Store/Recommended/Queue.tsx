@@ -17,7 +17,7 @@ const Queue: FC = () => {
 			<div className="home-contents">
 				<h2 className="main-btn-title">YOUR DISCOVERY QUEUE</h2>
 				<div className="static-queue">
-					<a className="static-queue-link" href="javascript:void(0)" onClick={() => {toast.info("Coming Soon!")}}>
+					<a className="static-queue-link" href="#" onClick={(e) => {e.preventDefault(); {toast.info("Coming Soon!")}}}>
 						{isViewport960 ? (
 							<div className="begin-explore-mobile">
 								<div className="begin-explore-mobile-btn">

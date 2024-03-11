@@ -1,0 +1,189 @@
+
+// Verification Modal
+.modal-overlay {
+	position: fixed;
+	background: #000000;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: block;
+	opacity: 0.8;
+	z-index: 1000;
+	overflow:visible;
+}
+.verify-modal {
+	display: block;
+	position: fixed;
+	z-index: 1001;
+	width: 816px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow:visible;
+	font-family: "Motiva Sans", Sans-serif;
+	font-weight: normal;
+	min-width: 500px;
+	background: radial-gradient(circle at top left, rgba(74, 81, 92, 0.4) 0%, rgba(75, 81, 92, 0) 60%), #25282e;
+	
+	@media screen and (max-width: 630px) {
+		width: 90% !important;
+		min-width: unset !important;
+	}
+
+	.top-bar {
+		width: 100%;
+		height: 1px;
+		background: linear-gradient(to right, #00ccff, #3366ff);
+	}
+	.title-container {
+		padding: 0px 0px 0px 0px;
+		text-align: left;
+		font-size: 22px;
+		font-weight: 700;
+		color: #ffffff;
+		letter-spacing: unset;
+		text-transform: unset;
+		flex-shrink: 0;
+
+		@media screen and (max-width: 630px) {
+			text-align: center;
+		}
+
+		.title {
+			padding: 32px 32px 0px 32px;
+			display: block;
+			word-spacing: 3px;
+
+			@media screen and (max-width: 630px) {
+				padding: 18px 15px 0px 15px;
+				margin: auto;
+			}
+		}
+	}
+	.content-border {
+		padding: 0 1px 1px 1px;
+		display: flex;
+
+		.content {
+			width: 100%;
+			overflow: auto;
+			word-wrap: break-word;
+			padding: 32px;
+			font-size: 14px;
+			color: #acb2b8;
+			position: relative;
+
+			@media screen and (max-width: 630px) {
+				padding: 15px;
+			}
+
+			.verify-dialog {
+				max-width: 750px; 
+
+				.verification-header {
+					background-color: rgba( 0, 0, 0, .3 );
+					padding: 30px;
+					text-align: center;
+					font-size: 16px;
+					margin-bottom: 10px;
+
+					.verification-subheader {
+						color: #ffffff;
+						text-align: center;
+						margin: 0 10% 20px 10%;
+					}
+
+					.loadding-wrapper {
+						position: relative;
+						margin: auto auto;
+						vertical-align: middle;
+
+						.throbber {
+							margin: 0px auto 40px auto;
+							width: 64px;
+							height: 64px;
+
+							div {
+								width: 12px;
+								height: 68px;
+								margin-right: -2px;
+								float: left;
+							}
+						}
+
+						.loading-text {
+							color: #60acde;
+							font-size: 22px;
+							text-align: center;
+						}
+					}
+				}
+			}
+			.verification-missing {
+				display: flex;
+				justify-content: center;
+				text-align: center;
+				flex-flow: wrap;
+
+				.email-missing {
+					width: 100%;
+				}
+				.expand-btn {
+					border-radius: 2px;
+					border: none;
+					padding: 1px;
+					display: inline-block;
+					cursor: pointer;
+					text-decoration: none !important;
+					color: #dfe3e6;
+					background: transparent;
+					margin: 10px 0 20px 0;
+
+					span {
+						padding: 0 15px;
+						font-size: 15px;
+						line-height: 30px;
+						border-radius: 2px;
+						display: block;
+						background: linear-gradient( to right, #32363f 5%, #32363f 95%);
+						box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+						transition: all 0.2s ease-out;
+						i {
+							display: inline-block;
+							width: 16px;
+							height: 16px;
+							background: url("/images/icons_16.png");
+							margin: -2px 0;
+							background-position: -48px -16px;
+
+							&.flipped {
+								transition: transform 0.5s ease;
+								transform: rotateX(180deg);
+							}
+						}
+					}
+					
+				}
+			}
+			.verification-troubleshooting {
+				font-size: 14px;
+				overflow: hidden;
+
+				ul {
+					padding-left: 0;
+					margin: 10px 0;
+
+					li {
+						margin: 10px 16px !important;
+						list-style-type: decimal;
+					}
+				}
+				.change-email {
+					cursor: pointer;
+					text-decoration: underline;
+				}    
+			}
+		}
+	}
+}

@@ -16,25 +16,31 @@ import DeletePhoneModal from './DeletePhoneModal';
 import ChangeModal from './ChangeModal';
 import { toast } from 'react-toastify';
 import { AuthContext } from 'contexts/AuthContext';
-import { checkAccountAvailability } from 'services/authentication';
-import { changeUserAvatar, changeUserName } from 'services/userSettings';
-import { fetchUserCountry } from 'services/countryCode';
+import {
+  changeCountry,
+  changeUserName,
+  checkUsernameExists,
+} from 'services/user/auth';
+import { changeUserAvatar, deleteUserAvatar } from 'services/user/fileUpload';
 import { countries } from 'services/countries';
 import './UserSettings.scss';
 
 const UserSettings: FC = () => {
-  const { userData } = useContext(AuthContext);
+  const { userData, fetchData } = useContext(AuthContext);
   const [accountName, setAccountName] = useState('');
+  const [password, setPassword] = useState('');
   const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
-  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
   const [isDeletePhoneModalOpen, setIsDeletePhoneModalOpen] = useState(false);
   const [nameAvailable, setNameAvailable] = useState(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(
+    userData?.profilePicture || null,
+  );
   const [selectedCountry, setSelectedCountry] = useState('PS');
   const [modalType, setModalType] = useState('');
 
-  const submitUsernameRef = useRef<HTMLButtonElement>(null);
   const submitAvatarRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -43,14 +49,12 @@ const UserSettings: FC = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const country = await fetchUserCountry();
-      if (country) {
-        setSelectedCountry(country);
-      }
-    };
     fetchData();
-  }, []);
+  }, [fetchData]);
+
+  useEffect(() => {
+    userData && setSelectedCountry(userData.country);
+  }, [userData]);
 
   const openDeleteModal = () => {
     setIsDeleteAccountModalOpen(true);
@@ -59,12 +63,12 @@ const UserSettings: FC = () => {
 
   const openDeletePhoneModal = () => {
     setIsDeletePhoneModalOpen(true);
-  }
+  };
 
   const closeDeletePhoneModal = () => {
     setIsDeletePhoneModalOpen(false);
-  }
- 
+  };
+
   const closeDeleteModal = () => {
     setIsDeleteAccountModalOpen(false);
     document.body.style.overflow = 'unset';
@@ -87,7 +91,9 @@ const UserSettings: FC = () => {
 
     if (formName === 'usernameForm') {
       try {
-        await changeUserName(accountName);
+        if (userData?._id) {
+          await changeUserName(accountName, userData._id, password);
+        }
         toast.success('Username updated successfully');
       } catch (error) {
         console.error('Error updating username:', error);
@@ -97,8 +103,17 @@ const UserSettings: FC = () => {
       }
     } else if (formName === 'avatarForm') {
       if (avatarFile) {
-        await changeUserAvatar(avatarFile);
-        toast.success('Avatar updated successfully');
+        if (userData?._id) {
+          submitAvatarRef.current!.disabled = true;
+          const response = await changeUserAvatar(userData?._id, avatarFile);
+          if (response && response.success) {
+            fetchData();
+          }
+        } else {
+          toast.error(
+            'An error occurred while updating avatar. Please try again.',
+          );
+        }
       }
     }
   };
@@ -116,28 +131,31 @@ const UserSettings: FC = () => {
     }
   };
 
-  const handleAvatarDelete = () => {
+  const handleAvatarRemove = () => {
     setAvatarFile(null);
     setAvatarPreview(null);
     submitAvatarRef.current!.disabled = true;
+  };
+
+  const handleAvatarDelete = async () => {
+    if (userData?._id) {
+      await deleteUserAvatar(userData?._id);
+      setAvatarFile(null);
+      setAvatarPreview(null);
+      fetchData();
+    }
   };
 
   useEffect(() => {
     const checkAvailability = async () => {
       if (accountName.length === 0) {
         setNameAvailable(true);
-        if (submitUsernameRef.current) {
-          submitUsernameRef.current.disabled = true;
-        }
       } else {
         setNameAvailable(false);
         try {
-          if (submitUsernameRef.current) {
-            submitUsernameRef.current.disabled = false;
-          }
-          const available = await checkAccountAvailability(accountName);
+          const response = await checkUsernameExists(accountName);
 
-          if (available) {
+          if (!response) {
             setNameAvailable(true);
           } else {
             setNameAvailable(false);
@@ -151,9 +169,12 @@ const UserSettings: FC = () => {
   }, [accountName]);
 
   // handle country change
-  const onCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const onCountryChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
     setSelectedCountry(selectedValue);
+    if (userData?._id) {
+      await changeCountry(userData._id, selectedValue);
+    }
   };
 
   return (
@@ -163,7 +184,7 @@ const UserSettings: FC = () => {
         <div className="user-settings-header">
           <div className="setting-content">
             <h2 className="user-name-header">{userData?.username}'S ACCOUNT</h2>
-            <p className="user-id-header">STEAM ID: {userData?.userId}</p>
+            <p className="user-id-header">RED STEAM ID: {userData?._id}</p>
           </div>
         </div>
         <div className="user-settings-content setting-content">
@@ -182,6 +203,15 @@ const UserSettings: FC = () => {
             </p>
             <blockquote className="username-form">
               <form name="usernameForm" onSubmit={handleFormSubmit}>
+                <div className="settings-input">
+                  <input
+                    type="text"
+                    name="username"
+                    autoComplete="off"
+                    defaultValue={userData?.username}
+                    onChange={e => setAccountName(e.target.value)}
+                  />
+                </div>
                 {!nameAvailable ? (
                   <div
                     className="availability-container"
@@ -202,17 +232,15 @@ const UserSettings: FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <button ref={submitUsernameRef} type="submit" disabled>
-                    Save
-                  </button>
+                  <button type="submit">Save</button>
                 )}
                 <div className="settings-input">
                   <input
-                    type="text"
-                    name="username"
+                    type="password"
+                    name="password"
                     autoComplete="off"
-                    defaultValue={''}
-                    onChange={e => setAccountName(e.target.value)}
+                    placeholder="Enter your password"
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </div>
               </form>
@@ -245,7 +273,7 @@ const UserSettings: FC = () => {
                       Upload Avatar
                     </button>
                     <button
-                      onClick={handleAvatarDelete}
+                      onClick={handleAvatarRemove}
                       disabled={!avatarPreview}
                     >
                       Remove Avatar
@@ -254,6 +282,14 @@ const UserSettings: FC = () => {
                       Save Avatar
                     </button>
                   </div>
+                  <button
+                    className="delete-button"
+                    type="button"
+                    onClick={handleAvatarDelete}
+                    disabled={userData?.profilePicture === undefined}
+                  >
+                    Delete Current Avatar
+                  </button>
                 </div>
               </form>
             </div>
@@ -290,9 +326,7 @@ const UserSettings: FC = () => {
             <div style={{ padding: '10px 0' }}>
               <span className="account-manage-label">Email address:</span>
               &nbsp;
-              <span className="account-data-field">
-                {userData?.email}
-              </span>
+              <span className="account-data-field">{userData?.email}</span>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <a
                 onClick={e => {
@@ -306,10 +340,14 @@ const UserSettings: FC = () => {
             <div>
               <div className="phone-header-description">
                 <span className="account-manage-label">Phone:</span>&nbsp;
-                {userData?.phoneNumber && <img src="/images/icon_mobile.png" alt="" />}
+                {userData?.phoneNumber && (
+                  <img src="/images/icon_mobile.png" alt="" />
+                )}
                 &nbsp;
                 <span className="account-data-field">
-                  {userData?.phoneNumber ? `Ends in ${userData.phoneNumber}` : ''}
+                  {userData?.phoneNumber
+                    ? `Ends in ${userData.phoneNumber.substring(userData.phoneNumber.length - 2)}`
+                    : ''}
                 </span>
                 &nbsp;{userData?.phoneNumber && <>&nbsp;&nbsp;&nbsp;</>}
                 <a

@@ -2,7 +2,7 @@ import './LoadingPage.scss';
 
 const LoadingPage = () => {
   return (
-    <div className="loading-container">
+    <div className="page-loading-container">
       <div className="img-container">
         <img
           className="loading-logo"

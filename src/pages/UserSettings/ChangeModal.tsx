@@ -1,9 +1,8 @@
-import { FC, useState } from 'react';
-import {
-  changeEmail,
-  changePhone,
-  changePassword,
-} from 'services/userSettings';
+import { AuthContext } from 'contexts/AuthContext';
+import { FC, useContext, useState } from 'react';
+import { changeEmail } from 'services/user/auth';
+import { changePassword } from 'services/user/password';
+import { changePhoneNumber } from 'services/user/phone';
 import {
   validateEmail,
   validatePassword,
@@ -14,6 +13,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
   onClose,
   type,
 }) => {
+  const { userData, fetchData } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -39,7 +39,15 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
       }
     } else {
       // Second step: change email
-      await changeEmail(currentPassword, email, onClose, setErrorMessage);
+      userData &&
+        (await changeEmail(
+          userData?._id,
+          currentPassword,
+          email,
+          onClose,
+          setErrorMessage,
+        ));
+      fetchData();
     }
   };
 
@@ -54,18 +62,22 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
       }
     } else {
       // Second step: change phone
-      await changePhone(currentPassword, phone, onClose, setErrorMessage);
+      userData && (await changePhoneNumber(userData._id, phone));
+      fetchData();
     }
   };
 
   const handlePasswordChange = async () => {
     if (isNewPasswordValid && isNewPasswordConfirmed) {
-      await changePassword(
-        currentPassword,
-        newPassword,
-        onClose,
-        setErrorMessage,
-      );
+      userData &&
+        (await changePassword(
+          userData?._id,
+          currentPassword,
+          newPassword,
+          onClose,
+          setErrorMessage,
+        ));
+      fetchData();
       setErrorMessage('');
     } else {
       setErrorMessage(

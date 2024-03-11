@@ -1,9 +1,11 @@
-import { FC } from 'react';
-import { deletePhone } from 'services/userSettings';
+import { AuthContext } from 'contexts/AuthContext';
+import { FC, useContext } from 'react';
+import { removePhoneNumber } from 'services/user/phone';
 
 const DeletePhoneModal: FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { userData } = useContext(AuthContext);
   const handleDelete = async () => {
-    await deletePhone(onClose);
+    userData && await removePhoneNumber(userData._id, onClose);
   };
 
   return (

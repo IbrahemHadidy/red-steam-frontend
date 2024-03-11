@@ -1,7 +1,8 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { AuthContext } from 'contexts/AuthContext';
 import useResponsiveViewports from 'hooks/useResponsiveViewports';
-import { handleDeleteWishlistItem } from 'services/userSettings';
+import { toast } from 'react-toastify';
+import { removeFromWishlist } from 'services/user/userInteractions';
 import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 import './Wishlist.scss';
@@ -16,9 +17,15 @@ const Wishlist: FC = () => {
     document.title = `${userData?.username}'s wishlist`;
   }, [userData?.username]);
 
-  const handleDelete = async (id: string, userId: number) => {
-    await handleDeleteWishlistItem(id, userId);
-  }
+  const handleDelete = async (userId: string, itemId: string) => {
+    const response = await removeFromWishlist(userId, itemId);
+    if (response.data.success) {
+      toast.success('Item deleted successfully');
+      window.location.reload();
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
 
   return (
     <>
@@ -181,7 +188,12 @@ const Wishlist: FC = () => {
                         <div className="added-on">
                           {game.win}
                           &nbsp;&nbsp;
-                          <div className="delete" onClick={() => handleDelete(game.id, userData.userId)}>
+                          <div
+                            className="delete"
+                            onClick={() =>
+                              handleDelete(userData.userId, game.id)
+                            }
+                          >
                             remove
                           </div>
                         </div>

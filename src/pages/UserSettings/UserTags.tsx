@@ -1,40 +1,41 @@
-import { FC, SetStateAction, useEffect, useState } from 'react';
+import { FC,  useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useResponsiveViewports from 'hooks/useResponsiveViewports';
-import { submitSelectedUserTagsToBackend, fetchUserTagsFromBackend } from 'services/tags';
+import { changeTags } from 'services/user/userInteractions';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
 import './UserTags.scss';
+import { AuthContext } from 'contexts/AuthContext';
 
 const UserTags: FC = () => {
+  const navigate = useNavigate();
+  const { userData, fetchData } = useContext(AuthContext);
   const isViewport740 = useResponsiveViewports(740);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  // TODO: Delete the demo tags
-  const [initialTags, setInitialTags] = useState<string[]>([
-    'tag1',
-    'tag2',
-    'tag3',
-    'tag4',
-    'tag5',
-    'tag6',
-    'tag7',
-    'tag8',
-    'tag9',
-    'tag10',
-    'tag11',
-    'tag12',
-    'tag13',
-  ]);
+  const [initialTags, setInitialTags] = useState<string[]>([]);
 
-  // TODO: Import tags from backend database
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    if (userData && userData.tags.length < 3) {
+      toast.warn('Please add at least 3 tags to continue!');
+    }
+  }, [userData]);
+
   // Fetch tags from the backend when the component mounts
-  // useEffect(() => {
-  //   fetchUserTagsFromBackend().then(({ tags, selectedTags }) => {
-  //     setInitialTags(tags);
-  //     setSelectedTags(selectedTags);
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (userData) {
+      const { tags } = userData;
+      // TODO: Delete the demo tags and replace with tags from the backend
+      const initialTags = ["tag1", "tag2", "tag3", "tag4", "tag5"];
+      setInitialTags(initialTags);
+      setSelectedTags(tags);
+    }
+  }, [userData]);
 
   // Sort tags function
   const sortTags = (tags: string[]) => {
@@ -78,10 +79,10 @@ const UserTags: FC = () => {
   const handleSubmit = () => {
     if (selectedTags.length >= 3) {
       // If at least 3 tags are selected, proceed with further actions
-      // For example, you might want to save the selected tags to the user's profile
-      submitSelectedUserTagsToBackend(selectedTags);
+      if (!userData) return toast.warn('User data not found.');
+      changeTags( userData?._id, selectedTags);
       console.log('Selected Tags:', selectedTags);
-      // Redirect the user to the next step or page
+      navigate('/');
     } else {
       // If less than 3 tags are selected, display a message to the user
       toast.warn('Please select at least 3 tags to continue.');

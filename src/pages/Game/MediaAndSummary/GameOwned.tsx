@@ -34,7 +34,7 @@ export const GameOwned: FC<{ game: gamesData }> = ({ game }) => {
 							<h1>Write a review for {game.name}</h1>
 							<p> Please describe what you liked or disliked about this game and whether you recommend it to others.<br/>Please remember to be polite and follow the <a href="">Rules and Guidelines</a>. </p>
 							<div className="formatting-help">
-								<a href="javascript:void(0)" onClick={() => window.open('https://www.w3schools.com/html/html_formatting.asp', 'formattinghelp', 'height=640,width=640,resize=yes,scrollbars=yes')}>Formatting help</a>
+								<a href="#" onClick={(e) => {e.preventDefault(); window.open('https://www.w3schools.com/html/html_formatting.asp', 'formattinghelp', 'height=640,width=640,resize=yes,scrollbars=yes')}}>Formatting help</a>
 							</div>
 							<div className="avatar-block">
 								{/* TODO: logged in userId backend logic */}

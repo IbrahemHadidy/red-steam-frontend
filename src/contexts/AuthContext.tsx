@@ -1,131 +1,232 @@
 import {
   createContext,
   useState,
-  ReactNode,
   useEffect,
   useCallback,
+  ReactNode,
 } from 'react';
 import { toast } from 'react-toastify';
-import { gamesData } from 'services/gameData';
-const env = import.meta.env;
-
-interface wishlist extends gamesData {
-  addedOn: string;
-}
+import {
+  loginUser,
+  logoutUser,
+  getUserData,
+  refreshToken,
+  autoLogin,
+  resendRegisterToken,
+  verificationStatus,
+  waitingTimeResponse,
+} from 'services/user/auth';
+import { VerifyModal } from 'pages/SignInUp/SignUpVerifyModal';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (token: string) => void;
+  login: (
+    identifier: string,
+    password: string,
+    rememberMe: boolean,
+    token: string,
+  ) => Promise<void>;
   logout: () => void;
   userData: UserData | null;
+  fetchData: () => void;
 }
 
 interface UserData {
-  userId: number;
+  _id: string;
   username: string;
   email: string;
   country: string;
-  tagsSelected: boolean;
-  wishList?: wishlist[];
-  tags?: string[];
   phoneNumber?: string;
   profilePicture?: string;
+  tags: string[];
+  library?: string[];
+  cart?: string[];
+  wishlist?: {
+    item: string;
+    addedOn: Date;
+  }[];
+  isVerified: boolean;
+  isPhoneVerified?: boolean;
+  createdAt: Date;
 }
-
-// TODO: add check if the user is had selected the tags if not redirect to the tags selection page (the logic isn't necessarily in this file)
 
 export const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
-  login: () => {},
+  login: async () => {},
   logout: () => {},
   userData: null,
+  fetchData: () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); // set to false as default true only for testing
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    if (isLoggedIn) {
+      const userData = await getUserData();
+      setUserData(userData);
+    }
+  }, [isLoggedIn]);
+  
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, isLoggedIn]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    async function autoLoginUser() {
+      if (localStorage.getItem('refreshToken')) {
+        try {
+          const userData = await autoLogin();
+          setIsLoggedIn(true);
+          setUserData(userData);
+        } catch (error) {
+          console.error('Error auto-logging in:', error);
+          setIsLoggedIn(false);
+          setUserData(null);
+        }
+      }
+    }
+
+    autoLoginUser();
+  }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('userToken');
-    // setIsLoggedIn(false); // comment for testing
+    logoutUser();
+    setIsLoggedIn(false);
     setUserData(null);
-  }, [setIsLoggedIn]);
-
-  const fetchUserData = useCallback(
-    async (token: string) => {
-      try {
-        const response = await fetch(`${env.VITE_BACKEND_API_URL}/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        const userData = await response.json();
-        setUserData(userData);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        // Handle error, e.g., force logout
-        logout();
-        // Notify the user about data fetching error
-        alert('Error fetching user data. Please try again.');
-      }
-    },
-    [logout],
-  );
+    window.location.href = '/';
+    sessionStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }, []);
 
   const login = useCallback(
-    (token: string) => {
-      localStorage.setItem('userToken', token);
-      setIsLoggedIn(true);
-      fetchUserData(token);
+    async (identifier: string, password: string, rememberMe: boolean) => {
+      try {
+        const userData = await loginUser(identifier, password, rememberMe);
+        setIsLoggedIn(true);
+        setUserData(userData);
+      } catch (error) {
+        setIsLoggedIn(false);
+        setUserData(null);
+        console.error('Error during login:', error);
+        toast.error('Failed to log in. Please try again.');
+      }
     },
-    [fetchUserData],
+    [setIsLoggedIn, setUserData],
   );
 
-  // TODO: token validation should be in backend
+  const refreshAccessToken = useCallback(async () => {
+    try {
+      const refreshedUserData = await refreshToken();
+      setUserData(prevUserData => ({
+        ...prevUserData,
+        ...refreshedUserData,
+      }));
+    } catch (error) {
+      console.error('Error refreshing access token:', error);
+      toast.error('Failed to refresh access token. Please log in again.');
+      logout();
+    }
+  }, [setUserData, logout]);
+
   useEffect(() => {
-    const checkTokenValidity = async () => {
-      const storedToken = localStorage.getItem('userToken');
-      if (storedToken) {
-        try {
-          const { exp } = decodeToken(storedToken);
-          const currentTime = Math.floor(Date.now() / 1000);
-          if (exp && exp < currentTime) {
-            // Token is expired, perform logout
-            logout();
-            // Notify the user about session expiration
-            toast.warn('Your session has expired. Please log in again.');
-          } else {
-            // Token is valid, perform login with the token
-            login(storedToken);
-            toast.success('Login successful!');
-          }
-        } catch (error) {
-          console.error('Error decoding token:', error);
-          // Handle token decoding error, e.g., force logout
+    const storedToken = sessionStorage.getItem('accessToken');
+    if (storedToken) {
+      setIsLoggedIn(true);
+      getUserData()
+        .then(userData => setUserData(userData))
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+          toast.error('Failed to fetch user data. Please log in again.');
           logout();
-          // Notify the user about invalid token
-          toast.error('Invalid token. Please log in again.');
+        });
+
+      // Schedule token refresh every hour
+      const refreshInterval = setInterval(refreshAccessToken, 60 * 60 * 1000);
+
+      // Clear interval on component unmount
+      return () => clearInterval(refreshInterval);
+    }
+  }, [logout, refreshAccessToken]);
+
+  const checkVerificationStatus = useCallback(async () => {
+    userData && (await resendRegisterToken(userData.email));
+    setShowVerifyModal(true);
+    toast.warning('Please verify your account first.');
+    // Fetch waiting time from the backend
+    const waitingTime = await waitingTimeResponse();
+    const intervalCheckVerificationStatus = async () => {
+      try {
+        // Verify email
+        console.log(userData);
+        const verificationResult =
+          userData && (await verificationStatus(userData.email));
+
+        // If verification is successful, close the verification modal
+        if (verificationResult) {
+          clearInterval(intervalId);
+          toast.success('Email verification successful!');
+          setShowVerifyModal(false);
         }
-      } else {
-        // No token found in local storage, perform logout
-        logout();
+      } catch (error) {
+        // If verification fails, display an error message
+        console.error('Error during form submission:', error);
       }
     };
 
-    checkTokenValidity();
-  }, [login, logout]);
+    // Periodically check verification status and waiting time
+    const intervalId = setInterval(intervalCheckVerificationStatus, 5000);
+
+    setTimeout(() => {
+      setShowVerifyModal(false);
+      toast.error('Email verification took too long. Please try again later.');
+      clearInterval(intervalId);
+      logout();
+    }, waitingTime);
+  }, [logout, userData]);
+
+  // Check if selected tags are less than 3
+  useEffect(() => {
+    function checkVerifyAndTags() {
+      if (isLoggedIn && userData && !userData.isVerified) {
+        checkVerificationStatus();
+      } else if (
+        isLoggedIn &&
+        userData &&
+        !(window.location.pathname === '/user/tags')
+      ) {
+        const tags = userData.tags;
+        if (tags.length < 3) {
+          window.location.href = '/user/tags';
+        }
+      }
+    }
+
+    checkVerifyAndTags();
+  }, [checkVerificationStatus, isLoggedIn, userData]);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, userData }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, login, logout, userData, fetchData }}
+    >
       {children}
+      {isLoggedIn && userData && showVerifyModal && (
+        <VerifyModal
+          storedEmailAddress={userData.email}
+          setShowVerificationModal={setShowVerifyModal}
+          setFirstStep={() => {
+            logout();
+            setShowVerifyModal(false);
+            window.location.href = '/join';
+          }}
+        />
+      )}
     </AuthContext.Provider>
   );
 }
-
-const decodeToken = (token: string): { exp: number } => {
-  const decodedPayload = JSON.parse(atob(token.split('.')[1]));
-  return { exp: decodedPayload.exp };
-};
