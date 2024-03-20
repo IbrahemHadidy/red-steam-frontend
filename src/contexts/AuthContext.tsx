@@ -16,7 +16,7 @@ import {
   verificationStatus,
   waitingTimeResponse,
 } from 'services/user/auth';
-import { VerifyModal } from 'pages/SignInUp/SignUpVerifyModal';
+import { VerifyModal } from 'pages/Auth/SignUpVerifyModal';
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -65,11 +65,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchData = useCallback(async () => {
     if (isLoggedIn) {
-      const userData = await getUserData();
-      setUserData(userData);
+      if (localStorage.getItem('refreshToken')) {
+        const userData = await getUserData();
+        setUserData(userData);
+      }
     }
   }, [isLoggedIn]);
-  
+
   useEffect(() => {
     fetchData();
   }, [fetchData, isLoggedIn]);
@@ -78,29 +80,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     fetchData();
   }, [fetchData]);
 
-  useEffect(() => {
-    async function autoLoginUser() {
-      if (localStorage.getItem('refreshToken')) {
-        try {
-          const userData = await autoLogin();
-          setIsLoggedIn(true);
-          setUserData(userData);
-        } catch (error) {
-          console.error('Error auto-logging in:', error);
-          setIsLoggedIn(false);
-          setUserData(null);
-        }
-      }
-    }
-
-    autoLoginUser();
-  }, []);
-
   const logout = useCallback(() => {
     logoutUser();
     setIsLoggedIn(false);
     setUserData(null);
     window.location.href = '/';
+    sessionStorage.setItem('verificationInProgress', 'false');
     sessionStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }, []);
@@ -108,17 +93,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(
     async (identifier: string, password: string, rememberMe: boolean) => {
       try {
-        const userData = await loginUser(identifier, password, rememberMe);
-        setIsLoggedIn(true);
-        setUserData(userData);
+        const response = await loginUser(identifier, password, rememberMe);
+        const userData = response.data.userData;
+        if (response.status === 200) {
+          setIsLoggedIn(true);
+          setUserData(userData);
+        }
       } catch (error) {
         setIsLoggedIn(false);
         setUserData(null);
         console.error('Error during login:', error);
-        toast.error('Failed to log in. Please try again.');
       }
     },
-    [setIsLoggedIn, setUserData],
+    [setUserData],
   );
 
   const refreshAccessToken = useCallback(async () => {
@@ -134,6 +121,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout();
     }
   }, [setUserData, logout]);
+
+  useEffect(() => {
+    async function autoLoginUser() {
+      const storedToken = localStorage.getItem('refreshToken');
+      if (storedToken) {
+        try {
+          const userData = await autoLogin();
+          setIsLoggedIn(true);
+          setUserData(userData);
+          // Schedule token refresh every hour after successful auto-login
+          const refreshInterval = setInterval(
+            refreshAccessToken,
+            60 * 60 * 1000,
+          );
+          // Clear interval on component unmount
+          return () => clearInterval(refreshInterval);
+        } catch (error) {
+          console.error('Error auto-logging in:', error);
+          setIsLoggedIn(false);
+          setUserData(null);
+        }
+      }
+    }
+
+    autoLoginUser();
+  }, [refreshAccessToken]);
 
   useEffect(() => {
     const storedToken = sessionStorage.getItem('accessToken');
@@ -156,39 +169,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [logout, refreshAccessToken]);
 
   const checkVerificationStatus = useCallback(async () => {
-    userData && (await resendRegisterToken(userData.email));
-    setShowVerifyModal(true);
-    toast.warning('Please verify your account first.');
-    // Fetch waiting time from the backend
-    const waitingTime = await waitingTimeResponse();
-    const intervalCheckVerificationStatus = async () => {
-      try {
-        // Verify email
-        console.log(userData);
-        const verificationResult =
-          userData && (await verificationStatus(userData.email));
+    if (!sessionStorage.getItem('verificationInProgress')) {
+      sessionStorage.setItem('verificationInProgress', 'true');
+      userData && (await resendRegisterToken(userData.email));
+      setShowVerifyModal(true);
+      // Fetch waiting time from the backend
+      const waitingTime = await waitingTimeResponse();
+      const intervalCheckVerificationStatus = async () => {
+        try {
+          // Verify email
+          const verificationResult =
+            userData && (await verificationStatus(userData.email));
 
-        // If verification is successful, close the verification modal
-        if (verificationResult) {
-          clearInterval(intervalId);
-          toast.success('Email verification successful!');
-          setShowVerifyModal(false);
+          // If verification is successful, close the verification modal
+          if (verificationResult) {
+            clearInterval(intervalId);
+            setShowVerifyModal(false);
+            toast.success('Email verified successfully!');
+            setTimeout(() => {
+              window.location.href = '/user/tags';
+            });
+          }
+        } catch (error) {
+          // If verification fails, display an error message
+          console.error('Error during form submission:', error);
         }
-      } catch (error) {
-        // If verification fails, display an error message
-        console.error('Error during form submission:', error);
-      }
-    };
+      };
 
-    // Periodically check verification status and waiting time
-    const intervalId = setInterval(intervalCheckVerificationStatus, 5000);
+      // Periodically check verification status and waiting time
+      const intervalId = setInterval(intervalCheckVerificationStatus, 5000);
 
-    setTimeout(() => {
-      setShowVerifyModal(false);
-      toast.error('Email verification took too long. Please try again later.');
-      clearInterval(intervalId);
-      logout();
-    }, waitingTime);
+      setTimeout(() => {
+        setShowVerifyModal(false);
+        toast.error(
+          'Email verification took too long. Please try again later.',
+        );
+        clearInterval(intervalId);
+        logout();
+      }, waitingTime);
+    }
   }, [logout, userData]);
 
   // Check if selected tags are less than 3

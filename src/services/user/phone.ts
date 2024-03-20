@@ -15,7 +15,6 @@ axios.interceptors.response.use(
   },
 );
 
-
 export async function sendOTP(phoneNumber: string) {
   const url = `${env.VITE_BACKEND_API_URL}/api/user/phone/send-otp`;
   const data = { phoneNumber };
@@ -26,7 +25,7 @@ export async function sendOTP(phoneNumber: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error sending OTP:', error);
   }
 }
@@ -41,7 +40,7 @@ export async function resendOTP(phoneNumber: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error resending OTP:', error);
   }
 }
@@ -56,7 +55,7 @@ export async function verifyOTP(phoneNumber: string, otp: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error verifying OTP:', error);
   }
 }
@@ -74,7 +73,7 @@ export async function verifyVerificationCode(
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error verifying verification code:', error);
   }
 }
@@ -89,23 +88,22 @@ export async function changePhoneNumber(userId: string, phoneNumber: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error changing phone number:', error);
   }
 }
 
-export async function removePhoneNumber(userId: string, onClose: () => void) {
+export async function removePhoneNumber(userId: string) {
   const url = `${env.VITE_BACKEND_API_URL}/api/user/phone/remove-phone-number`;
   const data = { userId };
 
   try {
     const response = await axios.post(url, data);
     toast.success(response.data.message);
-    onClose();
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error removing phone number:', error);
   }
 }
@@ -120,7 +118,7 @@ export async function verifyPhoneNumber(phoneNumber: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error verifying phone number:', error);
   }
 }
@@ -135,7 +133,7 @@ export async function sendVerificationCode(phoneNumber: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');;
     console.error('Error sending verification code:', error);
   }
 }

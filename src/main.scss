@@ -64,6 +64,7 @@ body {
 		&:hover {
 			text-decoration: none;
 			color: #66c0f4;
+			cursor: pointer;
 		}
 	}
 }
@@ -296,6 +297,10 @@ body {
 
 				.addtocart-btn {
 					position: relative;
+
+					a:hover {
+						cursor: pointer;
+					}
 				}
 
 				.game-purchase-discount {

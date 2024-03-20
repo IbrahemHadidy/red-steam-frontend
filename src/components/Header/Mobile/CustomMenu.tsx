@@ -1,5 +1,5 @@
 import { FC, useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { useSpring, animated } from 'react-spring';
 import { AuthContext } from 'contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -12,7 +12,7 @@ interface MenuItem {
 }
 
 const SteamMenu: FC = () => {
-  const navigate = useNavigate();
+  const navigate = useSoftNavigate();
   const { userData, isLoggedIn } = useContext(AuthContext);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
@@ -122,7 +122,9 @@ const SteamMenu: FC = () => {
                   {submenu?.items.map(subMenuItem => (
                     <a
                       className="submenuitem"
-                      href={subMenuItem.link}
+                      onClick={e => {
+                        navigate(subMenuItem.link, e);
+                      }}
                       key={subMenuItem.id}
                     >
                       {subMenuItem.text}
@@ -179,7 +181,11 @@ const SteamMenu: FC = () => {
               <div className="responsive_menu_user_area">
                 <div className="responsive_menu_user_persona persona offline">
                   <div className="playerAvatar offline">
-                    <a href={`/user/${userData?._id}/`}>
+                    <a
+                      onClick={e => {
+                        navigate(`/user/${userData?._id}/`, e);
+                      }}
+                    >
                       <img
                         src={
                           userData?.profilePicture || '/images/default-pfp.png'
@@ -189,7 +195,9 @@ const SteamMenu: FC = () => {
                     </a>
                   </div>
                   <a
-                    href={`/user/${userData?._id}/`}
+                    onClick={e => {
+                      navigate(`/user/${userData?._id}/`, e);
+                    }}
                     data-miniprofile="216405522"
                   >
                     {userData?.username}
@@ -197,7 +205,12 @@ const SteamMenu: FC = () => {
                 </div>
                 <div className="responsive_menu_cartwallet_area persona offline">
                   <div className="responsive_menu_user_cart">
-                    <a href="/cart/">
+                    <a
+                      href="/cart"
+                      onClick={e => {
+                        navigate('/cart', e);
+                      }}
+                    >
                       Cart&nbsp;<b>({userData?.cart?.length || 0})</b>
                     </a>
                   </div>
@@ -257,7 +270,9 @@ const SteamMenu: FC = () => {
               <br />
               <span className="mainmenu_valve_links">
                 <a
-                  href={sharedData.privacyPolicy.link}
+                  onClick={e => {
+                    navigate(sharedData.privacyPolicy.link, e);
+                  }}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -265,7 +280,9 @@ const SteamMenu: FC = () => {
                 </a>
                 &nbsp;|&nbsp;
                 <a
-                  href={sharedData.legal.link}
+                  onClick={e => {
+                    navigate(sharedData.legal.link, e);
+                  }}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -273,7 +290,9 @@ const SteamMenu: FC = () => {
                 </a>
                 &nbsp;|&nbsp;
                 <a
-                  href={sharedData.steamSubscriberAgreement.link}
+                  onClick={e => {
+                    navigate(sharedData.steamSubscriberAgreement.link, e);
+                  }}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -281,7 +300,9 @@ const SteamMenu: FC = () => {
                 </a>
                 &nbsp;|&nbsp;
                 <a
-                  href={sharedData.refunds.link}
+                  onClick={e => {
+                    navigate(sharedData.refunds.link, e);
+                  }}
                   target="_blank"
                   rel="noreferrer"
                 >

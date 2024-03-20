@@ -1,11 +1,11 @@
 import { FC } from "react";
-import useResponsiveViewports from "hooks/useResponsiveViewports";
+import useResponsiveViewport from "hooks/useResponsiveViewport";
 import FeaturedDesktop from "./Desktop/FeaturedDesktop";
 import FeaturedMobile from "./Mobile/FeaturedMobile";
 import "./Featured.scss";
 
 const Featured: FC = () => {
-	const isViewport960 = useResponsiveViewports(960);
+	const isViewport960 = useResponsiveViewport(960);
 
 	return (
 		<div>

@@ -1,19 +1,21 @@
 import { FC, Suspense, lazy, useContext,  useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { AuthContext } from './contexts/AuthContext';
 import { toast } from 'react-toastify';
 import NotFound from 'components/NotFound/NotFound';
 import LoadingPage from './components/LoadingPage/LoadingPage';
-import Logout from './pages/SignInUp/Logout';
+import Logout from './pages/Auth/Logout'
 const Store = lazy(() => import('./pages/Store/Store'));
 const Game = lazy(() => import('./pages/Game/Game'));
 const SignInAndRecovery = lazy(
-  () => import('./pages/SignInUp/SignInAndRecovery'),
+  () => import('./pages/Auth/SignInAndRecovery'),
 );
-const SignUp = lazy(() => import('./pages/SignInUp/SignUp'));
+const SignUp = lazy(() => import('./pages/Auth/SignUp'));
 const UserSettings = lazy(() => import('./pages/UserSettings/UserSettings'));
 const UserTags = lazy(() => import('./pages/UserSettings/UserTags'));
-const Wishlist = lazy(() => import('pages/UserSettings/Wishlist'));
+const Wishlist = lazy(() => import('pages/Shop/Wishlist/Wishlist'));
+const Cart = lazy(() => import('pages/Shop/Cart/Cart'));
 const Search = lazy(() => import('./pages/Search/Search'));
 
 // import the necessary component styles by default
@@ -23,11 +25,10 @@ import './components/HoverSummary/HoverSummary.scss';
 
 // Redirect to home page if user is logged in
 const RedirectIfLoggedIn: FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
+  const navigate = useSoftNavigate();
 
   useEffect(() => {
     if (isLoggedIn) {
-      toast.warn('You are already logged in, redirecting to home page...');
       navigate('/');
     }
   }, [isLoggedIn, navigate]);
@@ -36,7 +37,7 @@ const RedirectIfLoggedIn: FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 };
 
 const RedirectIfNotLoggedIn: FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
+  const navigate = useSoftNavigate();
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -64,8 +65,10 @@ const App: FC = () => {
           <Route
             path="/join"
             element={
-              <><RedirectIfLoggedIn
-                isLoggedIn={isLoggedIn} /><SignUp /></>
+              <>
+                <RedirectIfLoggedIn isLoggedIn={isLoggedIn} />
+                <SignUp />
+              </>
             }
           />
 
@@ -73,17 +76,41 @@ const App: FC = () => {
           <Route
             path="/login"
             element={
-              <><RedirectIfLoggedIn
-                isLoggedIn={isLoggedIn} /><SignInAndRecovery /></>
+              <>
+                <RedirectIfLoggedIn isLoggedIn={isLoggedIn} />
+                <SignInAndRecovery />
+              </>
             }
           />
 
-          {/* Reset password route */}
+          {/* Forgot password/username route */}
+          <Route
+            path="/forgot-password"
+            element={
+              <>
+                <RedirectIfLoggedIn isLoggedIn={isLoggedIn} />
+                <SignInAndRecovery />
+              </>
+            }
+          />
+
+          {/* reset password route with token param */}
           <Route
             path="/reset-password"
             element={
-              <><RedirectIfLoggedIn
-                isLoggedIn={isLoggedIn} /><SignInAndRecovery /></>
+              <>
+                <RedirectIfLoggedIn isLoggedIn={isLoggedIn} />
+                <SignInAndRecovery />
+              </>
+            }
+          />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <>
+                <RedirectIfLoggedIn isLoggedIn={isLoggedIn} />
+                <SignInAndRecovery />
+              </>
             }
           />
 
@@ -94,8 +121,10 @@ const App: FC = () => {
           <Route
             path="/user/tags"
             element={
-              <><RedirectIfNotLoggedIn
-                isLoggedIn={isLoggedIn} /><UserTags /></>
+              <>
+                <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
+                <UserTags />
+              </>
             }
           />
 
@@ -104,8 +133,10 @@ const App: FC = () => {
           <Route
             path={'/user/settings'}
             element={
-              <><RedirectIfNotLoggedIn
-                isLoggedIn={isLoggedIn} /><UserSettings /></>
+              <>
+                <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
+                <UserSettings />
+              </>
             }
           />
 
@@ -113,8 +144,21 @@ const App: FC = () => {
           <Route
             path="/wishlist"
             element={
-              <><RedirectIfNotLoggedIn
-                isLoggedIn={isLoggedIn} /><Wishlist /></>
+              <>
+                <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
+                <Wishlist />
+              </>
+            }
+          />
+
+          {/* Cart route */}
+          <Route
+            path="/cart"
+            element={
+              <>
+                <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
+                <Cart />
+              </>
             }
           />
 
@@ -122,8 +166,7 @@ const App: FC = () => {
           <Route path="/search" element={<Search />} />
 
           {/* Catch-all route for any other routes */}
-          <Route path="*" element={<Navigate to="/notfound" />} />
-          <Route path="/notfound" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

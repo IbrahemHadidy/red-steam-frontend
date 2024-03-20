@@ -1,7 +1,7 @@
-import { FC,  useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useContext, useEffect, useState } from 'react';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { toast } from 'react-toastify';
-import useResponsiveViewports from 'hooks/useResponsiveViewports';
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
 import { changeTags } from 'services/user/userInteractions';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
@@ -9,29 +9,27 @@ import './UserTags.scss';
 import { AuthContext } from 'contexts/AuthContext';
 
 const UserTags: FC = () => {
-  const navigate = useNavigate();
-  const { userData, fetchData } = useContext(AuthContext);
-  const isViewport740 = useResponsiveViewports(740);
+  const navigate = useSoftNavigate();
+  const { userData } = useContext(AuthContext);
+  const isViewport740 = useResponsiveViewport(740);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [initialTags, setInitialTags] = useState<string[]>([]);
+  const [isUserDataFetched, setIsUserDataFetched] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  useEffect(() => {
-    if (userData && userData.tags.length < 3) {
+    if (!isUserDataFetched && userData && userData.tags.length < 3) {
       toast.warn('Please add at least 3 tags to continue!');
+      setIsUserDataFetched(true);
     }
-  }, [userData]);
+  }, [userData, isUserDataFetched]);
 
   // Fetch tags from the backend when the component mounts
   useEffect(() => {
     if (userData) {
       const { tags } = userData;
       // TODO: Delete the demo tags and replace with tags from the backend
-      const initialTags = ["tag1", "tag2", "tag3", "tag4", "tag5"];
+      const initialTags = ['tag1', 'tag2', 'tag3', 'tag4', 'tag5'];
       setInitialTags(initialTags);
       setSelectedTags(tags);
     }
@@ -80,8 +78,7 @@ const UserTags: FC = () => {
     if (selectedTags.length >= 3) {
       // If at least 3 tags are selected, proceed with further actions
       if (!userData) return toast.warn('User data not found.');
-      changeTags( userData?._id, selectedTags);
-      console.log('Selected Tags:', selectedTags);
+      changeTags(userData?._id, selectedTags);
       navigate('/');
     } else {
       // If less than 3 tags are selected, display a message to the user

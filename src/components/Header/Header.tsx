@@ -1,10 +1,10 @@
 import { FC } from "react";
 import DefaultDesktopComponent from "./Desktop/DefaultDesktopComponent";
 import CustomMobileComponent from "./Mobile/CustomMobileComponent";
-import useResponsiveViewports from "hooks/useResponsiveViewports";
+import useResponsiveViewport from "hooks/useResponsiveViewport";
 
 const Header: FC = () => {
-	const isViewport960  = useResponsiveViewports(960);
+	const isViewport960  = useResponsiveViewport(960);
 
 	return (
 		<div>

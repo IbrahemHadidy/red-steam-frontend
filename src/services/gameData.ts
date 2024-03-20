@@ -429,9 +429,7 @@ const gameData: gamesData[] = [
 				soundCard: "DirectX compatible sound card",
 			}
 		},
-		legal: `©2015 ZeniMax Media Inc. The Elder Scrolls® Online: Tamriel Unlimited™ developed by ZeniMax Online Studios LLC, a ZeniMax Media company. ZeniMax, The Elder Scrolls, ESO, ESO Plus, Tamriel Unlimited, Bethesda, Bethesda Softworks and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in the US and/or other countries. All Rights Reserved.
-		<br><br>
-		<a href="https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fbethesda.net%2Fdocument%2Fprivacy-policy" target="_blank" rel=" noopener">Privacy Policy</a>`,
+		legal: `©2015 ZeniMax Media Inc. The Elder Scrolls® Online: Tamriel Unlimited™ developed by ZeniMax Online Studios LLC, a ZeniMax Media company. ZeniMax, The Elder Scrolls, ESO, ESO Plus, Tamriel Unlimited, Bethesda, Bethesda Softworks and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in the US and/or other countries. All Rights Reserved.`,
 		reviews: [
 			{user:"ibrahim", type:"positive", date: "1/12/2022", content:"good game"},
 			{user:"Mazen", type:"positive", date: "2/12/2022", content:"good game"},
@@ -1608,17 +1606,17 @@ const gameData: gamesData[] = [
 		<br>
 		Explore and interact with a vibrant living world as you discover your own journey through it.
 		<br><br>
-		<strong>To learn more about Tower of Fantasy, go to <a href="https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Ftoweroffantasy-global.com" target="_blank" rel=" noopener">https://toweroffantasy-global.com</a> or check out our other official channels:</strong>
+		<strong>To learn more about Tower of Fantasy, go to <a href="https://toweroffantasy-global.com" target="_blank" rel=" noopener">https://toweroffantasy-global.com</a> or check out our other official channels:</strong>
 		<br>
-		Facebook: <a href="https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fwww.facebook.com%2FTower.of.Fantasy.Official" target="_blank" rel=" noopener">https://www.facebook.com/Tower.of.Fantasy.Official</a>
+		Facebook: <a href="https://www.facebook.com/Tower.of.Fantasy.Official" target="_blank" rel=" noopener">https://www.facebook.com/Tower.of.Fantasy.Official</a>
 		<br>
-		Instagram: <a href="https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fwww.instagram.com%2F%40toweroffantasy_official" target="_blank" rel=" noopener">https://www.instagram.com/@toweroffantasy_official</a>
+		Instagram: <a href="https://www.instagram.com/@toweroffantasy_official" target="_blank" rel=" noopener">https://www.instagram.com/@toweroffantasy_official</a>
 		<br>
 		Twitter: <a href="https://twitter.com/ToF_EN_Official" target="_blank" rel="">https://twitter.com/ToF_EN_Official</a>
 		<br>
 		YouTube: <a href="https://www.youtube.com/channel/UC1NbDLZjc41RQk-pV94mu_A/about" target="_blank" rel="">https://www.youtube.com/channel/UC1NbDLZjc41RQk-pV94mu_A/about</a>
 		<br>
-		Discord: <a href="https://steamcommunity.com/linkfilter/?u=https%3A%2F%2Fdiscord.gg%2FeDgkQJ4aYe" target="_blank" rel=" noopener">https://discord.gg/eDgkQJ4aYe</a>`,
+		Discord: <a href="https://discord.gg/eDgkQJ4aYe" target="_blank" rel=" noopener">https://discord.gg/eDgkQJ4aYe</a>`,
 		mature: false,
 		matureDescription: `<p>The developers describe the content like this:</p>
 		<p><i>

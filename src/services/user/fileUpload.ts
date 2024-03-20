@@ -35,10 +35,10 @@ export const changeUserAvatar = async (userId: string, avatarFile: File) => {
       toast.success(response.data.message);
     }
 
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error changing user avatar:', error);
     throw error;
   }
@@ -58,7 +58,7 @@ export const deleteUserAvatar = async (userId: string) => {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error deleting user avatar:', error);
   }
 };

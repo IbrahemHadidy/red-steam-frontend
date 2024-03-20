@@ -2,11 +2,11 @@ import { FC } from "react";
 import { RightContent } from "./RightContent";
 import { LeftContent } from "./LeftContent";
 import { gamesData } from "services/gameData";
-import useResponsiveViewports from "hooks/useResponsiveViewports";
+import useResponsiveViewport from "hooks/useResponsiveViewport";
 import "./GameContent.scss";
 
 const GameContent: FC<{ game: gamesData }> = ({ game }) => {
-	const isViewport630 = useResponsiveViewports(630);
+	const isViewport630 = useResponsiveViewport(630);
 
 	return (
 		<div className="page-content">

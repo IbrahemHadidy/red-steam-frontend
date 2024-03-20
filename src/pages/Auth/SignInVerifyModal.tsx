@@ -22,8 +22,6 @@ export const VerifyModal: FC<{ storedEmailAddress: string }> = ({
 	}, []); 
 
 	const divHeight = `${totalHeight + 24}px`;
-	console.log(divHeight);
-
 	const expandSpring = useSpring({
 		opacity: isExpanded ? 1 : 0,
 		height: isExpanded ? divHeight : "0",

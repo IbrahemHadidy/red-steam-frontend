@@ -141,6 +141,11 @@
 					padding-left: 0px;
     			mask-image: linear-gradient(to bottom, rgba(0,0,0,1)70%, rgba(0,0,0,0));
     			-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1)70%, rgba(0,0,0,0));
+
+					img {
+						width: -webkit-fill-available;
+						width: -moz-available;
+					}
 				}
 
 				.spotlight-content {

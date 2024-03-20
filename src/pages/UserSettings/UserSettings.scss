@@ -36,6 +36,14 @@
   .user-id-header {
     color: #808891;
     margin-bottom: 10px;
+
+    span {
+      color: #c0bebe;
+    }
+
+    a, a:hover {
+      color: #ffffff;
+    }
   }
 }
 
@@ -147,7 +155,7 @@
           font-size: 13px;
           box-shadow: none;
           background-color: transparent;
-          color: #476474;
+          color: #fff;
           margin-top: 2px;
           height: 25px;
           line-height: 25px;

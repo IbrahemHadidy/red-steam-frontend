@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { gamesData } from "services/gameData";
 
 
@@ -9,6 +10,7 @@ const TabContent: FC<{
 		seeMore: string;
 		onTabHover: (index: number | null) => void;
 	}> = ({ items, title, isOpened, seeMore, onTabHover }) => {
+		const navigate = useSoftNavigate();
 		const [focusedTab, setFocusedTab] = useState<number | null>(null);
 		const [hasHovered, setHasHovered] = useState(false);
 	
@@ -26,62 +28,81 @@ const TabContent: FC<{
 		};
 	
 		return (
-			<div
-				className={`content-list ${isOpened ? "opened-tab" : ""}`}
-				id={`tab-${title.toLowerCase().replace(/\s/g, "")}`}
-			>
-				<div className="tab-see-more">
-					See more:
-					<a className="btn-white-transparent" href={seeMore}>
-						<span>{title}</span>
-					</a>
-				</div>
-				{items.map((tabItem: gamesData, index) => (
-					<a
-						className={`tab-item ${index === focusedTab ? "focus" : ""}`}
-						href={`/game/${tabItem.id}`}
-						key={index}
-						onMouseEnter={() => handleMouseEnter(index)}
-					>
-						<div className="tab-item-cap">
-							<img
-								className="tab-item-cap-img"
-								src={tabItem.tabImage}
-								alt={tabItem.name}
-							/>
-						</div>
-						<div className="tab-item-discount">
-							{!tabItem.discount ? (
-								<div className="tab-final-price">{!tabItem.free && "$"}{tabItem.price}</div>
-							) : (
-								<>
-									<div className="discount-prices">
-										<div className="original-price">${tabItem.price}</div>
-										<div className="final-price">${tabItem.discountPrice}</div>
-									</div>
-									<div className="discount-percentage">
-										-{tabItem.discountPercentage}%
-									</div>
-								</>
-							)}
-						</div>
-						<div className="tab-item-content">
-							<div className="tab-item-name">{tabItem.name}</div>
-							<div className="tab-item-details">
-								<span className={tabItem.win || ""}></span>
-								<span className={tabItem.mac || ""}></span>
-								<div className="tab-item-top-tags">
-									<span className="tab-top-tag">{tabItem.tags[0]}</span>
-									<span className="tab-top-tag">{(tabItem.tags[1])&&", "}{tabItem.tags[1]}</span>
-									<span className="tab-top-tag">{(tabItem.tags[2])&&", "}{tabItem.tags[2]}</span>
-									<span className="tab-top-tag">{(tabItem.tags[3])&&", "}{tabItem.tags[3]}</span>
-								</div>
-							</div>
-						</div>
-					</a>
-				))}
-			</div>
-		);
+      <div
+        className={`content-list ${isOpened ? 'opened-tab' : ''}`}
+        id={`tab-${title.toLowerCase().replace(/\s/g, '')}`}
+      >
+        <div className="tab-see-more">
+          See more:
+          <a
+            className="btn-white-transparent"
+            onClick={e => {
+              navigate(seeMore, e);
+            }}
+          >
+            <span>{title}</span>
+          </a>
+        </div>
+        {items.map((tabItem: gamesData, index) => (
+          <a
+            className={`tab-item ${index === focusedTab ? 'focus' : ''}`}
+            onClick={e => {
+              navigate(`/game/${tabItem.id}`, e);
+            }}
+            key={index}
+            onMouseEnter={() => handleMouseEnter(index)}
+          >
+            <div className="tab-item-cap">
+              <img
+                className="tab-item-cap-img"
+                src={tabItem.tabImage}
+                alt={tabItem.name}
+              />
+            </div>
+            <div className="tab-item-discount">
+              {!tabItem.discount ? (
+                <div className="tab-final-price">
+                  {!tabItem.free && '$'}
+                  {tabItem.price}
+                </div>
+              ) : (
+                <>
+                  <div className="discount-prices">
+                    <div className="original-price">${tabItem.price}</div>
+                    <div className="final-price">${tabItem.discountPrice}</div>
+                  </div>
+                  <div className="discount-percentage">
+                    -{tabItem.discountPercentage}%
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="tab-item-content">
+              <div className="tab-item-name">{tabItem.name}</div>
+              <div className="tab-item-details">
+                <span className={tabItem.win || ''}></span>
+                <span className={tabItem.mac || ''}></span>
+                <div className="tab-item-top-tags">
+                  <span className="tab-top-tag">{tabItem.tags[0]}</span>
+                  <span className="tab-top-tag">
+                    {tabItem.tags[1] && ', '}
+                    {tabItem.tags[1]}
+                  </span>
+                  <span className="tab-top-tag">
+                    {tabItem.tags[2] && ', '}
+                    {tabItem.tags[2]}
+                  </span>
+                  <span className="tab-top-tag">
+                    {tabItem.tags[3] && ', '}
+                    {tabItem.tags[3]}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    );
 	};
 
 export default TabContent;

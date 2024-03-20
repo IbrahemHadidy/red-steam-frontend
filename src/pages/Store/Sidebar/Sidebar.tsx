@@ -6,6 +6,7 @@
 import { FC, useContext } from "react";
 import { Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { AuthContext } from 'contexts/AuthContext';
 import "./Sidebar.scss";
 
@@ -92,58 +93,63 @@ const Sidebar: FC = () => {
 	];
 
 	return (
-		<div className="fixed-sidebar">
-			<Nav className="sidebar">
-				{/* Steam Gift Cards section */}
-				<div>
-					<a
-						className="item"
-						href="/digitalgiftcards/"
-					>
-						<div className="gift-card">
-							<img
-								className="image"
-								src="/images/steamcards_promo_03.png"
-								alt="Steam Gift Cards"
-							/>{" "}
-							<h6 className="gift-card-h6">Steam Gift Cards</h6>
-							<p className="gift-card-p">Give the Gift of Game</p>
-						</div>
-					</a>
-				</div>
+    <div className="fixed-sidebar">
+      <Nav className="sidebar">
+        {/* Steam Gift Cards section */}
+        <div>
+          <a
+            className="item"
+            onClick={e => {
+              e.preventDefault();
+              toast.info('Coming Soon!');
+            }}
+          >
+            <div className="gift-card">
+              <img
+                className="image"
+                src="/images/steamcards_promo_03.png"
+                alt="Steam Gift Cards"
+              />{' '}
+              <h6 className="gift-card-h6">Steam Gift Cards</h6>
+              <p className="gift-card-p">Give the Gift of Game</p>
+            </div>
+          </a>
+        </div>
 
-				{/* Recently Viewed section */}
-				<div className="recents" id="hom-elj">
-					<div className="header">Recently Viewed</div>
-					<div>{generateLinks(recentlyViewedLinks)}</div>
-				</div>
+        {/* Recently Viewed section */}
+        <div className="recents" id="hom-elj">
+          <div className="header">Recently Viewed</div>
+          <div>{generateLinks(recentlyViewedLinks)}</div>
+        </div>
 
-				{/* Your Tags section */}
-				{isLoggedIn && <div>
-					<div className="header tag">Your Tags</div>
-					<div>{generateLinks(tagsLinks)}</div>
-				</div> }
+        {/* Your Tags section */}
+        {isLoggedIn && (
+          <div>
+            <div className="header tag">Your Tags</div>
+            <div>{generateLinks(tagsLinks)}</div>
+          </div>
+        )}
 
-				{/* Recommended section */}
-				<div>
-					<div className="header">Recommended</div>
-					<div>{generateLinks(recommendedLinks)}</div>
-				</div>
+        {/* Recommended section */}
+        <div>
+          <div className="header">Recommended</div>
+          <div>{generateLinks(recommendedLinks)}</div>
+        </div>
 
-				{/* Browse Categories section */}
-				<div>
-					<div className="header">Browse Categories</div>
-					<div>{generateLinks(categoryLinks)}</div>
-				</div>
+        {/* Browse Categories section */}
+        <div>
+          <div className="header">Browse Categories</div>
+          <div>{generateLinks(categoryLinks)}</div>
+        </div>
 
-				{/* Browse by Genre section */}
-				<div>
-					<div className="header">Browse by genre</div>
-					{generateLinks(genreLinks)}
-				</div>
-			</Nav>
-		</div>
-	);
+        {/* Browse by Genre section */}
+        <div>
+          <div className="header">Browse by genre</div>
+          {generateLinks(genreLinks)}
+        </div>
+      </Nav>
+    </div>
+  );
 };
 
 export default Sidebar;

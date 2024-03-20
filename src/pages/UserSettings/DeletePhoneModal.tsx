@@ -3,9 +3,15 @@ import { FC, useContext } from 'react';
 import { removePhoneNumber } from 'services/user/phone';
 
 const DeletePhoneModal: FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { userData } = useContext(AuthContext);
+  const { userData, fetchData } = useContext(AuthContext);
   const handleDelete = async () => {
-    userData && await removePhoneNumber(userData._id, onClose);
+    if (userData) {
+      const response = await removePhoneNumber(userData._id);
+      if (response && response.status === 200) {
+        onClose();
+        fetchData();
+      }
+    }
   };
 
   return (

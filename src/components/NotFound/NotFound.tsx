@@ -1,26 +1,16 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
 import './NotFound.scss';
 
 const NotFound: FC = () => {
-  useEffect(() => {
-    const handleResize = () => {
-      document.body.style.overflow = 'hidden';
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
   
   return (
     <>
       <Header />
       <div className="not-found">
         <img
-          src="images/glitch-image.png"
+          src="/images/glitch-image.png"
           alt="Page Not Found"
           className="not-found-image"
         />

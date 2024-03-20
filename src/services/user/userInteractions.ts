@@ -29,18 +29,14 @@ export async function changeTags(userId: string, tags: string[]) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error changing tags:', error);
   }
 }
 
-export async function addToLibrary(
-  userId: string,
-  itemId: string,
-  password: string,
-) {
+export async function addToLibrary(userId: string, itemId: string) {
   const url = `${env.VITE_BACKEND_API_URL}/api/user/interaction/add-to-library`;
-  const data = { userId, itemId, password };
+  const data = { userId, itemId };
   const errorMessage = 'An error occurred. Please try again later.';
 
   try {
@@ -52,10 +48,10 @@ export async function addToLibrary(
     } else {
       toast.error(errorMessage);
     }
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error adding to library:', error);
   }
 }
@@ -74,10 +70,10 @@ export async function addToCart(userId: string, itemId: string) {
     } else {
       toast.error(errorMessage);
     }
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error adding to cart:', error);
   }
 }
@@ -90,17 +86,40 @@ export async function removeFromCart(userId: string, itemId: string) {
   try {
     const response = await axios.delete(url, { data });
     if (response.status === 200) {
-      toast.success(response.data.message);
+      return response;
     } else if (response.status === 400) {
       toast.warn(response.data.message);
     } else {
       toast.error(errorMessage);
     }
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error removing from cart:', error);
+  }
+}
+
+export async function clearCart(userId: string) {
+  const url = `${env.VITE_BACKEND_API_URL}/api/user/interaction/clear-cart`;
+  const data = { userId };
+  const errorMessage = 'An error occurred. Please try again later.';
+
+  try {
+    const response = await axios.delete(url, { data });
+    if (response.status === 200) {
+      return response;
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error(errorMessage);
+    }
+    return response;
+    return response;
+  } catch (error) {
+    // @ts-expect-error eslint-disable-next-line
+    toast.error(error.data.message || 'Internal Server Error');
+    console.error('Error removing all from cart:', error);
   }
 }
 
@@ -111,17 +130,15 @@ export async function addToWishlist(userId: string, itemId: string) {
 
   try {
     const response = await axios.post(url, data);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
+    if (response.status === 400) {
       toast.warn(response.data.message);
-    } else {
+    } else if (response.status !== 200) {
       toast.error(errorMessage);
     }
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error adding to wishlist:', error);
   }
 }
@@ -133,17 +150,17 @@ export async function removeFromWishlist(userId: string, itemId: string) {
 
   try {
     const response = await axios.delete(url, { data });
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
+    if (response.status === 400) {
       toast.warn(response.data.message);
-    } else {
+    } else if (response.data.message === 'Item not in wishlist') {
+      return response;
+    } else if (response.status !== 200) {
       toast.error(errorMessage);
     }
-    return response.data;
+    return response;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error removing from wishlist:', error);
   }
 }
@@ -154,13 +171,13 @@ export async function getCartItems(userId: string) {
 
   try {
     const response = await axios.get(url, { params: data });
-     if (response.status === 404) {
-       toast.info(response.data.message);
-     }
+    if (response.status === 404) {
+      toast.info(response.data.message);
+    }
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error fetching cart items:', error);
   }
 }
@@ -177,7 +194,7 @@ export async function getWishlistItems(userId: string) {
     return response.data;
   } catch (error) {
     // @ts-expect-error eslint-disable-next-line
-    toast.error(error.data.message);
+    toast.error(error.data.message || 'Internal Server Error');
     console.error('Error fetching wishlist items:', error);
   }
 }

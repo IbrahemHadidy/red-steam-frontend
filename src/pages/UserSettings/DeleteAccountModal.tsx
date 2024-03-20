@@ -3,14 +3,24 @@ import { AuthContext } from 'contexts/AuthContext';
 import { deleteAccount } from 'services/user/auth';
 
 const DeleteAccountModal: FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { userData } = useContext(AuthContext);
+  const { userData, logout } = useContext(AuthContext);
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const isPasswordValid = password.length >= 8;
 
   const handleDelete = async () => {
-    if (userData?.userId) {
-      await deleteAccount(userData?.userId, password, onClose, setErrorMessage);
+    if (userData?._id) {
+      const response = await deleteAccount(
+        userData?._id,
+        password,
+        setErrorMessage,
+      );
+
+      if (response && response.status === 200) {
+        onClose();
+        logout();
+      }
+      
     } else {
       setErrorMessage('Something went wrong. Please try again.');
     }

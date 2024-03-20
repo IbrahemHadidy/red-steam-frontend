@@ -592,6 +592,11 @@
 			font-family: "Motiva Sans", Sans-serif;
 			font-weight: normal;
 			cursor: pointer;
+
+			div {
+				user-select: none;
+				-webkit-user-select: none;
+			}
 		}
 
 		.filter-content {

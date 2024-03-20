@@ -32,10 +32,10 @@ class Auth {
       } else {
         sessionStorage.setItem('refreshToken', response.data.refreshToken);
       }
-      return response.data.userData;
+      return response;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error logging in:', error);
       throw error;
     }
@@ -54,7 +54,7 @@ class Auth {
       return response.data.userData;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error logging in:', error);
       throw error;
     }
@@ -74,7 +74,7 @@ class Auth {
       localStorage.removeItem('refreshToken');
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error logging out:', error);
       throw error;
     }
@@ -99,7 +99,7 @@ class Auth {
       return response;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error registering:', error);
       throw error;
     }
@@ -113,7 +113,7 @@ class Auth {
       return response.data.waitingTime;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error fetching waiting time:', error);
       throw error;
     }
@@ -128,7 +128,7 @@ class Auth {
       return response.data.verified;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error verifying:', error);
       throw error;
     }
@@ -143,7 +143,7 @@ class Auth {
       return response.data.message;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error resending register token:', error);
       throw error;
     }
@@ -160,7 +160,7 @@ class Auth {
       return response.data.userData;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error refreshing token:', error);
       throw error;
     }
@@ -174,7 +174,7 @@ class Auth {
       return response.data.exists;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error checking email exists:', error);
     }
   }
@@ -197,10 +197,14 @@ class Auth {
         `${env.VITE_BACKEND_API_URL}/api/user/auth/change-username`,
         { newUsername, userId, password },
       );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
       return response.data;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error changing user name:', error);
       throw error;
     }
@@ -208,6 +212,7 @@ class Auth {
 
   async changeEmail(
     userId: string,
+    currentEmail: string,
     password: string,
     newEmail: string,
     onClose: () => void,
@@ -216,17 +221,16 @@ class Auth {
     try {
       const response = await axios.post(
         `${env.VITE_BACKEND_API_URL}/api/user/auth/change-email`,
-        { userId, password, newEmail },
+        { userId, currentEmail, password, newEmail },
       );
 
       if (response.data.success) {
-        toast.success('Email changed successfully');
+        toast.success(response.data.message);
         onClose();
       }
-
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       // @ts-expect-error eslint-disable-next-line
       setErrorMessage(response.data.message);
       onClose();
@@ -240,10 +244,13 @@ class Auth {
         `${env.VITE_BACKEND_API_URL}/api/user/auth/change-country`,
         { userId, newCountry },
       );
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
       return response.data;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       console.error('Error changing country:', error);
       throw error;
     }
@@ -252,7 +259,6 @@ class Auth {
   async deleteAccount(
     userId: string,
     password: string,
-    onClose: () => void,
     setErrorMessage: (message: string) => void,
   ) {
     try {
@@ -262,13 +268,15 @@ class Auth {
       );
 
       if (response.data.success) {
-        toast.success('Account deleted successfully');
-        onClose();
+        toast.success(response.data.message);
+        sessionStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
       }
-      
+
+      return response;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      toast.error(error.data.message || 'Internal Server Error');
       // @ts-expect-error eslint-disable-next-line
       setErrorMessage(response.data.message);
       console.error('Error deleting account:', error);
@@ -289,7 +297,10 @@ class Auth {
       return response.data;
     } catch (error) {
       // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message);
+      if (error.response.message !== 'jwt expired') {
+        // @ts-expect-error eslint-disable-next-line
+        toast.error(error.data.message || 'Internal Server Error');
+      }
       console.error('Error getting user data:', error);
     }
   }

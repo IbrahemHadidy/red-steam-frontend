@@ -1,13 +1,15 @@
-import { FC, useContext } from "react";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { FC, useContext } from 'react';
+import useSoftNavigate from 'hooks/useSoftNavigate';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { AuthContext } from 'contexts/AuthContext';
-import ProfileDropdown from "./ProfileDropdown";
-import NavigationLinks from "./NavigationLinks";
-import { toast } from "react-toastify";
+import ProfileDropdown from './ProfileDropdown';
+import NavigationLinks from './NavigationLinks';
+import { toast } from 'react-toastify';
 
 const DefaultDesktopComponent: FC = () => {
+  const navigate = useSoftNavigate();
   const { isLoggedIn } = useContext(AuthContext);
-	return (
+  return (
     <div>
       <Navbar
         className="nav-color header-container"
@@ -59,15 +61,34 @@ const DefaultDesktopComponent: FC = () => {
               <ProfileDropdown />
             ) : (
               <div className="logging">
-                <a href="/login">login</a>
+                <a
+                  href="/login"
+                  onClick={e => {
+                    navigate('/login', e);
+                  }}
+                >
+                  login
+                </a>
                 &nbsp; | &nbsp;
-                <a href="/join">Sign Up</a>
+                <a
+                  href="/join"
+                  onClick={e => {
+                    navigate('/join', e);
+                  }}
+                >
+                  Sign Up
+                </a>
               </div>
             )}
           </Nav>
 
           {/* Brand/logo section */}
-          <Navbar.Brand href="/">
+          <Navbar.Brand
+            href="/"
+            onClick={e => {
+              navigate('/', e);
+            }}
+          >
             <img
               alt="Steam"
               src="/images/logo_steam.svg"

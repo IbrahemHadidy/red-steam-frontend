@@ -8,12 +8,12 @@ import { QueueArea } from "./QueueArea";
 import { GameOwned } from "./GameOwned";
 import { ScreenshotModal } from "./Screenshot";
 import gameData, { gamesData, MovieEntry } from "services/gameData";
-import useResponsiveViewports from "hooks/useResponsiveViewports";
+import useResponsiveViewport from "hooks/useResponsiveViewport";
 import "./MediaAndSummary.scss";
 import "./steamVideo.scss";
 
 const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
-	const isViewport630 = useResponsiveViewports(630);
+	const isViewport630 = useResponsiveViewport(630);
 	const [selectedItem, setSelectedItem] = useState<string | null>(null);
 	const [isAutoplay, setAutoplay] = useState<boolean>(true);
 	const [autoplayInitialized, setAutoplayInitialized] = useState(false);

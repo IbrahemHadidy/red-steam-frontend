@@ -1,6 +1,7 @@
 import { FC, Fragment } from "react";
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import Slider from "react-slick";
-import useResponsiveViewports from "hooks/useResponsiveViewports";
+import useResponsiveViewport from "hooks/useResponsiveViewport";
 import categories from "../../../services/categoryItems";
 import "./Categories.scss";
 
@@ -12,32 +13,37 @@ interface Category {
 }
 
 const Categories: FC = () => {
-	const isViewport960 = useResponsiveViewports(960);
+	const navigate = useSoftNavigate();
+	const isViewport960 = useResponsiveViewport(960);
 
 	const categoriesSettings = {
 		dots: true,
 		infinite: true,
 		speed: 500,
-		slidesToShow: 1,
-		slidesToScroll: 1,
 		autoplay: false,
 		fade: true,
 	};
 
 	const renderCategory = (category: Category, key: string) => (
-		<a className="category-item" href={category.link} key={key}>
-			<img src={category.img} alt={category.title} />
-			<div
-				className="category-gradient"
-				style={{
-					background: `linear-gradient(rgba(0,0,0,0), rgb(${category.gradRGP}) 100%)`,
-				}}
-			/>
-			<div className="category-label">
-				<span>{category.title}</span>
-			</div>
-		</a>
-	);
+    <a
+      className="category-item"
+      onClick={e => {
+        navigate(category.link, e);
+      }}
+      key={key}
+    >
+      <img src={category.img} alt={category.title} />
+      <div
+        className="category-gradient"
+        style={{
+          background: `linear-gradient(rgba(0,0,0,0), rgb(${category.gradRGP}) 100%)`,
+        }}
+      />
+      <div className="category-label">
+        <span>{category.title}</span>
+      </div>
+    </a>
+  );
 
 	const renderCategoryGroup = (categoryGroup: Category[], groupIndex: number) => (
 		<>

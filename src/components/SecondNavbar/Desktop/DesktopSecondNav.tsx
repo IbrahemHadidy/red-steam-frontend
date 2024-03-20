@@ -1,31 +1,38 @@
-import { FC, useContext, useState } from "react";
-import NavSearch from "../NavSearch";
-import { useSpring, animated, SpringValue } from "react-spring";
+import { FC, useContext, useEffect, useState } from 'react';
+import useSoftNavigate from 'hooks/useSoftNavigate';
+import { useSpring, animated, SpringValue } from 'react-spring';
 import { AuthContext } from 'contexts/AuthContext';
-import { menuData, navigationItems } from "services/menuData";
+import { menuData, navigationItems } from 'services/menuData';
+import NavSearch from '../NavSearch';
 
 type MenuItem = {
-	label: string;
-	url: string;
-	className: string;
-	category?: string;
-	specialClass?: string;
+  label: string;
+  url: string;
+  className: string;
+  category?: string;
+  specialClass?: string;
 };
 
 type GroupedMenuItem = {
-	menuTitle: string;
-	categoryGroups: Record<string, MenuItem[]>;
+  menuTitle: string;
+  categoryGroups: Record<string, MenuItem[]>;
 };
 
 const DesktopSecondNav: FC = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useSoftNavigate();
+  const { isLoggedIn, userData } = useContext(AuthContext);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  // TODO: Add real user image
-  const [imgSrc, setImgSrc] = useState('image_link');
-  const handleNoImage = (e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    setImgSrc('/images/default-pfp.png');
-  };
+  const [isSearchPage, setIsSearchPage] = useState(false);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes('/search')) {
+      setIsSearchPage(true);
+    } else {
+      setIsSearchPage(false);
+    }
+  }, []);
+  
 
   const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(
     ([menuTitle, menu]) => {
@@ -58,21 +65,52 @@ const DesktopSecondNav: FC = () => {
   return (
     <>
       <div className="d-none d-md-block mx-auto myNavSec">
-        {isLoggedIn && (
-          <div className="wishlist-Link-div">
-            <a className="wishlist-link" href="/wishlist">
-              Wishlist
-            </a>
-          </div>
-        )}
+        <div className="wishlist-cart-container">
+          {isLoggedIn && userData && userData?.wishlist && (
+            <div className="wishlist-Link-div">
+              <a
+                className="wishlist-link"
+                href="/wishlist"
+                onClick={e => {
+                  navigate('/wishlist', e);
+                }}
+              >
+                Wishlist&nbsp;
+                {userData.wishlist.length > 0 &&
+                  `(${userData?.wishlist?.length})`}
+              </a>
+            </div>
+          )}
+          {isLoggedIn && userData && userData?.cart && (
+            <div className="cart-Link-div">
+              <a
+                className="cart-link"
+                href="/cart"
+                onClick={e => {
+                  navigate('/cart', e);
+                }}
+              >
+                <img
+                  src="/images/cart.svg"
+                  alt="cart"
+                  style={{
+                    width: '15px',
+                    height: '15px',
+                    marginTop: '2.5px',
+                  }}
+                />
+                &nbsp;Cart&nbsp;
+                {userData.cart.length > 0 && `(${userData?.cart?.length})`}
+              </a>
+            </div>
+          )}
+        </div>
         <nav className="navbar navbar-expand-sm navbarBg">
           <ul className="navbar-nav">
-            {/* TODO: add real profile pictures from server */}
             {isLoggedIn && (
               <img
                 className="profile-picture"
-                src={imgSrc}
-				onError={handleNoImage}
+                src={userData?.profilePicture || '/images/default-pfp.png'}
                 alt="Avatar"
               />
             )}
@@ -89,7 +127,6 @@ const DesktopSecondNav: FC = () => {
                       ? 'special-class'
                       : ''
                   }`}
-                  href=""
                   data-toggle="dropdown"
                 >
                   {menuTitle}
@@ -115,7 +152,9 @@ const DesktopSecondNav: FC = () => {
                               <a
                                 key={itemIndex}
                                 className={`menuItem ${categoryItem.className}`}
-                                href={categoryItem.url}
+                                onClick={e => {
+                                  navigate(categoryItem.url, e);
+                                }}
                               >
                                 {categoryItem.label}
                               </a>
@@ -131,7 +170,13 @@ const DesktopSecondNav: FC = () => {
                       className="category-div store-div"
                       style={{ marginTop: '-10px' }}
                     >
-                      <a className="menuItem custom-label" href="/">
+                      <a
+                        className="menuItem custom-label"
+                        href="/"
+                        onClick={e => {
+                          navigate('/', e);
+                        }}
+                      >
                         Home
                       </a>
                     </div>
@@ -150,7 +195,9 @@ const DesktopSecondNav: FC = () => {
                                 className={`menuItem ${
                                   categoryItem.className
                                 } ${categoryItem.specialClass || ''}`}
-                                href={categoryItem.url}
+                                onClick={e => {
+                                  navigate(categoryItem.url, e);
+                                }}
                               >
                                 {categoryItem.label}
                               </a>
@@ -165,13 +212,19 @@ const DesktopSecondNav: FC = () => {
             ))}
 
             {navigationItems.map((item, index) => (
-              <a key={index} className="nav-link navBarItem" href={item.url}>
+              <a
+                key={index}
+                className="nav-link navBarItem"
+                onClick={e => {
+                  navigate(item.url, e);
+                }}
+              >
                 {item.label}
               </a>
             ))}
 
             <div className="before-search-space" />
-            <NavSearch />
+            {!isSearchPage && <NavSearch />}
           </ul>
         </nav>
       </div>

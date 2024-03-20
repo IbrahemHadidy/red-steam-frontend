@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useResponsiveViewports(width: number) {
+function useResponsiveViewport(width: number) {
   const [isViewport, setIsViewport] = useState(window.innerWidth <= width);
 
   useEffect(() => {
@@ -18,4 +18,4 @@ function useResponsiveViewports(width: number) {
   return isViewport;
 }
 
-export default useResponsiveViewports;
+export default useResponsiveViewport;

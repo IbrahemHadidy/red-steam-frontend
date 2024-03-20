@@ -27,6 +27,7 @@ import './UserSettings.scss';
 
 const UserSettings: FC = () => {
   const { userData, fetchData } = useContext(AuthContext);
+  const [showId, setShowId] = useState(false);
   const [accountName, setAccountName] = useState('');
   const [password, setPassword] = useState('');
   const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
@@ -43,6 +44,7 @@ const UserSettings: FC = () => {
 
   const submitAvatarRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const deleteAvatarRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     document.body.style.background = '#1b2838';
@@ -106,9 +108,7 @@ const UserSettings: FC = () => {
         if (userData?._id) {
           submitAvatarRef.current!.disabled = true;
           const response = await changeUserAvatar(userData?._id, avatarFile);
-          if (response && response.success) {
-            fetchData();
-          }
+          if (response && response.status === 200) fetchData();
         } else {
           toast.error(
             'An error occurred while updating avatar. Please try again.',
@@ -139,10 +139,16 @@ const UserSettings: FC = () => {
 
   const handleAvatarDelete = async () => {
     if (userData?._id) {
-      await deleteUserAvatar(userData?._id);
-      setAvatarFile(null);
-      setAvatarPreview(null);
-      fetchData();
+      try {
+        deleteAvatarRef.current!.disabled = true;
+        await deleteUserAvatar(userData?._id);
+        setAvatarFile(null);
+        setAvatarPreview(null);
+        fetchData();
+      } catch (error) {
+        console.error('Error deleting avatar:', error);
+        deleteAvatarRef.current!.disabled = false;
+      }
     }
   };
 
@@ -184,7 +190,21 @@ const UserSettings: FC = () => {
         <div className="user-settings-header">
           <div className="setting-content">
             <h2 className="user-name-header">{userData?.username}'S ACCOUNT</h2>
-            <p className="user-id-header">RED STEAM ID: {userData?._id}</p>
+            <p className="user-id-header">
+              RED STEAM ID:{' '}
+              {showId ? (
+                <>
+                  <span>{userData?._id}</span>
+                  <a onClick={() => setShowId(false)}>
+                    &nbsp;&nbsp;&nbsp;hide
+                  </a>
+                </>
+              ) : (
+                <a onClick={() => setShowId(true)}>
+                  show
+                </a>
+              )}
+            </p>
           </div>
         </div>
         <div className="user-settings-content setting-content">
@@ -285,6 +305,7 @@ const UserSettings: FC = () => {
                   <button
                     className="delete-button"
                     type="button"
+                    ref={deleteAvatarRef}
                     onClick={handleAvatarDelete}
                     disabled={userData?.profilePicture === undefined}
                   >

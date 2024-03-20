@@ -1,10 +1,12 @@
 import { FC, ReactNode, useState } from "react";
-import useResponsiveViewports from 'hooks/useResponsiveViewports';
+import useSoftNavigate from 'hooks/useSoftNavigate';
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
 import { ReviewEntry, gamesData } from "services/gameData";
 import TagsModal from "./TagsModal";
 
 export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }> = ({ game, isViewport630 }) => {  
-  const isViewport960 = useResponsiveViewports(960);
+  const navigate = useSoftNavigate();
+  const isViewport960 = useResponsiveViewport(960);
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => {
@@ -88,7 +90,7 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
         <div className="dev-publish">
           <div className="summary-subtitle">Publisher:</div>
           <div className="summary-column">
-            <a href={game.developer.link}>{game.publisher.name}</a>
+            <a href={game.publisher.link}>{game.publisher.name}</a>
           </div>
         </div>
       </div>
@@ -103,7 +105,9 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
                 <a
                   key={index}
                   className="game-tag"
-                  href={`/search?tags=${tag}`}
+                  onClick={e => {
+                    navigate(`/search?tags=${tag}`, e);
+                  }}
                 >
                   {tag}
                 </a>
@@ -117,7 +121,13 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
           </div>
         ) : (
           game.tags.map((tag, index) => (
-            <a key={index} className="game-tag" href={`/search?tags=${tag}`}>
+            <a
+              key={index}
+              className="game-tag"
+              onClick={e => {
+                navigate(`/search?tags=${tag}`, e);
+              }}
+            >
               {tag}
             </a>
           ))

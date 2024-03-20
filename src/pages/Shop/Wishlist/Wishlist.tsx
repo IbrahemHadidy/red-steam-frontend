@@ -1,27 +1,74 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { AuthContext } from 'contexts/AuthContext';
-import useResponsiveViewports from 'hooks/useResponsiveViewports';
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
 import { toast } from 'react-toastify';
-import { removeFromWishlist } from 'services/user/userInteractions';
-import Footer from 'components/Footer/Footer';
+import {
+  addToCart,
+  addToLibrary,
+  removeFromWishlist,
+} from 'services/user/userInteractions';
 import Header from 'components/Header/Header';
+import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
+import Footer from 'components/Footer/Footer';
+import gameData, { gamesData } from 'services/gameData';
 import './Wishlist.scss';
 
 const Wishlist: FC = () => {
-  const isViewport960 = useResponsiveViewports(960);
-  const { userData } = useContext(AuthContext);
+  const navigate = useSoftNavigate();
+  const isViewport960 = useResponsiveViewport(960);
+  const { userData, fetchData } = useContext(AuthContext);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [userWishlist, setUserWishlist] = useState<gamesData[]>([]);
 
   useEffect(() => {
     document.body.style.background = '#1b2838';
     document.title = `${userData?.username}'s wishlist`;
   }, [userData?.username]);
 
-  const handleDelete = async (userId: string, itemId: string) => {
+  const updateWishlist = useCallback(async () => {
+    setUserWishlist(
+      userData?.wishlist
+        ?.map(({ item }) => {
+          return gameData.find(game => game.id === item);
+        })
+        .filter((game): game is gamesData => game !== undefined) ?? [],
+    );
+  }, [userData?.wishlist]);
+
+  useEffect(() => {
+    if (userData) {
+      updateWishlist();
+    }
+  }, [updateWishlist, userData]);
+
+  const handleAddToCart = async (userId: string, itemId: string) => {
+    const response = await addToCart(userId, itemId);
+    const removed = await removeFromWishlist(userId, itemId);
+    if (response?.status === 200 && removed?.status === 200) {
+      fetchData();
+      toast.success('Added to cart!');
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
+
+  const handleAddToLibrary = async (userId: string, itemId: string) => {
+    const response = await addToLibrary(userId, itemId);
+    const removed = await removeFromWishlist(userId, itemId);
+    if (response?.status === 200 && removed?.status === 200) {
+      fetchData();
+      toast.success('Added to library!');
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
+
+  const handleRemove = async (userId: string, itemId: string) => {
     const response = await removeFromWishlist(userId, itemId);
-    if (response.data.success) {
-      toast.success('Item deleted successfully');
-      window.location.reload();
+    if (response?.status === 200) {
+      fetchData();
+      updateWishlist();
     } else {
       toast.error('An error occurred. Please try again later.');
     }
@@ -30,23 +77,25 @@ const Wishlist: FC = () => {
   return (
     <>
       <Header />
+      <SecondNavbar />
       <div className="page-content">
         <div className="wishlist-header">
           <img src={userData?.profilePicture || '/images/default-pfp.png'} />
           <h2>{userData?.username}'s wishlist</h2>
         </div>
-        {!userData || userData.wishList?.length === 0 ? (
+        {!userWishlist || userWishlist?.length === 0 ? (
           <div className="nothing-to-see">
             <h2>Oops, there's nothing to show here</h2>
             <p>There are no items on your wishlist.</p>
           </div>
         ) : (
-          userData.wishList?.map((game, index) => {
-            const positiveCount = game.reviews.filter(
+          userWishlist?.map((game, index) => {
+            const positiveCount = game?.reviews.filter(
               review => review.type === 'positive',
             ).length;
-            const totalReviews = game.reviews.length;
-            const positivePercentage = (positiveCount / totalReviews) * 100;
+            const totalReviews = game?.reviews.length;
+            const positivePercentage =
+              ((positiveCount || 0) / (totalReviews || 1)) * 100;
 
             return (
               <div key={index} className="wishlist-container">
@@ -54,16 +103,18 @@ const Wishlist: FC = () => {
                   {!isViewport960 && (
                     <a
                       className="capsule"
-                      href={`/game/${game.id}`}
+                      onClick={e => {
+                        navigate(`/game/${game?.id}`, e);
+                      }}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
                     >
-                      <img src={game.horizontalHeaderImage} />
+                      <img src={game?.horizontalHeaderImage} />
                       <div
                         className="screenshots"
                         style={{ opacity: hoveredIndex === index ? '1' : '0' }}
                       >
-                        {game.moviesAndImages
+                        {game?.moviesAndImages
                           .filter(
                             item => item.type === 'image' && item.featured,
                           )
@@ -77,9 +128,14 @@ const Wishlist: FC = () => {
                     </a>
                   )}
                   <div className="content">
-                    <a href={`/game/${game.id}`} className="wishlist-title">
+                    <a
+                      onClick={e => {
+                        navigate(`/game/${game?.id}`, e);
+                      }}
+                      className="wishlist-title"
+                    >
                       {' '}
-                      {game.name}{' '}
+                      {game?.name}{' '}
                     </a>
                     <div className="mid-container">
                       {!isViewport960 && (
@@ -115,24 +171,37 @@ const Wishlist: FC = () => {
                             &nbsp;
                           </div>
                           <div className="label">Release Date:</div>
-                          <div className="value">{game.releaseDate}</div>
+                          <div className="value">{game?.releaseDate}</div>
                         </div>
                       )}
                       <div className="purchase-container">
                         <div className="purchase-area">
-                          {!game.discount ? (
+                          {!game?.discount ? (
                             <>
                               <div className="game-purchase-action">
                                 <div className="game-purchase-action-background">
                                   <div className="game-purchase-price">
-                                    {game.free
+                                    {game?.free
                                       ? 'Free to Play'
-                                      : `${game.price} USD`}
+                                      : `${game?.price} USD`}
                                   </div>
                                   <div className="addtocart-btn">
-                                    <a href="" className="green-btn">
+                                    <a
+                                      className="green-btn"
+                                      onClick={() => {
+                                        game?.free
+                                          ? handleAddToLibrary(
+                                              userData?._id || '',
+                                              game?.id || '',
+                                            )
+                                          : handleAddToCart(
+                                              userData?._id || '',
+                                              game?.id || '',
+                                            );
+                                      }}
+                                    >
                                       <span className="medium-btn">
-                                        {game.free
+                                        {game?.free
                                           ? 'Add to Library'
                                           : 'Add to Cart'}
                                       </span>
@@ -147,19 +216,27 @@ const Wishlist: FC = () => {
                                 <div className="game-purchase-action-background">
                                   <div className="game-purchase-discount">
                                     <div className="discount-precentage">
-                                      -{game.discountPercentage}%
+                                      -{game?.discountPercentage}%
                                     </div>
                                     <div className="discount-prices">
                                       <div className="discount-original-price">
-                                        ${game.price}
+                                        ${game?.price}
                                       </div>
                                       <div className="discount-final-price">
-                                        ${game.discountPrice} USD
+                                        ${game?.discountPrice} USD
                                       </div>
                                     </div>
                                   </div>
                                   <div className="addtocart-btn">
-                                    <a href="" className="green-btn">
+                                    <a
+                                      className="green-btn"
+                                      onClick={() =>
+                                        handleAddToCart(
+                                          userData?._id || '',
+                                          game?.id || '',
+                                        )
+                                      }
+                                    >
                                       <span className="medium-btn">
                                         Add to Cart
                                       </span>
@@ -174,29 +251,42 @@ const Wishlist: FC = () => {
                     </div>
                     <div className="lower-container">
                       <div className="platform-icons">
-                        {game.win && <span className="platform-img win" />}
-                        {game.mac && <span className="platform-img mac" />}
+                        {game?.win && <span className="platform-img win" />}
+                        {game?.mac && <span className="platform-img mac" />}
                       </div>
                       <div className="lower-columns">
                         <div className="tags">
-                          {game.tags.map((tag, index) => (
+                          {game?.tags.map((tag, index) => (
                             <div key={index * 9999} className="tag">
                               {tag}
                             </div>
                           ))}
                         </div>
-                        <div className="added-on">
-                          {game.win}
-                          &nbsp;&nbsp;
-                          <div
-                            className="delete"
-                            onClick={() =>
-                              handleDelete(userData.userId, game.id)
-                            }
-                          >
-                            remove
+                        {userData?.wishlist &&
+                        userData?.wishlist[index] &&
+                        userData?.wishlist[index].addedOn ? (
+                          <div className="added-on">
+                            Added on&nbsp;
+                            {new Date(
+                              userData?.wishlist[index].addedOn,
+                            ).toLocaleDateString()}
+                            &nbsp;(&nbsp;
+                            <div
+                              className="delete"
+                              onClick={() =>
+                                handleRemove(
+                                  userData?._id || '',
+                                  game?.id || '',
+                                )
+                              }
+                            >
+                              remove
+                            </div>
+                            &nbsp;)
                           </div>
-                        </div>
+                        ) : (
+                          <div className="added-on">No date available</div>
+                        )}
                       </div>
                     </div>
                   </div>

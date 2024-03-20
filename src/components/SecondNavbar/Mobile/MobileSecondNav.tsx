@@ -1,64 +1,66 @@
-import { FC, useState, SetStateAction, useContext } from "react";
+import { FC, useState, SetStateAction, useContext, useEffect } from 'react';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { AuthContext } from 'contexts/AuthContext';
 import { menuData, navigationItems } from 'services/menuData-mobile';
-import NavSearch from "../NavSearch";
+import NavSearch from '../NavSearch';
 
 type MenuItem = {
-	label: string;
-	url: string;
-	className: string;
-	category?: string;
-	specialClass?: string;
+  label: string;
+  url: string;
+  className: string;
+  category?: string;
+  specialClass?: string;
 };
 
 type GroupedMenuItem = {
-	menuTitle: string;
-	categoryGroups: Record<string, MenuItem[]>;
+  menuTitle: string;
+  categoryGroups: Record<string, MenuItem[]>;
 };
 
 type menuTitle = string | SetStateAction<null>;
 
 const MobileSecondNav: FC = () => {
-  	const { isLoggedIn } = useContext(AuthContext);
-	const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
-	// TODO: Add real user image
-  	const [imgSrc, setImgSrc] = useState('image_link');
-	const handleNoImage = (e: { stopPropagation: () => void; }) => {
-  	  e.stopPropagation();
-  	  setImgSrc('/images/default-pfp.png');
-  	};
+  const navigate = useSoftNavigate();
+  const { isLoggedIn, userData } = useContext(AuthContext);
+  const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
+  const [isSearchPage, setIsSearchPage] = useState(false);
 
-	const handleMenuClick = (menuTitle: menuTitle) => {
-		if (openMenu === menuTitle) {
-			setOpenMenu(null); // Close the menu if it's already open
-		} else {
-			setOpenMenu(menuTitle); // Open the menu if it's closed
-		}
-	};
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes('/search')) {
+      setIsSearchPage(true);
+    } else {
+      setIsSearchPage(false);
+    }
+  }, []);
 
-	const preventDefault = (event: { preventDefault: () => void }) => {
-		event.preventDefault();
-	};
+  const handleMenuClick = (menuTitle: menuTitle) => {
+    if (openMenu === menuTitle) {
+      setOpenMenu(null); // Close the menu if it's already open
+    } else {
+      setOpenMenu(menuTitle); // Open the menu if it's closed
+    }
+  };
 
-	const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(
-		([menuTitle, menu]) => {
-			const items = menu.items;
-			const categoryGroups: Record<string, MenuItem[]> = {};
+  const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(
+    ([menuTitle, menu]) => {
+      const items = menu.items;
+      const categoryGroups: Record<string, MenuItem[]> = {};
 
-			items.forEach((item: MenuItem) => {
-				if (item.category) {
-					if (!categoryGroups[item.category]) {
-						categoryGroups[item.category] = [];
-					}
-					categoryGroups[item.category].push(item);
-				}
-			});
+      items.forEach((item: MenuItem) => {
+        if (item.category) {
+          if (!categoryGroups[item.category]) {
+            categoryGroups[item.category] = [];
+          }
+          categoryGroups[item.category].push(item);
+        }
+      });
 
-			return { menuTitle, categoryGroups };
-		}
-	);
+      return { menuTitle, categoryGroups };
+    },
+  );
 
-	return (
+  return (
     <div className="second-nav-mobile">
       <nav className="navbar navbar-expand-sm navbarBg-mobile">
         <div>
@@ -67,8 +69,7 @@ const MobileSecondNav: FC = () => {
             {isLoggedIn && (
               <img
                 className="profile_picture-mobile"
-                src={imgSrc}
-                onError={handleNoImage}
+                src={userData?.profilePicture || '/images/default-pfp.png'}
                 alt="Avatar"
               />
             )}
@@ -86,7 +87,6 @@ const MobileSecondNav: FC = () => {
                   {menuTitle}
                 </a>
                 {/* Conditionally render the dropdown menu based on the openMenu state */}
-                {/* TODO: render full your store links when logged in backend logic */}
                 {isLoggedIn && openMenu === 'Your Store' && (
                   <div
                     className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
@@ -101,7 +101,9 @@ const MobileSecondNav: FC = () => {
                             <a
                               key={itemIndex}
                               className={`menuItem ${categoryItem.className}`}
-                              href={categoryItem.url}
+                              onClick={e => {
+                                navigate(categoryItem.url, e);
+                              }}
                             >
                               {categoryItem.label}
                             </a>
@@ -119,7 +121,13 @@ const MobileSecondNav: FC = () => {
                       className="category-div store-div"
                       style={{ marginTop: '-10px' }}
                     >
-                      <a className="menuItem custom-label" href="#">
+                      <a
+                        className="menuItem custom-label"
+                        href="/"
+                        onClick={e => {
+                          navigate('/', e);
+                        }}
+                      >
                         Home
                       </a>
                     </div>
@@ -141,8 +149,9 @@ const MobileSecondNav: FC = () => {
                               className={`menuItem ${categoryItem.className} ${
                                 categoryItem.specialClass || ''
                               }`}
-                              href={categoryItem.url}
-                              onClick={preventDefault}
+                              onClick={e => {
+                                navigate(categoryItem.url, e);
+                              }}
                             >
                               {categoryItem.label}
                             </a>
@@ -163,7 +172,9 @@ const MobileSecondNav: FC = () => {
               <li className="nav-item navbar-nav-mobile">
                 <a
                   className="nav-link navBarItem navBarItem-mobile"
-                  href={item.url}
+                  onClick={e => {
+                    navigate(item.url, e);
+                  }}
                 >
                   {item.label}
                 </a>
@@ -171,7 +182,7 @@ const MobileSecondNav: FC = () => {
             </ul>
           </div>
         ))}
-        <NavSearch />
+        {!isSearchPage && <NavSearch />}
       </nav>
     </div>
   );

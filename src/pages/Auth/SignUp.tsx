@@ -7,7 +7,7 @@ import {
   FormEvent,
   useRef,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import { useSpring, animated } from 'react-spring';
 import {
   checkEmailExists,
@@ -20,7 +20,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import $ from 'tools/$selector';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
-import useResponsiveViewports from 'hooks/useResponsiveViewports';
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
 import {
   validateEmail,
   validateName,
@@ -35,8 +35,8 @@ import './SignInUp.scss';
 const env = import.meta.env;
 
 const SignUp: FC = () => {
-  const isViewport740 = useResponsiveViewports(740);
-  const navigate = useNavigate();
+  const isViewport740 = useResponsiveViewport(740);
+  const navigate = useSoftNavigate();
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [resetKey, setResetKey] = useState(0);
@@ -53,6 +53,7 @@ const SignUp: FC = () => {
   const [passwordWarning, setPasswordWarning] = useState(false);
   const [noMatch, setNoMatch] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const captchaRef = useRef<ReCAPTCHA | null>(null);
 
@@ -210,6 +211,7 @@ const SignUp: FC = () => {
     }
 
     try {
+      setIsSearching(true);
       const isExisting = await checkEmailExists(email);
 
       if (isExisting) {
@@ -614,7 +616,11 @@ const SignUp: FC = () => {
                       </div>
                       <div className="form-row" style={{ clear: 'left' }}>
                         <div className="submit-btn-container">
-                          <button className="joinsteam-btn" type="submit">
+                          <button
+                            className="joinsteam-btn"
+                            type="submit"
+                            disabled={isSearching}
+                          >
                             <span>Done</span>
                           </button>
                         </div>
@@ -642,13 +648,24 @@ const SignUp: FC = () => {
                 >
                   <span>Use existing account</span>
                 </button>
-                <a href="/reset-password">Recover my account</a>
+                <a
+                  href="/forgot-password"
+                  onClick={e => {
+                    navigate('/forgot-password', e);
+                  }}
+                >
+                  Recover my account
+                </a>
               </div>
               <div className="existingacc-ruler" />
               <div className="create-newaccount-instead">
                 If you prefer, you can make a new, separate Steam account.
               </div>
-              <button className="use-existing-btn" onClick={makeNewAccount}>
+              <button
+                className="use-existing-btn"
+                onClick={makeNewAccount}
+                disabled={isSearching}
+              >
                 <span>Continue</span>
               </button>
             </div>

@@ -80,15 +80,18 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const handleTimeUpdate: EventHandler<
     SyntheticEvent<HTMLVideoElement>
   > = () => {
-    const video = videoRef.current as HTMLVideoElement;
-    setCurrentTime(video.currentTime);
+    const video = videoRef.current as HTMLVideoElement | null;
 
-    // Calculate the playback progress percentage
-    const progressPercentage = (video.currentTime / video.duration) * 100;
+    if (video) {
+      setCurrentTime(video.currentTime);
 
-    // Update the video playback progress bar
-    if (videoProgressBarRef.current) {
-      videoProgressBarRef.current.value = progressPercentage.toString();
+      // Calculate the playback progress percentage
+      const progressPercentage = (video.currentTime / video.duration) * 100;
+
+      // Update the video playback progress bar
+      if (videoProgressBarRef.current) {
+        videoProgressBarRef.current.value = progressPercentage.toString();
+      }
     }
   };
 

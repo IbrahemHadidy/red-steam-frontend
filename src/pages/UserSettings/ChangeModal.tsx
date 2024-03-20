@@ -16,6 +16,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
   const { userData, fetchData } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [currentEmail, setCurrentEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -26,14 +27,19 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
   const isNewPasswordValid = validatePassword(newPassword);
   const isNewPasswordConfirmed = newPassword === confirmNewPassword;
   const isEmailValid = validateEmail(email);
+  const isCurrentEmailValid = validateEmail(currentEmail);
   const isPhoneValid = validatePhone(phone);
 
   const handleEmailChange = async () => {
     if (step === 1) {
       // First step: validate email format and move to next step
-      if (isEmailValid) {
-        setStep(2);
-        setErrorMessage('');
+      if (isEmailValid && isCurrentEmailValid) {
+        if (email !== currentEmail) {
+          setStep(2);
+          setErrorMessage('');
+        } else {
+          setErrorMessage('The new email is the same as the current one');
+        }
       } else {
         setErrorMessage('Invalid email format');
       }
@@ -42,6 +48,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
       userData &&
         (await changeEmail(
           userData?._id,
+          currentEmail,
           currentPassword,
           email,
           onClose,
@@ -64,6 +71,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
       // Second step: change phone
       userData && (await changePhoneNumber(userData._id, phone));
       fetchData();
+      onClose();
     }
   };
 
@@ -98,6 +106,13 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
         </h2>
         {type !== 'password' && step === 1 && (
           <>
+            {type === 'email' && <input
+              className="password-input"
+              type={type === 'email' ? 'email' : 'text'}
+              placeholder='Enter your current email'
+              value={currentEmail}
+              onChange={e => setCurrentEmail(e.target.value)}
+            />}
             <input
               className="password-input"
               type={type === 'email' ? 'email' : 'text'}
@@ -165,7 +180,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
               }
               disabled={
                 type === 'email'
-                  ? !isEmailValid
+                  ? !isEmailValid || !isCurrentEmailValid
                   : type === 'phone'
                     ? !isPhoneValid
                     : !(isNewPasswordValid && isNewPasswordConfirmed)

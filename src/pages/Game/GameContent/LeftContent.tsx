@@ -1,17 +1,37 @@
-import { FC, useLayoutEffect, useRef, useState } from 'react';
+import {
+  FC,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+import useSoftNavigate from 'hooks/useSoftNavigate';
 import DOMPurify from 'dompurify';
 import getPlatform from 'tools/getPlatform';
 import { gamesData } from 'services/gameData';
+import { AuthContext } from 'contexts/AuthContext';
+import {
+  addToCart,
+  addToLibrary,
+  removeFromWishlist,
+} from 'services/user/userInteractions';
+import { toast } from 'react-toastify';
 
 export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
   game,
   isViewport630,
 }) => {
+  const { userData, fetchData } = useContext(AuthContext);
+  const navigate = useSoftNavigate();
   const platform = getPlatform();
 
   const [isAboutExpanded, setIsAboutExpanded] = useState(true);
   const [isMatureExpanded, setIsMatureExpanded] = useState(true);
   const [isSysReqExpanded, setIsSysReqExpanded] = useState(true);
+  const [isInLibrary, setInLibrary] = useState(false);
+  const [isInCart, setInCart] = useState(false);
+  const [isInWishlist, setInWishlist] = useState(false);
 
   const aboutRef = useRef<HTMLDivElement>(null);
   const matureRef = useRef<HTMLDivElement>(null);
@@ -44,6 +64,44 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
     setIsSysReqExpanded(!isSysReqExpanded);
   };
 
+  useEffect(() => {
+    setInLibrary(!!userData?.library?.includes(game.id));
+    setInCart(!!userData?.cart?.includes(game.id));
+    setInWishlist(
+      !!userData?.wishlist?.some(wishlistItem => wishlistItem.item === game.id),
+    );
+  }, [userData, game.id]);
+
+  const handleAddToCart = async (userId: string, itemId: string) => {
+    const response = await addToCart(userId, itemId);
+    if (response?.status === 200) {
+      fetchData();
+      if (isInWishlist) {
+        const removed = await removeFromWishlist(userId, itemId);
+        if (removed?.status !== 200) {
+          toast.error('An error occurred while removing item from wishlist.');
+        }
+      }
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
+
+  const handleAddToLibrary = async (userId: string, itemId: string) => {
+    const response = await addToLibrary(userId, itemId);
+    if (response?.status === 200) {
+      fetchData();
+      if (isInCart) {
+        const removed = await removeFromWishlist(userId, itemId);
+        if (removed?.status !== 200) {
+          toast.error('An error occurred while removing item from cart.');
+        }
+      }
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <div className="game-content-left">
       {/* Purchase area */}
@@ -62,90 +120,170 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                 <h1>Play {game.name}</h1>
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
-                    <div className="game-purchase-price"> {game.price} </div>
-                    <div className="play-game-btn">
-                      <a className="green-btn" href="">
-                        <span className="medium-btn">Play Game</span>
-                      </a>
-                    </div>
-                    {/* !isInLibrary */}
-                    <div className="addtocart-btn">
-                      <a href="" className="blue-btn">
-                        <span className="medium-btn">Add to Library</span>
-                      </a>
-                    </div>
+                    {!isInLibrary && (
+                      <div className="game-purchase-price"> {game.price} </div>
+                    )}
+                    {isInLibrary ? (
+                      <div className="play-game-btn">
+                        {/* TODO: Add play game */}
+                        <a
+                          className="green-btn"
+                          href="/library"
+                          onClick={e => {
+                            navigate('/library', e);
+                          }}
+                        >
+                          <span className="medium-btn">Play Game</span>
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="addtocart-btn">
+                        <a
+                          className="blue-btn"
+                          onClick={e => {
+                            e.preventDefault();
+                            handleAddToLibrary(
+                              userData?._id || '',
+                              game.id || '',
+                            );
+                          }}
+                        >
+                          <span className="medium-btn">Add to Library</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </>
             ) : !game.discount ? (
               <>
-                <h1>Buy {game.name}</h1>
+                {!isInLibrary ? (
+                  <h1>Buy {game.name}</h1>
+                ) : (
+                  <h1>Play {game.name}</h1>
+                )}
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
-                    <div className="game-purchase-price">
-                      {' '}
-                      ${game.price} USD{' '}
-                    </div>
-                    {/* TODO: isInLibrary backend logic */}
-                    {/* <div className="play-game-btn">
-												<a className="green-btn" href="">
-													<span className="medium-btn">Play Game</span>
-												</a>
-											</div> */}
-
-                    {/* !isInLibrary */}
-                    <div className="addtocart-btn">
-                      {/* TODO: isNotInCart backend logic */}
-                      <a href="" className="green-btn">
-                        <span className="medium-btn">Add to Cart</span>
-                      </a>
-                      {/* !isNotInCart*/}
-                      {/* <a href="" className="green-btn">
-													<span className="medium-btn">In Cart</span>
-												</a> */}
-                    </div>
+                    {!isInLibrary && (
+                      <div className="game-purchase-price">
+                        {' '}
+                        ${game.price} USD{' '}
+                      </div>
+                    )}
+                    {isInLibrary ? (
+                      <div className="play-game-btn">
+                        <a
+                          className="green-btn"
+                          href="/library"
+                          onClick={e => {
+                            navigate('/library', e);
+                          }}
+                        >
+                          <span className="medium-btn">Play Game</span>
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="addtocart-btn">
+                        {!isInCart ? (
+                          <a
+                            className="green-btn"
+                            onClick={e => {
+                              e.preventDefault();
+                              handleAddToCart(
+                                userData?._id || '',
+                                game.id || '',
+                              );
+                            }}
+                          >
+                            <span className="medium-btn">Add to Cart</span>
+                          </a>
+                        ) : (
+                          <a
+                            href="/cart"
+                            onClick={e => {
+                              navigate('/cart', e);
+                            }}
+                            className="green-btn"
+                          >
+                            <span className="medium-btn">In Cart</span>
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <h1>Buy {game.name}</h1>
-                <p className="dicount-countdown">
-                  {game.offerType}! Offer ends {game.offerEndDate}
-                </p>
+                {!isInLibrary ? (
+                  <h1>Buy {game.name}</h1>
+                ) : (
+                  <h1>Play {game.name}</h1>
+                )}
+                {!isInLibrary && (
+                  <p className="dicount-countdown">
+                    {game.offerType}! Offer ends {game.offerEndDate}
+                  </p>
+                )}
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
-                    <div className="game-purchase-discount">
-                      <div className="discount-precentage">
-                        -{game.discountPercentage}%
-                      </div>
-                      <div className="discount-prices">
-                        <div className="discount-original-price">
-                          ${game.price}
+                    {!isInLibrary && (
+                      <div className="game-purchase-discount">
+                        <div className="discount-precentage">
+                          -{game.discountPercentage}%
                         </div>
-                        <div className="discount-final-price">
-                          ${game.discountPrice} USD
+                        <div className="discount-prices">
+                          <div className="discount-original-price">
+                            ${game.price}
+                          </div>
+                          <div className="discount-final-price">
+                            ${game.discountPrice} USD
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    {/* TODO: isInLibrary backend logic */}
-                    {/* <div className="play-game-btn">
-												<a className="green-btn" href="">
-													<span className="medium-btn">Play Game</span>
-												</a>
-											</div> */}
-
-                    {/* !isInLibrary */}
-                    <div className="addtocart-btn">
-                      {/* TODO: isNotInCart backend logic */}
-                      <a href="" className="green-btn">
-                        <span className="medium-btn">Add to Cart</span>
-                      </a>
-                      {/* !isNotInCart*/}
-                      {/* <a href="" className="green-btn">
-													<span className="medium-btn">In Cart</span>
-												</a> */}
-                    </div>
+                    )}
+                    {isInLibrary ? (
+                      <div className="play-game-btn">
+                        <a
+                          href="/join"
+                          className="green-btn"
+                          onClick={e => {
+                            navigate('/join', e);
+                          }}
+                        >
+                          <span className="medium-btn">Play Game</span>
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="addtocart-btn">
+                        {!isInCart ? (
+                          <a className="green-btn">
+                            <span
+                              className="medium-btn"
+                              onClick={e => {
+                                e.preventDefault();
+                                handleAddToCart(
+                                  userData?._id || '',
+                                  game.id || '',
+                                );
+                              }}
+                            >
+                              Add to Cart
+                            </span>
+                          </a>
+                        ) : (
+                          <a
+                            href="/cart"
+                            onClick={e => {
+                              navigate('/cart', e);
+                            }}
+                            className="green-btn"
+                          >
+                            <span className="medium-btn">In Cart</span>
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </>
