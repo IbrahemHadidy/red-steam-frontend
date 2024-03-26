@@ -272,9 +272,9 @@
           pointer-events: auto;
           margin-top: 335px;
           @supports (-moz-appearance: none) {
-          	scrollbar-width: auto;
+            scrollbar-width: auto;
             scrollbar-color: rgba(35, 60, 81, 0.4) transparent;
-	        }
+          }
 
           &::-webkit-scrollbar {
             height: 18px;
@@ -538,6 +538,11 @@
           }
         }
       }
+
+      &.loading {
+        opacity: 0.5;
+        cursor: default;
+      }
     }
   }
 }
@@ -626,6 +631,20 @@
           line-height: 30px;
           color: #2b5066 !important;
           cursor: pointer;
+        }
+      }
+
+      &:hover {
+        a {
+          text-decoration: none !important;
+          color: #fff !important;
+          background: linear-gradient(-60deg, #417a9b 5%, #67c1f5 95%);
+
+          span {
+            background: transparent;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+            color: #fff !important;
+          }
         }
       }
     }
@@ -841,6 +860,18 @@
               padding: 0 15px;
               font-size: 15px;
               line-height: 30px;
+            }
+
+            &:hover {
+              text-decoration: none !important;
+              color: #fff !important;
+              background: linear-gradient(-60deg, #417a9b 5%, #67c1f5 95%);
+
+              span {
+                background: transparent;
+                text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+                color: #fff !important;
+              }
             }
           }
         }
@@ -1116,11 +1147,11 @@
 
 .tagsmodal {
   display: block;
-	overflow: visible;
-	font-family: "Motiva Sans", Sans-serif;
-	font-weight: normal;
+  overflow: visible;
+  font-family: 'Motiva Sans', Sans-serif;
+  font-weight: normal;
   transform: translate(-2.5%, -50%);
-	background: rgba(45, 49, 58, 0.7);
+  background: rgba(45, 49, 58, 0.7);
   padding: 15px;
 
   .game-tag {
@@ -1135,7 +1166,7 @@
     font-weight: bold;
     transform: translate(20%, -40%);
     z-index: 1;
-    
+
     &:hover,
     &:focus {
       color: black;
@@ -1144,4 +1175,3 @@
     }
   }
 }
-

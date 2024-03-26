@@ -46,7 +46,12 @@ const Offers: FC = () => {
           className="offer-bg"
         >
           <div className="spotlight-img">
-            <img src={offer.verticalHeaderImage} alt={offer.name} />
+            <img
+              src={
+                offer.verticalHeaderImage || '/images/spotlight_background.jpg'
+              }
+              alt={offer.name}
+            />
           </div>
           <div className="spotlight-content">
             <h2>{offer.offerType}</h2>

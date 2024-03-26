@@ -1,10 +1,12 @@
 import { AuthContext } from 'contexts/AuthContext';
 import { FC, useContext } from 'react';
 import { removePhoneNumber } from 'services/user/phone';
+import $ from 'tools/$selector';
 
 const DeletePhoneModal: FC<{ onClose: () => void }> = ({ onClose }) => {
   const { userData, fetchData } = useContext(AuthContext);
   const handleDelete = async () => {
+    $('.delete-button')?.setAttribute('disabled', 'true');
     if (userData) {
       const response = await removePhoneNumber(userData._id);
       if (response && response.status === 200) {
@@ -12,6 +14,8 @@ const DeletePhoneModal: FC<{ onClose: () => void }> = ({ onClose }) => {
         fetchData();
       }
     }
+
+    $('.delete-button')?.removeAttribute('disabled');
   };
 
   return (

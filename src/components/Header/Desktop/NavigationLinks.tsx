@@ -29,7 +29,8 @@ const NavigationLinks: FC = () => {
     const isStoreActive =
       location.pathname.startsWith(mainLink) &&
       !location.pathname.startsWith('/user') &&
-      !location.pathname.startsWith('/notfound');
+      !location.pathname.startsWith('/notfound') &&
+      !location.pathname.startsWith('/library');
     const dropdownStoreClassName = isStoreActive ? 'active-title' : '';
 
     const isUserActive = location.pathname.startsWith('/user');
@@ -55,10 +56,7 @@ const NavigationLinks: FC = () => {
         {items.map((item, index) => (
           <NavDropdown.Item
             key={index}
-            href="#"
-            onClick={e => {
-              navigate(item.link, e);
-            }}
+            href={item.link}
           >
             {item.text}
           </NavDropdown.Item>
@@ -66,6 +64,9 @@ const NavigationLinks: FC = () => {
       </NavDropdown>
     );
   };
+
+  const isLibraryActive = location.pathname.startsWith('/library');
+  const dropdownLibraryClassName = isLibraryActive ? 'active-title' : '';
 
   useEffect(() => {
     setIsOpen(null);
@@ -78,6 +79,15 @@ const NavigationLinks: FC = () => {
         '1',
         '/',
         sharedData.subMenus[0].items,
+      )}
+      {isLoggedIn && (
+        <Nav.Link
+          href="/library"
+          onClick={() => navigate('/library')}
+          className={`main-dropdowns  ${dropdownLibraryClassName}`}
+        >
+          Library
+        </Nav.Link>
       )}
       {isLoggedIn &&
         renderNavDropdownWithHover(

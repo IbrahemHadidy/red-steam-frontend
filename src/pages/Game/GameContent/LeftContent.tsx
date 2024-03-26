@@ -1,22 +1,24 @@
 import {
   FC,
   useContext,
-  useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import useSoftNavigate from 'hooks/useSoftNavigate';
 import DOMPurify from 'dompurify';
+import { toast } from 'react-toastify';
+import $ from 'tools/$selector';
 import getPlatform from 'tools/getPlatform';
 import { gamesData } from 'services/gameData';
 import { AuthContext } from 'contexts/AuthContext';
 import {
   addToCart,
   addToLibrary,
+  removeFromCart,
   removeFromWishlist,
 } from 'services/user/userInteractions';
-import { toast } from 'react-toastify';
 
 export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
   game,
@@ -29,13 +31,19 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
   const [isAboutExpanded, setIsAboutExpanded] = useState(true);
   const [isMatureExpanded, setIsMatureExpanded] = useState(true);
   const [isSysReqExpanded, setIsSysReqExpanded] = useState(true);
-  const [isInLibrary, setInLibrary] = useState(false);
-  const [isInCart, setInCart] = useState(false);
-  const [isInWishlist, setInWishlist] = useState(false);
 
   const aboutRef = useRef<HTMLDivElement>(null);
   const matureRef = useRef<HTMLDivElement>(null);
   const sysReqRef = useRef<HTMLDivElement>(null);
+
+  const [isInLibrary, isInCart, isInWishlist] = useMemo(
+    () => [
+      userData?.library?.includes(game.id),
+      userData?.cart?.includes(game.id),
+      userData?.wishlist?.some(wishlistItem => wishlistItem.item === game.id),
+    ],
+    [userData, game.id],
+  );
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -48,7 +56,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
       if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250) {
         setIsSysReqExpanded(false);
       }
-    }, 0);
+    }, 100);
   }, []);
 
   // Functions to toggle the visibility of each section
@@ -64,18 +72,33 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
     setIsSysReqExpanded(!isSysReqExpanded);
   };
 
-  useEffect(() => {
-    setInLibrary(!!userData?.library?.includes(game.id));
-    setInCart(!!userData?.cart?.includes(game.id));
-    setInWishlist(
-      !!userData?.wishlist?.some(wishlistItem => wishlistItem.item === game.id),
-    );
-  }, [userData, game.id]);
-
   const handleAddToCart = async (userId: string, itemId: string) => {
+    $('.addtocart-btn')?.classList?.add('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
+
     const response = await addToCart(userId, itemId);
     if (response?.status === 200) {
       fetchData();
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+
+    $('.addtocart-btn')?.classList?.remove('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
+  };
+
+  const handleAddToLibrary = async (userId: string, itemId: string) => {
+    $('.addtocart-btn')?.classList?.add('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
+    const response = await addToLibrary(userId, itemId);
+    if (response?.status === 200) {
+      fetchData();
+      if (isInCart) {
+        const removed = await removeFromCart(userId, itemId);
+        if (removed?.status !== 200) {
+          toast.error('An error occurred while removing item from cart.');
+        }
+      }
       if (isInWishlist) {
         const removed = await removeFromWishlist(userId, itemId);
         if (removed?.status !== 200) {
@@ -85,21 +108,8 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
     } else {
       toast.error('An error occurred. Please try again later.');
     }
-  };
-
-  const handleAddToLibrary = async (userId: string, itemId: string) => {
-    const response = await addToLibrary(userId, itemId);
-    if (response?.status === 200) {
-      fetchData();
-      if (isInCart) {
-        const removed = await removeFromWishlist(userId, itemId);
-        if (removed?.status !== 200) {
-          toast.error('An error occurred while removing item from cart.');
-        }
-      }
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
+    $('.addtocart-btn')?.classList?.remove('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   return (
@@ -245,10 +255,10 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                     {isInLibrary ? (
                       <div className="play-game-btn">
                         <a
-                          href="/join"
+                          href="/library"
                           className="green-btn"
                           onClick={e => {
-                            navigate('/join', e);
+                            navigate('/library', e);
                           }}
                         >
                           <span className="medium-btn">Play Game</span>

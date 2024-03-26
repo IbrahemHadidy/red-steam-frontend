@@ -1,6 +1,7 @@
 import { FC, useContext, useState } from 'react';
 import { AuthContext } from 'contexts/AuthContext';
 import { deleteAccount } from 'services/user/auth';
+import $ from 'tools/$selector';
 
 const DeleteAccountModal: FC<{ onClose: () => void }> = ({ onClose }) => {
   const { userData, logout } = useContext(AuthContext);
@@ -9,6 +10,7 @@ const DeleteAccountModal: FC<{ onClose: () => void }> = ({ onClose }) => {
   const isPasswordValid = password.length >= 8;
 
   const handleDelete = async () => {
+    $('.delete-button')?.setAttribute('disabled', 'true');
     if (userData?._id) {
       const response = await deleteAccount(
         userData?._id,
@@ -24,6 +26,7 @@ const DeleteAccountModal: FC<{ onClose: () => void }> = ({ onClose }) => {
     } else {
       setErrorMessage('Something went wrong. Please try again.');
     }
+    $('.delete-button')?.removeAttribute('disabled');
   };
 
   return (

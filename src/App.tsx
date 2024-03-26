@@ -8,14 +8,14 @@ import LoadingPage from './components/LoadingPage/LoadingPage';
 import Logout from './pages/Auth/Logout'
 const Store = lazy(() => import('./pages/Store/Store'));
 const Game = lazy(() => import('./pages/Game/Game'));
-const SignInAndRecovery = lazy(
-  () => import('./pages/Auth/SignInAndRecovery'),
-);
+const SignInAndRecovery = lazy(() => import('./pages/Auth/SignInAndRecovery'));
 const SignUp = lazy(() => import('./pages/Auth/SignUp'));
 const UserSettings = lazy(() => import('./pages/UserSettings/UserSettings'));
 const UserTags = lazy(() => import('./pages/UserSettings/UserTags'));
 const Wishlist = lazy(() => import('pages/Shop/Wishlist/Wishlist'));
 const Cart = lazy(() => import('pages/Shop/Cart/Cart'));
+const Checkout = lazy(() => import('pages/Shop/Checkout/Checkout'));
+const Library = lazy(() => import('pages/Shop/GamesLibrary/Library'));
 const Search = lazy(() => import('./pages/Search/Search'));
 
 // import the necessary component styles by default
@@ -158,6 +158,28 @@ const App: FC = () => {
               <>
                 <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
                 <Cart />
+              </>
+            }
+          />
+
+          {/* Checkout route */}
+          <Route
+            path="/checkout"
+            element={
+              <>
+                <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
+                <Checkout />
+              </>
+            }
+          />
+
+          {/* Library route */}
+          <Route
+            path="/library"
+            element={
+              <>
+                <RedirectIfNotLoggedIn isLoggedIn={isLoggedIn} />
+                <Library />
               </>
             }
           />

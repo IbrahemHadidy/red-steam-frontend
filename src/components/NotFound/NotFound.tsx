@@ -1,10 +1,14 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
 import './NotFound.scss';
 
 const NotFound: FC = () => {
-  
+  // Set the url to /notfound
+  useEffect(() => {
+    window.history.replaceState({}, '', '/notfound');
+  });
+
   return (
     <>
       <Header />

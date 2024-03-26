@@ -1,15 +1,15 @@
-import { useState, useEffect, ReactNode, FC } from 'react';
+import { useState, useEffect, ReactNode, FC, useRef } from 'react';
 import './ErrorBoundary.scss';
 
 const ErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => {
   const [hasError, setHasError] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const errorRef = useRef<Error | null>(null);
 
   useEffect(() => {
     const handleWindowError = (event: ErrorEvent) => {
       console.error('Unhandled Promise Rejection:', event.error);
+      errorRef.current = event.error;
       setHasError(true);
-      setError(event.error);
     };
 
     window.addEventListener('error', handleWindowError);
@@ -27,10 +27,10 @@ const ErrorBoundary: FC<{ children: ReactNode }> = ({ children }) => {
     return (
       <div className="error-boundary">
         <h1>Oops! Something went wrong.</h1>
-        {error && (
+        {errorRef.current && (
           <p className="error-message">
-            {error.name}:&nbsp;
-            {error.message}
+            {errorRef.current.name}:&nbsp;
+            {errorRef.current.message}
           </p>
         )}
         <p>Please refresh the page or try again later.</p>

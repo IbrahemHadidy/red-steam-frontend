@@ -2,7 +2,9 @@ import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import useSoftNavigate from 'hooks/useSoftNavigate';
 import { AuthContext } from 'contexts/AuthContext';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 import { toast } from 'react-toastify';
+import $ from 'tools/$selector';
 import {
   addToCart,
   addToLibrary,
@@ -21,9 +23,9 @@ const Wishlist: FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [userWishlist, setUserWishlist] = useState<gamesData[]>([]);
 
-  useEffect(() => {
-    document.body.style.background = '#1b2838';
-    document.title = `${userData?.username}'s wishlist`;
+  useDynamicMetaTags({
+    title: `${userData?.username}'s wishlist`,
+    background: '#1b2838',
   }, [userData?.username]);
 
   const updateWishlist = useCallback(async () => {
@@ -43,6 +45,8 @@ const Wishlist: FC = () => {
   }, [updateWishlist, userData]);
 
   const handleAddToCart = async (userId: string, itemId: string) => {
+    $('.addtocart-btn')?.classList?.add('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
     const response = await addToCart(userId, itemId);
     const removed = await removeFromWishlist(userId, itemId);
     if (response?.status === 200 && removed?.status === 200) {
@@ -51,9 +55,13 @@ const Wishlist: FC = () => {
     } else {
       toast.error('An error occurred. Please try again later.');
     }
+    $('.addtocart-btn')?.classList?.remove('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   const handleAddToLibrary = async (userId: string, itemId: string) => {
+    $('.addtocart-btn')?.classList?.add('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
     const response = await addToLibrary(userId, itemId);
     const removed = await removeFromWishlist(userId, itemId);
     if (response?.status === 200 && removed?.status === 200) {
@@ -62,9 +70,13 @@ const Wishlist: FC = () => {
     } else {
       toast.error('An error occurred. Please try again later.');
     }
+    $('.addtocart-btn')?.classList?.remove('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   const handleRemove = async (userId: string, itemId: string) => {
+    $('.delete')?.classList?.add('loading');
+    ($('.delete') as HTMLElement).style.pointerEvents = 'none';
     const response = await removeFromWishlist(userId, itemId);
     if (response?.status === 200) {
       fetchData();
@@ -72,6 +84,8 @@ const Wishlist: FC = () => {
     } else {
       toast.error('An error occurred. Please try again later.');
     }
+    $('.delete')?.classList?.remove('loading');
+    ($('.delete') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   return (

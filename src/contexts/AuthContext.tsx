@@ -65,7 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchData = useCallback(async () => {
     if (isLoggedIn) {
-      if (localStorage.getItem('refreshToken')) {
+      if (
+        sessionStorage.getItem('accessToken') ||
+        localStorage.getItem('refreshToken')
+      ) {
         const userData = await getUserData();
         setUserData(userData);
       }
@@ -117,7 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }));
     } catch (error) {
       console.error('Error refreshing access token:', error);
-      toast.error('Failed to refresh access token. Please log in again.');
+      toast.error('Your session has expired. Please login again.');
       logout();
     }
   }, [setUserData, logout]);

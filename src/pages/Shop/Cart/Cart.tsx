@@ -1,6 +1,7 @@
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import useSoftNavigate from 'hooks/useSoftNavigate';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 import { AuthContext } from 'contexts/AuthContext';
 import { clearCart, removeFromCart } from 'services/user/userInteractions';
 import gameData, { gamesData } from 'services/gameData';
@@ -8,6 +9,7 @@ import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
 import './Cart.scss';
+import $ from 'tools/$selector';
 
 const Cart: FC = () => {
   const navigate = useSoftNavigate();
@@ -15,10 +17,11 @@ const Cart: FC = () => {
   const { userData, fetchData } = useContext(AuthContext);
   const [userCart, setUserCart] = useState<gamesData[]>([]);
 
-  useEffect(() => {
-    document.body.style.background = '#1b2838';
-    document.title = `Shopping cart`;
-  }, []);
+  useDynamicMetaTags({
+    title: 'Shopping cart',
+    background: '#1b2838',
+    description: 'View your shopping cart',
+  });
 
   const updateCart = useCallback(async () => {
     setUserCart(
@@ -37,24 +40,34 @@ const Cart: FC = () => {
   }, [updateCart, userData]);
 
   const handleRemove = async (userId: string, itemId: string) => {
+    $('.remove-btn')?.classList?.add('loading');
+    ($('.remove-btn') as HTMLElement).style.pointerEvents = 'none';
     const response = await removeFromCart(userId, itemId);
     if (response?.status === 200) {
       fetchData();
       updateCart();
     }
+    $('.remove-btn')?.classList?.remove('loading');
+    ($('.remove-btn') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   const handleRemoveAll = async (userId: string) => {
+    $('.cart-remove-all')?.classList?.add('loading');
+    ($('.cart-remove-all') as HTMLElement).style.pointerEvents = 'none';
     const response = await clearCart(userId);
     if (response?.status === 200) {
       fetchData();
       updateCart();
     }
+    $('.cart-remove-all')?.classList?.remove('loading');
+    ($('.cart-remove-all') as HTMLElement).style.pointerEvents = 'auto';
   };
 
-  const totalPrice = userCart.reduce((total: number, game: gamesData) => {
-    return total + Number(game.discount ? game.discountPrice : game.price);
-  }, 0).toFixed(2);
+  const totalPrice = userCart
+    .reduce((total: number, game: gamesData) => {
+      return total + Number(game.discount ? game.discountPrice : game.price);
+    }, 0)
+    .toFixed(2);
 
   const cartSummary = (
     <div className="cart-summary-container">
@@ -66,7 +79,13 @@ const Cart: FC = () => {
         <div className="taxes-info">
           Sales tax will be calculated during checkout where applicable
         </div>
-        <button className="cart-checkout-btn" disabled={userCart.length === 0}>Continue to payment</button>
+        <button
+          className="cart-checkout-btn"
+          onClick={() => navigate('/checkout')}
+          disabled={userCart.length === 0}
+        >
+          Continue to payment
+        </button>
       </div>
     </div>
   );

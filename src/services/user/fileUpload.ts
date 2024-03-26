@@ -9,7 +9,9 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response) {
-      return Promise.reject(error.response);
+      console.error('Response error:', error.response);
+    } else {
+      console.error('Network error:', error.message);
     }
     return Promise.reject(error);
   },

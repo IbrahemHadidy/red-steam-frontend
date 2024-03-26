@@ -3,6 +3,7 @@ import { FC, useContext, useState } from 'react';
 import { changeEmail } from 'services/user/auth';
 import { changePassword } from 'services/user/password';
 import { changePhoneNumber } from 'services/user/phone';
+import $ from 'tools/$selector';
 import {
   validateEmail,
   validatePassword,
@@ -31,6 +32,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
   const isPhoneValid = validatePhone(phone);
 
   const handleEmailChange = async () => {
+    $('.next-button')?.setAttribute('disabled', 'true');
     if (step === 1) {
       // First step: validate email format and move to next step
       if (isEmailValid && isCurrentEmailValid) {
@@ -56,9 +58,11 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
         ));
       fetchData();
     }
+    $('.next-button')?.removeAttribute('disabled');
   };
 
   const handlePhoneChange = async () => {
+    $('.next-button')?.setAttribute('disabled', 'true');
     if (step === 1) {
       // First step: validate phone format and move to next step
       if (isPhoneValid) {
@@ -73,6 +77,7 @@ const ChangeModal: FC<{ onClose: () => void; type: string }> = ({
       fetchData();
       onClose();
     }
+    $('.next-button')?.removeAttribute('disabled');
   };
 
   const handlePasswordChange = async () => {

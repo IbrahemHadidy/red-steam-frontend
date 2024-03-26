@@ -1,7 +1,7 @@
 const sharedData = {
   menuItems: [
     { id: 'store', text: 'Store', link: '/' },
-    { id: 'you-and-friends', text: 'You & Friends', link: '/user' },
+    { id: 'you-and-friends', text: 'Profile & Settings', link: '/user' },
     { id: 'contact me', text: 'Support', link: '/support' },
   ],
   subMenus: [
@@ -13,10 +13,10 @@ const sharedData = {
       ],
     },
     {
-      title: 'You & Friends',
+      title: 'Profile & Settings',
       items: [
         { id: 'you-friends-profile', text: 'Profile', link: '/user/settings' },
-        { id: 'you-friends-inventory', text: 'Inventory', link: '/user/games' },
+        { id: 'you-friends-inventory', text: 'Inventory', link: '/library' },
         { id: 'you-friends-tags', text: 'tags', link: '/user/tags' },
       ],
     },

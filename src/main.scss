@@ -301,6 +301,14 @@ body {
 					a:hover {
 						cursor: pointer;
 					}
+
+					&.loading {
+						opacity: .5;
+
+						a:hover {
+							cursor: default;
+						}
+					}
 				}
 
 				.game-purchase-discount {

@@ -11,6 +11,7 @@ import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
 import { SearchRight } from './SearchRight';
 import { SearchLeft } from './SearchLeft';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 import './Search.scss';
 
 // TODO: send filters to backend then fetch the requested data
@@ -65,12 +66,11 @@ const Search: FC = () => {
   >([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    // this is responsible for the page background
-    document.body.style.background = '#1b2838';
-    // this is responsible for the tab title
-    document.title = 'Steam Search';
-  }, []);
+  useDynamicMetaTags({
+    title: 'Red Steam Search',
+    background: '#1b2838',
+    description: 'Search through Red Steam games and discover the best games.',
+  });
 
   // handle the first loading of the filters with the parameters from the url
   const updateFromURL = () => {

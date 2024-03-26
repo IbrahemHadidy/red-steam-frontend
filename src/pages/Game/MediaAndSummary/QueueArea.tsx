@@ -1,6 +1,7 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 import useSoftNavigate from 'hooks/useSoftNavigate';
 import { toast } from 'react-toastify';
+import $ from 'tools/$selector';
 import { AuthContext } from 'contexts/AuthContext';
 import { gamesData } from 'services/gameData';
 import {
@@ -14,15 +15,18 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
   const [isAddedToWishlist, setIsAddedToWishlist] = useState(
     userData?.wishlist?.some(({ item }) => item === game.id),
   );
-  const [inLibrary, setInLibrary] = useState(false);
-  const [inCart, setInCart] = useState(false);
 
-  useEffect(() => {
-    setInLibrary(!!userData?.library?.includes(game.id));
-    setInCart(!!userData?.cart?.includes(game.id));
-  }, [userData, game.id]);
+  const [isInLibrary, isInCart] = useMemo(
+    () => [
+      userData?.library?.includes(game.id),
+      userData?.cart?.includes(game.id),
+    ],
+    [userData, game.id],
+  );
 
   const handleRemoveFromWishlist = async (userId: string, itemId: string) => {
+    $('#added-wishlist')?.classList?.add('loading');
+    ($('#added-wishlist') as HTMLElement).style.pointerEvents = 'none';
     const response = await removeFromWishlist(userId, itemId);
     if (response?.status === 200) {
       fetchData();
@@ -30,9 +34,13 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
     } else {
       toast.error('An error occurred. Please try again later.');
     }
+    $('#added-wishlist')?.classList?.remove('loading');
+    ($('#added-wishlist') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   const handleAddToWishlist = async (userId: string, itemId: string) => {
+    $('#add-wishlist')?.classList?.add('loading');
+    ($('#add-wishlist') as HTMLElement).style.pointerEvents = 'none';
     const response = await addToWishlist(userId, itemId);
     if (response?.status === 200) {
       fetchData();
@@ -40,6 +48,8 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
     } else {
       toast.error('An error occurred. Please try again later.');
     }
+    $('#add-wishlist')?.classList?.remove('loading');
+    ($('#add-wishlist') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   return (
@@ -74,16 +84,18 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
               className="queue-button-container"
               onClick={e => {
                 e.preventDefault();
-                !inLibrary && !inCart
-                  ? handleAddToWishlist(userData?._id || '', game.id)
-                  : navigate(`/cart`);
+                isInLibrary
+                  ? navigate(`/library`)
+                  : isInCart
+                    ? navigate(`/cart`)
+                    : handleAddToWishlist(userData?._id || '', game.id);
               }}
             >
               <a className="queue-button" href="">
                 <span>
-                  {inLibrary
+                  {isInLibrary
                     ? 'You own this item '
-                    : inCart
+                    : isInCart
                       ? 'Already in your cart'
                       : 'Add to your wishlist'}
                 </span>

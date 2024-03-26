@@ -20,12 +20,12 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import $ from 'tools/$selector';
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
 import {
   validateEmail,
   validateName,
   validatePassword,
 } from 'tools/inputValidations';
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 import { countries } from 'services/countries';
 import { VerifyModal } from './SignUpVerifyModal';
 import { fetchUserCountry } from 'services/countryCode';
@@ -35,7 +35,6 @@ import './SignInUp.scss';
 const env = import.meta.env;
 
 const SignUp: FC = () => {
-  const isViewport740 = useResponsiveViewport(740);
   const navigate = useSoftNavigate();
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -63,13 +62,12 @@ const SignUp: FC = () => {
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  useEffect(() => {
-    // this is responsible for the page background
-    document.body.style.background =
-      "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429";
-    // this is responsible for the tab title
-    document.title = `Create Your Account`;
-  }, [isViewport740]);
+  useDynamicMetaTags({
+    title: `Create Your Account`,
+    background:
+      "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429",
+    description: 'Create your Red Steam account',
+  });
 
   // handle storing error messages
   const addErrorMessage = (newErrorMessage: string) => {
@@ -155,6 +153,7 @@ const SignUp: FC = () => {
     }
 
     try {
+      $('#submit-button')?.setAttribute('disabled', 'true');
       const exists = await checkEmailExists(email);
 
       if (exists) {
@@ -165,12 +164,15 @@ const SignUp: FC = () => {
         setExistingEmail(false);
         firstStepForm(e);
       }
+
+      $('#submit-button')?.removeAttribute('disabled');
     } catch (error) {
       console.error('Error checking existing email:', error);
       addErrorMessage(
         '- An error occurred while trying to connect to the server. Please check your internet connection and try again.',
       );
       scrollToTop();
+      $('#submit-button')?.removeAttribute('disabled');
     } finally {
       captchaRef.current?.reset();
       setRecaptchaValue(null);
@@ -329,7 +331,6 @@ const SignUp: FC = () => {
     e.preventDefault();
 
     try {
-      // Perform your second-step account creation logic here
       const response = await registerUser(accountName, email, password, selectedCountry);
 
       if (response.status === 201) {
@@ -494,7 +495,7 @@ const SignUp: FC = () => {
                           official Steam platform or its parent company, Valve
                           Corporation.
                         </label>
-                        <button className="joinsteam-btn" type="submit">
+                        <button id="submit-button" className="joinsteam-btn" type="submit">
                           <span>Continue</span>
                         </button>
                       </div>

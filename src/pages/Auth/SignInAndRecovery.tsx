@@ -8,6 +8,7 @@ import {
   ChangeEvent,
 } from 'react';
 import useSoftNavigate from 'hooks/useSoftNavigate';
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 import { useSpring, animated } from 'react-spring';
 import { toast } from 'react-toastify';
 import { AuthContext } from 'contexts/AuthContext';
@@ -58,18 +59,12 @@ const SignInAndRecovery: FC = () => {
     setRecaptchaValue(value);
   };
 
-  useEffect(() => {
-    // this is responsible for the page background
-    {
-      !isViewport740
-        ? (document.body.style.background =
-            "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21")
-        : (document.body.style.background =
-            "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21");
-    }
-
-    // this is responsible for the tab title
-    document.title = `Sign In`;
+  useDynamicMetaTags({
+    title: 'Sign In',
+    background: !isViewport740
+      ? "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
+      : "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21",
+    description: 'Sign in to your account',
   }, [isViewport740]);
 
   // Handle redirect to password reset page and forgot password page

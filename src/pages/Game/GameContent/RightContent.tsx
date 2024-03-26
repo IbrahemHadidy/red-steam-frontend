@@ -1,9 +1,10 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 import useSoftNavigate from 'hooks/useSoftNavigate';
 import { AuthContext } from 'contexts/AuthContext';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import $ from 'tools/$selector';
 import { ReviewEntry, gamesData } from 'services/gameData';
-import { addToCart, removeFromWishlist } from 'services/user/userInteractions';
+import { addToCart } from 'services/user/userInteractions';
 import { toast } from 'react-toastify';
 
 export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
@@ -14,6 +15,14 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
   const { userData, fetchData } = useContext(AuthContext);
   const [showAllLanguages, setShowAllLanguages] = useState(false);
   const isViewport960 = useResponsiveViewport(960);
+
+  const [isInLibrary, isInCart] = useMemo(
+    () => [
+      userData?.library?.includes(game.id),
+      userData?.cart?.includes(game.id),
+    ],
+    [userData, game.id],
+  );
 
   const getPlatform = () => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -39,26 +48,19 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
   const positivePercentage =
     (positiveReviews / (positiveReviews + negativeReviews)) * 100;
 
-  const isInLibrary = userData?.library?.includes(game.id);
-  const isInCart = userData?.cart?.includes(game.id);
-  const isInWishlist = userData?.wishlist?.some(
-    wishlistItem => wishlistItem.item === game.id,
-  );
-
   const handleAddToCart = async (userId: string, itemId: string) => {
+    $('.addtocart-btn')?.classList?.add('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
     const response = await addToCart(userId, itemId);
     if (response?.status === 200) {
       fetchData();
       toast.success('Added to cart!');
-      if (isInWishlist) {
-        const removed = await removeFromWishlist(userId, itemId);
-        if (removed?.status !== 200) {
-          toast.error('An error occurred while removing item from wishlist.');
-        }
-      }
     } else {
       toast.error('An error occurred. Please try again later.');
     }
+
+    $('.addtocart-btn')?.classList?.remove('loading');
+    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   // Recommendation reasons
@@ -190,19 +192,11 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
         </span>
         <div className="dev-row">
           <b>Developer:</b>&nbsp;
-          <a
-            href={game.developer.link}
-          >
-            {game.developer.name}
-          </a>
+          <a href={game.developer.link}>{game.developer.name}</a>
         </div>
         <div className="dev-row">
           <b>Publisher:</b>&nbsp;
-          <a
-            href={game.publisher.link}
-          >
-            {game.publisher.name}
-          </a>
+          <a href={game.publisher.link}>{game.publisher.name}</a>
         </div>
         <b>Release Date:</b>&nbsp;{game.releaseDate}
         <br />

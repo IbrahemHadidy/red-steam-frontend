@@ -7,6 +7,7 @@ import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
 import './UserTags.scss';
 import { AuthContext } from 'contexts/AuthContext';
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 
 const UserTags: FC = () => {
   const navigate = useSoftNavigate();
@@ -53,12 +54,10 @@ const UserTags: FC = () => {
     ),
   );
 
-  useEffect(() => {
-    // Set the page background
-    document.body.style.background =
-      "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429";
-    // Set the tab title
-    document.title = `Tags Selection`;
+  useDynamicMetaTags({
+    title: `Tags Selection`,
+    background:
+      "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
   }, [isViewport740]);
 
   // Function to handle tag selection

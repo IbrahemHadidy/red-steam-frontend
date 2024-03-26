@@ -56,8 +56,7 @@ const ProfileDropdown: FC = () => {
       {/* TODO: Add real user link */}
       <a
         onClick={e => {
-          e.preventDefault;
-          navigate('user_link');
+          navigate('user/settings', e);
         }}
         target="_blank"
         rel="noreferrer"
