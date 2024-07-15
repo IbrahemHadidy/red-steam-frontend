@@ -1,14 +1,13 @@
-import useSoftNavigate from 'hooks/useSoftNavigate';
+'use client';
 
-const TagsModal = ({
-  onClose,
-  tags,
-} : {
-  onClose: () => void;
-  tags: string[];
-}) => {
-  const navigate = useSoftNavigate();
-  
+// Next.js
+import Link from 'next/link';
+
+// Types
+import type { FC } from 'react';
+import type { TagsModalProps } from './MediaAndSummary.types';
+
+const TagsModal: FC<TagsModalProps> = ({ onClose, tags }) => {
   return (
     <div className="tagsmodal">
       <span className="close" onClick={onClose}>
@@ -16,15 +15,9 @@ const TagsModal = ({
       </span>
       <div className="modal-body">
         {tags.map((tag, index) => (
-          <a
-            key={index}
-            className="game-tag"
-            onClick={e => {
-              navigate(`/search?tags=${tag}`, e);
-            }}
-          >
+          <Link key={index} className="game-tag" href={`/search?tags=${tag}`}>
             {tag}
-          </a>
+          </Link>
         ))}
       </div>
     </div>

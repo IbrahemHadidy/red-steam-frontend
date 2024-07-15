@@ -1,17 +1,26 @@
-import { FC } from "react";
-import useResponsiveViewport from "hooks/useResponsiveViewport";
-import FeaturedDesktop from "./Desktop/FeaturedDesktop";
-import FeaturedMobile from "./Mobile/FeaturedMobile";
-import "./Featured.scss";
+'use client';
+
+// Next.js
+import dynamic from 'next/dynamic';
+
+// Components
+const FeaturedDesktop = dynamic(() => import('./Desktop/FeaturedDesktop'), { ssr: false });
+const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'), { ssr: false });
+
+// Hooks
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Styles
+import './Featured.scss';
+
+// Types
+import { FC } from 'react';
 
 const Featured: FC = () => {
-	const isViewport960 = useResponsiveViewport(960);
+  // Initializations
+  const isViewport960 = useResponsiveViewport(960);
 
-	return (
-		<div>
-			{isViewport960 ? <FeaturedMobile /> : <FeaturedDesktop />}
-		</div>
-	);
-}
+  return <div>{isViewport960 ? <FeaturedMobile /> : <FeaturedDesktop />}</div>;
+};
 
 export default Featured;

@@ -1,44 +1,69 @@
-import { FC, useState } from "react";
-import useSoftNavigate from "hooks/useSoftNavigate";
-import Slider from "react-slick";
-import useResponsiveViewport from "hooks/useResponsiveViewport";
-import popularVRGames from "services/popularVRGames";
-import { gamesData } from "services/gameData";
-import HoverSummary from "components/HoverSummary/HoverSummary";
+'use client';
+
+// React
+import { useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+
+// Components
+import HoverSummary from 'components/HoverSummary/HoverSummary';
+import Slider from 'react-slick';
+
+// Hooks
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Services
+import popularVRGames from 'services/gameData/popularVRGames';
+
+// Images
+import responsiveChevron from 'images/ResponsiveChevron.svg';
+
+// Types
+import type { FC } from 'react';
+import type { gamesData } from 'services/gameData/gameData';
 
 const PopularVR: FC = () => {
-	const navigate = useSoftNavigate();
-	const isViewport960 = useResponsiveViewport(960);
-	const [gameHoverStates, setGameHoverStates] = useState<{[key: string]: boolean}>({});
+  // Initializations
+  const isViewport960 = useResponsiveViewport(960);
 
-	const vrGamesSettings = {
-		dots: true,
-		infinite: true,
-		speed: 500,
-		autoplay: false,
-		fade: true,
-	};
+  // States
+  const [gameHoverStates, setGameHoverStates] = useState<{ [key: string]: boolean }>({});
 
-	const renderGameItem = (game: gamesData, index: number) => {
-		const positiveCount = game.reviews.filter(review => review.type === "positive").length;
-		const totalReviews = game.reviews.length;
-		const positivePercentage = (positiveCount / totalReviews) * 100;
-		return (
+  const vrGamesSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    autoplay: false,
+    fade: true,
+  };
+
+  const handleHoverPointerMove = (gameId: number) => {
+    setGameHoverStates((prevState) => ({
+      ...prevState,
+      [gameId]: true,
+    }));
+  };
+
+  const handleHoverPointerLeave = (gameId: number) => {
+    setGameHoverStates((prevState) => ({
+      ...prevState,
+      [gameId]: false,
+    }));
+  };
+
+  const renderGameItem = (game: gamesData, index: number) => {
+    const positiveCount = game.reviews.filter((review) => review.type === 'positive').length;
+    const totalReviews = game.reviews.length;
+    const positivePercentage = (positiveCount / totalReviews) * 100;
+    return (
       <div className="mini-item-container" key={index}>
-        <a
+        <Link
           className="mini-item"
-          onClick={e => {
-            navigate(`/game/${game.id}`, e);
-          }}
-          onMouseEnter={() =>
-            setGameHoverStates(prevState => ({ ...prevState, [game.id]: true }))
-          }
-          onMouseLeave={() =>
-            setGameHoverStates(prevState => ({
-              ...prevState,
-              [game.id]: false,
-            }))
-          }
+          href={`/game/${game.id}`}
+          onPointerMove={() => handleHoverPointerMove(game.id)}
+          onPointerLeave={() => handleHoverPointerLeave(game.id)}
         >
           <div className="mini-capsule">
             <img src={game.smallHeaderImage} alt={game.name} />
@@ -50,9 +75,7 @@ const PopularVR: FC = () => {
                   `${!game.free ? '$' : ''}${game.price}`
                 ) : (
                   <div className="mini-discount-block">
-                    <div className="discount-percentage">
-                      -{game.discountPercentage}%
-                    </div>
+                    <div className="discount-percentage">-{game.discountPercentage}%</div>
                     <div className="discount-prices">
                       <div className="original-price">${game.price}</div>
                       <div className="final-price">${game.discountPrice}</div>
@@ -62,15 +85,15 @@ const PopularVR: FC = () => {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
         {!isViewport960 && gameHoverStates[game.id] && (
           <div>
             <HoverSummary
               title={game.name}
               date={game.releaseDate}
               screenshots={game.moviesAndImages
-                .filter(item => item.type === 'image' && item.featured)
-                .map(item => item.link)}
+                .filter((item) => item.type === 'image' && item.featured)
+                .map((item) => item.link)}
               description={game.description}
               positivePercentage={positivePercentage}
               totalReviews={totalReviews}
@@ -82,51 +105,42 @@ const PopularVR: FC = () => {
         )}
       </div>
     );
-	};
+  };
 
-	const renderCategorySlide = (start: number, end: number) => {
-		const categoryGames = popularVRGames.slice(start, end);
-		return categoryGames.map((game, index) => (
-			renderGameItem(game, index)
-		));
-	};
+  const renderCategorySlide = (start: number, end: number) => {
+    const categoryGames = popularVRGames.slice(start, end);
+    return categoryGames.map((game, index) => renderGameItem(game, index));
+  };
 
-	const renderAllCategories = () => {
-		const categorySlides = [];
+  const renderAllCategories = () => {
+    const categorySlides = [];
 
-		const slides = Math.floor(popularVRGames.length / 4);
-		for (let i = 0; i < slides; i++) {
-			const start = i * 4;
-			const end = start + 4;
-			categorySlides.push(renderCategorySlide(start, end));
-		}
-		return categorySlides;
-	};
+    const slides = Math.floor(popularVRGames.length / 4);
+    for (let i = 0; i < slides; i++) {
+      const start = i * 4;
+      const end = start + 4;
+      categorySlides.push(renderCategorySlide(start, end));
+    }
+    return categorySlides;
+  };
 
-	return (
+  return (
     <div className="home-section">
       <div className="home-contents">
         <h2 className="main-btn-title">
           POPULAR VR GAMES
           <span className="right-btn">
-            <a
-              className="view-more"
-              href="/search?tags=VR"
-              onClick={e => {
-                navigate('/search?tags=VR', e);
-              }}
-            >
+            <Link className="view-more" href="/search?tags=VR">
               {isViewport960 ? (
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
-                    More{' '}
-                    <img src="/images/ResponsiveChevron.svg" className="dive" />
+                    More <Image src={responsiveChevron} className="dive" alt="responsive-chevron" />
                   </div>
                 </div>
               ) : (
                 <span>BROWSE ALL</span>
               )}
-            </a>
+            </Link>
           </span>
         </h2>
         {isViewport960 ? (

@@ -157,9 +157,11 @@
 						background: linear-gradient(to right, #c6e6f8 5%, #95bcd3 95%);
 						margin-right: -14px;
 						padding-right: 14px;
+
 						@media screen and (max-width: 960px) {
 							margin-right: 0;
 						}
+
 						@media (max-width: 630px) {
 							.tab-item-discount {
 								margin-right: 1px;
@@ -223,7 +225,7 @@
 						.discount-prices {
 							display: flex;
 							flex-direction: column;
-							align-items: end;
+							align-items: flex-end;
 							justify-content: center;
 							padding-left: 4px;
 							background: transparent;
@@ -273,20 +275,21 @@
 							color: #384959;
 							line-height: 20px;
 
-								.platform-image {
-									height: 19px;
-									width: 20px;
-									display: inline-block;
-									position: static;
-									background-size: auto;
-									background-repeat: no-repeat;
-								
-									&.win {
-										background-image: url("/images/icon_platform_win.png");
-									}
-									&.mac {
-										background-image: url("/images/icon_platform_mac.png");
-									}
+							.platform-image {
+								height: 19px;
+								width: 20px;
+								display: inline-block;
+								position: static;
+								background-size: auto;
+								background-repeat: no-repeat;
+
+								&.win {
+									background-image: url("/images/icon_platform_win.png");
+								}
+
+								&.mac {
+									background-image: url("/images/icon_platform_mac.png");
+								}
 							}
 
 							.tab-item-top-tags {

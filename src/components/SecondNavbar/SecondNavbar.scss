@@ -14,12 +14,11 @@
     gap: 2px;
 
     .wishlist-Link-div {
-      background: rgba(255, 255, 255, 0.4)
-        url('/images/background_wishlist.jpg') -34px 20px;
+      background: rgba(255, 255, 255, 0.4) url('/images/background_wishlist.jpg') -34px 20px;
 
-        &:hover {
-          color: #000000;
-        }
+      &:hover {
+        color: #000000;
+      }
 
       a {
         &:hover {
@@ -39,18 +38,18 @@
         color: #fff;
         display: block;
         background: #5c7e10;
-				font-weight: normal;
+        font-weight: normal;
 
         line-height: 20px;
         cursor: pointer;
         padding: 0px 20px;
         border-radius: 1px;
 
-				&:hover {
-					color: #fff;
-    			background: #7ea64b;
+        &:hover {
+          color: #fff;
+          background: #7ea64b;
           cursor: pointer;
-				}
+        }
       }
     }
 
@@ -81,12 +80,10 @@
     position: absolute;
     top: 28px;
     width: inherit;
-    background: linear-gradient(
-      90deg,
-      rgba(62, 103, 150, 0.919) 11.38%,
-      rgba(58, 120, 177, 0.8) 25.23%,
-      rgb(15, 33, 110) 100%
-    );
+    background: linear-gradient(90deg,
+        rgba(62, 103, 150, 0.919) 11.38%,
+        rgba(58, 120, 177, 0.8) 25.23%,
+        rgb(15, 33, 110) 100%);
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -116,11 +113,9 @@
         text-decoration: none;
         line-height: 100%;
         border-radius: 0%;
-        background: linear-gradient(
-            90deg,
+        background: linear-gradient(90deg,
             rgba(33, 162, 255, 0.1) 1.89%,
-            rgba(50, 50, 51, 0) 50%
-          ),
+            rgba(50, 50, 51, 0) 50%),
           linear-gradient(180deg, #575860 11.6%, #3a4852 54.73%, #2c2d34 100%);
         padding: 8px 5px 8px 5px;
         box-shadow: 0 0 12px #000000;
@@ -138,11 +133,9 @@
         text-decoration: none;
         line-height: 100%;
         border-radius: 0%;
-        background: linear-gradient(
-            90deg,
+        background: linear-gradient(90deg,
             rgba(33, 162, 255, 0.1) 1.89%,
-            rgba(50, 50, 51, 0) 50%
-          ),
+            rgba(50, 50, 51, 0) 50%),
           linear-gradient(180deg, #575860 11.6%, #3a4852 54.73%, #2c2d34 100%);
         padding: 8px 5px 8px 5px;
         box-shadow: none;
@@ -168,12 +161,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background: linear-gradient(
-      90deg,
-      rgba(33, 162, 255, 0.1) 1.89%,
-      rgba(50, 50, 51, 0) 50%
-    ),
-    linear-gradient(180deg, #575860 11.6%, #3a4852 54.73%, #2c2d34 100%);
   border: none;
   position: relative;
   padding: 10px 13px !important;
@@ -184,12 +171,10 @@
   line-height: 100%;
 
   &:hover {
-    background: linear-gradient(
-      90deg,
-      rgba(33, 162, 255, 0.25) 0%,
-      rgba(33, 162, 255, 0.15) 50%,
-      rgba(50, 50, 51, 0) 100%
-    );
+    background: linear-gradient(90deg,
+        rgba(33, 162, 255, 0.25) 0%,
+        rgba(33, 162, 255, 0.15) 50%,
+        rgba(50, 50, 51, 0) 100%);
     text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
     color: #fefefe !important;
   }
@@ -287,13 +272,16 @@
 }
 
 .Categories-div {
+  all: unset;
+  font-size: 1.2em;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position: relative;
-  padding-bottom: 20px;
   left: -243.6% !important;
   width: 926px;
+  background: linear-gradient(90deg, rgba(33, 162, 255, 0.1) 1.89%, rgba(50, 50, 51, 0) 50%),
+    linear-gradient(180deg, #575860 11.6%, #3a4852 54.73%, #2c2d34 100%);
 
   &.categoryfix {
     left: -268.6% !important;
@@ -373,6 +361,7 @@
   flex: 1;
   width: 260px;
 }
+
 .search-area {
   flex-grow: 1;
   flex-shrink: 0;
@@ -465,6 +454,7 @@
       }
     }
   }
+
   .nav-search {
     position: absolute;
     text-align: left;
@@ -590,13 +580,12 @@
   flex-wrap: wrap !important;
   justify-content: stretch !important;
   align-items: stretch !important;
-  position: absolute;
-  background: linear-gradient(
-    90deg,
-    rgba(62, 103, 150, 0.919) 11.38%,
-    rgba(58, 120, 177, 0.8) 25.23%,
-    rgb(15, 33, 110) 100%
-  );
+  width: 100%;
+  position: relative;
+  background: linear-gradient(90deg,
+      rgba(62, 103, 150, 0.919) 11.38%,
+      rgba(58, 120, 177, 0.8) 25.23%,
+      rgb(15, 33, 110) 100%);
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;

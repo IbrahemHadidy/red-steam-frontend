@@ -1,12 +1,26 @@
-import { FC, useContext } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
+'use client';
+
+// React
+import { useContext } from 'react';
+
+// Next.js
+import Link from 'next/link';
+
+// Contexts
 import { AuthContext } from 'contexts/AuthContext';
+
+// Styles
 import './BrowseSteam.scss';
 
+// Types
+import type { FC } from 'react';
+
 const BrowseSteam: FC = () => {
-	const navigate = useSoftNavigate();
+  // Contexts
   const { userData } = useContext(AuthContext);
-	const userTags = userData?.tags.join(',');
+
+  const userTags =
+    userData?.tags && userData.tags.length > 0 && userData.tags.map((tag) => tag.id).join(',');
 
   return (
     <div className="home-section">
@@ -16,46 +30,22 @@ const BrowseSteam: FC = () => {
             Browse Steam
           </div>
           <div className="browse-buttons">
-            <a
-              className="big-button"
-              href="/search?sort=Release%20date&price=Any%20Price"
-              onClick={e => {
-                navigate('/search?sort=Release%20date&price=Any%20Price', e);
-              }}
-            >
+            <Link className="big-button" href="/search?sort=Release%20date&price=Any%20Price">
               {' '}
               New Releases{' '}
-            </a>
-            <a
-              className="big-button"
-              href="/search?priceOptions=Special%20Offers"
-              onClick={e => {
-                navigate('/search?priceOptions=Special%20Offers', e);
-              }}
-            >
+            </Link>
+            <Link className="big-button" href="/search?priceOptions=Special%20Offers">
               {' '}
               Specials{' '}
-            </a>
-            <a
-              className="big-button"
-              href="/search?price=Free"
-              onClick={e => {
-                navigate('/search?price=Free', e);
-              }}
-            >
+            </Link>
+            <Link className="big-button" href="/search?price=Free">
               {' '}
               Free Games{' '}
-            </a>
-            <a
-              className="big-button"
-              href={`/search?tags=${userTags}`}
-              onClick={e => {
-                navigate(`/search?tags=${userTags}`, e);
-              }}
-            >
+            </Link>
+            <Link className="big-button" href={`/search?tags=${userTags}`}>
               {' '}
               By User Tags{' '}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

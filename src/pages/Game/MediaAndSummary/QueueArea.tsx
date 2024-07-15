@@ -1,69 +1,112 @@
-import { FC, useContext, useMemo, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { toast } from 'react-toastify';
-import $ from 'tools/$selector';
-import { AuthContext } from 'contexts/AuthContext';
-import { gamesData } from 'services/gameData';
-import {
-  addToWishlist,
-  removeFromWishlist,
-} from 'services/user/userInteractions';
+'use client';
 
-export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
-  const navigate = useSoftNavigate();
+// React
+import { useContext, useMemo, useRef, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Toast notifications
+import { toast } from 'react-toastify';
+
+// Services
+import { addToWishlist, removeFromWishlist } from 'services/user/interaction';
+
+// Images
+import selectedIcon from 'images/ico_selected.png';
+
+// Types
+import type { FC } from 'react';
+import type { QueueAreaProps } from './MediaAndSummary.types';
+
+export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }) => {
+  // Initializations
+  const router = useRouter();
+
+  // Contexts
   const { isLoggedIn, userData, fetchData } = useContext(AuthContext);
+
+  // States
   const [isAddedToWishlist, setIsAddedToWishlist] = useState(
-    userData?.wishlist?.some(({ item }) => item === game.id),
+    userData?.wishlist?.some((item) => item.id === game.id)
   );
+
+  // Refs
+  const addedWislist = useRef<HTMLDivElement>(null);
 
   const [isInLibrary, isInCart] = useMemo(
     () => [
-      userData?.library?.includes(game.id),
-      userData?.cart?.includes(game.id),
+      userData?.library?.some((item) => item.id === game.id),
+      userData?.cart?.some((item) => item.id === game.id),
     ],
-    [userData, game.id],
+    [userData, game.id]
   );
 
-  const handleRemoveFromWishlist = async (userId: string, itemId: string) => {
-    $('#added-wishlist')?.classList?.add('loading');
-    ($('#added-wishlist') as HTMLElement).style.pointerEvents = 'none';
-    const response = await removeFromWishlist(userId, itemId);
-    if (response?.status === 200) {
-      fetchData();
-      setIsAddedToWishlist(false);
-    } else {
-      toast.error('An error occurred. Please try again later.');
+  const handleRemoveFromWishlist = async (itemId: number) => {
+    if (addedWislist.current) {
+      addedWislist.current.classList.add('loading');
+      addedWislist.current.style.pointerEvents = 'none';
+      const response = await removeFromWishlist([itemId]);
+      if (response?.status === 200) {
+        fetchData();
+        setIsAddedToWishlist(false);
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+      addedWislist.current.classList.remove('loading');
+      addedWislist.current.style.pointerEvents = 'auto';
     }
-    $('#added-wishlist')?.classList?.remove('loading');
-    ($('#added-wishlist') as HTMLElement).style.pointerEvents = 'auto';
   };
 
-  const handleAddToWishlist = async (userId: string, itemId: string) => {
-    $('#add-wishlist')?.classList?.add('loading');
-    ($('#add-wishlist') as HTMLElement).style.pointerEvents = 'none';
-    const response = await addToWishlist(userId, itemId);
-    if (response?.status === 200) {
-      fetchData();
-      setIsAddedToWishlist(true);
-    } else {
-      toast.error('An error occurred. Please try again later.');
+  const handleAddToWishlist = async (itemId: number) => {
+    if (addedWislist.current) {
+      addedWislist.current.classList.add('loading');
+      addedWislist.current.style.pointerEvents = 'none';
+      const response = await addToWishlist([itemId]);
+      if (response?.status === 200) {
+        fetchData();
+        setIsAddedToWishlist(true);
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+      addedWislist.current.classList.remove('loading');
+      addedWislist.current.style.pointerEvents = 'auto';
     }
-    $('#add-wishlist')?.classList?.remove('loading');
-    ($('#add-wishlist') as HTMLElement).style.pointerEvents = 'auto';
+  };
+
+  const handleAddWishlistBtnClick = () => {
+    if (isInLibrary) {
+      router.push('/library');
+    } else if (isInCart) {
+      router.push('/cart');
+    } else {
+      handleAddToWishlist(game.id);
+    }
+  };
+
+  const handleAddedWishlistBtnClick = () => {
+    handleRemoveFromWishlist(game.id);
+  };
+
+  const handleFollowClick = () => {
+    toast.warn('Community features are not yet supported');
+  };
+
+  const handleIgnoreClick = () => {
+    toast.warn('Not implemented yet');
   };
 
   return (
     <div className="queue-area">
       {!isLoggedIn && (
         <div className="queue-actions">
-          <a
-            onClick={e => {
-              navigate(`/login`, e);
-            }}
-          >
-            Sign in
-          </a>{' '}
-          to add this item to your wishlist, follow it, or mark it as ignored
+          <Link href="/login">Sign in</Link> to add this item to your wishlist, follow it, or mark
+          it as ignored
         </div>
       )}
 
@@ -82,14 +125,7 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
             <div
               id="add-wishlist"
               className="queue-button-container"
-              onClick={e => {
-                e.preventDefault();
-                isInLibrary
-                  ? navigate(`/library`)
-                  : isInCart
-                    ? navigate(`/cart`)
-                    : handleAddToWishlist(userData?._id || '', game.id);
-              }}
+              onClick={handleAddWishlistBtnClick}
             >
               <a className="queue-button" href="">
                 <span>
@@ -104,15 +140,13 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
           ) : (
             <div
               id="added-wishlist"
+              ref={addedWislist}
               className="queue-button-container"
-              onClick={e => {
-                e.preventDefault();
-                handleRemoveFromWishlist(userData?._id || '', game.id);
-              }}
+              onClick={handleAddedWishlistBtnClick}
             >
               <a className="queue-button" href="">
                 <span>
-                  <img src="/images/ico_selected.png" alt="" /> On Wishlist
+                  <Image src={selectedIcon} alt="selected" /> On Wishlist
                 </span>
               </a>
             </div>
@@ -122,17 +156,14 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
             <div
               className="queue-button"
               style={{ display: 'inline-block' }}
-              onClick={e => {
-                e.preventDefault();
-                toast.warn('Community features are not yet supported');
-              }}
+              onClick={handleFollowClick}
             >
               <span>Follow</span>
             </div>
             {/* !isFollowed */}
             <div className="queue-button" style={{ display: 'none' }}>
               <span>
-                <img src="/images/ico_selected.png" alt="" /> Following
+                <Image src={selectedIcon} alt="selected" /> Following
               </span>
             </div>
           </div>
@@ -142,24 +173,17 @@ export const QueueArea: FC<{ game: gamesData }> = ({ game }, isViewport630) => {
             id="ignore"
             className="queue-button-container"
             style={{ display: 'inline-block' }}
-            onClick={e => {
-              e.preventDefault();
-              toast.warn('Not implemented yet');
-            }}
+            onClick={handleIgnoreClick}
           >
             <div className="queue-button">
               <span>Ignore</span>
             </div>
           </div>
           {/* !isNotIgnored */}
-          <div
-            id="ignored"
-            className="queue-button-container"
-            style={{ display: 'none' }}
-          >
+          <div id="ignored" className="queue-button-container" style={{ display: 'none' }}>
             <div className="queue-button">
               <span>
-                <img src="/images/ico_selected.png" alt="" /> Ignored
+                <Image src={selectedIcon} alt="selected" /> Ignored
               </span>
             </div>
           </div>

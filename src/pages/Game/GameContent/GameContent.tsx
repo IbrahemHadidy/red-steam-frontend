@@ -1,25 +1,23 @@
-import { FC } from "react";
-import { RightContent } from "./RightContent";
-import { LeftContent } from "./LeftContent";
-import { gamesData } from "services/gameData";
-import useResponsiveViewport from "hooks/useResponsiveViewport";
-import "./GameContent.scss";
+'use client';
 
-const GameContent: FC<{ game: gamesData }> = ({ game }) => {
-	const isViewport630 = useResponsiveViewport(630);
+// Components
+import LeftContent from './LeftContent';
+import RightContent from './RightContent';
 
-	return (
-		<div className="page-content">
-			<RightContent 
-			game={game}
-			isViewport630={isViewport630}
-			/>
-			<LeftContent 
-			game={game}
-			isViewport630={isViewport630} 
-			/>
-		</div>
-	);
+// Styles
+import './GameContent.scss';
+
+// Types
+import type { FC } from 'react';
+import type { GameContentProps } from './GameContent.types';
+
+const GameContent: FC<GameContentProps> = ({ game, isViewport630, isViewport960 }) => {
+  return (
+    <div className="page-content game-content">
+      <RightContent game={game} isViewport630={isViewport630} isViewport960={isViewport960} />
+      <LeftContent game={game} isViewport630={isViewport630} />
+    </div>
+  );
 };
 
 export default GameContent;

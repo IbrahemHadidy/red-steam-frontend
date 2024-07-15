@@ -1,40 +1,74 @@
-import { FC, useCallback, useContext, useEffect, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { AuthContext } from 'contexts/AuthContext';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
-import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
-import { toast } from 'react-toastify';
-import $ from 'tools/$selector';
-import {
-  addToCart,
-  addToLibrary,
-  removeFromWishlist,
-} from 'services/user/userInteractions';
+'use client';
+
+// React
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+
+// Next.js
+import Link from 'next/link';
+
+// Components
+import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
-import Footer from 'components/Footer/Footer';
-import gameData, { gamesData } from 'services/gameData';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Hooks
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Toast notifications
+import { toast } from 'react-toastify';
+
+// Services
+import gameData from 'services/gameData/gameData';
+import { addToCart, addToLibrary, removeFromWishlist } from 'services/user/interaction';
+
+// Images
+import defaultPFP from 'images/default-pfp.png';
+
+// Styles
 import './Wishlist.scss';
 
+// Types
+import type { FC } from 'react';
+import type { gamesData } from 'services/gameData/gameData';
+import { getRatingClass, getRatingText } from 'utils/ratingUtils';
+
 const Wishlist: FC = () => {
-  const navigate = useSoftNavigate();
+  // Initializations
   const isViewport960 = useResponsiveViewport(960);
-  const { userData, fetchData } = useContext(AuthContext);
+
+  // Contexts
+  const { userData, userPFP, fetchData } = useContext(AuthContext);
+
+  // States
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [userWishlist, setUserWishlist] = useState<gamesData[]>([]);
 
-  useDynamicMetaTags({
-    title: `${userData?.username}'s wishlist`,
-    background: '#1b2838',
-  }, [userData?.username]);
+  // Refs
+  const addToCartBtn1Ref = useRef<HTMLDivElement>(null);
+  const addToCartBtn2Ref = useRef<HTMLDivElement>(null);
+  const removeBtnRef = useRef<HTMLDivElement>(null);
+
+  useDynamicMetaTags(
+    {
+      title: `${userData?.username}'s wishlist`,
+      background: '#1b2838',
+    },
+    [userData?.username]
+  );
+
+  const isInCart = (game: gamesData) => userData?.cart?.some((item) => item.id === game.id);
 
   const updateWishlist = useCallback(async () => {
     setUserWishlist(
       userData?.wishlist
-        ?.map(({ item }) => {
-          return gameData.find(game => game.id === item);
+        ?.map((wishlistItem) => {
+          return gameData.find((game) => game.id === wishlistItem.id);
         })
-        .filter((game): game is gamesData => game !== undefined) ?? [],
+        .filter((game): game is gamesData => game !== undefined) ?? []
     );
   }, [userData?.wishlist]);
 
@@ -44,48 +78,78 @@ const Wishlist: FC = () => {
     }
   }, [updateWishlist, userData]);
 
-  const handleAddToCart = async (userId: string, itemId: string) => {
-    $('.addtocart-btn')?.classList?.add('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
-    const response = await addToCart(userId, itemId);
-    const removed = await removeFromWishlist(userId, itemId);
-    if (response?.status === 200 && removed?.status === 200) {
+  const handleAddToCart = async (itemId: number) => {
+    addToCartBtn1Ref.current?.classList.add('loading');
+    addToCartBtn2Ref.current?.classList.add('loading');
+    addToCartBtn1Ref.current && (addToCartBtn1Ref.current.style.pointerEvents = 'none');
+    addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'none');
+    const response = await addToCart([itemId]);
+    if (response?.status === 200) {
       fetchData();
       toast.success('Added to cart!');
     } else {
       toast.error('An error occurred. Please try again later.');
     }
-    $('.addtocart-btn')?.classList?.remove('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
+    addToCartBtn1Ref.current?.classList?.remove('loading');
+    addToCartBtn2Ref.current?.classList?.remove('loading');
+    addToCartBtn1Ref.current && (addToCartBtn1Ref.current.style.pointerEvents = 'auto');
+    addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'auto');
   };
 
-  const handleAddToLibrary = async (userId: string, itemId: string) => {
-    $('.addtocart-btn')?.classList?.add('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
-    const response = await addToLibrary(userId, itemId);
-    const removed = await removeFromWishlist(userId, itemId);
-    if (response?.status === 200 && removed?.status === 200) {
+  const handleAddToLibrary = async (itemId: number) => {
+    addToCartBtn1Ref.current?.classList.add('loading');
+    addToCartBtn2Ref.current?.classList.add('loading');
+    addToCartBtn1Ref.current && (addToCartBtn1Ref.current.style.pointerEvents = 'none');
+    addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'none');
+    const response = await addToLibrary([itemId]);
+    if (response?.status === 200) {
       fetchData();
       toast.success('Added to library!');
     } else {
       toast.error('An error occurred. Please try again later.');
     }
-    $('.addtocart-btn')?.classList?.remove('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
+    addToCartBtn1Ref.current?.classList?.remove('loading');
+    addToCartBtn2Ref.current?.classList?.remove('loading');
+    addToCartBtn1Ref.current && (addToCartBtn1Ref.current.style.pointerEvents = 'auto');
+    addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'auto');
   };
 
-  const handleRemove = async (userId: string, itemId: string) => {
-    $('.delete')?.classList?.add('loading');
-    ($('.delete') as HTMLElement).style.pointerEvents = 'none';
-    const response = await removeFromWishlist(userId, itemId);
+  const handleRemove = async (itemId: number) => {
+    removeBtnRef.current?.classList.add('loading');
+    removeBtnRef.current && (removeBtnRef.current.style.pointerEvents = 'none');
+    const response = await removeFromWishlist([itemId]);
     if (response?.status === 200) {
       fetchData();
       updateWishlist();
     } else {
       toast.error('An error occurred. Please try again later.');
     }
-    $('.delete')?.classList?.remove('loading');
-    ($('.delete') as HTMLElement).style.pointerEvents = 'auto';
+    removeBtnRef.current?.classList?.remove('loading');
+    removeBtnRef.current && (removeBtnRef.current.style.pointerEvents = 'auto');
+  };
+
+  const handleCapsulePointerMove = (idx: number) => {
+    setHoveredIndex(idx);
+  };
+
+  const handleCapsulePointerLeave = () => {
+    setHoveredIndex(null);
+  };
+
+  const handleAddToCartBtn1Click = (game: gamesData) => {
+    if (game?.free) {
+      handleAddToLibrary(game?.id);
+    } else {
+      handleAddToCart(game?.id);
+    }
+  };
+
+  const handleAddToCartBtn2Click = (game: gamesData) => {
+    handleAddToCart(game?.id);
+  };
+
+  const handleRemoveBtnClick = (game: gamesData) => {
+    handleRemove(game?.id);
   };
 
   return (
@@ -94,7 +158,7 @@ const Wishlist: FC = () => {
       <SecondNavbar />
       <div className="page-content">
         <div className="wishlist-header">
-          <img src={userData?.profilePicture || '/images/default-pfp.png'} />
+          <img src={userPFP || defaultPFP.src} alt="user-pfp" />
           <h2>{userData?.username}'s wishlist</h2>
         </div>
         {!userWishlist || userWishlist?.length === 0 ? (
@@ -103,35 +167,32 @@ const Wishlist: FC = () => {
             <p>There are no items on your wishlist.</p>
           </div>
         ) : (
-          userWishlist?.map((game, index) => {
+          userWishlist?.map((game, idx) => {
             const positiveCount = game?.reviews.filter(
-              review => review.type === 'positive',
+              (review) => review.type === 'positive'
             ).length;
             const totalReviews = game?.reviews.length;
-            const positivePercentage =
-              ((positiveCount || 0) / (totalReviews || 1)) * 100;
+            const positivePercentage = ((positiveCount || 0) / (totalReviews || 1)) * 100;
+            const summary = getRatingText(positivePercentage);
+            const ratingClass = getRatingClass(positivePercentage);
 
             return (
-              <div key={index} className="wishlist-container">
+              <div key={idx} className="wishlist-container">
                 <div className="wishlist-row">
                   {!isViewport960 && (
-                    <a
+                    <Link
                       className="capsule"
-                      onClick={e => {
-                        navigate(`/game/${game?.id}`, e);
-                      }}
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onMouseLeave={() => setHoveredIndex(null)}
+                      href={`/game/${game?.id}`}
+                      onPointerMove={() => handleCapsulePointerMove(idx)}
+                      onPointerLeave={handleCapsulePointerLeave}
                     >
-                      <img src={game?.horizontalHeaderImage} />
+                      <img src={game?.horizontalHeaderImage} alt="game-header" />
                       <div
                         className="screenshots"
-                        style={{ opacity: hoveredIndex === index ? '1' : '0' }}
+                        style={{ opacity: hoveredIndex === idx ? '1' : '0' }}
                       >
                         {game?.moviesAndImages
-                          .filter(
-                            item => item.type === 'image' && item.featured,
-                          )
+                          .filter((item) => item.type === 'image' && item.featured)
                           .map((item, index) => (
                             <div
                               key={index * 100}
@@ -139,49 +200,19 @@ const Wishlist: FC = () => {
                             />
                           ))}
                       </div>
-                    </a>
+                    </Link>
                   )}
                   <div className="content">
-                    <a
-                      onClick={e => {
-                        navigate(`/game/${game?.id}`, e);
-                      }}
-                      className="wishlist-title"
-                    >
+                    <Link href={`/game/${game?.id}`} className="wishlist-title">
                       {' '}
                       {game?.name}{' '}
-                    </a>
+                    </Link>
                     <div className="mid-container">
                       {!isViewport960 && (
                         <div className="stats">
                           <div className="label">Overall Reviews:</div>
-                          <div
-                            className={`value game-review-summary ${
-                              positivePercentage < 75 && positivePercentage > 40
-                                ? 'mixed'
-                                : positivePercentage >= 75
-                                  ? 'positive'
-                                  : positivePercentage >= 40
-                                    ? 'negative'
-                                    : ''
-                            }`}
-                          >
-                            {positivePercentage >= 90
-                              ? 'Overwhelmingly Positive'
-                              : positivePercentage >= 80
-                                ? 'Very Positive'
-                                : positivePercentage >= 75
-                                  ? 'Mostly Positive'
-                                  : positivePercentage > 40 &&
-                                      positivePercentage < 75
-                                    ? 'Mixed'
-                                    : positivePercentage <= 10
-                                      ? 'Overwhelmingly Negative'
-                                      : positivePercentage <= 20
-                                        ? 'Very Negative'
-                                        : positivePercentage <= 40
-                                          ? 'Mostly Negative'
-                                          : 'No reviews yet.'}
+                          <div className={`value game-review-summary ${ratingClass}`}>
+                            {summary}
                             &nbsp;
                           </div>
                           <div className="label">Release Date:</div>
@@ -195,29 +226,15 @@ const Wishlist: FC = () => {
                               <div className="game-purchase-action">
                                 <div className="game-purchase-action-background">
                                   <div className="game-purchase-price">
-                                    {game?.free
-                                      ? 'Free to Play'
-                                      : `${game?.price} USD`}
+                                    {game?.free ? 'Free to Play' : `${game?.price} USD`}
                                   </div>
-                                  <div className="addtocart-btn">
+                                  <div className="addtocart-btn" ref={addToCartBtn1Ref}>
                                     <a
                                       className="green-btn"
-                                      onClick={() => {
-                                        game?.free
-                                          ? handleAddToLibrary(
-                                              userData?._id || '',
-                                              game?.id || '',
-                                            )
-                                          : handleAddToCart(
-                                              userData?._id || '',
-                                              game?.id || '',
-                                            );
-                                      }}
+                                      onClick={() => handleAddToCartBtn1Click(game)}
                                     >
                                       <span className="medium-btn">
-                                        {game?.free
-                                          ? 'Add to Library'
-                                          : 'Add to Cart'}
+                                        {game?.free ? 'Add to Library' : 'Add to Cart'}
                                       </span>
                                     </a>
                                   </div>
@@ -233,28 +250,25 @@ const Wishlist: FC = () => {
                                       -{game?.discountPercentage}%
                                     </div>
                                     <div className="discount-prices">
-                                      <div className="discount-original-price">
-                                        ${game?.price}
-                                      </div>
+                                      <div className="discount-original-price">${game?.price}</div>
                                       <div className="discount-final-price">
                                         ${game?.discountPrice} USD
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="addtocart-btn">
-                                    <a
-                                      className="green-btn"
-                                      onClick={() =>
-                                        handleAddToCart(
-                                          userData?._id || '',
-                                          game?.id || '',
-                                        )
-                                      }
-                                    >
-                                      <span className="medium-btn">
-                                        Add to Cart
-                                      </span>
-                                    </a>
+                                  <div className="addtocart-btn" ref={addToCartBtn2Ref}>
+                                    {!isInCart(game) ? (
+                                      <a
+                                        className="green-btn"
+                                        onClick={() => handleAddToCartBtn2Click(game)}
+                                      >
+                                        <span className="medium-btn">Add to Cart</span>
+                                      </a>
+                                    ) : (
+                                      <Link href="/cart" className="green-btn">
+                                        <span className="medium-btn">In Cart</span>
+                                      </Link>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -270,29 +284,23 @@ const Wishlist: FC = () => {
                       </div>
                       <div className="lower-columns">
                         <div className="tags">
-                          {game?.tags.map((tag, index) => (
-                            <div key={index * 9999} className="tag">
+                          {game?.tags.map((tag, idx) => (
+                            <div key={idx * 9999} className="tag">
                               {tag}
                             </div>
                           ))}
                         </div>
                         {userData?.wishlist &&
-                        userData?.wishlist[index] &&
-                        userData?.wishlist[index].addedOn ? (
+                        userData?.wishlist[idx] &&
+                        userData?.wishlist[idx].addedOn ? (
                           <div className="added-on">
                             Added on&nbsp;
-                            {new Date(
-                              userData?.wishlist[index].addedOn,
-                            ).toLocaleDateString()}
+                            {new Date(userData?.wishlist[idx].addedOn).toLocaleDateString()}
                             &nbsp;(&nbsp;
                             <div
                               className="delete"
-                              onClick={() =>
-                                handleRemove(
-                                  userData?._id || '',
-                                  game?.id || '',
-                                )
-                              }
+                              onClick={() => handleRemoveBtnClick(game)}
+                              ref={removeBtnRef}
                             >
                               remove
                             </div>

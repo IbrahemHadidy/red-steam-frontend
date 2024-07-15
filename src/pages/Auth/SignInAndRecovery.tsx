@@ -1,121 +1,150 @@
-import {
-  FC,
-  useEffect,
-  useState,
-  FormEvent,
-  useRef,
-  useContext,
-  ChangeEvent,
-} from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
-import { useSpring, animated } from 'react-spring';
+'use client';
+
+// React
+import { useContext, useEffect, useRef, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+
+// React Spring
+import { animated, useSpring } from 'react-spring';
+
+// Toast notifications
 import { toast } from 'react-toastify';
-import { AuthContext } from 'contexts/AuthContext';
-import { checkEmailExists } from 'services/user/auth';
-import { forgotPassword, resetPassword } from 'services/user/password';
+
+// Google ReCAPTCHA
 import ReCAPTCHA from 'react-google-recaptcha';
-import $ from 'tools/$selector';
-import Header from 'components/Header/Header';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Components
 import Footer from 'components/Footer/Footer';
+import Header from 'components/Header/Header';
+
+// Hooks
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Services
+import { checkEmailExists, forgotPassword, resetPassword } from 'services/user/management';
+
+// Utils
 import {
   validateEmail,
   validateName,
   validatePassword,
   validatePhone,
-} from 'tools/inputValidations';
+} from 'utils/inputValidations';
+
+// Styles
 import './SignInUp.scss';
-const env = import.meta.env;
+
+// Types
+import type { ChangeEvent, FC, FormEvent } from 'react';
+
+// Images
+import check from 'images/check.svg';
 
 const SignInAndRecovery: FC = () => {
-  const navigate = useSoftNavigate();
-  const { login } = useContext(AuthContext);
+  // Initializtions
+  const router = useRouter();
+  const pathname = usePathname();
   const isViewport740 = useResponsiveViewport(740);
-  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
-  const [title, setTitle] = useState('Sign In');
-  const [passwordPage, setPasswordPage] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showResetPassword, setShowResetPassword] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [resetErrorMessage, setResetErrorMessage] = useState('');
-  const [accountName, setAccountName] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [forgotEmail, setForgotEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordWarning, setPasswordWarning] = useState(false);
-  const [noMatch, setNoMatch] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-  const [resetToken, setResetToken] = useState('');
 
+  // Contexts
+  const { login } = useContext(AuthContext);
+
+  // States
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>('Sign In');
+  const [passwordPage, setPasswordPage] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showForgotPassword, setShowForgotPassword] = useState<boolean>(false);
+  const [showResetPassword, setShowResetPassword] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [resetErrorMessage, setResetErrorMessage] = useState<string>('');
+  const [accountName, setAccountName] = useState<string>('');
+  const [loginPassword, setLoginPassword] = useState<string>('');
+  const [forgotEmail, setForgotEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [passwordWarning, setPasswordWarning] = useState<boolean>(false);
+  const [noMatch, setNoMatch] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [resetToken, setResetToken] = useState<string>('');
+
+  // Refs
+  const signInFormContainerRef = useRef<HTMLDivElement>(null);
+  const signInFormRef = useRef<HTMLFormElement>(null);
+  const forgotPasswordRef = useRef<HTMLDivElement>(null);
+  const signInTitleRef = useRef<HTMLDivElement>(null);
+  const forgotPasswordErrorRef = useRef<HTMLDivElement>(null);
+  const changePasswordSubmitButton = useRef<HTMLButtonElement>(null);
   const captchaRef = useRef<ReCAPTCHA | null>(null);
 
   const handleRecaptchaChange = (value: string | null) => {
     setRecaptchaValue(value);
   };
 
-  useDynamicMetaTags({
-    title: 'Sign In',
-    background: !isViewport740
-      ? "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
-      : "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21",
-    description: 'Sign in to your account',
-  }, [isViewport740]);
+  useDynamicMetaTags(
+    {
+      title: 'Sign In',
+      background: !isViewport740
+        ? "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
+        : "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21",
+      description: 'Sign in to your account',
+    },
+    [isViewport740]
+  );
 
   // Handle redirect to password reset page and forgot password page
   useEffect(() => {
-    if (
-      window.location.pathname.includes('/reset-password') ||
-      window.location.pathname.includes('/forgot-password')
-    ) {
+    if (pathname?.includes('/reset-password') || pathname?.includes('/forgot-password')) {
       setPasswordPage(true);
-      $('.signin-form')?.remove();
-      $('.forgot-my-password')?.classList.add('active');
-      ($('.signin-title .title') as HTMLElement).style.margin = 'auto';
+      signInFormRef.current?.remove();
+      forgotPasswordRef.current?.classList.add('active');
+      signInTitleRef.current && (signInTitleRef.current.style.margin = 'auto');
       isViewport740 &&
-        (($('.login-form-container') as HTMLElement).style.width =
-          'max-content');
-      const formErrorElement = $('.form-error') as HTMLElement | null;
-      formErrorElement &&
-        (formErrorElement.style.transform = 'translateY(-6px)');
+        signInFormContainerRef.current &&
+        (signInFormContainerRef.current.style.width = 'max-content');
+      const formErrorElement = forgotPasswordErrorRef.current;
+      formErrorElement && (formErrorElement.style.transform = 'translateY(-6px)');
     } else {
-      ($('.forgot-my-password') as HTMLElement).style.minWidth = 'unset';
+      forgotPasswordRef.current && (forgotPasswordRef.current.style.minWidth = 'unset');
     }
-    if (window.location.pathname.includes('/forgot-password')) {
+    if (pathname?.includes('/forgot-password')) {
       document.title = `Name / Password Recovery`;
       setTitle('Name / Password Recovery');
     }
-    if (window.location.pathname.includes('/reset-password')) {
+    if (pathname?.includes('/reset-password')) {
       document.title = `Password Reset`;
-      if (
-        window.location.pathname.endsWith('/reset-password/') ||
-        window.location.pathname.endsWith('/reset-password')
-      ) {
+      if (pathname?.endsWith('/reset-password/') || pathname?.endsWith('/reset-password')) {
         toast.error('Reset token not found', { autoClose: 2000 });
         setTimeout(() => {
-          navigate('/');
+          router.push('/');
         }, 2000);
       }
-      const path = window.location.pathname;
-      const pathParts = path.split('/');
+      const path = pathname;
+      const pathParts = path?.split('/');
       const resetToken = pathParts[pathParts.length - 1];
       // if token is invalid then redirect to home
       if (resetToken.length < 64) {
         toast.error('Invalid reset token', { autoClose: 2000 });
         setTimeout(() => {
-          navigate('/');
+          router.push('/');
         }, 2000);
       }
       setResetToken(resetToken);
       setTitle('Password Reset');
       setShowResetPassword(true);
     }
-  }, [isViewport740, navigate]);
+  }, [isViewport740, pathname, router]);
 
   // Toggle the state when the div is clicked
   const handleRememberMeClick = () => {
@@ -140,14 +169,11 @@ const SignInAndRecovery: FC = () => {
 
   // Toggle the visibility of the "forgot-my-password" section
   const handleForgotPasswordClick = () => {
-    setShowForgotPassword(prevShowForgotPassword => !prevShowForgotPassword);
+    setShowForgotPassword((prevShowForgotPassword) => !prevShowForgotPassword);
   };
 
-  const handleFormSubmit = async (event: {
-    preventDefault: () => void;
-    currentTarget: { querySelector: (arg0: string) => HTMLInputElement };
-  }) => {
-    event.preventDefault();
+  const handleFormSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
     const token = captchaRef.current?.getValue();
 
@@ -169,7 +195,7 @@ const SignInAndRecovery: FC = () => {
       setIsLoading(true);
 
       // Authenticate the user
-      login(accountName, password, rememberMeValue, token as string);
+      await login(accountName, password, rememberMeValue, token?.toString() || '');
     } catch (error) {
       console.error('Error during authentication:', error);
       setErrorMessage('Error during authentication, Please try again later');
@@ -180,10 +206,8 @@ const SignInAndRecovery: FC = () => {
     }
   };
 
-  const handleForgotPasswordFormSubmit = async (
-    event: FormEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
+  const handleForgotPasswordFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     const token = captchaRef.current?.getValue();
 
@@ -197,7 +221,7 @@ const SignInAndRecovery: FC = () => {
     // Check if the user didn't write anything
     if (!forgotEmail && !recaptchaValue) {
       setResetErrorMessage(
-        `Please provide a valid email or phone number<br>Please verify that you're not a robot.`,
+        `Please provide a valid email or phone number<br>Please verify that you're not a robot.`
       );
       setNotFound(true);
       captchaRef.current?.reset();
@@ -245,20 +269,16 @@ const SignInAndRecovery: FC = () => {
           // Check if the account was not found and set the appropriate message
           if (!accountExists) {
             setResetErrorMessage(
-              'We were unable to find an account that matches the information you provided.',
+              'We were unable to find an account that matches the information you provided.'
             );
             setNotFound(true);
           } else {
             const status = await forgotPassword(formData.email);
 
             if (status === 200) {
-              toast.success(
-                'Password reset email sent successfully. Please check your email.',
-              );
+              toast.success('Password reset email sent successfully. Please check your email.');
             } else {
-              setResetErrorMessage(
-                'Internal server error, Please try again later',
-              );
+              setResetErrorMessage('Internal server error, Please try again later');
             }
           }
         } else {
@@ -313,13 +333,13 @@ const SignInAndRecovery: FC = () => {
     const confirmPasswordCheck = () => {
       if (confirmPassword.length === 0) {
         setNoMatch(false);
-        $('.change-password')?.setAttribute('disabled', 'true');
+        changePasswordSubmitButton.current?.setAttribute('disabled', 'true');
       } else {
         setNoMatch(password !== confirmPassword);
         if (password !== confirmPassword) {
-          $('.change-password')?.setAttribute('disabled', 'true');
+          changePasswordSubmitButton.current?.setAttribute('disabled', 'true');
         } else {
-          $('.change-password')?.removeAttribute('disabled');
+          changePasswordSubmitButton.current?.removeAttribute('disabled');
         }
       }
     };
@@ -338,6 +358,27 @@ const SignInAndRecovery: FC = () => {
     setIsSearching(false);
   };
 
+  const handleAccountNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAccountName(e.target.value);
+  };
+
+  const handleForgotEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForgotEmail(e.target.value);
+  };
+
+  const handleLoginPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setLoginPassword(e.target.value);
+  };
+
+  const handleResetPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    checkPassword(e);
+  };
+
+  const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
   return (
     <>
       <Header />
@@ -345,24 +386,24 @@ const SignInAndRecovery: FC = () => {
         <div className="login-container">
           <div className="new-login">
             <div className="signin-title">
-              <div className="title">{title}</div>
+              <div className="title" ref={signInTitleRef}>
+                {title}
+              </div>
             </div>
-            <div className="login-form-container">
+            <div className="login-form-container" ref={signInFormContainerRef}>
               <form
                 className="login-form signin-form"
-                action=""
+                ref={signInFormRef}
                 onSubmit={handleFormSubmit}
               >
                 <div className="login-dialog-field">
-                  <div className="field-label account">
-                    Sign in with account name or email
-                  </div>
+                  <div className="field-label account">Sign in with account name or email</div>
                   <input
                     className="field-input"
                     id="field-input-account"
                     type="text"
                     value={accountName}
-                    onChange={e => setAccountName(e.target.value)}
+                    onChange={handleAccountNameChange}
                   />
                 </div>
                 <div className="login-dialog-field">
@@ -372,14 +413,12 @@ const SignInAndRecovery: FC = () => {
                     id="field-input-password"
                     type="password"
                     value={loginPassword}
-                    onChange={e => setLoginPassword(e.target.value)}
+                    onChange={handleLoginPasswordChange}
                   />
                 </div>
                 <div className="remember-me" onClick={handleRememberMeClick}>
                   <div className="check" tabIndex={0}>
-                    {isChecked && (
-                      <img src="images/check.svg" alt="Checkmark" />
-                    )}
+                    {isChecked && <Image src={check} alt="Checkmark" />}
                   </div>
                   <div className="check-label">Remember me</div>
                 </div>
@@ -403,42 +442,32 @@ const SignInAndRecovery: FC = () => {
                 >
                   {errorMessage}
                 </div>
-                <a
-                  className="forgot-password"
-                  onClick={handleForgotPasswordClick}
-                >
+                <a className="forgot-password" onClick={handleForgotPasswordClick}>
                   {showForgotPassword
                     ? 'Hide Forgot Password / Username'
                     : 'Forgot Password / Username?'}
                 </a>
               </form>
               <animated.div
-                className="forgot-my-password "
+                className="forgot-my-password"
                 style={!isViewport740 ? springProps : springProps740}
+                ref={forgotPasswordRef}
               >
                 {!showResetPassword ? (
-                  <form
-                    className="login-form"
-                    action=""
-                    onSubmit={handleForgotPasswordFormSubmit}
-                  >
-                    <div className="help-title">
-                      I forgot my Steam Account name or password
-                    </div>
+                  <form className="login-form" action="" onSubmit={handleForgotPasswordFormSubmit}>
+                    <div className="help-title">I forgot my Steam Account name or password</div>
                     <div className="login-dialog-field">
-                      <div className="field-label account">
-                        Enter your email address
-                      </div>
+                      <div className="field-label account">Enter your email address</div>
                       <input
                         id="field-input-forgot"
                         className="field-input"
                         type="text"
                         value={forgotEmail}
-                        onChange={e => setForgotEmail(e.target.value)}
+                        onChange={handleForgotEmailChange}
                       />
                     </div>
                     <ReCAPTCHA
-                      sitekey={env.VITE_RECAPTCHA_SITE_KEY}
+                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
                       onChange={handleRecaptchaChange}
                       theme="dark"
                       ref={captchaRef}
@@ -448,11 +477,10 @@ const SignInAndRecovery: FC = () => {
                         className="form-error"
                         style={notFound ? { display: 'block' } : undefined}
                         dangerouslySetInnerHTML={{ __html: resetErrorMessage }}
+                        ref={forgotPasswordErrorRef}
                       />
                       <button
-                        className={`submit-button search ${
-                          isSearching && 'loading'
-                        }`}
+                        className={`submit-button search ${isSearching && 'loading'}`}
                         style={isSearching ? { color: 'transparent' } : {}}
                         type="submit"
                         disabled={isSearching}
@@ -466,23 +494,13 @@ const SignInAndRecovery: FC = () => {
                       </button>
                     </div>
                     {passwordPage && (
-                      <a
-                        href="/login"
-                        onClick={e => {
-                          navigate('/login', e);
-                        }}
-                        className="forgot-password"
-                      >
+                      <Link href="/login" className="forgot-password">
                         Login instead
-                      </a>
+                      </Link>
                     )}
                   </form>
                 ) : (
-                  <form
-                    className="login-form"
-                    action=""
-                    onSubmit={handleResetPasswordFormSubmit}
-                  >
+                  <form className="login-form" onSubmit={handleResetPasswordFormSubmit}>
                     <div className="help-title">Password reset</div>
                     <div className="login-dialog-field">
                       <div className="field-label account">Choose Password</div>
@@ -493,19 +511,12 @@ const SignInAndRecovery: FC = () => {
                         className="field-input"
                         maxLength={64}
                         value={password}
-                        onChange={e => {
-                          setPassword(e.target.value);
-                          checkPassword(e);
-                        }}
+                        onChange={handleResetPasswordChange}
                       />
                       <div className="form-notes">
                         <div
                           className={`password-tag ${
-                            passwordError
-                              ? 'error'
-                              : passwordWarning
-                                ? 'warning'
-                                : ''
+                            passwordError ? 'error' : passwordWarning ? 'warning' : ''
                           }`}
                           style={
                             passwordWarning
@@ -517,24 +528,19 @@ const SignInAndRecovery: FC = () => {
                         >
                           {passwordWarning
                             ? 'Include lowercase and uppercase letters, numbers and symbols for a stronger password'
-                            : passwordError &&
-                              'Password must be at least 8 characters long'}
+                            : passwordError && 'Password must be at least 8 characters long'}
                         </div>
                       </div>
                     </div>
                     <div className="login-dialog-field">
-                      <div className="field-label account">
-                        Confirm Password
-                      </div>
+                      <div className="field-label account">Confirm Password</div>
                       <input
                         type="password"
                         id="reenter-password"
                         name="reenter-password"
                         className="field-input"
                         maxLength={64}
-                        onChange={e => {
-                          setConfirmPassword(e.target.value);
-                        }}
+                        onChange={handleConfirmPasswordChange}
                       />
                       <div className="form-notes">
                         <div
@@ -550,12 +556,11 @@ const SignInAndRecovery: FC = () => {
                       </div>
                     </div>
                     <button
-                      className={`submit-button change-password ${
-                        isSearching && 'loading'
-                      }`}
+                      className={`submit-button change-password ${isSearching && 'loading'}`}
                       style={isSearching ? { color: 'transparent' } : {}}
                       type="submit"
                       disabled={isSearching}
+                      ref={changePasswordSubmitButton}
                     >
                       Change Password
                       {isSearching && (
@@ -565,15 +570,9 @@ const SignInAndRecovery: FC = () => {
                       )}
                     </button>
                     {passwordPage && (
-                      <a
-                        href="/login"
-                        onClick={e => {
-                          navigate('/login', e);
-                        }}
-                        className="forgot-password"
-                      >
+                      <Link href="/login" className="forgot-password">
                         Login instead
-                      </a>
+                      </Link>
                     )}
                   </form>
                 )}
@@ -584,16 +583,9 @@ const SignInAndRecovery: FC = () => {
         <div className="new-user">
           <div className="new-user-item create-acc">
             <div className="headline">New to Steam?</div>
-            <a
-              className="signup-btn"
-              target="_top"
-              href="/join"
-              onClick={e => {
-                navigate('/join', e);
-              }}
-            >
+            <Link className="signup-btn" target="_top" href="/join">
               <span>Create an account</span>
-            </a>
+            </Link>
           </div>
           <div className="new-user-item">
             <div className="subtext">
@@ -601,10 +593,7 @@ const SignInAndRecovery: FC = () => {
               <br />
               games to play with millions of new friends.
               <br />
-              <a
-                className="join-desc"
-                href="https://github.com/IbrahemHadidy/red-steam"
-              >
+              <a className="join-desc" href="https://github.com/IbrahemHadidy/red-steam">
                 Learn more about Red Steam
               </a>
             </div>

@@ -1,53 +1,41 @@
-import { FC, MouseEventHandler, Dispatch, SetStateAction, RefObject } from "react";
-import { useTransition, animated } from 'react-spring'; 
-import { SteamVideo } from "../SteamVideo";
-import { Screenshot } from "../Screenshot";
-import { SlidesArea, SliderButtons } from "./SlidesArea";
-import { MovieEntry, gamesData } from "services/gameData";
+'use client';
 
-interface LeftGameSummaryProps {
-  videoRef: RefObject<HTMLVideoElement | null>;
-	selectedItem: string | null;
-	selectedEntry: MovieEntry | null;
-	isAutoplay: boolean;
-	setAutoplay: Dispatch<SetStateAction<boolean>>;
-	isMouseOverScreenshot: boolean;
-	setIsMouseOverScreenshot: Dispatch<SetStateAction<boolean>>;
-	game: gamesData;
-	setSelectedItem: Dispatch<SetStateAction<string | null>>;
-	handleSliderClick: (direction: "left" | "right") => void;
-	openModal: MouseEventHandler<HTMLAnchorElement>,
-	autoplayInitialized: boolean;
-	setAutoplayInitialized: Dispatch<SetStateAction<boolean>>;
-	wasPausedBeforeSwap: boolean;
-	setWasPausedBeforeSwap: Dispatch<SetStateAction<boolean>>;
-}
+// React Spring
+import { animated, useTransition } from 'react-spring';
+
+// Components
+import { Screenshot } from './Screenshot/Screenshot';
+import { SliderButtons, SlidesArea } from './SlidesArea';
+import { SteamVideo } from './Video/SteamVideo';
+
+// Types
+import type { FC } from 'react';
+import type { LeftGameSummaryProps } from '../MediaAndSummary.types';
 
 export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
   videoRef,
-	selectedItem,
-	selectedEntry,
-	isAutoplay,
-	setAutoplay,
-	isMouseOverScreenshot,
-	setIsMouseOverScreenshot,
-	game,
-	setSelectedItem,
-	handleSliderClick,
-	openModal,
-	autoplayInitialized,
-	setAutoplayInitialized,
-	wasPausedBeforeSwap,
-	setWasPausedBeforeSwap,
+  selectedItem,
+  selectedEntry,
+  isAutoplay,
+  setAutoplay,
+  isMouseOverScreenshot,
+  setIsMouseOverScreenshot,
+  game,
+  setSelectedItem,
+  handleSliderClick,
+  openModal,
+  autoplayInitialized,
+  setAutoplayInitialized,
+  wasPausedBeforeSwap,
+  setWasPausedBeforeSwap,
 }) => {
+  const transitions = useTransition(selectedEntry, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  });
 
-	const transitions = useTransition(selectedEntry, {
-	  from: { opacity: 0 },
-	  enter: { opacity: 1 },
-	  leave: { opacity: 0 },
-	});
-
-	return (
+  return (
     <div className="left-game-summary">
       <div className="game-highlights">
         {selectedEntry && selectedEntry.type === 'video' && (
@@ -81,15 +69,9 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
               )}
             </animated.div>
           ))}
-        <SlidesArea
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-          game={game}
-        />
+        <SlidesArea selectedItem={selectedItem} setSelectedItem={setSelectedItem} game={game} />
       </div>
-      {game.moviesAndImages.length >= 6 && (
-        <SliderButtons handleSliderClick={handleSliderClick} />
-      )}
+      {game.moviesAndImages.length >= 6 && <SliderButtons handleSliderClick={handleSliderClick} />}
     </div>
   );
 };

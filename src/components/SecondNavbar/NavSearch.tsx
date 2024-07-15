@@ -1,21 +1,33 @@
-import { FC, useState, ChangeEvent} from "react";
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import gameData from "services/gameData";
+'use client';
 
+// React
+import { useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+
+// Services
+import gameData from 'services/gameData/gameData';
+
+// Images
+import blank from 'images/blank.gif';
+
+// Types
+import type { ChangeEvent, FC } from 'react';
 
 const NavSearch: FC = () => {
-	const navigate = useSoftNavigate();
-	const [searchInput, setSearchInput] = useState("");
+  // States
+  const [searchInput, setSearchInput] = useState<string>('');
 
-	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setSearchInput(e.target.value);
-	}
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setSearchInput(e.target.value);
+  };
 
-	// TODO: send searchInput to backend then fetch the requested data 
-	// make the backend send 10 games at a time for every change
+  // TODO: send searchInput to backend then fetch the requested data
+  // make the backend send 10 games at a time for every change
 
-
-	return (
+  return (
     <div className="search-area">
       <div id="search">
         <form>
@@ -29,39 +41,25 @@ const NavSearch: FC = () => {
               placeholder="search"
               onChange={handleSearchChange}
             />
-            <a
-              onClick={e => {
-                navigate(`/search?term=${searchInput}`, e);
-              }}
-              className="search-button"
-            >
-              <img alt="Search" src="/images/blank.gif" />
-            </a>
+            <Link href={`/search?term=${searchInput}`} className="search-button">
+              <Image alt="Search" src={blank} />
+            </Link>
           </div>
         </form>
       </div>
-      <div
-        className="nav-search"
-        style={{ display: searchInput !== '' ? 'block' : 'none' }}
-      >
+      <div className="nav-search" style={{ display: searchInput !== '' ? 'block' : 'none' }}>
         <div className="search-popup">
-          {gameData.slice(0, 11).map(game => (
-            <a
-              key={game.id}
-              className="search-match"
-              onClick={e => {
-                navigate(`/game/${game.id}`, e);
-              }}
-            >
+          {gameData.slice(0, 11).map((game) => (
+            <Link key={game.id} className="search-match" href={`/game/${game.id}`}>
               <div className="match-name">{game.name}</div>
               <div className="match-img">
-                <img src={game.searchImage} alt={game.name} />
+                <Image width={120} height={45} src={game.searchImage} alt={game.name} />
               </div>
               <div className="match-price">
                 {!game.free && '$'}
                 {game.discountPrice ? game.discountPrice : game.price}
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

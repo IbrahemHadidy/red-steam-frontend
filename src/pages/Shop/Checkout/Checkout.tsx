@@ -1,19 +1,47 @@
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
+'use client';
+
+// React
+import { useContext, useEffect, useMemo, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { OnApproveData } from '@paypal/paypal-js';
-import { toast } from 'react-toastify';
+
+// Contexts
 import { AuthContext } from 'contexts/AuthContext';
-import { captureOrder, createOrder } from 'services/payment';
-import gameData, { gamesData } from 'services/gameData';
+
+// Hooks
 import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
-import useSoftNavigate from 'hooks/useSoftNavigate';
+
+// Toast notifications
+import { toast } from 'react-toastify';
+
+// Services
+import gameData from 'services/gameData/gameData';
+import { captureOrder, createOrder } from 'services/user/payment';
+
+// Images
+import steamLogo from 'images/logo_steam.svg';
+
+// Styles
 import './Checkout.scss';
 
-const env = import.meta.env;
+// Types
+import type { OnApproveData } from '@paypal/paypal-js';
+import type { FC } from 'react';
+import type { gamesData } from 'services/gameData/gameData';
 
 const Checkout: FC = () => {
-  const navigate = useSoftNavigate();
+  // Initializations
+  const router = useRouter();
+
+  // Contexts
   const { userData, fetchData } = useContext(AuthContext);
+
+  // States
   const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(false);
   const [isReviewSelected, setIsReviewSelected] = useState(false);
   const [checkboxSelected, setCheckboxSelected] = useState(false);
@@ -28,8 +56,8 @@ const Checkout: FC = () => {
   const userCart = useMemo(() => {
     return (
       userData?.cart
-        ?.map(item => {
-          return gameData.find(game => game.id === item);
+        ?.map((item) => {
+          return gameData.find((game) => game.id === item.id);
         })
         .filter((game): game is gamesData => game !== undefined) ?? []
     );
@@ -44,13 +72,13 @@ const Checkout: FC = () => {
   useEffect(() => {
     if (userData?.cart?.length === 0 && !isPaymentConfirmed) {
       toast.warning('Cart is empty');
-      navigate('/cart');
+      router.push('/cart');
     }
-  }, [isPaymentConfirmed, navigate, userData]);
+  }, [isPaymentConfirmed, router, userData]);
 
   const initialOptions = {
     disableFunding: 'card',
-    clientId: env.VITE_PAYPAL_CLIENT_ID,
+    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
     currency: 'USD',
     intent: 'capture',
   };
@@ -64,11 +92,10 @@ const Checkout: FC = () => {
       }
 
       const result = await createOrder(
-        userData._id,
         totalPrice,
-        userData.cart || [],
+        userData.cart.map((item) => item.id)
       );
-      
+
       return result.orderId;
     } catch (error) {
       console.error('Error creating PayPal order:', error);
@@ -84,8 +111,7 @@ const Checkout: FC = () => {
 
       const response = await captureOrder(
         data.orderID,
-        userData._id,
-        userData.cart || [],
+        userData.cart.map((item) => item.id)
       );
 
       if (response.status !== 200) {
@@ -103,14 +129,30 @@ const Checkout: FC = () => {
     }
   };
 
+  const handleCheckboxClick = () => {
+    setCheckboxSelected(!checkboxSelected);
+  };
+
+  const handleContinueClick = () => {
+    setIsReviewSelected(true);
+  };
+
+  const handleBackClick = () => {
+    setIsReviewSelected(false);
+  };
+
+  const handleReturnToStoreClick = () => {
+    router.push('/');
+  };
+
   return (
     <PayPalScriptProvider options={initialOptions}>
       <div className="checkout-header">
         <div className="checkout-header-content">
           <div className="steam-logo">
-            <a href="/" onClick={e => navigate('/', e)}>
-              <img src="/images/logo_steam.svg" />
-            </a>
+            <Link href="/">
+              <Image src={steamLogo} alt="Steam Logo" />
+            </Link>
           </div>
           {!isPaymentConfirmed ? (
             <div id="checkout-pipeline" className="pipeline">
@@ -124,10 +166,7 @@ const Checkout: FC = () => {
                 </div>
               </div>
               <div className="cart-tab-spacer" />
-              <div
-                id="review-select"
-                className={`cart-tab ${isReviewSelected ? 'selected' : ''}`}
-              >
+              <div id="review-select" className={`cart-tab ${isReviewSelected ? 'selected' : ''}`}>
                 <div className="tab-indicator" />
                 <div className="tab-select"> Review + Purchase</div>
               </div>
@@ -165,12 +204,10 @@ const Checkout: FC = () => {
                 {userCart.map((game, index) => (
                   <div className="review-checkout-item" key={index}>
                     <div className="checkout-item-img">
-                      <img src={game.searchImage} />
+                      <img src={game.searchImage} alt={game.name} />
                     </div>
                     <div className="checkout-item-price">
-                      <div>
-                        ${game.discount ? game.discountPrice : game.price} USD
-                      </div>
+                      <div>${game.discount ? game.discountPrice : game.price} USD</div>
                     </div>
                     <div className="checkout-item-desc">
                       <div className="checkout-item-platform">
@@ -192,12 +229,9 @@ const Checkout: FC = () => {
                 <div className="summary-purchase-area">
                   <p>An email confirmation has been sent to you.</p>
                   <span>
-                    Any digital items in this order are now registered to your
-                    account on Steam. To access your items, simply visit
-                    your&nbsp;
-                    <a href="/library" onClick={e => navigate('/library', e)}>
-                      library
-                    </a>
+                    Any digital items in this order are now registered to your account on Steam. To
+                    access your items, simply visit your&nbsp;
+                    <Link href="/library">library</Link>
                     &nbsp;in Steam whenever you're ready.
                   </span>
                   <br />
@@ -206,27 +240,19 @@ const Checkout: FC = () => {
                 <h2>YOUR PURCHASE RECEIPT</h2>
                 <div className="reciept-body">
                   <p className="confirm-message">
-                    Confirmation of your purchase is provided below. This
-                    information will also be emailed to you shortly.
+                    Confirmation of your purchase is provided below. This information will also be
+                    emailed to you shortly.
                   </p>
                   <div className="reciept-confirmation-row">
-                    <div className="receipt-confirmation-label">
-                      Account Name
-                    </div>
-                    <div className="receipt-confirmation-data">
-                      {userData?.username}
-                    </div>
+                    <div className="receipt-confirmation-label">Account Name</div>
+                    <div className="receipt-confirmation-data">{userData?.username}</div>
                   </div>
                   <div className="reciept-confirmation-row">
                     <div className="receipt-confirmation-label">Total</div>
-                    <div className="receipt-confirmation-data">
-                      ${finalPrice} USD
-                    </div>
+                    <div className="receipt-confirmation-data">${finalPrice} USD</div>
                   </div>
                   <div className="reciept-confirmation-row">
-                    <div className="receipt-confirmation-label">
-                      Confirmation code
-                    </div>
+                    <div className="receipt-confirmation-label">Confirmation code</div>
                     <div className="receipt-confirmation-data">{orderId}</div>
                   </div>
                   <div className="print-row">
@@ -244,15 +270,10 @@ const Checkout: FC = () => {
                     <div className="form-row">
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <label>Please select a payment method:</label>
-                        <div className="payment-options">
-                          We only support Paypal at the moment
-                        </div>
+                        <div className="payment-options">We only support Paypal at the moment</div>
                       </div>
                     </div>
-                    <p>
-                      You'll have the chance to review your order before it's
-                      placed.
-                    </p>
+                    <p>You'll have the chance to review your order before it's placed.</p>
                   </>
                 )}
                 {isReviewSelected && !isPaymentConfirmed && (
@@ -265,30 +286,22 @@ const Checkout: FC = () => {
                     </div>
                     <div className="review-row">
                       <div className="review-row-label">Red Steam account:</div>
-                      <div className="review-row-value">
-                        {userData?.username}
-                      </div>
+                      <div className="review-row-value">{userData?.username}</div>
                     </div>
                     <div className="rule" />
                     <div className="checkout-checkbox">
-                      <input
-                        type="checkbox"
-                        onChange={() => setCheckboxSelected(!checkboxSelected)}
-                      />
+                      <input type="checkbox" onChange={handleCheckboxClick} />
                       &nbsp;
                       <span>
-                        I acknowledge that this site is for educational purposes
-                        only and no sensitive or real billing information will
-                        be entered. (only paypal sandbox works)
+                        I acknowledge that this site is for educational purposes only and no
+                        sensitive or real billing information will be entered. (only paypal sandbox
+                        works)
                       </span>
                     </div>
                   </>
                 )}
                 {!isReviewSelected && (
-                  <div
-                    className="continue-button"
-                    onClick={() => setIsReviewSelected(true)}
-                  >
+                  <div className="continue-button" onClick={handleContinueClick}>
                     <span>Continue</span>
                   </div>
                 )}
@@ -314,10 +327,7 @@ const Checkout: FC = () => {
                   </div>
                 )}
                 {isReviewSelected && (
-                  <div
-                    className="back-button"
-                    onClick={() => setIsReviewSelected(false)}
-                  >
+                  <div className="back-button" onClick={handleBackClick}>
                     <span>Back</span>
                   </div>
                 )}
@@ -331,7 +341,7 @@ const Checkout: FC = () => {
             {isPaymentConfirmed && (
               <>
                 <br />
-                <div className="back-button" onClick={() => navigate('/')}>
+                <div className="back-button" onClick={handleReturnToStoreClick}>
                   <span>Return to the Store</span>
                 </div>
               </>

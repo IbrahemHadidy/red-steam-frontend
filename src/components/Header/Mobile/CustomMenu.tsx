@@ -1,10 +1,32 @@
-import { FC, useContext, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { useSpring, animated } from 'react-spring';
-import { AuthContext } from 'contexts/AuthContext';
+'use client';
+
+// React
+import { useContext, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+// React spring
+import { animated, useSpring } from 'react-spring';
+
+// Toast notifications
 import { toast } from 'react-toastify';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Links Data
 import sharedData from '../sharedData';
 
+// Images
+import defaultPFP from 'images/default-pfp.png';
+import dropdown from 'images/dropdown.png';
+import valveLogo from 'images/logo_valve_footer.png';
+
+// Types
+import type { FC } from 'react';
 interface MenuItem {
   id: string;
   text: string;
@@ -12,12 +34,17 @@ interface MenuItem {
 }
 
 const SteamMenu: FC = () => {
-  const navigate = useSoftNavigate();
-  const { userData, isLoggedIn } = useContext(AuthContext);
+  // Initializations
+  const router = useRouter();
+
+  // Contexts
+  const { userData, userPFP, isLoggedIn } = useContext(AuthContext);
+
+  // States
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
-  const [showNotificationDropdown, setShowNotificationDropdown] =
-    useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState<boolean>(false);
+
   const dropdownAnimation = useSpring({
     height: showNotificationDropdown ? 42 : 0,
     opacity: showNotificationDropdown ? 1 : 0,
@@ -27,24 +54,34 @@ const SteamMenu: FC = () => {
   const toggleSubmenu = (submenuId: string) => {
     if (openSubmenu === submenuId) {
       setOpenSubmenu(null);
-      setOpenedItems(prevState => ({ ...prevState, [submenuId]: false }));
+      setOpenedItems((prevState) => ({ ...prevState, [submenuId]: false }));
     } else {
       setOpenSubmenu(submenuId);
-      setOpenedItems(prevState => ({ ...prevState, [submenuId]: true }));
+      setOpenedItems((prevState) => ({ ...prevState, [submenuId]: true }));
+    }
+  };
+
+  const handleMenuItemClick = (menuItem: MenuItem) => {
+    if (
+      menuItem.id === 'support' ||
+      menuItem.id === 'account-details' ||
+      menuItem.id === 'store-preferences' ||
+      menuItem.id === 'change-language' ||
+      menuItem.id === 'change-user'
+    ) {
+      router.push(menuItem.link);
+    } else {
+      toggleSubmenu(menuItem.id);
     }
   };
 
   const generateMenuItems = (menuItems: MenuItem[], menuClass: string) => {
     return menuItems
       .map((menuItem, index) => {
-        const submenu = sharedData.subMenus.find(
-          subMenu => subMenu.title === menuItem.text,
-        );
+        const submenu = sharedData.subMenus.find((subMenu) => subMenu.title === menuItem.text);
         const subMenuItemCount = submenu ? submenu.items.length : 0;
 
-        const itemHeight = openedItems[menuItem.id]
-          ? subMenuItemCount * 41.25
-          : 0;
+        const itemHeight = openedItems[menuItem.id] ? subMenuItemCount * 41.25 : 0;
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const dropdownAnimation = useSpring({
@@ -67,28 +104,12 @@ const SteamMenu: FC = () => {
               menuItem.id === 'change-user'
                 ? 'has-dropdown'
                 : ''
-            } ${openedItems[menuItem.id] ? 'opened' : ''} ${
-              index === 0 ? 'first' : ''
-            }`}
+            } ${openedItems[menuItem.id] ? 'opened' : ''} ${index === 0 ? 'first' : ''}`}
             key={menuItem.id}
           >
             <div
-              onClick={() => {
-                if (
-                  menuItem.id === 'support' ||
-                  menuItem.id === 'account-details' ||
-                  menuItem.id === 'store-preferences' ||
-                  menuItem.id === 'change-language' ||
-                  menuItem.id === 'change-user'
-                ) {
-                  navigate(menuItem.link);
-                } else {
-                  toggleSubmenu(menuItem.id);
-                }
-              }}
-              className={`menu-item-content ${
-                menuItem.id === 'supernav' ? 'supernav' : ''
-              }`}
+              onClick={() => handleMenuItemClick(menuItem)}
+              className={`menu-item-content ${menuItem.id === 'supernav' ? 'supernav' : ''}`}
             >
               <span className="menu-item-text">{menuItem.text}</span>
               {menuItem.id === 'notifications' ||
@@ -96,11 +117,9 @@ const SteamMenu: FC = () => {
               menuItem.id === 'you-and-friends' ||
               menuItem.id === 'community' ? (
                 <img
-                  src="/images/dropdown.png"
+                  src={dropdown.src}
                   alt="Rotate Icon"
-                  className={`rotate-icon ${
-                    openedItems[menuItem.id] ? 'rotated' : ''
-                  }`}
+                  className={`rotate-icon ${openedItems[menuItem.id] ? 'rotated' : ''}`}
                 />
               ) : null}
             </div>
@@ -119,16 +138,10 @@ const SteamMenu: FC = () => {
                     opacity: dropdownAnimation.opacity,
                   }}
                 >
-                  {submenu?.items.map(subMenuItem => (
-                    <a
-                      className="submenuitem"
-                      onClick={e => {
-                        navigate(subMenuItem.link, e);
-                      }}
-                      key={subMenuItem.id}
-                    >
+                  {submenu?.items.map((subMenuItem) => (
+                    <Link className="submenuitem" href={subMenuItem.link} key={subMenuItem.id}>
                       {subMenuItem.text}
-                    </a>
+                    </Link>
                   ))}
                   {/* Display the count of submenu items */}
                   <p>Number of submenu items: {subMenuItemCount}</p>
@@ -154,14 +167,7 @@ const SteamMenu: FC = () => {
         <div className="notification_submenu">
           <div data-featuretarget="green-envelope-responsive">
             <div className="NotificationHeader ResponsiveViewAll">
-              <button
-                className="AllNotificationsButton"
-                onClick={() =>
-                  toast.info(
-                    `This feature is not implemented yet and may not be implemented in the future.`,
-                  )
-                }
-              >
+              <button className="AllNotificationsButton" onClick={() => toast.info(`Coming soon.`)}>
                 View All
               </button>
             </div>
@@ -170,6 +176,14 @@ const SteamMenu: FC = () => {
       </div>
     </animated.div>
   );
+
+  const handleNotificationDropdown = () => {
+    setShowNotificationDropdown(!showNotificationDropdown);
+  };
+
+  const handleLogin = () => {
+    router.push('/login');
+  };
 
   // Render the SteamMenu component
   return (
@@ -181,57 +195,30 @@ const SteamMenu: FC = () => {
               <div className="responsive_menu_user_area">
                 <div className="responsive_menu_user_persona persona offline">
                   <div className="playerAvatar offline">
-                    <a
-                      onClick={e => {
-                        navigate(`/user/${userData?._id}/`, e);
-                      }}
-                    >
-                      <img
-                        src={
-                          userData?.profilePicture || '/images/default-pfp.png'
-                        }
-                        alt="User Avatar"
-                      />
-                    </a>
+                    <Link href={`/user/${userData?.id}/`}>
+                      <img src={userPFP || defaultPFP.src} alt="User Avatar" />
+                    </Link>
                   </div>
-                  <a
-                    onClick={e => {
-                      navigate(`/user/${userData?._id}/`, e);
-                    }}
-                    data-miniprofile="216405522"
-                  >
-                    {userData?.username}
-                  </a>
+                  <Link href={`/user/${userData?.id}/`}>{userData?.username}</Link>
                 </div>
                 <div className="responsive_menu_cartwallet_area persona offline">
                   <div className="responsive_menu_user_cart">
-                    <a
-                      href="/cart"
-                      onClick={e => {
-                        navigate('/cart', e);
-                      }}
-                    >
+                    <Link href="/cart">
                       Cart&nbsp;<b>({userData?.cart?.length || 0})</b>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
               <div
-                className={`menu-item supernav ${
-                  showNotificationDropdown ? 'opened' : ''
-                }`}
-                onClick={() =>
-                  setShowNotificationDropdown(!showNotificationDropdown)
-                }
+                className={`menu-item supernav ${showNotificationDropdown ? 'opened' : ''}`}
+                onClick={handleNotificationDropdown}
               >
                 <div className="menu-item-content">
                   <span className="menu-item-text">Notifications</span>
                   <img
-                    src="/images/dropdown.png"
+                    src={dropdown.src}
                     alt="Rotate Icon"
-                    className={`rotate-icon ${
-                      showNotificationDropdown ? 'rotated' : ''
-                    }`}
+                    className={`rotate-icon ${showNotificationDropdown ? 'rotated' : ''}`}
                   />
                   <div className="chevron"></div>
                 </div>
@@ -239,12 +226,7 @@ const SteamMenu: FC = () => {
               </div>
               {!isLoggedIn && (
                 <div className="menu-item supernav">
-                  <div
-                    onClick={() => {
-                      navigate('/login');
-                    }}
-                    className="menu-item-content"
-                  >
+                  <div onClick={handleLogin} className="menu-item-content">
                     <span className="menu-item-text">login</span>
                   </div>
                 </div>
@@ -258,56 +240,36 @@ const SteamMenu: FC = () => {
             <div className="mainmenu_footer_spacer"></div>
             <div className="mainmenu_footer">
               <div className="mainmenu_footer_logo">
-                <img
-                  src="/images/logo_valve_footer.png"
-                  alt="Valve Footer Logo"
-                />
+                <Image src={valveLogo} alt="Valve Footer Logo" />
               </div>
               {/* Copyright and legal information */}
-              This website is an educational project replicating the Steam site
-              for learning purposes and is not affiliated with Valve
-              Corporation.
+              This website is an educational project replicating the Steam site for learning
+              purposes and is not affiliated with Valve Corporation.
               <br />
               <span className="mainmenu_valve_links">
-                <a
-                  onClick={e => {
-                    navigate(sharedData.privacyPolicy.link, e);
-                  }}
+                <Link
+                  href={sharedData.privacyPolicy.link}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopenner"
                 >
                   {sharedData.privacyPolicy.text}
-                </a>
+                </Link>
                 &nbsp;|&nbsp;
-                <a
-                  onClick={e => {
-                    navigate(sharedData.legal.link, e);
-                  }}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <Link href={sharedData.legal.link} target="_blank" rel="noreferrer noopenner">
                   {sharedData.legal.text}
-                </a>
+                </Link>
                 &nbsp;|&nbsp;
-                <a
-                  onClick={e => {
-                    navigate(sharedData.steamSubscriberAgreement.link, e);
-                  }}
+                <Link
+                  href={sharedData.steamSubscriberAgreement.link}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noreferrer noopenner"
                 >
                   {sharedData.steamSubscriberAgreement.text}
-                </a>
+                </Link>
                 &nbsp;|&nbsp;
-                <a
-                  onClick={e => {
-                    navigate(sharedData.refunds.link, e);
-                  }}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <Link href={sharedData.refunds.link} target="_blank" rel="noreferrer noopenner">
                   {sharedData.refunds.text}
-                </a>
+                </Link>
               </span>
             </div>
           </div>

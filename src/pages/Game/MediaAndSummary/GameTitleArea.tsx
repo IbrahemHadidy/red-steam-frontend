@@ -1,48 +1,38 @@
-import { FC } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
+'use client';
+
+// Next.js
+import Link from 'next/link';
+
+// Toast notifications
 import { toast } from 'react-toastify';
 
-interface GameTitleAreaProps {
-  category: string;
-  name: string;
-}
+// Types
+import type { FC } from 'react';
+import type { GameTitleAreaProps } from './MediaAndSummary.types';
 
 export const GameTitleArea: FC<GameTitleAreaProps> = ({ category, name }) => {
-  const navigate = useSoftNavigate();
+  const handleCommunityBtnClick = () => {
+    toast.warn('Community Hub is not available yet');
+  };
 
   return (
     <div className="game-title-area">
       <div className="genre-block">
-        <a
-          onClick={e => {
-            navigate(`/search/`, e);
-          }}
-        >
+        <Link href={`/search/`}>
           <span className="genre-item">All Games</span>
-        </a>{' '}
+        </Link>{' '}
         &gt;{' '}
-        <a
-          onClick={e => {
-            navigate(`/genre/${category}/`, e);
-          }}
-        >
+        <Link href={`/genre/${category}/`}>
           <span className="genre-item">{category}</span>
-        </a>{' '}
+        </Link>{' '}
         &gt;{' '}
-        <a
-          onClick={e => {
-            navigate(`/game/${name}/`, e);
-          }}
-        >
+        <Link href={`/game/${name}/`}>
           <span className="genre-item">{name}</span>
-        </a>
+        </Link>
       </div>
       <div className="game-header-content">
         <div className="game-community">
-          <a
-            className="community-btn"
-            onClick={() => toast.warn('Community Hub is not available yet')}
-          >
+          <a className="community-btn" onClick={handleCommunityBtnClick}>
             <span>Community Hub</span>
           </a>
         </div>

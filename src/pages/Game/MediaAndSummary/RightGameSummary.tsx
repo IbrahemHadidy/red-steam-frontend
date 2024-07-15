@@ -1,48 +1,52 @@
-import { FC, ReactNode, useState } from "react";
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
-import { ReviewEntry, gamesData } from "services/gameData";
-import TagsModal from "./TagsModal";
+'use client';
 
-export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }> = ({ game, isViewport630 }) => {  
-  const navigate = useSoftNavigate();
-  const isViewport960 = useResponsiveViewport(960);
-  const [showModal, setShowModal] = useState(false);
+// React
+import { useState } from 'react';
+
+// Next.js
+import Link from 'next/link';
+
+// Components
+import TagsModal from './TagsModal';
+
+// Utils
+import getHoverInfo from 'utils/getHoverInfo';
+import { getRatingClass, getRatingText } from 'utils/ratingUtils';
+
+// Types
+import type { FC } from 'react';
+import type { ReviewEntry } from 'services/gameData/gameData';
+import type { RightGameSummaryProps } from './MediaAndSummary.types';
+
+export const RightGameSummary: FC<RightGameSummaryProps> = ({
+  game,
+  isViewport630,
+  isViewport960,
+}) => {
+  // States
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-  
-	let positivePercentage: number = 0;
 
-	function getReviewSummary(positiveCount: number, _negativeCount: number, totalReviews: number) {
-		positivePercentage = (positiveCount / totalReviews) * 100;
+  const totalReviews = game.reviews.length;
+  const positiveReviews = game.reviews.filter(
+    (review: ReviewEntry) => review.type === 'positive'
+  ).length;
+  const negativeReviews = game.reviews.filter(
+    (review: ReviewEntry) => review.type === 'negative'
+  ).length;
 
-		if (positivePercentage >= 90) return "Overwhelmingly Positive";
-		if (positivePercentage >= 80) return "Very Positive";
-		if (positivePercentage >= 75) return "Mostly Positive";
-		if (positivePercentage > 40 && positivePercentage < 75) return "Mixed";
-		if (positivePercentage <= 10) return "Overwhelmingly Negative";
-		if (positivePercentage <= 20) return "Very Negative";
-		if (positivePercentage <= 40) return "Mostly Negative";
-	}
+  const positivePercentage = (positiveReviews / totalReviews) * 100;
+  const hoverInfo = getHoverInfo(positiveReviews, negativeReviews);
+  const summary = getRatingText(positivePercentage);
+  const ratingClass = getRatingClass(positivePercentage);
 
-	const totalReviews = game.reviews.length;
-	const positiveReviews = game.reviews.filter((review: ReviewEntry) => review.type === "positive").length;
-	const negativeReviews = game.reviews.filter((review: ReviewEntry) => review.type === "negative").length;
-
-	const summary = getReviewSummary(positiveReviews, negativeReviews, totalReviews);
-	
-	function getHoverInfo(positiveReviews: number, negativeReviews: number) {
-		const positivePercentage = (positiveReviews / negativeReviews) * 100;
-	
-		return  totalReviews === 0 ? "No reviews yet." : `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;
-	}
-	
-	return (
+  return (
     <div className="right-game-summary">
       <div className="game-image">
-        <img className="image-full" src={game.horizontalHeaderImage} alt="" />
+        <img className="image-full" src={game.horizontalHeaderImage} alt="game-header" />
       </div>
       {isViewport630 && <div className="game-name-mobile">{game.name}</div>}
       <div className="game-discription">{game.description}</div>
@@ -51,29 +55,12 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
           <div className="user-reviews-summary">
             <div className="summary-subtitle">All Reviews:</div>
             <div className="summary-column">
-              <span
-                className={`game-review-summary ${
-                  positivePercentage < 75 && positivePercentage > 40
-                    ? 'mixed'
-                    : positivePercentage >= 75
-                      ? 'positive'
-                      : positivePercentage >= 40
-                        ? 'negative'
-                        : ''
-                }`}
-              >
-                {summary || 'N/A'}
-              </span>
+              <span className={`game-review-summary ${ratingClass}`}>{summary || 'N/A'}</span>
               <span className="game-review-count">
                 {' '}
                 ({(positiveReviews + negativeReviews).toLocaleString()})
               </span>
-              <span className="review-tooltip">
-                {getHoverInfo(
-                  positiveReviews,
-                  positiveReviews + negativeReviews,
-                )}
-              </span>
+              <span className="review-tooltip">{hoverInfo}</span>
             </div>
           </div>
         </div>
@@ -95,22 +82,14 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
         </div>
       </div>
       <div className="user-defined-tags">
-        <div className="glance-tags-label">
-          Popular user-defined tags for this product:
-        </div>
+        <div className="glance-tags-label">Popular user-defined tags for this product:</div>
         {!isViewport960 ? (
           <div className="glance-tags">
             {!showModal &&
               game.tags.slice(0, 4).map((tag, index) => (
-                <a
-                  key={index}
-                  className="game-tag"
-                  onClick={e => {
-                    navigate(`/search?tags=${tag}`, e);
-                  }}
-                >
+                <Link key={index} className="game-tag" href={`/search?tags=${tag}`}>
                   {tag}
-                </a>
+                </Link>
               ))}
             {!showModal && game.tags.length > 3 && (
               <a className="game-tag" onClick={toggleModal}>
@@ -121,15 +100,9 @@ export const RightGameSummary: FC<{ game: gamesData; isViewport630: ReactNode }>
           </div>
         ) : (
           game.tags.map((tag, index) => (
-            <a
-              key={index}
-              className="game-tag"
-              onClick={e => {
-                navigate(`/search?tags=${tag}`, e);
-              }}
-            >
+            <Link key={index} className="game-tag" href={`/search?tags=${tag}`}>
               {tag}
-            </a>
+            </Link>
           ))
         )}
       </div>

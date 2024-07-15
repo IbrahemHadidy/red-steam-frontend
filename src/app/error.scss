@@ -1,0 +1,42 @@
+.error-boundary {
+  position: absolute;
+  width: fit-content;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 50px;
+  border: 2px solid #ff6347;
+  background-color: #171a21;
+  color: #ff6347;
+  text-align: center;
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  .error-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff6347;
+  }
+
+  button {
+    padding: 5px 20px;
+    margin: 10px;
+    border: none;
+    font-size: 16px;
+    background: #ff6347;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 1px;
+
+    &:hover {
+      background: #ff3b3b;
+    }
+  }
+}

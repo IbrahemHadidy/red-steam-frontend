@@ -1,48 +1,57 @@
-import {
-  FC,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import DOMPurify from 'dompurify';
+'use client';
+
+// React
+import { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
+
+// Next.js
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+// Sanitization library
+import DomPurify from 'dompurify';
+
+// Toast notifications
 import { toast } from 'react-toastify';
-import $ from 'tools/$selector';
-import getPlatform from 'tools/getPlatform';
-import { gamesData } from 'services/gameData';
+
+// Services
+import { addToCart, addToLibrary } from 'services/user/interaction';
+
+// Utils
+import getPlatform from 'utils/getPlatform';
+
+// Contexts
 import { AuthContext } from 'contexts/AuthContext';
-import {
-  addToCart,
-  addToLibrary,
-  removeFromCart,
-  removeFromWishlist,
-} from 'services/user/userInteractions';
 
-export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
-  game,
-  isViewport630,
-}) => {
-  const { userData, fetchData } = useContext(AuthContext);
-  const navigate = useSoftNavigate();
+// Types
+import type { Dispatch, FC, MouseEvent as ReactMouseEvent, SetStateAction } from 'react';
+import type { LeftContentProps } from './GameContent.types';
+
+const LeftContent: FC<LeftContentProps> = ({ game, isViewport630 }) => {
+  // Initializations
+  const router = useRouter();
   const platform = getPlatform();
+  const sanitize = DomPurify.sanitize;
 
-  const [isAboutExpanded, setIsAboutExpanded] = useState(true);
-  const [isMatureExpanded, setIsMatureExpanded] = useState(true);
-  const [isSysReqExpanded, setIsSysReqExpanded] = useState(true);
+  // Contexts
+  const { userData, fetchData, isLoggedIn } = useContext(AuthContext);
 
+  // States
+  const [isAboutExpanded, setIsAboutExpanded] = useState<boolean>(true);
+  const [isMatureExpanded, setIsMatureExpanded] = useState<boolean>(true);
+  const [isSysReqExpanded, setIsSysReqExpanded] = useState<boolean>(true);
+
+  // Refs
   const aboutRef = useRef<HTMLDivElement>(null);
   const matureRef = useRef<HTMLDivElement>(null);
   const sysReqRef = useRef<HTMLDivElement>(null);
+  const addToCartBtnRef = useRef<HTMLDivElement>(null);
 
-  const [isInLibrary, isInCart, isInWishlist] = useMemo(
+  const [isInLibrary, isInCart] = useMemo(
     () => [
-      userData?.library?.includes(game.id),
-      userData?.cart?.includes(game.id),
-      userData?.wishlist?.some(wishlistItem => wishlistItem.item === game.id),
+      userData?.library?.some((item) => item.id === game.id),
+      userData?.cart?.some((item) => item.id === game.id),
     ],
-    [userData, game.id],
+    [userData, game.id]
   );
 
   useLayoutEffect(() => {
@@ -53,63 +62,61 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
       if (matureRef.current && matureRef.current.scrollHeight >= 120) {
         setIsMatureExpanded(false);
       }
-      if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250) {
+      if (sysReqRef.current && sysReqRef.current.scrollHeight >= 220) {
         setIsSysReqExpanded(false);
       }
-    }, 100);
+    }, 2000);
   }, []);
 
-  // Functions to toggle the visibility of each section
-  const toggleAboutExpand = () => {
-    setIsAboutExpanded(!isAboutExpanded);
+  const toggleExpand = (setExpand: Dispatch<SetStateAction<boolean>>, expanded: boolean) => {
+    setExpand(!expanded);
   };
 
-  const toggleMatureExpand = () => {
-    setIsMatureExpanded(!isMatureExpanded);
-  };
+  const handleAddToCartClick = async (e: ReactMouseEvent<HTMLElement>, itemId: number) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      toast.warn('Please login to add items to your cart.');
+      router.push('/login');
+    } else if (addToCartBtnRef.current) {
+      addToCartBtnRef.current.classList.add('loading');
+      addToCartBtnRef.current.style.pointerEvents = 'none';
 
-  const toggleSysReqExpand = () => {
-    setIsSysReqExpanded(!isSysReqExpanded);
-  };
-
-  const handleAddToCart = async (userId: string, itemId: string) => {
-    $('.addtocart-btn')?.classList?.add('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
-
-    const response = await addToCart(userId, itemId);
-    if (response?.status === 200) {
-      fetchData();
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-
-    $('.addtocart-btn')?.classList?.remove('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
-  };
-
-  const handleAddToLibrary = async (userId: string, itemId: string) => {
-    $('.addtocart-btn')?.classList?.add('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
-    const response = await addToLibrary(userId, itemId);
-    if (response?.status === 200) {
-      fetchData();
-      if (isInCart) {
-        const removed = await removeFromCart(userId, itemId);
-        if (removed?.status !== 200) {
-          toast.error('An error occurred while removing item from cart.');
-        }
+      const response = await addToCart([itemId]);
+      if (response?.status === 200) {
+        fetchData();
+      } else {
+        toast.error('An error occurred. Please try again later.');
       }
-      if (isInWishlist) {
-        const removed = await removeFromWishlist(userId, itemId);
-        if (removed?.status !== 200) {
-          toast.error('An error occurred while removing item from wishlist.');
-        }
-      }
-    } else {
-      toast.error('An error occurred. Please try again later.');
+
+      addToCartBtnRef.current.classList.remove('loading');
+      addToCartBtnRef.current.style.pointerEvents = 'auto';
     }
-    $('.addtocart-btn')?.classList?.remove('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
+  };
+
+  const handleAddToLibraryClick = async (e: ReactMouseEvent<HTMLAnchorElement>, itemId: number) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      toast.warn('Please login to add items to your library.');
+      router.push('/login');
+    } else if (addToCartBtnRef.current) {
+      addToCartBtnRef.current.classList?.add('loading');
+      addToCartBtnRef.current.style.pointerEvents = 'none';
+      await addToLibrary([itemId]);
+      addToCartBtnRef.current.classList?.remove('loading');
+      addToCartBtnRef.current.style.pointerEvents = 'auto';
+    }
+  };
+
+  const handleAboutExpandClick = () => {
+    toggleExpand(setIsAboutExpanded, isAboutExpanded);
+  };
+
+  const handleMatureExpandClick = () => {
+    toggleExpand(setIsMatureExpanded, isMatureExpanded);
+  };
+
+  const handleSysReqExpandClick = () => {
+    toggleExpand(setIsSysReqExpanded, isSysReqExpanded);
   };
 
   return (
@@ -130,33 +137,18 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                 <h1>Play {game.name}</h1>
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
-                    {!isInLibrary && (
-                      <div className="game-purchase-price"> {game.price} </div>
-                    )}
+                    {!isInLibrary && <div className="game-purchase-price"> {game.price} </div>}
                     {isInLibrary ? (
                       <div className="play-game-btn">
-                        {/* TODO: Add play game */}
-                        <a
-                          className="green-btn"
-                          href="/library"
-                          onClick={e => {
-                            navigate('/library', e);
-                          }}
-                        >
+                        <Link className="green-btn" href="/library">
                           <span className="medium-btn">Play Game</span>
-                        </a>
+                        </Link>
                       </div>
                     ) : (
                       <div className="addtocart-btn">
                         <a
                           className="blue-btn"
-                          onClick={e => {
-                            e.preventDefault();
-                            handleAddToLibrary(
-                              userData?._id || '',
-                              game.id || '',
-                            );
-                          }}
+                          onClick={(e) => handleAddToLibraryClick(e, game.id)}
                         >
                           <span className="medium-btn">Add to Library</span>
                         </a>
@@ -167,56 +159,29 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
               </>
             ) : !game.discount ? (
               <>
-                {!isInLibrary ? (
-                  <h1>Buy {game.name}</h1>
-                ) : (
-                  <h1>Play {game.name}</h1>
-                )}
+                {!isInLibrary ? <h1>Buy {game.name}</h1> : <h1>Play {game.name}</h1>}
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
-                    {!isInLibrary && (
-                      <div className="game-purchase-price">
-                        {' '}
-                        ${game.price} USD{' '}
-                      </div>
-                    )}
+                    {!isInLibrary && <div className="game-purchase-price"> ${game.price} USD </div>}
                     {isInLibrary ? (
                       <div className="play-game-btn">
-                        <a
-                          className="green-btn"
-                          href="/library"
-                          onClick={e => {
-                            navigate('/library', e);
-                          }}
-                        >
+                        <Link className="green-btn" href="/library">
                           <span className="medium-btn">Play Game</span>
-                        </a>
+                        </Link>
                       </div>
                     ) : (
                       <div className="addtocart-btn">
                         {!isInCart ? (
                           <a
                             className="green-btn"
-                            onClick={e => {
-                              e.preventDefault();
-                              handleAddToCart(
-                                userData?._id || '',
-                                game.id || '',
-                              );
-                            }}
+                            onClick={(e) => handleAddToCartClick(e, game.id)}
                           >
                             <span className="medium-btn">Add to Cart</span>
                           </a>
                         ) : (
-                          <a
-                            href="/cart"
-                            onClick={e => {
-                              navigate('/cart', e);
-                            }}
-                            className="green-btn"
-                          >
+                          <Link href="/cart" className="green-btn">
                             <span className="medium-btn">In Cart</span>
-                          </a>
+                          </Link>
                         )}
                       </div>
                     )}
@@ -225,11 +190,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
               </>
             ) : (
               <>
-                {!isInLibrary ? (
-                  <h1>Buy {game.name}</h1>
-                ) : (
-                  <h1>Play {game.name}</h1>
-                )}
+                {!isInLibrary ? <h1>Buy {game.name}</h1> : <h1>Play {game.name}</h1>}
                 {!isInLibrary && (
                   <p className="dicount-countdown">
                     {game.offerType}! Offer ends {game.offerEndDate}
@@ -239,58 +200,34 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                   <div className="game-purchase-action-background">
                     {!isInLibrary && (
                       <div className="game-purchase-discount">
-                        <div className="discount-precentage">
-                          -{game.discountPercentage}%
-                        </div>
+                        <div className="discount-precentage">-{game.discountPercentage}%</div>
                         <div className="discount-prices">
-                          <div className="discount-original-price">
-                            ${game.price}
-                          </div>
-                          <div className="discount-final-price">
-                            ${game.discountPrice} USD
-                          </div>
+                          <div className="discount-original-price">${game.price}</div>
+                          <div className="discount-final-price">${game.discountPrice} USD</div>
                         </div>
                       </div>
                     )}
                     {isInLibrary ? (
                       <div className="play-game-btn">
-                        <a
-                          href="/library"
-                          className="green-btn"
-                          onClick={e => {
-                            navigate('/library', e);
-                          }}
-                        >
+                        <Link href="/library" className="green-btn">
                           <span className="medium-btn">Play Game</span>
-                        </a>
+                        </Link>
                       </div>
                     ) : (
-                      <div className="addtocart-btn">
+                      <div className="addtocart-btn" ref={addToCartBtnRef}>
                         {!isInCart ? (
                           <a className="green-btn">
                             <span
                               className="medium-btn"
-                              onClick={e => {
-                                e.preventDefault();
-                                handleAddToCart(
-                                  userData?._id || '',
-                                  game.id || '',
-                                );
-                              }}
+                              onClick={(e) => handleAddToCartClick(e, game.id)}
                             >
                               Add to Cart
                             </span>
                           </a>
                         ) : (
-                          <a
-                            href="/cart"
-                            onClick={e => {
-                              navigate('/cart', e);
-                            }}
-                            className="green-btn"
-                          >
+                          <Link href="/cart" className="green-btn">
                             <span className="medium-btn">In Cart</span>
-                          </a>
+                          </Link>
                         )}
                       </div>
                     )}
@@ -308,23 +245,19 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
           <div
             className="game-description"
             style={{
-              height: isAboutExpanded
-                ? `${aboutRef.current?.scrollHeight}px`
-                : '850px',
+              height: isAboutExpanded ? `${aboutRef.current?.scrollHeight}px` : '850px',
             }}
             ref={aboutRef}
           >
             <h2>ABOUT THIS GAME</h2>
             <div
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(game.about),
+                __html: sanitize(game.about),
               }}
             />
           </div>
-          <div
-            className={`autocollapse-fade ${isAboutExpanded ? 'hidden' : ''}`}
-          >
-            <div className="autocollapse-readmore" onClick={toggleAboutExpand}>
+          <div className={`autocollapse-fade ${isAboutExpanded ? 'hidden' : ''}`}>
+            <div className="autocollapse-readmore" onClick={handleAboutExpandClick}>
               READ MORE
             </div>
           </div>
@@ -338,26 +271,19 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
             <div
               className="game-description"
               style={{
-                height: isMatureExpanded
-                  ? `${matureRef.current?.scrollHeight}px`
-                  : '120px',
+                height: isMatureExpanded ? `${matureRef.current?.scrollHeight}px` : '120px',
               }}
               ref={matureRef}
             >
               <h2>MATURE CONTENT DESCRIPTION</h2>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(game.matureDescription),
+                  __html: sanitize(game.matureDescription),
                 }}
               />
             </div>
-            <div
-              className={`autocollapse-fade ${isMatureExpanded ? 'hidden' : ''}`}
-            >
-              <div
-                className="autocollapse-readmore"
-                onClick={toggleMatureExpand}
-              >
+            <div className={`autocollapse-fade ${isMatureExpanded ? 'hidden' : ''}`}>
+              <div className="autocollapse-readmore" onClick={handleMatureExpandClick}>
                 READ MORE
               </div>
             </div>
@@ -371,9 +297,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
           <div
             className="autocollapse sys-req"
             style={{
-              height: isSysReqExpanded
-                ? `${sysReqRef.current?.scrollHeight}px`
-                : '250px',
+              height: isSysReqExpanded ? `${sysReqRef.current?.scrollHeight}px` : '220px',
               overflow: 'hidden',
             }}
             ref={sysReqRef}
@@ -436,8 +360,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                       )}
                       {game.req.mini.soundCard && (
                         <li>
-                          <strong>Sound card:</strong>{' '}
-                          {game.req.recommended.soundCard}
+                          <strong>Sound card:</strong> {game.req.recommended.soundCard}
                           <br />
                         </li>
                       )}
@@ -449,8 +372,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                       )}
                       {game.req.mini.additionalNotes && (
                         <li>
-                          <strong>Additional Notes:</strong>{' '}
-                          {game.req.mini.additionalNotes}
+                          <strong>Additional Notes:</strong> {game.req.mini.additionalNotes}
                           <br />
                         </li>
                       )}
@@ -500,36 +422,31 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                       )}
                       {game.req.recommended.network && (
                         <li>
-                          <strong>Network:</strong>{' '}
-                          {game.req.recommended.network}
+                          <strong>Network:</strong> {game.req.recommended.network}
                           <br />
                         </li>
                       )}
                       {game.req.recommended.storage && (
                         <li>
-                          <strong>Storage:</strong>{' '}
-                          {game.req.recommended.storage}
+                          <strong>Storage:</strong> {game.req.recommended.storage}
                           <br />
                         </li>
                       )}
                       {game.req.recommended.soundCard && (
                         <li>
-                          <strong>Sound card:</strong>{' '}
-                          {game.req.recommended.soundCard}
+                          <strong>Sound card:</strong> {game.req.recommended.soundCard}
                           <br />
                         </li>
                       )}
                       {game.req.recommended.vrSupport && (
                         <li>
-                          <strong>VR Support:</strong>{' '}
-                          {game.req.recommended.vrSupport}
+                          <strong>VR Support:</strong> {game.req.recommended.vrSupport}
                           <br />
                         </li>
                       )}
                       {game.req.recommended.additionalNotes && (
                         <li>
-                          <strong>Additional Notes:</strong>{' '}
-                          {game.req.recommended.additionalNotes}
+                          <strong>Additional Notes:</strong> {game.req.recommended.additionalNotes}
                           <br />
                         </li>
                       )}
@@ -538,13 +455,8 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                 </div>
               </div>
             </div>
-            <div
-              className={`autocollapse-fade ${isSysReqExpanded ? 'hidden' : ''}`}
-            >
-              <div
-                className="autocollapse-readmore"
-                onClick={toggleSysReqExpand}
-              >
+            <div className={`autocollapse-fade ${isSysReqExpanded ? 'hidden' : ''}`}>
+              <div className="autocollapse-readmore" onClick={handleSysReqExpandClick}>
                 READ MORE
               </div>
             </div>
@@ -558,7 +470,7 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
             <div className="legal-area">
               <p
                 dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(game.legal),
+                  __html: sanitize(game.legal),
                 }}
               />
             </div>
@@ -568,3 +480,5 @@ export const LeftContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
     </div>
   );
 };
+
+export default LeftContent;

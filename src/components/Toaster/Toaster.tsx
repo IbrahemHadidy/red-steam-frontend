@@ -1,10 +1,20 @@
+'use client';
+// React toastify
 import { Slide, ToastContainer } from 'react-toastify';
+
+// Styles
 import 'react-toastify/dist/ReactToastify.css';
 
 const Toaster = () => {
   return (
     <>
-      <style>{`.Toastify__progress-bar{border-radius: 0}`}</style>
+      <style jsx>
+        {`
+          .Toastify__progress-bar {
+            border-radius: 0;
+          }
+        `}
+      </style>
       <ToastContainer
         toastStyle={{
           borderRadius: '0',

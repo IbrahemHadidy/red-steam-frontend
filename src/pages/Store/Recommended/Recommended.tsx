@@ -1,23 +1,46 @@
+'use client';
+
+// React
 import { FC, useContext, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import Slider from 'react-slick';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
-import recommendedGames from 'services/recommendedGames';
-import { gamesData } from 'services/gameData';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+
+// Components
 import HoverSummary from 'components/HoverSummary/HoverSummary';
 import { AuthContext } from 'contexts/AuthContext';
+import Slider from 'react-slick';
+
+// Hooks
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Services
+import { gamesData } from 'services/gameData/gameData';
+import recommendedGames from 'services/gameData/recommendedGames';
+
+// Images
+import responsiveChevron from 'images/ResponsiveChevron.svg';
+
+// Types
+import type { Settings } from 'react-slick';
 
 const Recommended: FC = () => {
-  const navigate = useSoftNavigate();
-  const { userData } = useContext(AuthContext);
+  // Initializations
   const isViewport960 = useResponsiveViewport(960);
+
+  // Contexts
+  const { userData } = useContext(AuthContext);
+
+  // States
   const [gameHoverStates, setGameHoverStates] = useState<{
     [key: string]: boolean;
   }>({});
 
-  const userTags = userData?.tags.join(',');
+  const userTags =
+    userData?.tags && userData.tags.length > 0 && userData.tags.map((tag) => tag.id).join(',');
 
-  const recommendedSettings = {
+  const recommendedSettings: Settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -25,29 +48,26 @@ const Recommended: FC = () => {
     fade: true,
   };
 
+  const handleMiniItemPointerMove = (id: number) => {
+    setGameHoverStates((prevState) => ({ ...prevState, [id]: true }));
+  };
+
+  const handleMiniItemPointerLeave = (id: number) => {
+    setGameHoverStates((prevState) => ({ ...prevState, [id]: false }));
+  };
+
   const renderGameItem = (game: gamesData, index: number) => {
-    const positiveCount = game.reviews.filter(
-      review => review.type === 'positive',
-    ).length;
+    const positiveCount = game.reviews.filter((review) => review.type === 'positive').length;
     const totalReviews = game.reviews.length;
     const positivePercentage = (positiveCount / totalReviews) * 100;
 
     return (
       <div className="mini-item-container" key={index}>
-        <a
+        <Link
           className="mini-item"
-          onClick={e => {
-            navigate(`/game/${game.id}`, e);
-          }}
-          onMouseEnter={() =>
-            setGameHoverStates(prevState => ({ ...prevState, [game.id]: true }))
-          }
-          onMouseLeave={() =>
-            setGameHoverStates(prevState => ({
-              ...prevState,
-              [game.id]: false,
-            }))
-          }
+          href={`/game/${game.id}`}
+          onPointerMove={() => handleMiniItemPointerMove(game.id)}
+          onPointerLeave={() => handleMiniItemPointerLeave(game.id)}
         >
           <div className="mini-capsule">
             <img src={game.smallHeaderImage} alt={game.name} />
@@ -59,9 +79,7 @@ const Recommended: FC = () => {
                   `${game.free ? '' : '$'}${game.price}`
                 ) : (
                   <div className="mini-discount-block">
-                    <div className="discount-percentage">
-                      -{game.discountPercentage}%
-                    </div>
+                    <div className="discount-percentage">-{game.discountPercentage}%</div>
                     <div className="discount-prices">
                       <div className="original-price">${game.price}</div>
                       <div className="final-price">${game.discountPrice}</div>
@@ -71,15 +89,15 @@ const Recommended: FC = () => {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
         {!isViewport960 && gameHoverStates[game.id] && (
           <div>
             <HoverSummary
               title={game.name}
               date={game.releaseDate}
               screenshots={game.moviesAndImages
-                .filter(item => item.type === 'image' && item.featured)
-                .map(item => item.link)}
+                .filter((item) => item.type === 'image' && item.featured)
+                .map((item) => item.link)}
               description={game.description}
               positivePercentage={positivePercentage}
               totalReviews={totalReviews}
@@ -116,23 +134,18 @@ const Recommended: FC = () => {
         <h2 className="main-btn-title">
           RECOMMENDED GAMES BASED ON TAGS &nbsp;YOU LIKE
           <span className="right-btn">
-            <a
-              className="view-more"
-              onClick={e => {
-                navigate(`/search?tags=${userTags}`, e);
-              }}
-            >
+            <Link className="view-more" href={`/search?tags=${userTags}`}>
               {isViewport960 ? (
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
                     Customize{' '}
-                    <img src="/images/ResponsiveChevron.svg" className="dive" />
+                    <Image src={responsiveChevron} className="dive" alt="responsive-chevron" />
                   </div>
                 </div>
               ) : (
                 <span>CUSTOMIZE &nbsp;YOUR TAGS</span>
               )}
-            </a>
+            </Link>
           </span>
         </h2>
         {isViewport960 ? (

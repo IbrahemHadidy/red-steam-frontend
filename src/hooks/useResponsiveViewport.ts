@@ -1,17 +1,19 @@
-import { useState, useEffect } from 'react';
+'use client';
+import { useEffect, useState } from 'react';
 
 function useResponsiveViewport(width: number) {
-  const [isViewport, setIsViewport] = useState(window.innerWidth <= width);
+  const [isViewport, setIsViewport] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsViewport(window.innerWidth <= width);
     };
 
-    window.addEventListener("resize", handleResize);
+    handleResize();
 
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [width]);
 

@@ -1,56 +1,57 @@
-import { FC, useEffect, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { gamesData, ReviewEntry } from 'services/gameData';
-import DOMPurify from 'dompurify';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+'use client';
+
+// React
+import { useEffect, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+
+// Sanitization library
+import DomPurify from 'dompurify';
+
+// Utils
+import { getRatingClass, getRatingText } from 'utils/ratingUtils';
+
+// Images
+import defaultPFP from 'images/default-pfp.png';
+import reviewIcon from 'images/icon_review_steam.png';
+import negative from 'images/negative.png';
+import positive from 'images/positive.png';
+
+// Styles
 import './GameReviews.scss';
 
-const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
-  const navigate = useSoftNavigate();
-  const isViewport960 = useResponsiveViewport(960);
-  const isViewport630 = useResponsiveViewport(630);
+// Types
+import type { FC, SyntheticEvent } from 'react';
+import type { ReviewEntry } from 'services/gameData/gameData';
+import type { GameReviewsProps } from './GameReviews.types';
+
+const GameReviews: FC<GameReviewsProps> = ({ game, isViewport630, isViewport960 }) => {
+  // Initializations
+  const sanitize = DomPurify.sanitize;
+
+  // States
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const [sortOption, setSortOption] = useState<string>('Date');
   const [isPartial, setIsPartial] = useState<boolean>(false);
   // TODO: Set image source
-  const [imgSrc, setImgSrc] = useState('image_link');
+  const [imgSrc, setImgSrc] = useState<string>('');
 
-  const handleNoImage = (e: { stopPropagation: () => void }) => {
+  const handleNoImage = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.stopPropagation();
-    setImgSrc('/images/default-pfp.png');
+    setImgSrc(defaultPFP.src);
   };
-
-  let positivePercentage: number = 0;
-
-  function getReviewSummary(
-    positiveCount: number,
-    _negativeCount: number,
-    totalReviews: number,
-  ) {
-    positivePercentage = (positiveCount / totalReviews) * 100;
-
-    if (positivePercentage >= 90) return 'Overwhelmingly Positive';
-    if (positivePercentage >= 80) return 'Very Positive';
-    if (positivePercentage >= 75) return 'Mostly Positive';
-    if (positivePercentage > 40 && positivePercentage < 75) return 'Mixed';
-    if (positivePercentage <= 10) return 'Overwhelmingly Negative';
-    if (positivePercentage <= 20) return 'Very Negative';
-    if (positivePercentage <= 40) return 'Mostly Negative';
-  }
 
   const totalReviews = game.reviews.length;
   const positiveReviews = game.reviews.filter(
-    (review: ReviewEntry) => review.type === 'positive',
+    (review: ReviewEntry) => review.type === 'positive'
   ).length;
-  const negativeReviews = game.reviews.filter(
-    (review: ReviewEntry) => review.type === 'negative',
-  ).length;
+  // TODO: refetch positve percentage from backend
+  const positivePercentage = (positiveReviews / totalReviews) * 100;
 
-  const summary = getReviewSummary(
-    positiveReviews,
-    negativeReviews,
-    totalReviews,
-  );
+  const summary = getRatingText(positivePercentage);
+  const ratingClass = getRatingClass(positivePercentage);
 
   const filterReviews = () => {
     // Filter reviews based on positive or negative
@@ -68,11 +69,11 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
     // Sort reviews based on newest or oldest
     if (sortOption === 'newest') {
       return filteredReviews.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
     } else if (sortOption === 'oldest') {
       return filteredReviews.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       );
     } else {
       return filteredReviews;
@@ -86,10 +87,22 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
     if (game.reviews.length > 0) {
       const firstReviewContentLines = game.reviews[0].content
         .split(/<br\s*\/?>/)
-        .filter(line => line.trim() !== '');
+        .filter((line) => line.trim() !== '');
       setIsPartial(firstReviewContentLines.length >= (isViewport960 ? 6 : 12));
     }
   }, [game.reviews, isViewport960]);
+
+  const handleReviewTypeChange = (e: SyntheticEvent<HTMLSelectElement, Event>) => {
+    setSelectedFilter(e.currentTarget.value);
+  };
+
+  const handleSortTypeChange = (e: SyntheticEvent<HTMLSelectElement, Event>) => {
+    setSortOption(e.currentTarget.value);
+  };
+
+  const handleReadMoreClick = () => {
+    setIsPartial((prevIsPartial) => !prevIsPartial);
+  };
 
   return (
     <div className="reviews-content">
@@ -99,19 +112,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
           <div className="overall-summary">
             <div className="overall-section">
               <div className="title">Overall Reviews:</div>
-              <span
-                className={`game-review-summary ${
-                  positivePercentage < 75 && positivePercentage > 40
-                    ? 'mixed'
-                    : positivePercentage >= 75
-                      ? 'positive'
-                      : positivePercentage >= 40
-                        ? 'negative'
-                        : ''
-                }`}
-              >
-                {summary || 'N/A'}{' '}
-              </span>
+              <span className={`game-review-summary ${ratingClass}`}>{summary || 'N/A'} </span>
               <span>({totalReviews.toLocaleString()} reviews)</span>
             </div>
           </div>
@@ -119,11 +120,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
         <div className="filter-options">
           <div className="review-type">
             <span className="title">Review Type:</span>
-            <select
-              id="review-type"
-              value={selectedFilter}
-              onChange={e => setSelectedFilter(e.target.value)}
-            >
+            <select id="review-type" value={selectedFilter} onChange={handleReviewTypeChange}>
               <option value="All">All</option>
               <option value="Positive">Positive</option>
               <option value="Negative">Negative</option>
@@ -131,11 +128,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
           </div>
           <div className="review-type">
             <span className="title">Sort By Date:</span>
-            <select
-              id="sort-type"
-              value={sortOption}
-              onChange={e => setSortOption(e.target.value)}
-            >
+            <select id="sort-type" value={sortOption} onChange={handleSortTypeChange}>
               {' '}
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -145,40 +138,23 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
         <div className="reviews-info">
           <div className="reviews-filter-score">
             <span>
-              Showing <b>{totalFilteredReviews}</b> reviews that match the
-              filters above
+              Showing <b>{totalFilteredReviews}</b> reviews that match the filters above
             </span>
             {' ( '}
-            <span
-              className={`game-review-summary ${
-                positivePercentage < 75 && positivePercentage > 40
-                  ? 'mixed'
-                  : positivePercentage >= 75
-                    ? 'positive'
-                    : positivePercentage >= 40
-                      ? 'negative'
-                      : ''
-              }`}
-            >
-              {summary || 'N/A'}{' '}
-            </span>
+            <span className={`game-review-summary ${ratingClass}`}>{summary || 'N/A'} </span>
             {' ) '}
           </div>
         </div>
         <div className="reviews-summary">
           <div className="reviews-sub-header">{`${selectedFilter} User Reviews`}</div>
           {filteredReviews.map((review, index) => (
-            <div
-              className={`review-box ${isPartial ? 'partial' : ''}`}
-              key={index}
-            >
+            <div className={`review-box ${isPartial ? 'partial' : ''}`} key={index}>
               <div className="leftcol">
                 <div className="avatar">
                   {/* TODO: userId backend logic */}
-                  <a
-                    onClick={e => {
-                      navigate(`/id/${{ /*userId*/ }}`, e);
-                    }}
+                  <Link
+                    // href={`/id/${userId}`}
+                    href="/"
                   >
                     {/* TODO: isOnline backend logic */}
                     <div
@@ -188,45 +164,38 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
                         }
                       }`}
                     >
-                      <img src={imgSrc} onError={handleNoImage} alt="pfp" />
+                      <img src={imgSrc || defaultPFP.src} onError={handleNoImage} alt="pfp" />
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 <div className="person-name">
-                  <a
-                    onClick={e => {
-                      navigate(`/id/${{ /*userId*/ }}`, e);
-                    }}
+                  <Link
+                    // href={`/id/${userId}`}
+                    href="/"
                   >
                     {review.user}
-                  </a>
+                  </Link>
                 </div>
-                {isViewport630 && (
-                  <div className="post-date"> Posted: {review.date}</div>
-                )}
+                {isViewport630 && <div className="post-date"> Posted: {review.date}</div>}
               </div>
               <div className="rightcol">
                 <div className="vote-header">
                   <div className="thumb">
-                    <img src={`/images/${review.type}.png`} alt={review.type} />
+                    <Image
+                      src={review.type === 'positive' ? positive : negative}
+                      alt={review.type}
+                    />
                   </div>
-                  <img
-                    className="review-source"
-                    src="/images/icon_review_steam.png"
-                  />
+                  <Image className="review-source" src={reviewIcon} alt="review source" />
                   <div className="title">
-                    {review.type === 'negative'
-                      ? 'Not Recommended'
-                      : 'Recommended'}
+                    {review.type === 'negative' ? 'Not Recommended' : 'Recommended'}
                   </div>
                 </div>
-                {!isViewport630 && (
-                  <div className="post-date"> Posted: {review.date}</div>
-                )}
+                {!isViewport630 && <div className="post-date"> Posted: {review.date}</div>}
                 <div className="content">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(review.content),
+                      __html: sanitize(review.content),
                     }}
                   />
                   {isPartial ? <div className="gradient" /> : ''}
@@ -234,13 +203,7 @@ const GameReviews: FC<{ game: gamesData }> = ({ game }) => {
                 {isPartial && (
                   <div className="posted">
                     <div className="view-more">
-                      <a
-                        onClick={() =>
-                          setIsPartial(prevIsPartial => !prevIsPartial)
-                        }
-                      >
-                        Read More
-                      </a>
+                      <a onClick={handleReadMoreClick}>Read More</a>
                     </div>{' '}
                     &nbsp;
                     <div className="hr"></div>

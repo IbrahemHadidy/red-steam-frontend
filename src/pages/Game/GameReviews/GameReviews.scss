@@ -2,6 +2,7 @@
 	margin-bottom: 32px;
 	border-top: 1px solid #000;
 	position: relative;
+	margin-top: 20px;
 
 	.user-reviews-header {
 		padding-bottom: 4px;
@@ -9,6 +10,7 @@
 		background-image: url('/images/maincol_gradient_rule.png');
 		background-repeat: no-repeat;
 		background-position: bottom left;
+		clear: both;
 	}
 
 	.overall-summary-container {
@@ -356,7 +358,7 @@
 
 			.post-date,
 			.content,
-			.posted {    
+			.posted {
 				margin-right: 19px !important;
 				margin-left: 19px !important;
 

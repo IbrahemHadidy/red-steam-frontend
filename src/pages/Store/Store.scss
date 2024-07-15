@@ -280,6 +280,7 @@
 
 .mini-item-container {
 	width: 237px;
+
 	@media screen and (min-width: 1070px) {
 		display: flex;
 		flex-direction: column;
@@ -297,6 +298,7 @@
 			.game-hover {
 				margin-left: -470px;
 			}
+
 			.hover-arrow-left {
 				display: none;
 			}
@@ -306,6 +308,7 @@
 			.game-hover {
 				margin-left: 81px;
 			}
+
 			.hover-arrow-right {
 				display: none;
 			}
@@ -317,6 +320,7 @@
 		.game-hover {
 			margin-left: 81px;
 		}
+
 		.hover-arrow-right {
 			display: none;
 		}
@@ -327,10 +331,12 @@
 			}
 		}
 	}
+
 	&:nth-child(4) {
 		.game-hover {
 			margin-left: 81px;
 		}
+
 		.hover-arrow-right {
 			display: none;
 		}
@@ -339,14 +345,17 @@
 			.game-hover {
 				margin-left: -469px;
 			}
+
 			.hover-arrow-left {
 				display: none;
 			}
+
 			.hover-arrow-right {
 				display: block;
 			}
 		}
 	}
+
 	.mini-item {
 		margin-right: 8px;
 		flex-shrink: 0;
@@ -477,7 +486,7 @@
 		flex-direction: row;
 		flex-shrink: 1;
 		overflow: hidden;
-		justify-content: end;
+		justify-content: flex-end;
 	}
 }
 

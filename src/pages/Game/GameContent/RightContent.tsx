@@ -1,66 +1,89 @@
-import { FC, useContext, useMemo, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { AuthContext } from 'contexts/AuthContext';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
-import $ from 'tools/$selector';
-import { ReviewEntry, gamesData } from 'services/gameData';
-import { addToCart } from 'services/user/userInteractions';
+'use client';
+
+// React
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+// Toast notifications
 import { toast } from 'react-toastify';
 
-export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
-  game,
-  isViewport630,
-}) => {
-  const navigate = useSoftNavigate();
-  const { userData, fetchData } = useContext(AuthContext);
-  const [showAllLanguages, setShowAllLanguages] = useState(false);
-  const isViewport960 = useResponsiveViewport(960);
+// Services
+import { ReviewEntry } from 'services/gameData/gameData';
+import { addToCart } from 'services/user/interaction';
+
+// Utils
+import getPlatform from 'utils/getPlatform';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Images
+import externalLinkIcon from 'images/ico_external_link.gif';
+
+// Types
+import type { FC, MouseEvent as ReactMouseEvent } from 'react';
+import type { RightContentProps } from './GameContent.types';
+
+const RightContent: FC<RightContentProps> = ({ game, isViewport630, isViewport960 }) => {
+  // Initializations
+  const router = useRouter();
+
+  // Contexts
+  const { userData, fetchData, isLoggedIn } = useContext(AuthContext);
+
+  // States
+  const [showAllLanguages, setShowAllLanguages] = useState<boolean>(false);
+  const [platform, setPlatform] = useState<string>('unknown');
+
+  // Refs
+  const addToCartRef = useRef<HTMLDivElement>(null);
 
   const [isInLibrary, isInCart] = useMemo(
     () => [
-      userData?.library?.includes(game.id),
-      userData?.cart?.includes(game.id),
+      userData?.library?.some((item) => item.id === game.id),
+      userData?.cart?.some((item) => item.id === game.id),
     ],
-    [userData, game.id],
+    [userData, game.id]
   );
 
-  const getPlatform = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
+  useEffect(() => {
+    setPlatform(getPlatform());
+  }, []);
 
-    if (userAgent.includes('mac')) {
-      return 'darwin';
-    } else if (userAgent.includes('win')) {
-      return 'win32';
-    } else {
-      return 'unknown';
-    }
-  };
   const toggleAllLanguages = () => {
     setShowAllLanguages(!showAllLanguages);
   };
 
   const positiveReviews = game.reviews.filter(
-    (review: ReviewEntry) => review.type === 'positive',
+    (review: ReviewEntry) => review.type === 'positive'
   ).length;
   const negativeReviews = game.reviews.filter(
-    (review: ReviewEntry) => review.type === 'negative',
+    (review: ReviewEntry) => review.type === 'negative'
   ).length;
-  const positivePercentage =
-    (positiveReviews / (positiveReviews + negativeReviews)) * 100;
+  const positivePercentage = (positiveReviews / (positiveReviews + negativeReviews)) * 100;
 
-  const handleAddToCart = async (userId: string, itemId: string) => {
-    $('.addtocart-btn')?.classList?.add('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'none';
-    const response = await addToCart(userId, itemId);
-    if (response?.status === 200) {
-      fetchData();
-      toast.success('Added to cart!');
-    } else {
-      toast.error('An error occurred. Please try again later.');
+  const handleAddToCartClick = async (e: ReactMouseEvent<HTMLAnchorElement>, itemId: number) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      toast.warn('Please login to add items to your cart.');
+      router.push('/login');
+    } else if (addToCartRef.current) {
+      addToCartRef.current.classList.add('loading');
+      addToCartRef.current.style.pointerEvents = 'none';
+      const response = await addToCart([itemId]);
+      if (response?.status === 200) {
+        fetchData();
+        toast.success('Added to cart!');
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+      addToCartRef.current.classList.remove('loading');
+      addToCartRef.current.style.pointerEvents = 'auto';
     }
-
-    $('.addtocart-btn')?.classList?.remove('loading');
-    ($('.addtocart-btn') as HTMLElement).style.pointerEvents = 'auto';
   };
 
   // Recommendation reasons
@@ -74,9 +97,7 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
           <>
             <p className="reason-for">
               User reviews:&nbsp;
-              <span className="game-review-summary positive">
-                Overwhelmingly Positive
-              </span>
+              <span className="game-review-summary positive">Overwhelmingly Positive</span>
             </p>
             <hr />
           </>
@@ -85,9 +106,7 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
           <>
             <p className="reason-for">
               User reviews:&nbsp;
-              <span className="game-review-summary positive">
-                Very Positive
-              </span>
+              <span className="game-review-summary positive">Very Positive</span>
             </p>
             <hr />
           </>
@@ -104,18 +123,12 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
     <div className="game-details-first">
       <div className="game-area-features-list">
         {game.features.map((feature, index) => (
-          <a
-            className="game-area-details"
-            onClick={e => {
-              navigate(feature.link, e);
-            }}
-            key={index}
-          >
+          <Link className="game-area-details" href={feature.link} key={index}>
             <div className="feature-icon">
               <img src={feature.icon} alt={feature.label} />
             </div>
             <div className="feature-label">{feature.label}</div>
-          </a>
+          </Link>
         ))}
       </div>
       <div className="DRM-notice">
@@ -150,15 +163,9 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                 }}
               >
                 <td className="game-language-name"> {language.name}</td>
-                <td className="checkcol">
-                  {language.interface && <span>✔</span>}
-                </td>
-                <td className="checkcol">
-                  {language.fullAudio && <span>✔</span>}
-                </td>
-                <td className="checkcol">
-                  {language.subtitles && <span>✔</span>}
-                </td>
+                <td className="checkcol">{language.interface && <span>✔</span>}</td>
+                <td className="checkcol">{language.fullAudio && <span>✔</span>}</td>
+                <td className="checkcol">{language.subtitles && <span>✔</span>}</td>
               </tr>
             ))}
           </tbody>
@@ -203,9 +210,9 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
       </div>
       <div className="details-block" style={{ paddingTop: '14px' }}>
         {game.link && (
-          <a href={game.link} target="_blank">
+          <a href={game.link} target="_blank" rel="noreferrer noopenner">
             {' '}
-            Visit the website <img src="/images/ico_external_link.gif" />
+            Visit the website <Image src={externalLinkIcon} alt="external link" />
           </a>
         )}
         <a className="linkbar" href="">
@@ -227,7 +234,6 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
       </div>
     </div>
   );
-  const platform = getPlatform();
 
   return (
     <>
@@ -281,26 +287,14 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                         {!isInCart ? (
                           <a
                             className="green-btn"
-                            onClick={e => {
-                              e.preventDefault();
-                              handleAddToCart(
-                                userData?._id || '',
-                                game.id || '',
-                              );
-                            }}
+                            onClick={(e) => handleAddToCartClick(e, game.id)}
                           >
                             <span className="medium-btn">Add to Cart</span>
                           </a>
                         ) : (
-                          <a
-                            href="/cart"
-                            onClick={e => {
-                              navigate('/cart', e);
-                            }}
-                            className="green-btn"
-                          >
+                          <Link href="/cart" className="green-btn">
                             <span className="medium-btn">In Cart</span>
-                          </a>
+                          </Link>
                         )}
                       </div>
                     )}
@@ -316,16 +310,10 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
                     <div className="game-purchase-discount">
-                      <div className="discount-precentage">
-                        -{game.discountPercentage}%
-                      </div>
+                      <div className="discount-precentage">-{game.discountPercentage}%</div>
                       <div className="discount-prices">
-                        <div className="discount-original-price">
-                          ${game.price}
-                        </div>
-                        <div className="discount-final-price">
-                          ${game.discountPrice} USD
-                        </div>
+                        <div className="discount-original-price">${game.price}</div>
+                        <div className="discount-final-price">${game.discountPrice} USD</div>
                       </div>
                     </div>
                     {isInLibrary ? (
@@ -335,30 +323,18 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
                         </a>
                       </div>
                     ) : (
-                      <div className="addtocart-btn">
+                      <div className="addtocart-btn" ref={addToCartRef}>
                         {!isInCart ? (
                           <a
                             className="green-btn"
-                            onClick={e => {
-                              e.preventDefault();
-                              handleAddToCart(
-                                userData?._id || '',
-                                game.id || '',
-                              );
-                            }}
+                            onClick={(e) => handleAddToCartClick(e, game.id)}
                           >
                             <span className="medium-btn">Add to Cart</span>
                           </a>
                         ) : (
-                          <a
-                            href="/cart"
-                            onClick={e => {
-                              navigate('/cart', e);
-                            }}
-                            className="green-btn"
-                          >
+                          <Link href="/cart" className="green-btn">
                             <span className="medium-btn">In Cart</span>
-                          </a>
+                          </Link>
                         )}
                       </div>
                     )}
@@ -398,3 +374,5 @@ export const RightContent: FC<{ game: gamesData; isViewport630: boolean }> = ({
     </>
   );
 };
+
+export default RightContent;

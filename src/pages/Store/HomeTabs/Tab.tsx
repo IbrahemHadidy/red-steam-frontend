@@ -1,19 +1,16 @@
-import { FC } from "react";
+'use client';
 
-interface TabProps {
-	tabName: string;
-	tabTitle: string;
-	handleTabClick: (tabTitle: string) => void;
-	openedTab: string | number;
-}
+// Types
+import type { FC } from 'react';
+import type { TabProps } from '../Store.types';
 
 const Tab: FC<TabProps> = ({ tabName, tabTitle, handleTabClick, openedTab }) => (
-	<div
-		className={`tab-${tabName} ${openedTab === tabTitle ? "active-tab" : ""}`}
-		onClick={() => handleTabClick(tabTitle)}
-	>
-		<div className="tab-content">{tabTitle}</div>
-	</div>
+  <div
+    className={`tab-${tabName} ${openedTab === tabTitle ? 'active-tab' : ''}`}
+    onClick={() => handleTabClick(tabTitle)}
+  >
+    <div className="tab-content">{tabTitle}</div>
+  </div>
 );
 
 export default Tab;

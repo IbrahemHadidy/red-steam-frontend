@@ -1,29 +1,58 @@
-import { FC, SetStateAction, useState } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import Slider, { LazyLoadTypes, Settings } from 'react-slick';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+'use client';
+
+// React
+import { FC, useState } from 'react';
+
+// Next.js
+import Link from 'next/link';
+
+// Components
 import HoverSummary from 'components/HoverSummary/HoverSummary';
-import featuredGames from 'services/featuredGames';
+import Slider from 'react-slick';
+
+// Hooks
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Services
+import featuredGames from 'services/gameData/featuredGames';
+
+// Types
+import type { Settings } from 'react-slick';
+import type { gamesData, MediaEntry } from 'services/gameData/gameData';
 
 const FeaturedDesktop: FC = () => {
-  const navigate = useSoftNavigate();
+  // Initializations
   const isViewport1600 = useResponsiveViewport(1600);
-  const [summaryHoverStates, setSummaryHoverStates] = useState<{
-    [key: string]: boolean;
-  }>({});
+
+  // States
+  const [summaryHoverStates, setSummaryHoverStates] = useState<{ [key: string]: boolean }>({});
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
-  const handleMouseEnter = (imageUrl: SetStateAction<string | null>) => {
-    setHoveredImage(imageUrl);
+  const handleMouseEnterImage = (img: MediaEntry) => {
+    setHoveredImage(img.link);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeaveImage = () => {
     setHoveredImage(null);
+  };
+
+  const handleMouseEnterSlide = (slide: gamesData) => {
+    setSummaryHoverStates((prevState) => ({
+      ...prevState,
+      [slide.id]: true,
+    }));
+  };
+
+  const handleMouseLeaveSlide = (slide: gamesData) => {
+    setSummaryHoverStates((prevState) => ({
+      ...prevState,
+      [slide.id]: false,
+    }));
   };
 
   const featuredSettings: Settings = {
     dots: true,
-    lazyLoad: 'ondemand' as LazyLoadTypes,
+    lazyLoad: 'ondemand',
     infinite: true,
     speed: 500,
     autoplay: true,
@@ -38,30 +67,18 @@ const FeaturedDesktop: FC = () => {
         <Slider {...featuredSettings}>
           {featuredGames.map((slide, index) => {
             const positiveCount = slide.reviews.filter(
-              review => review.type === 'positive',
+              (review) => review.type === 'positive'
             ).length;
             const totalReviews = slide.reviews.length;
             const positivePercentage = (positiveCount / totalReviews) * 100;
 
             return (
               <div className="slides-container" key={index}>
-                <a
+                <Link
                   className="slide"
-                  onClick={e => {
-                    navigate(`/game/${slide.id}`, e);
-                  }}
-                  onMouseEnter={() =>
-                    setSummaryHoverStates(prevState => ({
-                      ...prevState,
-                      [slide.id]: true,
-                    }))
-                  }
-                  onMouseLeave={() =>
-                    setSummaryHoverStates(prevState => ({
-                      ...prevState,
-                      [slide.id]: false,
-                    }))
-                  }
+                  href={`/game/${slide.id}`}
+                  onPointerMove={() => handleMouseEnterSlide(slide)}
+                  onPointerLeave={() => handleMouseLeaveSlide(slide)}
                 >
                   <div
                     className="main-card"
@@ -69,21 +86,21 @@ const FeaturedDesktop: FC = () => {
                       backgroundImage: `url(${hoveredImage || slide.mainImage})`,
                       transition: 'background-image 0.1s',
                     }}
-                  ></div>
+                  />
                   <div className="info-card">
                     <div className="app-name">
                       <div>{slide.name}</div>
                     </div>
                     <div className="photos">
                       {slide.moviesAndImages
-                        .filter(item => item.type === 'image' && item.featured)
+                        .filter((item) => item.type === 'image' && item.featured)
                         .map((img, index) => (
                           <div key={index}>
                             <div
-                              onMouseEnter={() => handleMouseEnter(img.link)}
-                              onMouseLeave={handleMouseLeave}
+                              onPointerMove={() => handleMouseEnterImage(img)}
+                              onPointerLeave={handleMouseLeaveImage}
                               style={{ backgroundImage: `url(${img.link})` }}
-                            ></div>
+                            />
                           </div>
                         ))}
                     </div>
@@ -93,8 +110,7 @@ const FeaturedDesktop: FC = () => {
                           <div>Now Available</div>
                         ) : (
                           <>
-                            <strong>Recommended</strong> because you liked games
-                            tagged with
+                            <strong>Recommended</strong> because you liked games tagged with
                           </>
                         )}
                       </div>
@@ -114,14 +130,10 @@ const FeaturedDesktop: FC = () => {
                     ) : (
                       <div className="discount">
                         <div className="discount-block">
-                          <div className="discount-percentage">
-                            -{slide.discountPercentage}%
-                          </div>
+                          <div className="discount-percentage">-{slide.discountPercentage}%</div>
                           <div className="discount-prices">
                             <div className="original-price">${slide.price}</div>
-                            <div className="final-price">
-                              ${slide.discountPrice} USD
-                            </div>
+                            <div className="final-price">${slide.discountPrice} USD</div>
                           </div>
                         </div>
                       </div>
@@ -131,15 +143,15 @@ const FeaturedDesktop: FC = () => {
                       {slide.mac && <span className="platform-image mac" />}
                     </div>
                   </div>
-                </a>
+                </Link>
                 {!isViewport1600 && summaryHoverStates[slide.id] && (
                   <div>
                     <HoverSummary
                       title={slide.name}
                       date={slide.releaseDate}
                       screenshots={slide.moviesAndImages
-                        .filter(item => item.type === 'image' && item.featured)
-                        .map(item => item.link)}
+                        .filter((item) => item.type === 'image' && item.featured)
+                        .map((item) => item.link)}
                       description={slide.description}
                       positivePercentage={positivePercentage}
                       totalReviews={totalReviews}

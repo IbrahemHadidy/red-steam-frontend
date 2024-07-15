@@ -1,60 +1,85 @@
-import {
-  FC,
-  useEffect,
-  useState,
-  ChangeEvent,
-  KeyboardEvent,
-  FormEvent,
-  useRef,
-} from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { useSpring, animated } from 'react-spring';
-import {
-  checkEmailExists,
-  checkUsernameExists,
-  registerUser,
-  verificationStatus,
-  waitingTimeResponse,
-} from 'services/user/auth';
-import ReCAPTCHA from 'react-google-recaptcha';
-import $ from 'tools/$selector';
-import Header from 'components/Header/Header';
-import Footer from 'components/Footer/Footer';
-import {
-  validateEmail,
-  validateName,
-  validatePassword,
-} from 'tools/inputValidations';
-import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
-import { countries } from 'services/countries';
-import { VerifyModal } from './SignUpVerifyModal';
-import { fetchUserCountry } from 'services/countryCode';
+'use client';
+
+// React
+import { useContext, useEffect, useRef, useState } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+// React Spring
+import { animated, useSpring } from 'react-spring';
+
+// Toast notifications
 import { toast } from 'react-toastify';
+
+// Google ReCAPTCHA
+import ReCAPTCHA from 'react-google-recaptcha';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Components
+import Footer from 'components/Footer/Footer';
+import Header from 'components/Header/Header';
+
+// Hooks
+import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
+
+// Utils
+import { validateEmail, validateName, validatePassword } from 'utils/inputValidations';
+
+// Services
+import { countries } from 'services/countries/countries';
+import { fetchUserCountry } from 'services/countries/countryCode';
+import { signup as registerUser } from 'services/user/auth';
+import { checkEmailExists, checkUsernameExists } from 'services/user/management';
+
+// Images
+import checkIcon from 'images/icon_check.png';
+
+// Styles
 import './SignInUp.scss';
 
-const env = import.meta.env;
+// Types
+import type { ChangeEvent, FC, FormEvent, KeyboardEvent } from 'react';
 
 const SignUp: FC = () => {
-  const navigate = useSoftNavigate();
+  // Initilizations
+  const router = useRouter();
+
+  // Contexts
+  const { login } = useContext(AuthContext);
+
+  // States
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  const [resetKey, setResetKey] = useState(0);
-  const [selectedCountry, setSelectedCountry] = useState('PS');
-  const [email, setEmail] = useState('');
-  const [confirmedEmail, setConfirmedEmail] = useState('');
-  const [existingEmail, setExistingEmail] = useState(false);
-  const [firstStep, setFirstStep] = useState(true);
-  const [nameAvailable, setNameAvailable] = useState(false);
-  const [accountName, setAccountName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordWarning, setPasswordWarning] = useState(false);
-  const [noMatch, setNoMatch] = useState(false);
-  const [showVerificationModal, setShowVerificationModal] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
+  const [resetKey, setResetKey] = useState<number>(0);
+  const [selectedCountry, setSelectedCountry] = useState<string>('PS');
+  const [email, setEmail] = useState<string>('');
+  const [confirmedEmail, setConfirmedEmail] = useState<string>('');
+  const [existingEmail, setExistingEmail] = useState<boolean>(false);
+  const [firstStep, setFirstStep] = useState<boolean>(true);
+  const [nameAvailable, setNameAvailable] = useState<boolean>(false);
+  const [accountName, setAccountName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [passwordWarning, setPasswordWarning] = useState<boolean>(false);
+  const [noMatch, setNoMatch] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
+  // Refs
+  const iAgreeCheckRef = useRef<HTMLInputElement | null>(null);
   const captchaRef = useRef<ReCAPTCHA | null>(null);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const reenterEmailInputRef = useRef<HTMLInputElement | null>(null);
+  const agreeLabelRef = useRef<HTMLLabelElement | null>(null);
+  const submitButtonRef = useRef<HTMLButtonElement | null>(null);
+  const accountNameInputRef = useRef<HTMLInputElement | null>(null);
+  const passwordInputRef = useRef<HTMLInputElement | null>(null);
+  const confirmPasswordInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleRecaptchaChange = (value: string | null) => {
     setRecaptchaValue(value);
@@ -71,24 +96,18 @@ const SignUp: FC = () => {
 
   // handle storing error messages
   const addErrorMessage = (newErrorMessage: string) => {
-    setErrorMessages((prevErrorMessages: string[]) => [
-      ...prevErrorMessages,
-      newErrorMessage,
-    ]);
+    setErrorMessages((prevErrorMessages: string[]) => [...prevErrorMessages, newErrorMessage]);
   };
 
   // fading animation for error message
   useEffect(() => {
-    setResetKey(prevKey => prevKey + 1);
+    setResetKey((prevKey) => prevKey + 1);
   }, [errorMessages]);
   const springProps = useSpring({
     key: resetKey,
     from: { backgroundColor: 'rgba(244, 183, 134, 1)' },
     to: {
-      backgroundColor:
-        errorMessages.length !== 0
-          ? 'rgba(0, 0, 0, 0.5)'
-          : 'rgba(244, 183, 134, 1)',
+      backgroundColor: errorMessages.length !== 0 ? 'rgba(0, 0, 0, 0.5)' : 'rgba(244, 183, 134, 1)',
     },
     config: { duration: 1000 },
   });
@@ -105,7 +124,7 @@ const SignUp: FC = () => {
   }, []);
 
   // handle country change
-  const onCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
     setSelectedCountry(selectedValue);
   };
@@ -116,20 +135,17 @@ const SignUp: FC = () => {
     setErrorMessages([]);
 
     const isEmailValid = validateEmail(email);
-    const isCheckboxChecked = ($('#i-agree-check') as HTMLInputElement)
-      ?.checked;
+    const isCheckboxChecked = iAgreeCheckRef.current?.checked;
 
     if (!isEmailValid) {
-      $('#email')?.classList.add('error');
-      $('#reenter-email')?.classList.add('error');
+      emailInputRef.current?.classList.add('error');
+      reenterEmailInputRef.current?.classList.add('error');
       addErrorMessage('- Please enter a valid email address.');
       scrollToTop();
     }
     if (confirmedEmail !== email) {
-      $('#reenter-email')?.classList.add('error');
-      addErrorMessage(
-        '- Please enter the same address in both email address fields.',
-      );
+      reenterEmailInputRef.current?.classList.add('error');
+      addErrorMessage('- Please enter the same address in both email address fields.');
       scrollToTop();
     }
     if (!recaptchaValue) {
@@ -137,23 +153,18 @@ const SignUp: FC = () => {
       scrollToTop();
     }
     if (!isCheckboxChecked) {
-      $('#agree-label')?.classList.add('error');
+      agreeLabelRef.current?.classList.add('error');
       addErrorMessage('- Please agree to the terms and conditions.');
       scrollToTop();
     }
-    if (
-      !isEmailValid ||
-      confirmedEmail !== email ||
-      !isCheckboxChecked ||
-      !recaptchaValue
-    ) {
+    if (!isEmailValid || confirmedEmail !== email || !isCheckboxChecked || !recaptchaValue) {
       captchaRef.current?.reset();
       setRecaptchaValue(null);
       return;
     }
 
     try {
-      $('#submit-button')?.setAttribute('disabled', 'true');
+      submitButtonRef.current?.setAttribute('disabled', 'true');
       const exists = await checkEmailExists(email);
 
       if (exists) {
@@ -165,14 +176,14 @@ const SignUp: FC = () => {
         firstStepForm(e);
       }
 
-      $('#submit-button')?.removeAttribute('disabled');
+      submitButtonRef.current?.removeAttribute('disabled');
     } catch (error) {
       console.error('Error checking existing email:', error);
       addErrorMessage(
-        '- An error occurred while trying to connect to the server. Please check your internet connection and try again.',
+        '- An error occurred while trying to connect to the server. Please check your internet connection and try again.'
       );
       scrollToTop();
-      $('#submit-button')?.removeAttribute('disabled');
+      submitButtonRef.current?.removeAttribute('disabled');
     } finally {
       captchaRef.current?.reset();
       setRecaptchaValue(null);
@@ -187,25 +198,23 @@ const SignUp: FC = () => {
     const isPasswordValid = validatePassword(password);
 
     if (!isNameValid) {
-      $('#accountname')?.classList.add('error');
+      accountNameInputRef.current?.classList.add('error');
       addErrorMessage(
-        '- Please enter an account name that is at least 3 characters long and uses only a-z, A-Z, 0-9 or _ characters.',
+        '- Please enter an account name that is at least 3 characters long and uses only a-z, A-Z, 0-9 or _ characters.'
       );
       scrollToTop();
     }
     if (!isPasswordValid) {
-      $('#password')?.classList.add('error');
-      $('#reenter-password')?.classList.add('error');
+      passwordInputRef.current?.classList.add('error');
+      confirmPasswordInputRef.current?.classList.add('error');
       addErrorMessage(
-        '- Password must contain at least one digit, one letter, and one special character.',
+        '- Password must contain at least one digit, one letter, and one special character.'
       );
       scrollToTop();
     }
     if (password !== confirmPassword) {
-      $('#reenter-password')?.classList.add('error');
-      addErrorMessage(
-        '- Please enter the same address in both email address fields.',
-      );
+      confirmPasswordInputRef.current?.classList.add('error');
+      addErrorMessage('- Please enter the same address in both email address fields.');
       scrollToTop();
     }
     if (!isNameValid || !isPasswordValid || password !== confirmPassword) {
@@ -227,14 +236,14 @@ const SignUp: FC = () => {
     } catch (error) {
       console.error('Error checking existing email:', error);
       addErrorMessage(
-        '- Internal server error while checking account existence. Please try again later.',
+        '- Internal server error while checking account existence. Please try again later.'
       );
       scrollToTop();
     }
   };
 
   // handle existing account button
-  const makeNewAccount = () => {
+  const handleCreateAccountClick = () => {
     setExistingEmail(false);
     setErrorMessages([]);
     setFirstStep(true);
@@ -260,7 +269,7 @@ const SignUp: FC = () => {
           console.error('Error checking account availability:', error);
           setErrorMessages([]);
           addErrorMessage(
-            '- Internal server error while checking account availability. Please try again later.',
+            '- Internal server error while checking account availability. Please try again later.'
           );
           scrollToTop();
         }
@@ -271,7 +280,7 @@ const SignUp: FC = () => {
 
   // check password criteria
   const checkPassword = (
-    event: ChangeEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>
   ) => {
     const enteredPassword = (event.target as HTMLInputElement).value;
 
@@ -315,9 +324,7 @@ const SignUp: FC = () => {
     // Check if reCAPTCHA is solved
     if (!recaptchaValue) {
       toast.error('reCAPTCHA not solved');
-      addErrorMessage(
-        '- You must verify your humanity before you can create a Red Steam account.',
-      );
+      addErrorMessage('- You must verify your humanity before you can create a Red Steam account.');
       scrollToTop();
       return;
     }
@@ -333,64 +340,40 @@ const SignUp: FC = () => {
     try {
       const response = await registerUser(accountName, email, password, selectedCountry);
 
-      if (response.status === 201) {
+      if (response && response.status === 201) {
         toast.success('Account created successfully!');
 
-        // Display the verification modal
-        setShowVerificationModal(true);
-
-        // Function to close the modal and show an error if it takes too long
-        const closeVerificationModal = () => {
-          setShowVerificationModal(false);
-          toast.error(
-            'Email verification took too long. Please try again later.',
-          );
-          setErrorMessages(
-            ["- You've waited too long to verify your email. Please try creating your account and verifying your email again."]
-          );
-          scrollToTop();
-        };
-
-        // Fetch waiting time from the backend
-        const waitingTime = await waitingTimeResponse();
-
-        const checkVerificationStatus = async () => {
-          try {
-            // Verify email
-            const verificationResult = await verificationStatus(email);
-
-            // If verification is successful, close the verification modal
-            if (verificationResult) {
-              clearInterval(intervalId);
-              toast.success('Email verification successful!');
-              setShowVerificationModal(false);
-              // Redirect the user to login page
-              navigate('/login');
-            }
-          } catch (error) {
-            // If verification fails, display an error message
-            console.error('Error during form submission:', error);
-            addErrorMessage(
-              '- An error occurred while verifying your email, Please try again later.',
-            );
-            scrollToTop();
-          }
-        };
-
-        // Periodically check verification status and waiting time
-        const intervalId = setInterval(checkVerificationStatus, 5000);
-
-        setTimeout(() => {
-          closeVerificationModal();
-          clearInterval(intervalId);
-        }, waitingTime);
+        await login(email, password, false, recaptchaValue?.toString() || '');
       }
     } catch (error) {
       console.error('Error creating account:', error);
-      addErrorMessage(
-        'An error occurred while creating your account. Please try again later.',
-      );
+      addErrorMessage('An error occurred while creating your account. Please try again later.');
     }
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleConfirmEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setConfirmedEmail(e.target.value);
+  };
+
+  const handleAccountNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAccountName(e.target.value);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    checkPassword(e);
+  };
+
+  const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const handleUseExistingClick = () => {
+    router.push('/login');
   };
 
   return (
@@ -411,10 +394,7 @@ const SignUp: FC = () => {
           </animated.div>
           {!existingEmail ? (
             <div className="create-account-container">
-              <form
-                action=""
-                onSubmit={firstStep ? checkExistingEmail : checkNameAndPassword}
-              >
+              <form action="" onSubmit={firstStep ? checkExistingEmail : checkNameAndPassword}>
                 <div className="join-form">
                   <div className="section-title">Create Your Account</div>
                   {firstStep ? (
@@ -428,7 +408,8 @@ const SignUp: FC = () => {
                             name="email"
                             id="email"
                             value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            onChange={handleEmailChange}
+                            ref={emailInputRef}
                           />
                         </div>
                       </div>
@@ -444,7 +425,8 @@ const SignUp: FC = () => {
                             name="reenter-email"
                             id="reenter-email"
                             value={confirmedEmail}
-                            onChange={e => setConfirmedEmail(e.target.value)}
+                            onChange={handleConfirmEmailChange}
+                            ref={reenterEmailInputRef}
                           />
                         </div>
                       </div>
@@ -457,7 +439,7 @@ const SignUp: FC = () => {
                             name="country"
                             id="country"
                             className="country-selector"
-                            onChange={onCountryChange}
+                            onChange={handleCountryChange}
                             value={selectedCountry}
                           >
                             {countries.map(([countryCode, countryName]) => (
@@ -470,7 +452,7 @@ const SignUp: FC = () => {
                       </div>
                       <div className="form-row">
                         <ReCAPTCHA
-                          sitekey={env.VITE_RECAPTCHA_SITE_KEY}
+                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
                           onChange={handleRecaptchaChange}
                           theme="dark"
                           ref={captchaRef}
@@ -481,21 +463,26 @@ const SignUp: FC = () => {
                           htmlFor="i-agree-check"
                           id="agree-label"
                           className="agree-label"
+                          ref={agreeLabelRef}
                         >
                           <input
                             type="checkbox"
                             name="i-agree-check"
                             id="i-agree-check"
+                            ref={iAgreeCheckRef}
                           />
-                          &nbsp; By checking this box, I confirm that I
-                          understand this website is for educational purposes
-                          only. I certify that I have not provided any personal
-                          or sensitive information during registration and
-                          acknowledge that this site is not affiliated with the
-                          official Steam platform or its parent company, Valve
-                          Corporation.
+                          &nbsp; By checking this box, I confirm that I understand this website is
+                          for educational purposes only. I certify that I have not provided any
+                          personal or sensitive information during registration and acknowledge that
+                          this site is not affiliated with the official Steam platform or its parent
+                          company, Valve Corporation.
                         </label>
-                        <button id="submit-button" className="joinsteam-btn" type="submit">
+                        <button
+                          id="submit-button"
+                          className="joinsteam-btn"
+                          type="submit"
+                          ref={submitButtonRef}
+                        >
                           <span>Continue</span>
                         </button>
                       </div>
@@ -504,16 +491,15 @@ const SignUp: FC = () => {
                     <>
                       <div className="form-row-flex">
                         <div className="form-area">
-                          <label htmlFor="accountname">
-                            Steam Account Name
-                          </label>
+                          <label htmlFor="accountname">Steam Account Name</label>
                           <input
                             type="text"
                             maxLength={64}
                             id="accountname"
                             name="accountname"
                             value={accountName}
-                            onChange={e => setAccountName(e.target.value)}
+                            onChange={handleAccountNameChange}
+                            ref={accountNameInputRef}
                           />
                         </div>
                         <div
@@ -525,19 +511,13 @@ const SignUp: FC = () => {
                           <div
                             className="availability"
                             style={{
-                              background: nameAvailable
-                                ? 'rgb(92, 126, 16)'
-                                : 'rgb(160, 56, 43)',
-                              display:
-                                accountName !== '' ? 'inline-block' : 'none',
+                              background: nameAvailable ? 'rgb(92, 126, 16)' : 'rgb(160, 56, 43)',
+                              display: accountName !== '' ? 'inline-block' : 'none',
                             }}
                           >
                             {nameAvailable ? (
                               <>
-                                <img
-                                  className="green-check"
-                                  src="/images/icon_check.png"
-                                />
+                                <Image className="green-check" src={checkIcon} alt="check" />
                                 &nbsp;Available
                               </>
                             ) : (
@@ -555,20 +535,14 @@ const SignUp: FC = () => {
                             name="password"
                             maxLength={64}
                             value={password}
-                            onChange={e => {
-                              setPassword(e.target.value);
-                              checkPassword(e);
-                            }}
+                            onChange={handlePasswordChange}
+                            ref={passwordInputRef}
                           />
                         </div>
                         <div className="form-notes">
                           <div
                             className={`password-tag ${
-                              passwordError
-                                ? 'error'
-                                : passwordWarning
-                                  ? 'warning'
-                                  : ''
+                              passwordError ? 'error' : passwordWarning ? 'warning' : ''
                             }`}
                             style={
                               passwordWarning
@@ -580,26 +554,19 @@ const SignUp: FC = () => {
                           >
                             {passwordWarning
                               ? 'Include lowercase and uppercase letters, numbers and symbols for a stronger password'
-                              : passwordError &&
-                                'Password must be at least 8 characters long'}
+                              : passwordError && 'Password must be at least 8 characters long'}
                           </div>
                         </div>
                       </div>
-                      <div
-                        className="form-row-flex row-flex-end"
-                        style={{ clear: 'left' }}
-                      >
+                      <div className="form-row-flex row-flex-end" style={{ clear: 'left' }}>
                         <div className="form-area">
-                          <label htmlFor="reenter-password">
-                            Confirm Password
-                          </label>
+                          <label htmlFor="reenter-password">Confirm Password</label>
                           <input
                             type="password"
                             id="reenter-password"
                             maxLength={64}
-                            onChange={e => {
-                              setConfirmPassword(e.target.value);
-                            }}
+                            onChange={handleConfirmPasswordChange}
+                            ref={confirmPasswordInputRef}
                           />
                         </div>
                         <div className="form-notes">
@@ -617,11 +584,7 @@ const SignUp: FC = () => {
                       </div>
                       <div className="form-row" style={{ clear: 'left' }}>
                         <div className="submit-btn-container">
-                          <button
-                            className="joinsteam-btn"
-                            type="submit"
-                            disabled={isSearching}
-                          >
+                          <button className="joinsteam-btn" type="submit" disabled={isSearching}>
                             <span>Done</span>
                           </button>
                         </div>
@@ -635,28 +598,17 @@ const SignUp: FC = () => {
             <div className="existing-account">
               <div className="section-title">Email in use</div>
               <div className="existing-account-text">
-                &nbsp;Looks like your email address is already associated with
-                another Steam account.
+                &nbsp;Looks like your email address is already associated with another Steam
+                account.
                 <br />
                 <br />
-                You can use your existing account or recover it if you've
-                forgotten your login.
+                You can use your existing account or recover it if you've forgotten your login.
               </div>
               <div className="use-existing-account">
-                <button
-                  className="use-existing-btn"
-                  onClick={() => navigate('/login')}
-                >
+                <button className="use-existing-btn" onClick={handleUseExistingClick}>
                   <span>Use existing account</span>
                 </button>
-                <a
-                  href="/forgot-password"
-                  onClick={e => {
-                    navigate('/forgot-password', e);
-                  }}
-                >
-                  Recover my account
-                </a>
+                <Link href="/forgot-password">Recover my account</Link>
               </div>
               <div className="existingacc-ruler" />
               <div className="create-newaccount-instead">
@@ -664,7 +616,7 @@ const SignUp: FC = () => {
               </div>
               <button
                 className="use-existing-btn"
-                onClick={makeNewAccount}
+                onClick={handleCreateAccountClick}
                 disabled={isSearching}
               >
                 <span>Continue</span>
@@ -673,13 +625,6 @@ const SignUp: FC = () => {
           )}
         </div>
       </div>
-      {showVerificationModal && (
-        <VerifyModal
-          storedEmailAddress={email}
-          setShowVerificationModal={setShowVerificationModal}
-          setFirstStep={setFirstStep}
-        />
-      )}
       <Footer />
     </>
   );

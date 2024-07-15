@@ -1,16 +1,24 @@
-import { FC, Suspense, lazy } from "react";
-import useResponsiveViewport from "hooks/useResponsiveViewport";
-const DesktopSecondNav = lazy(() => import("./Desktop/DesktopSecondNav"));
-const MobileSecondNav = lazy(() => import("./Mobile/MobileSecondNav"));
+'use client';
+
+// Next.js
+import dynamic from 'next/dynamic';
+
+// Hooks
+import useResponsiveViewport from 'hooks/useResponsiveViewport';
+
+// Styles
+import 'components/SecondNavbar/SecondNavbar.scss';
+
+// Types
+import type { FC } from 'react';
+
+const DesktopSecondNav = dynamic(() => import('./Desktop/DesktopSecondNav'), { ssr: false });
+const MobileSecondNav = dynamic(() => import('./Mobile/MobileSecondNav'), { ssr: false });
 
 const SecondNavbar: FC = () => {
-    const isViewport960 = useResponsiveViewport(960);
+  const isViewport960 = useResponsiveViewport(960);
 
-    return (
-        <Suspense>
-            {isViewport960 ? <MobileSecondNav /> : <DesktopSecondNav />}
-        </Suspense>
-    );
+  return <>{isViewport960 ? <MobileSecondNav /> : <DesktopSecondNav />}</>;
 };
 
 export default SecondNavbar;

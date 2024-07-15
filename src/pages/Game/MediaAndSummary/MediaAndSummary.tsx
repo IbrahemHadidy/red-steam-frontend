@@ -1,109 +1,84 @@
-import {
-  FC,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  MouseEventHandler,
-  useMemo,
-  useContext,
-} from 'react';
-import $ from 'tools/$selector';
+'use client';
+
+// React
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+// Services
+import gameData from 'services/gameData/gameData';
+
+// Contexts
 import { AuthContext } from 'contexts/AuthContext';
-import { GameTitleArea } from './GameTitleArea';
-import { RightGameSummary } from './RightGameSummary';
-import { LeftGameSummary } from './LeftGameSummary/LeftGameSummary';
-import { QueueArea } from './QueueArea';
+
+// Components
 import { GameOwned } from './GameOwned';
-import { ScreenshotModal } from './Screenshot';
-import gameData, { gamesData, MovieEntry } from 'services/gameData';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
-import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
+import { GameTitleArea } from './GameTitleArea';
+import { LeftGameSummary } from './LeftGameSummary/LeftGameSummary';
+import { ScreenshotModal } from './LeftGameSummary/Screenshot/Screenshot';
+import { QueueArea } from './QueueArea';
+import { RightGameSummary } from './RightGameSummary';
+
+// Utils
+import $ from 'utils/$selector';
+
+// Styles
 import './MediaAndSummary.scss';
-import './steamVideo.scss';
-const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
-  const isViewport630 = useResponsiveViewport(630);
+
+// Types
+import type { FC, MouseEvent as ReactMouseEvent } from 'react';
+import type { MediaEntry } from 'services/gameData/gameData';
+import type { MediaAndSummaryProps } from './MediaAndSummary.types';
+
+const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game, isViewport630, isViewport960 }) => {
+  // Contexts
   const { userData } = useContext(AuthContext);
+
+  // States
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
   const [autoplayInitialized, setAutoplayInitialized] = useState(false);
   const [initialRender, setInitialRender] = useState(true);
-  const [isMouseOverScreenshot, setIsMouseOverScreenshot] =
-    useState<boolean>(false);
+  const [isMouseOverScreenshot, setIsMouseOverScreenshot] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [currentScreenshotIndex, setCurrentScreenshotIndex] =
-    useState<number>(0);
+  const [currentScreenshotIndex, setCurrentScreenshotIndex] = useState<number>(0);
   const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState(false);
 
+  // Refs
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
   const isInLibrary = useMemo(
-    () => userData?.library?.includes(game.id),
-    [userData, game.id],
+    () => userData?.library?.some((item) => item.id === game.id),
+    [userData, game.id]
   );
 
   // filter screenshots only number from the media
   const selectedEntryIndex = game.moviesAndImages
-    .filter(entry => entry.type === 'image')
-    .findIndex(entry => entry.link === selectedItem);
+    .filter((entry) => entry.type === 'image')
+    .findIndex((entry) => entry.link === selectedItem);
 
-  const openModal: MouseEventHandler<HTMLAnchorElement> = (event: {
-    preventDefault: () => void;
-  }) => {
-    event.preventDefault();
+  const openModal = (e: ReactMouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useDynamicMetaTags(
-    {
-      title: `${
-        !game.discount && game.discountPercentage
-          ? `Save ${game.discountPercentage.replace(/^-(\d+)/, '$1')} on`
-          : ''
-      } ${game.name} on Steam`,
-      background: `url(${game.backgroundImage}) center top no-repeat #1b2838`,
-      description: game.description,
-      imageSrc: game.mainImage,
-    },
-    [
-      game.backgroundImage,
-      game.description,
-      game.discount,
-      game.discountPercentage,
-      game.name,
-    ],
-  );
 
   // this is responsible for skipping the first videos after the page loads if autoplay is off
   // and handle the loading of the first image if video doesnt exist
   useEffect(() => {
-    const videoExist = game.moviesAndImages.find(
-      entry => entry.type === 'video',
-    );
+    const videoExist = game.moviesAndImages.find((entry) => entry.type === 'video');
     if (!isAutoplay || !videoExist) {
-      setSelectedItem(
-        game.moviesAndImages.find(entry => entry.type === 'image')?.link ||
-          null,
-      );
+      setSelectedItem(game.moviesAndImages.find((entry) => entry.type === 'image')?.link || null);
     } else {
-      setSelectedItem(
-        game.moviesAndImages.find(entry => entry.type === 'video')?.link ||
-          null,
-      );
+      setSelectedItem(game.moviesAndImages.find((entry) => entry.type === 'video')?.link || null);
     }
   }, [game.moviesAndImages, isAutoplay]);
 
   // function to swap photos and videos and photos with autoplay or the right swap button
   const handleSwap = useCallback(() => {
-    const currentIndex = game.moviesAndImages.findIndex(
-      entry => entry.link === selectedItem,
-    );
-    const totalScreenshots = game.moviesAndImages.filter(
-      entry => entry.type === 'image',
-    ).length;
+    const currentIndex = game.moviesAndImages.findIndex((entry) => entry.link === selectedItem);
+    const totalScreenshots = game.moviesAndImages.filter((entry) => entry.type === 'image').length;
     const nextIndex = (currentScreenshotIndex + 1) % totalScreenshots;
     setCurrentScreenshotIndex(nextIndex);
 
@@ -112,23 +87,19 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
       setSelectedItem(game.moviesAndImages[nextIndex].link);
     } else {
       const nextPhotoIndex = game.moviesAndImages.findIndex(
-        (entry, index) => index > currentIndex && entry.type !== 'video',
+        (entry, index) => index > currentIndex && entry.type !== 'video'
       );
 
       if (nextPhotoIndex !== -1) {
         setSelectedItem(game.moviesAndImages[nextPhotoIndex].link);
       } else {
-        setSelectedItem(
-          game.moviesAndImages.find(entry => entry.type !== 'video')?.link ||
-            null,
-        );
+        setSelectedItem(game.moviesAndImages.find((entry) => entry.type !== 'video')?.link || null);
       }
     }
 
     // Check if the selected item is outside the visible area
     const indicatorPosition =
-      game.moviesAndImages.findIndex(entry => entry.link === selectedItem) *
-      120;
+      game.moviesAndImages.findIndex((entry) => entry.link === selectedItem) * 120;
 
     const slideArea = $('.slide-area');
     if (slideArea) {
@@ -151,27 +122,20 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
       } else if (indicatorPosition + 240 > scrollLeft + visibleWidth) {
         // Scroll to the right to bring the selected item into view
         slideArea.scrollBy({
-          left:
-            indicatorPosition +
-            visibleWidth +
-            120 -
-            (scrollLeft + visibleWidth),
+          left: indicatorPosition + visibleWidth + 120 - (scrollLeft + visibleWidth),
           behavior: 'smooth',
         });
       }
     }
   }, [game, isAutoplay, selectedItem, currentScreenshotIndex]);
 
-  //730 - 612 = 118
-
   // function to swap photos and videos and photos with left swap button
   const handleLeftSwap = useCallback(
     (currentIndex: number) => {
       const totalScreenshots = game.moviesAndImages.filter(
-        entry => entry.type === 'image',
+        (entry) => entry.type === 'image'
       ).length;
-      const nextIndex =
-        (currentScreenshotIndex - 1 + totalScreenshots) % totalScreenshots;
+      const nextIndex = (currentScreenshotIndex - 1 + totalScreenshots) % totalScreenshots;
       setCurrentScreenshotIndex(nextIndex);
 
       const slideArea = $('.slide-area');
@@ -179,8 +143,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         const indicatorPosition = currentIndex * 120;
 
         // Calculate the distance from the left edge to the indicator
-        const distanceToLeftEdge =
-          indicatorPosition - 120 - slideArea.scrollLeft;
+        const distanceToLeftEdge = indicatorPosition - 120 - slideArea.scrollLeft;
 
         // Check if the indicator is going out of the left edge
         const isOutOfLeftEdge = distanceToLeftEdge < 0;
@@ -199,10 +162,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
           }
         } else {
           // If the index is the first, scroll to the end only if it's not already at the last item
-          if (
-            slideArea.scrollLeft !==
-            (game.moviesAndImages.length - 1) * 120
-          ) {
+          if (slideArea.scrollLeft !== (game.moviesAndImages.length - 1) * 120) {
             slideArea.scroll({
               left: (game.moviesAndImages.length - 1) * 120,
               behavior: 'smooth',
@@ -211,14 +171,12 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         }
       }
     },
-    [game, setSelectedItem, currentScreenshotIndex],
+    [game, setSelectedItem, currentScreenshotIndex]
   );
 
   // function controlling the behavior of the previous and next buttons in the screenshots modal
   const handleSliderClick = (direction: 'left' | 'right') => {
-    const currentIndex = game.moviesAndImages.findIndex(
-      entry => entry.link === selectedItem,
-    );
+    const currentIndex = game.moviesAndImages.findIndex((entry) => entry.link === selectedItem);
 
     let nextIndex = currentIndex;
 
@@ -228,27 +186,21 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
       handleSwap();
     } else {
       // Find the previous video or screenshot index
-      nextIndex =
-        (currentIndex - 1 + game.moviesAndImages.length) %
-        game.moviesAndImages.length;
+      nextIndex = (currentIndex - 1 + game.moviesAndImages.length) % game.moviesAndImages.length;
       handleLeftSwap(currentIndex);
     }
 
     // Set the selectedItem based on the nextIndex
     setSelectedItem(game.moviesAndImages[nextIndex].link);
 
-    const totalScreenshots = game.moviesAndImages.filter(
-      entry => entry.type === 'image',
-    ).length;
+    const totalScreenshots = game.moviesAndImages.filter((entry) => entry.type === 'image').length;
     if (direction === 'right') {
       // Increment the index when clicking right
-      setCurrentScreenshotIndex(
-        prevIndex => (prevIndex + 1) % totalScreenshots,
-      );
+      setCurrentScreenshotIndex((prevIndex) => (prevIndex + 1) % totalScreenshots);
     } else if (direction === 'left') {
       // Decrement the index when clicking left
       setCurrentScreenshotIndex(
-        prevIndex => (prevIndex - 1 + totalScreenshots) % totalScreenshots,
+        (prevIndex) => (prevIndex - 1 + totalScreenshots) % totalScreenshots
       );
     }
   };
@@ -274,8 +226,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
     const screenshotIntervalId = setInterval(() => {
       if (
         selectedItem &&
-        game.moviesAndImages.find(entry => entry.link === selectedItem)
-          ?.type !== 'video' &&
+        game.moviesAndImages.find((entry) => entry.link === selectedItem)?.type !== 'video' &&
         !isModalOpen &&
         isPageVisible.current
       ) {
@@ -311,9 +262,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
   // auto swap for the first video if autoplay is off
   useEffect(() => {
     if (initialRender) {
-      const firstVideo = game.moviesAndImages.find(
-        entry => entry.type === 'video',
-      );
+      const firstVideo = game.moviesAndImages.find((entry) => entry.type === 'video');
 
       if (!isAutoplay && firstVideo && selectedItem === firstVideo.link) {
         const videoSwapTimeout = setTimeout(() => {
@@ -326,31 +275,26 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
         };
       }
     }
-  }, [
-    game.moviesAndImages,
-    handleSwap,
-    initialRender,
-    isAutoplay,
-    selectedItem,
-  ]);
+  }, [game.moviesAndImages, handleSwap, initialRender, isAutoplay, selectedItem]);
 
   // variable that represents the currently selected item
-  const selectedEntry = gameData.reduce<MovieEntry | null>(
+  const selectedEntry = gameData.reduce<MediaEntry | undefined>(
     (selected, game) =>
-      selected ||
-      (game.moviesAndImages.find(
-        entry => entry.link === selectedItem,
-      ) as MovieEntry | null),
-    null,
+      selected || game.moviesAndImages.find((entry) => entry.link === selectedItem),
+    undefined
   );
 
   return (
-    <div className="MeidaAndSummary" key={game.id}>
+    <div className="MediaAndSummary" key={game.id}>
       <GameTitleArea category={game.category} name={game.name} />
       <div className="game-background">
         <div className="game-page-content">
           <div className="media-summary-block">
-            <RightGameSummary game={game} isViewport630={isViewport630} />
+            <RightGameSummary
+              game={game}
+              isViewport630={isViewport630}
+              isViewport960={isViewport960}
+            />
             <LeftGameSummary
               selectedItem={selectedItem}
               selectedEntry={selectedEntry}
@@ -371,7 +315,7 @@ const MediaAndSummary: FC<{ game: gamesData }> = ({ game }) => {
           </div>
         </div>
       </div>
-      <QueueArea game={game} />
+      <QueueArea game={game} isViewport630={isViewport630} isViewport960={isViewport960} />
 
       {isInLibrary && <GameOwned game={game} />}
 

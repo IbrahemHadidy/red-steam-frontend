@@ -1,370 +1,230 @@
-.game-content-right {
-	width: 308px;
-	margin-left: 14px;
-	float: right;
-	margin-top: 16px;
-	overflow: hidden;
+.game-content {
+	display: flex;
+	flex-direction: row-reverse;
 
-	.recommendation-reason {
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
-		margin-bottom: 0;
-		background-color: rgba(0, 0, 0, 0.2);
-		color: #fff;
-		font-size: 16px;
-		padding: 10px 18px;
-	}
+	.game-content-right {
+		width: 308px;
+		margin-left: 14px;
+		float: right;
+		margin-top: 16px;
+		overflow: hidden;
 
-	.recommendation-reasons {
-		color: #969696;
-		font-size: 14px;
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
-		padding: 16px;
-		margin-bottom: 8px;
-		padding-left: 28px;
+		.recommendation-reason {
+			background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+			margin-bottom: 0;
+			background-color: rgba(0, 0, 0, 0.2);
+			color: #fff;
+			font-size: 16px;
+			padding: 10px 18px;
+		}
 
-		.reason-for {
-			line-height: 16px;
-			vertical-align: top;
-			margin-bottom: 3px;
+		.recommendation-reasons {
 			color: #969696;
 			font-size: 14px;
-
-			&::before {
-				content: ' ';
-				margin-left: -20px;
-				position: absolute;
-				display: inline-block;
-				vertical-align: top;
-				width: 16px;
-				height: 16px;
-				background-image: url("/images/game_reasons_for.png");
-			}
-		}
-
-		hr {
-			height: 1px;
-			margin: 10px 0;
-			border: none;
-			background-color: #76a2d1; // #273747
-
-			&:last-child {
-				display: none;
-			}
-		}
-	}
-
-	.game-details-second {
-		padding: 16px;
-		margin-bottom: 8px;
-		margin-top: 0;
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
-
-		.details-block {
-			b {
-				font-family: Arial, Helvetica, sans-serif;
-				color: #556772;
-				font-weight: normal;
-				text-transform: uppercase;
-				font-size: 10px;
-			}
-
-			a {
-				font-family: "Motiva Sans", Sans-serif;
-				font-weight: 300;
-				color: #67c1f5;
-
-				&:hover {
-					color: #ffffff;
-				}
-
-				&.linkbar {
-					min-height: 17px;
-					padding-top: 4px;
-					padding-left: 8px;
-					padding-bottom: 4px;
-					line-height: 17px;
-					background: rgba(103, 193, 245, 0.1);
-					color: #67c1f5;
-					border-radius: 1px;
-					display: block;
-					margin-bottom: 2px;
-
-					&:hover {
-						text-decoration: none;
-						color: #ffffff;
-						background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
-					}
-
-					img {
-						max-width: 12px;
-						max-height: 12px;
-						padding-right: 4px;
-						vertical-align: middle;
-					}
-				}
-			}
-		}
-	}
-
-	.game-details-first {
-		padding: 16px;
-		margin-bottom: 8px;
-		margin-top: 0;
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
-
-		.game-area-features-list {
-			.game-area-details {
-				margin-bottom: 2px;
-				background-color: rgba(0, 0, 0, 0.2);
-				display: flex;
-				align-items: center;
-
-
-
-				.feature-icon {
-					padding: 0px 6px;
-					display: flex;
-
-					img {
-						width: 26px;
-						height: 16px;
-						vertical-align: unset;
-					}
-				}
-
-				.feature-label {
-					display: flex;
-					justify-content: space-between;
-					padding: 6px 8px;
-					height: 100%;
-					background: rgba(103, 193, 245, 0.1);
-					width: 100%;
-					border-radius: 1px;
-					color: #66c0f4;
-
-					&:hover {
-						text-decoration: none;
-						color: #ffffff;
-						background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
-					}
-				}
-			}
-		}
-
-		.DRM-notice {
-			color: #e1c48a;
-			padding: 4px 8px;
-			line-height: 17px;
-			border-radius: 1px;
-			margin-top: 12px;
-			background: linear-gradient(135deg, rgba(130, 114, 81, 0.5) 0%, rgba(226, 197, 139, 0.5) 100%);
-		}
-
-		.block-title {
-			font-size: 12px;
-			color: #8f98a0;
-			margin-bottom: 2px;
-		}
-
-		.language-table {
-			display: block;
-
-			.game-language-options {
-				border-collapse: collapse;
-
-				tr {
-					border-bottom: 1px solid #626366;
-
-					th {
-						font-size: 12px;
-						color: #b0aeac;
-						font-weight: normal;
-						text-align: center;
-
-						&.checkcol {
-							width: 62px;
-						}
-					}
-
-					td {
-						color: #8f98a0;
-						padding: 3px 0px 3px 0px;
-						font-size: 12px;
-						text-align: center;
-
-						&.checkcol {
-							width: 62px;
-						}
-
-						span {
-							font-weight: bold;
-							color: #67c1f5;
-						}
-					}
-
-					.game-language-name {
-						overflow: hidden;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-						color: #8f98a0;
-						padding: 3px 0px 3px 0px;
-						font-size: 12px;
-						text-align: left;
-					}
-				}
-			}
-
-			.all-languages {
-				text-decoration: none;
-				color: #67c1f5;
-				font-size: 12px;
-				cursor: pointer;
-				margin-top: 5px;
-				display: inline-block;
-
-				&:hover {
-					color: #ffffff;
-				}
-			}
-		}
-
-	}
-}
-
-.game-purchase-wrapper {
-	margin-bottom: 28px;
-
-	.game-purchase {
-		position: relative;
-		background: linear-gradient(-60deg, rgba(226, 244, 255, 0.3) 5%, rgba(84, 107, 115, 0.3) 95%);
-		border-radius: 4px;
-		font-family: "Motiva Sans", Sans-serif;
-		font-weight: normal;
-		font-size: 13px;
-		color: #c6d4df;
-		padding: 16px;
-		padding-bottom: 26px;
-		margin-bottom: 0px;
-		z-index: 1;
-
-		.game-purchase-platform {
-			float: right;
-
-			.platform-img {
-				display: inline-block;
-				width: 20px;
-				height: 20px;
-				background-repeat: no-repeat;
-
-				&.win {
-					background-image: url('/images/icon_platform_win.png');
-				}
-
-				&.mac {
-					background-image: url('/images/icon_platform_mac.png');
-				}
-			}
-		}
-
-		h1 {
-			font-size: 21px;
-			font-family: "Motiva Sans", Sans-serif;
-			color: #ffffff;
-			font-weight: normal;
-		}
-
-		p,
-		.dicount-countdown {
-			color: #7cb8e4;
+			background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+			padding: 16px;
 			margin-bottom: 8px;
-		}
+			padding-left: 28px;
 
-	}
-}
-
-.game-content-left {
-	font-size: 14px;
-	color: #acb2b8;
-	margin-top: 16px;
-	width: 616px;
-	float: left;
-
-	.autocollapse-container {
-		position: relative;
-
-		.autocollapse {
-			overflow: hidden;
-			max-height: none;
-			color: #acb2b8;
-			font-size: 14px;
-
-			.game-description {
-				line-height: 1.5em;
+			.reason-for {
+				line-height: 16px;
+				vertical-align: top;
+				margin-bottom: 3px;
+				color: #969696;
 				font-size: 14px;
-				margin-top: 30px;
-				overflow: hidden;
-				font-family: "Motiva Sans", Sans-serif;
-				font-weight: normal;
-				transition: height 0.5s ease-in-out;
 
-				>h2 {
-					&:first-of-type {
-						line-height: 26px;
-						background-image: url("/images/maincol_gradient_rule.png");
-						background-repeat: no-repeat;
-						background-position: bottom left;
-					}
-				}
-				div {
-					h2 {
-						color: #acb2b8;
-						margin-top: 18px;
-						margin-bottom: 0px;
-						background-image: none;
-						font-size: 15px;
-						color: #2f89bc;
-						text-transform: none;
-						letter-spacing: 0px;
-					}
-				}
-
-
-				p {
-					margin-bottom: 8px;
-				}
-
-				strong {
-					font-family: "Motiva Sans", Sans-serif;
-					font-weight: bold;
+				&::before {
+					content: ' ';
+					margin-left: -20px;
+					position: absolute;
+					display: inline-block;
+					vertical-align: top;
+					width: 16px;
+					height: 16px;
+					background-image: url("/images/game_reasons_for.png");
 				}
 			}
 
-			.autocollapse-fade {
-				display: block;
-				position: absolute;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				height: 53px;
-				z-index: 1;
-				background: url('/images/fade.png') top repeat-x;
+			hr {
+				height: 1px;
+				margin: 10px 0;
+				border: none;
+				background-color: #76a2d1; // #273747
 
-				&.hidden {
+				&:last-child {
 					display: none;
 				}
+			}
+		}
 
-				.autocollapse-readmore {
-					position: absolute;
-					right: 0;
-					bottom: 0;
-					height: 20px;
-					line-height: 20px;
-					cursor: pointer;
-					color: #537ca6;
+		.game-details-second {
+			padding: 16px;
+			margin-bottom: 8px;
+			margin-top: 0;
+			background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+
+			.details-block {
+				b {
+					font-family: Arial, Helvetica, sans-serif;
+					color: #556772;
+					font-weight: normal;
+					text-transform: uppercase;
 					font-size: 10px;
-					padding-right: 12px;
-					top: 53px;
-					background: url( '/images/readmore.png' ) right center no-repeat;
+				}
+
+				a {
+					font-family: "Motiva Sans", Sans-serif;
+					font-weight: 300;
+					color: #67c1f5;
+
+					&:hover {
+						color: #ffffff;
+					}
+
+					&.linkbar {
+						min-height: 17px;
+						padding-top: 4px;
+						padding-left: 8px;
+						padding-bottom: 4px;
+						line-height: 17px;
+						background: rgba(103, 193, 245, 0.1);
+						color: #67c1f5;
+						border-radius: 1px;
+						display: block;
+						margin-bottom: 2px;
+
+						&:hover {
+							text-decoration: none;
+							color: #ffffff;
+							background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
+						}
+
+						img {
+							max-width: 12px;
+							max-height: 12px;
+							padding-right: 4px;
+							vertical-align: middle;
+						}
+					}
+				}
+			}
+		}
+
+		.game-details-first {
+			padding: 16px;
+			margin-bottom: 8px;
+			margin-top: 0;
+			background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+
+			.game-area-features-list {
+				.game-area-details {
+					margin-bottom: 2px;
+					background-color: rgba(0, 0, 0, 0.2);
+					display: flex;
+					align-items: center;
+
+
+
+					.feature-icon {
+						padding: 0px 6px;
+						display: flex;
+
+						img {
+							width: 26px;
+							height: 16px;
+							vertical-align: unset;
+						}
+					}
+
+					.feature-label {
+						display: flex;
+						justify-content: space-between;
+						padding: 6px 8px;
+						height: 100%;
+						background: rgba(103, 193, 245, 0.1);
+						width: 100%;
+						border-radius: 1px;
+						color: #66c0f4;
+
+						&:hover {
+							text-decoration: none;
+							color: #ffffff;
+							background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
+						}
+					}
+				}
+			}
+
+			.DRM-notice {
+				color: #e1c48a;
+				padding: 4px 8px;
+				line-height: 17px;
+				border-radius: 1px;
+				margin-top: 12px;
+				background: linear-gradient(135deg, rgba(130, 114, 81, 0.5) 0%, rgba(226, 197, 139, 0.5) 100%);
+			}
+
+			.block-title {
+				font-size: 12px;
+				color: #8f98a0;
+				margin-bottom: 2px;
+			}
+
+			.language-table {
+				display: block;
+
+				.game-language-options {
+					border-collapse: collapse;
+
+					tr {
+						border-bottom: 1px solid #626366;
+
+						th {
+							font-size: 12px;
+							color: #b0aeac;
+							font-weight: normal;
+							text-align: center;
+
+							&.checkcol {
+								width: 62px;
+							}
+						}
+
+						td {
+							color: #8f98a0;
+							padding: 3px 0px 3px 0px;
+							font-size: 12px;
+							text-align: center;
+
+							&.checkcol {
+								width: 62px;
+							}
+
+							span {
+								font-weight: bold;
+								color: #67c1f5;
+							}
+						}
+
+						.game-language-name {
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							color: #8f98a0;
+							padding: 3px 0px 3px 0px;
+							font-size: 12px;
+							text-align: left;
+						}
+					}
+				}
+
+				.all-languages {
+					text-decoration: none;
+					color: #67c1f5;
+					font-size: 12px;
+					cursor: pointer;
+					margin-top: 5px;
+					display: inline-block;
 
 					&:hover {
 						color: #ffffff;
@@ -372,98 +232,244 @@
 				}
 			}
 
-			&.sys-req {
+		}
+	}
+
+	.game-purchase-wrapper {
+		margin-bottom: 28px;
+
+		.game-purchase {
+			position: relative;
+			background: linear-gradient(-60deg, rgba(226, 244, 255, 0.3) 5%, rgba(84, 107, 115, 0.3) 95%);
+			border-radius: 4px;
+			font-family: "Motiva Sans", Sans-serif;
+			font-weight: normal;
+			font-size: 13px;
+			color: #c6d4df;
+			padding: 16px;
+			padding-bottom: 26px;
+			margin-bottom: 0px;
+			z-index: 1;
+
+			.game-purchase-platform {
+				float: right;
+
+				.platform-img {
+					display: inline-block;
+					width: 20px;
+					height: 20px;
+					background-repeat: no-repeat;
+
+					&.win {
+						background-image: url('/images/icon_platform_win.png');
+					}
+
+					&.mac {
+						background-image: url('/images/icon_platform_mac.png');
+					}
+				}
+			}
+
+			h1 {
+				font-size: 21px;
+				font-family: "Motiva Sans", Sans-serif;
+				color: #ffffff;
+				font-weight: normal;
+			}
+
+			p,
+			.dicount-countdown {
+				color: #7cb8e4;
+				margin-bottom: 8px;
+			}
+
+		}
+	}
+
+	.game-content-left {
+		font-size: 14px;
+		color: #acb2b8;
+		margin-top: 16px;
+		width: 616px;
+		float: left;
+
+		.autocollapse-container {
+			position: relative;
+
+			.autocollapse {
 				overflow: hidden;
 				max-height: none;
 				color: #acb2b8;
 				font-size: 14px;
-				margin-top: 30px;
-				transition: height 0.5s ease-in-out;
 
-				h2 {
-					&:first-of-type {
-						line-height: 26px;
-						background-image: url("/images/maincol_gradient_rule.png");
-						background-repeat: no-repeat;
-						background-position: bottom left;
+				.game-description {
+					line-height: 1.5em;
+					font-size: 14px;
+					margin-top: 30px;
+					overflow: hidden;
+					font-family: "Motiva Sans", Sans-serif;
+					font-weight: normal;
+					transition: height 0.5s ease-in-out;
+
+					>h2 {
+						&:first-of-type {
+							line-height: 26px;
+							background-image: url("/images/maincol_gradient_rule.png");
+							background-repeat: no-repeat;
+							background-position: bottom left;
+						}
 					}
 
-					&:not(:first-of-type) {
-						color: #acb2b8;
+					div {
+						h2 {
+							color: #acb2b8;
+							margin-top: 18px;
+							margin-bottom: 0px;
+							background-image: none;
+							font-size: 15px;
+							color: #2f89bc;
+							text-transform: none;
+							letter-spacing: 0px;
+						}
+					}
+
+
+					p {
+						margin-bottom: 8px;
+					}
+
+					strong {
+						font-family: "Motiva Sans", Sans-serif;
+						font-weight: bold;
 					}
 				}
 
-				.sysreq-contents {
-					margin-top: 10px;
+				.autocollapse-fade {
+					display: block;
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					height: 53px;
+					z-index: 1;
+					background: url('/images/fade.png') top repeat-x;
 
-					.sysreq-content {
-						font-size: 12px;
-						font-family: "Motiva Sans", Sans-serif;
-						font-weight: normal;
-						display: block;
+					&.hidden {
+						display: none;
+					}
 
-						.mini-req {
-							float: left;
-							width: 300px;
+					.autocollapse-readmore {
+						position: absolute;
+						right: 0;
+						bottom: 0;
+						height: 20px;
+						line-height: 20px;
+						cursor: pointer;
+						color: #537ca6;
+						font-size: 10px;
+						padding-right: 12px;
+						top: 53px;
+						background: url('/images/readmore.png') right center no-repeat;
+
+						&:hover {
+							color: #ffffff;
+						}
+					}
+				}
+
+				&.sys-req {
+					overflow: hidden;
+					max-height: none;
+					color: #acb2b8;
+					font-size: 14px;
+					margin-top: 30px;
+					transition: height 0.5s ease-in-out;
+
+					h2 {
+						&:first-of-type {
+							line-height: 26px;
+							background-image: url("/images/maincol_gradient_rule.png");
+							background-repeat: no-repeat;
+							background-position: bottom left;
 						}
 
-						.recommeded-req {
-							float: left;
-							width: 300px;
-							margin-left: 8px;
+						&:not(:first-of-type) {
+							color: #acb2b8;
 						}
+					}
 
-						ul {
-							list-style-type: none;
-							margin-left: 0px;
-							line-height: 18px;
-							padding-left: 0;
+					.sysreq-contents {
+						margin-top: 10px;
 
-							strong {
-								font-family: Arial, Helvetica, sans-serif;
-								font-weight: normal;
-								font-size: 10px;
-								color: #bcc6cd;
-								text-transform: uppercase;
-								display: inline-block;
-								margin-right: 4px;
+						.sysreq-content {
+							font-size: 12px;
+							font-family: "Motiva Sans", Sans-serif;
+							font-weight: normal;
+							display: block;
+
+							.mini-req {
+								float: left;
+								width: 300px;
+							}
+
+							.recommeded-req {
+								float: left;
+								width: 300px;
+								margin-left: 8px;
 							}
 
 							ul {
-								margin-block-start: 0px;
-								margin-block-end: 0px;
+								list-style-type: none;
+								margin-left: 0px;
+								line-height: 18px;
+								padding-left: 0;
 
-								li {
-									margin: 2px 0px;
-									list-style-position: outside;
+								strong {
+									font-family: Arial, Helvetica, sans-serif;
+									font-weight: normal;
+									font-size: 10px;
+									color: #bcc6cd;
+									text-transform: uppercase;
+									display: inline-block;
+									margin-right: 4px;
+								}
 
-									strong {
-										font-family: Arial, Helvetica, sans-serif;
-										display: inline-block;
-										color: #61686D;
-										font-size: 12px;
-										margin-right: 4px;
-										font-weight: normal;
-										margin-bottom: 2px;
-										text-transform: none;
+								ul {
+									margin-block-start: 0px;
+									margin-block-end: 0px;
+
+									li {
+										margin: 2px 0px;
+										list-style-position: outside;
+
+										strong {
+											font-family: Arial, Helvetica, sans-serif;
+											display: inline-block;
+											color: #61686D;
+											font-size: 12px;
+											margin-right: 4px;
+											font-weight: normal;
+											margin-bottom: 2px;
+											text-transform: none;
+										}
 									}
 								}
 							}
 						}
 					}
+
+					h2 {
+						margin-bottom: 0px;
+					}
 				}
 
-				h2 {
-					margin-bottom: 0px;
+				.legal-area {
+					color: #566168;
+					font-size: 11px;
+					margin-bottom: 10px;
+					margin-top: 20px;
+					line-height: 1.1;
 				}
-			}
-
-			.legal-area {
-				color: #566168;
-				font-size: 11px;
-				margin-bottom: 10px;
-				margin-top: 20px;
-				line-height: 1.1;
 			}
 		}
 	}
@@ -471,6 +477,7 @@
 
 @media screen and (max-width: 960px) {
 	.game-content {
+		flex-direction: column;
 		max-width: 940px;
 		width: auto;
 		margin: 0 2%;
@@ -530,7 +537,7 @@
 			margin-bottom: -10px;
 			width: 100%;
 		}
-		
+
 		.game-description {
 			>div {
 				img {

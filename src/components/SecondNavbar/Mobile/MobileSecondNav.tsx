@@ -1,29 +1,34 @@
-import { FC, useState, SetStateAction, useContext, useEffect } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
+'use client';
+
+// React
+import { useContext, useEffect, useState } from 'react';
+
+// Next.js
+import Link from 'next/link';
+
+// Contexts
 import { AuthContext } from 'contexts/AuthContext';
-import { menuData, navigationItems } from 'services/menuData-mobile';
+
+// Components
 import NavSearch from '../NavSearch';
 
-type MenuItem = {
-  label: string;
-  url: string;
-  className: string;
-  category?: string;
-  specialClass?: string;
-};
+// Services
+import { menuData, navigationItems } from 'services/menus/menuData-mobile';
 
-type GroupedMenuItem = {
-  menuTitle: string;
-  categoryGroups: Record<string, MenuItem[]>;
-};
+// Images
+import defaultPFP from 'images/default-pfp.png';
 
-type menuTitle = string | SetStateAction<null>;
+// Types
+import type { FC } from 'react';
+import type { GroupedMenuItem, MenuItem, menuTitle } from '../SecondNavbar.types';
 
 const MobileSecondNav: FC = () => {
-  const navigate = useSoftNavigate();
-  const { isLoggedIn, userData } = useContext(AuthContext);
+  // Contexts
+  const { isLoggedIn, userPFP } = useContext(AuthContext);
+
+  // States
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
-  const [isSearchPage, setIsSearchPage] = useState(false);
+  const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -42,23 +47,21 @@ const MobileSecondNav: FC = () => {
     }
   };
 
-  const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(
-    ([menuTitle, menu]) => {
-      const items = menu.items;
-      const categoryGroups: Record<string, MenuItem[]> = {};
+  const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(([menuTitle, menu]) => {
+    const items = menu.items;
+    const categoryGroups: Record<string, MenuItem[]> = {};
 
-      items.forEach((item: MenuItem) => {
-        if (item.category) {
-          if (!categoryGroups[item.category]) {
-            categoryGroups[item.category] = [];
-          }
-          categoryGroups[item.category].push(item);
+    items.forEach((item: MenuItem) => {
+      if (item.category) {
+        if (!categoryGroups[item.category]) {
+          categoryGroups[item.category] = [];
         }
-      });
+        categoryGroups[item.category].push(item);
+      }
+    });
 
-      return { menuTitle, categoryGroups };
-    },
-  );
+    return { menuTitle, categoryGroups };
+  });
 
   return (
     <div className="second-nav-mobile">
@@ -69,7 +72,7 @@ const MobileSecondNav: FC = () => {
             {isLoggedIn && (
               <img
                 className="profile_picture-mobile"
-                src={userData?.profilePicture || '/images/default-pfp.png'}
+                src={userPFP || defaultPFP.src}
                 alt="Avatar"
               />
             )}
@@ -77,9 +80,7 @@ const MobileSecondNav: FC = () => {
               <li key={index} className="nav-item nav-item-mobile dropdown">
                 <a
                   className={`nav-link navBarItem navBarItem-mobile ${
-                    menuTitle === 'Your Store' && isLoggedIn
-                      ? 'special-class'
-                      : ''
+                    menuTitle === 'Your Store' && isLoggedIn ? 'special-class' : ''
                   }`}
                   href="#"
                   onClick={() => handleMenuClick(menuTitle)} // Handle click to open/close the menu
@@ -88,76 +89,51 @@ const MobileSecondNav: FC = () => {
                 </a>
                 {/* Conditionally render the dropdown menu based on the openMenu state */}
                 {isLoggedIn && openMenu === 'Your Store' && (
-                  <div
-                    className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
-                  >
+                  <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     {Object.entries(categoryGroups).map(
                       ([category, categoryItems], categoryIndex) => (
-                        <div
-                          key={categoryIndex}
-                          className={`category-div ${category}`}
-                        >
+                        <div key={categoryIndex} className={`category-div ${category}`}>
                           {categoryItems.map((categoryItem, itemIndex) => (
-                            <a
+                            <Link
                               key={itemIndex}
                               className={`menuItem ${categoryItem.className}`}
-                              onClick={e => {
-                                navigate(categoryItem.url, e);
-                              }}
+                              href={categoryItem.url}
                             >
                               {categoryItem.label}
-                            </a>
+                            </Link>
                           ))}
                         </div>
-                      ),
+                      )
                     )}
                   </div>
                 )}
                 {!isLoggedIn && openMenu === 'Your Store' && (
-                  <div
-                    className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
-                  >
-                    <div
-                      className="category-div store-div"
-                      style={{ marginTop: '-10px' }}
-                    >
-                      <a
-                        className="menuItem custom-label"
-                        href="/"
-                        onClick={e => {
-                          navigate('/', e);
-                        }}
-                      >
+                  <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
+                    <div className="category-div store-div" style={{ marginTop: '-10px' }}>
+                      <Link className="menuItem custom-label" href="/">
                         Home
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}
                 {openMenu === menuTitle && openMenu !== 'Your Store' && (
-                  <div
-                    className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}
-                  >
+                  <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     {Object.entries(categoryGroups).map(
                       ([category, categoryItems], categoryIndex) => (
-                        <div
-                          key={categoryIndex}
-                          className={`category-div ${category}`}
-                        >
+                        <div key={categoryIndex} className={`category-div ${category}`}>
                           {categoryItems.map((categoryItem, itemIndex) => (
-                            <a
+                            <Link
                               key={itemIndex}
                               className={`menuItem ${categoryItem.className} ${
                                 categoryItem.specialClass || ''
                               }`}
-                              onClick={e => {
-                                navigate(categoryItem.url, e);
-                              }}
+                              href={categoryItem.url}
                             >
                               {categoryItem.label}
-                            </a>
+                            </Link>
                           ))}
                         </div>
-                      ),
+                      )
                     )}
                   </div>
                 )}
@@ -170,14 +146,9 @@ const MobileSecondNav: FC = () => {
           <div key={index}>
             <ul className="navbar-nav">
               <li className="nav-item navbar-nav-mobile">
-                <a
-                  className="nav-link navBarItem navBarItem-mobile"
-                  onClick={e => {
-                    navigate(item.url, e);
-                  }}
-                >
+                <Link className="nav-link navBarItem navBarItem-mobile" href={item.url}>
                   {item.label}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

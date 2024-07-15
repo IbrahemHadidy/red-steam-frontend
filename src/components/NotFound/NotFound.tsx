@@ -1,23 +1,37 @@
-import { FC, useEffect } from 'react';
-import Header from 'components/Header/Header';
+'use client';
+
+// React
+import { useEffect } from 'react';
+
+// Next.js
+import { useRouter } from 'next/navigation';
+
+// Components
 import Footer from 'components/Footer/Footer';
+import Header from 'components/Header/Header';
+
+// Images
+import glitchImage from 'images/glitch-image.png';
+
+// Styles
 import './NotFound.scss';
 
+// Types
+import type { FC } from 'react';
+
 const NotFound: FC = () => {
-  // Set the url to /notfound
+  // Initializations
+  const router = useRouter();
+
   useEffect(() => {
-    window.history.replaceState({}, '', '/notfound');
+    router.push('/notfound');
   });
 
   return (
     <>
       <Header />
       <div className="not-found">
-        <img
-          src="/images/glitch-image.png"
-          alt="Page Not Found"
-          className="not-found-image"
-        />
+        <img src={glitchImage.src} alt="Page Not Found" className="not-found-image" />
         <div className="not-found-content">
           <h1 className="not-found-heading" data-text="404">
             404
@@ -25,10 +39,7 @@ const NotFound: FC = () => {
           <p className="not-found-text" data-text="Oops! Page Not Found">
             Oops! Page Not Found
           </p>
-          <p
-            className="not-found-text"
-            data-text="The page you're looking for could not be found."
-          >
+          <p className="not-found-text" data-text="The page you're looking for could not be found.">
             The page you're looking for could not be found.
           </p>
           <p

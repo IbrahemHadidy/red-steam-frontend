@@ -1,23 +1,22 @@
-import { FC } from "react";
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import featuredGames from "services/featuredGames";
+'use client';
+
+// Next.js
+import Link from 'next/link';
+
+// Services
+import featuredGames from 'services/gameData/featuredGames';
+
+// Types
+import { FC } from 'react';
 
 const FeaturedMobile: FC = () => {
-	const navigate = useSoftNavigate();
-
-	return (
+  return (
     <div className="featured-carousel">
       <div className="main-carousel-content">
         <h2 className="home-titles">Featured & Recommended</h2>
         <div className="mobile-carousel">
           {featuredGames.map((slide, index) => (
-            <a
-              key={index}
-              className="mobile-capsule"
-              onClick={e => {
-                navigate(`/game/${slide.id}`, e);
-              }}
-            >
+            <Link key={index} className="mobile-capsule" href={`/game/${slide.id}`}>
               <div
                 className="mobile-capsule-content"
                 style={{ backgroundImage: `url(${slide.mainImage})` }}
@@ -34,14 +33,10 @@ const FeaturedMobile: FC = () => {
                   <div className="discount">
                     <div className="price">
                       <div className="discount-block">
-                        <div className="discount-percentage">
-                          -{slide.discountPercentage}%
-                        </div>
+                        <div className="discount-percentage">-{slide.discountPercentage}%</div>
                         <div className="discount-prices">
                           <div className="original-price">${slide.price}</div>
-                          <div className="final-price">
-                            ${slide.discountPrice}
-                          </div>
+                          <div className="final-price">${slide.discountPrice}</div>
                         </div>
                       </div>
                     </div>
@@ -52,7 +47,7 @@ const FeaturedMobile: FC = () => {
                   {slide.mac && <span className="platform-image mac" />}
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

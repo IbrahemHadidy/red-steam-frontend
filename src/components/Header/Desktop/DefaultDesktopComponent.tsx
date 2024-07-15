@@ -1,21 +1,56 @@
-import { FC, useContext } from 'react';
-import useSoftNavigate from 'hooks/useSoftNavigate';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { AuthContext } from 'contexts/AuthContext';
-import ProfileDropdown from './ProfileDropdown';
-import NavigationLinks from './NavigationLinks';
+'use client';
+
+// React
+import { useContext } from 'react';
+
+// Next.js
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+// Toast notifications
 import { toast } from 'react-toastify';
 
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Bootstrap Components
+import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+
+// Components
+import NavigationLinks from './NavigationLinks';
+import ProfileDropdown from './ProfileDropdown';
+
+// Images
+import bell from 'images/bell.svg';
+import installSteamBtn from 'images/btn_header_installsteam_download.png';
+import steamLogo from 'images/logo_steam.svg';
+
+// Types
+import type { FC } from 'react';
+
 const DefaultDesktopComponent: FC = () => {
-  const navigate = useSoftNavigate();
+  // Initializations
+  const router = useRouter();
+
+  // Contexts
   const { isLoggedIn } = useContext(AuthContext);
+
+  const handleRootNavigation = () => {
+    router.push('/');
+  };
+
+  const handleInstallSteamBtn = () => {
+    toast.warning('This is not the real Steam website, It is just a clone for learning purposes.');
+  };
+
+  const handleNotificationBtn = () => {
+    toast.info(`Coming soon.`);
+  };
+
   return (
-    <div>
-      <Navbar
-        className="nav-color header-container"
-        variant="dark"
-        collapseOnSelect={false}
-      >
+    <>
+      <Navbar className="nav-color header-container" variant="dark" collapseOnSelect={false}>
         <Container className="header-content">
           {/* Right-Top-side navigation links */}
           <Nav className="my-nav">
@@ -23,16 +58,13 @@ const DefaultDesktopComponent: FC = () => {
             <Button
               variant="secondary"
               className={`mr-2 compact-button ${!isLoggedIn && 'login'}`}
-              onClick={() =>
-                toast.warning(
-                  'This is not the real Steam website, It is just a clone for learning purposes.',
-                )
-              }
+              onClick={handleInstallSteamBtn}
             >
               <span className="button-content button-text">
-                <img
+                <Image
                   className="fa-icon"
-                  src="/images/btn_header_installsteam_download.png"
+                  alt="Install Steam"
+                  src={installSteamBtn}
                   style={{ color: '#ffffff' }}
                 />{' '}
                 Install Steam
@@ -44,14 +76,10 @@ const DefaultDesktopComponent: FC = () => {
               <Button
                 variant="secondary"
                 className="compact-button"
-                onClick={() =>
-                  toast.info(
-                    `This feature is not implemented yet and may not be implemented in the future.`,
-                  )
-                }
+                onClick={handleNotificationBtn}
               >
                 <span className="button-content button-text bell">
-                  <img src="/images/bell.svg" style={{ width: '14px' }} />
+                  <Image src={bell} alt="bell" width={14} />
                 </span>
               </Button>
             )}
@@ -61,37 +89,18 @@ const DefaultDesktopComponent: FC = () => {
               <ProfileDropdown />
             ) : (
               <div className="logging">
-                <a
-                  href="/login"
-                  onClick={e => {
-                    navigate('/login', e);
-                  }}
-                >
-                  login
-                </a>
+                <Link href="/login">login</Link>
                 &nbsp; | &nbsp;
-                <a
-                  href="/join"
-                  onClick={e => {
-                    navigate('/join', e);
-                  }}
-                >
-                  Sign Up
-                </a>
+                <Link href="/join">Sign Up</Link>
               </div>
             )}
           </Nav>
 
           {/* Brand/logo section */}
-          <Navbar.Brand
-            href="/"
-            onClick={e => {
-              navigate('/', e);
-            }}
-          >
-            <img
+          <Navbar.Brand href="" onClick={handleRootNavigation}>
+            <Image
               alt="Steam"
-              src="/images/logo_steam.svg"
+              src={steamLogo}
               width="180"
               height="80"
               className="d-inline-block align-top"
@@ -104,7 +113,7 @@ const DefaultDesktopComponent: FC = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </div>
+    </>
   );
 };
 

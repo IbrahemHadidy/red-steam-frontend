@@ -1,327 +1,169 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import Api from 'services/api';
 
-const env = import.meta.env;
-
-axios.interceptors.response.use(
-  response => {
-    return response;
-  },
-  error => {
-    if (error.response) {
-      console.error('Response error:', error.response);
-    } else {
-      console.error('Network error:', error.message);
-    }
-    return Promise.reject(error);
-  },
-);
-
-class Auth {
-  async loginUser(identifier: string, password: string, rememberMe: boolean) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/login`,
-        {
-          identifier,
-          password,
-          rememberMe,
-        },
-      );
-      sessionStorage.setItem('accessToken', response.data.accessToken);
-      if (rememberMe) {
-        localStorage.setItem('refreshToken', response.data.refreshToken);
-      } else {
-        sessionStorage.setItem('refreshToken', response.data.refreshToken);
-      }
-      return response;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error logging in:', error);
-      throw error;
-    }
+class Auth extends Api {
+  constructor() {
+    super('user/auth');
   }
 
-  async autoLogin() {
-    const refreshToken = localStorage.getItem('refreshToken');
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/auto-login`,
-        {
-          refreshToken,
-        },
-      );
-      sessionStorage.setItem('accessToken', response.data.accessToken);
-      return response.data.userData;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error logging in:', error);
-      throw error;
-    }
-  }
-
-  async logoutUser() {
-    try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/logout`,
-        null,
-        {
-          headers: { Authorization: `Bearer ${refreshToken}` },
-        },
-      );
-      sessionStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error logging out:', error);
-      throw error;
-    }
-  }
-
-  async registerUser(
+  public signup = async (
     username: string,
     email: string,
     password: string,
     country: string,
-  ) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/register`,
-        {
-          username,
-          email,
-          password,
-          country,
-        },
-      );
-      return response;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error registering:', error);
-      throw error;
-    }
-  }
+  ) => {
+    const endpoint = `signup`;
+    const data = { username, email, password, country };
 
-  async waitingTimeResponse() {
-    try {
-      const response = await axios.get(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/waiting-time`,
-      );
-      return response.data.waitingTime;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error fetching waiting time:', error);
-      throw error;
-    }
-  }
+    const response = await this.post(endpoint, data);
 
-  async verificationStatus(identifier: string) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/verify-status`,
-        { identifier },
-      );
-      return response.data.verified;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error verifying:', error);
-      throw error;
-    }
-  }
+    return response;
+  };
 
-  async resendRegisterToken(email: string) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/resend-register-token`,
-        { email },
-      );
-      return response.data.message;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error resending register token:', error);
-      throw error;
-    }
-  }
-
-  async refreshToken() {
-    try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/refresh-token`,
-        { refreshToken },
-      );
-      sessionStorage.setItem('accessToken', response.data.accessToken);
-      return response.data.userData;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error refreshing token:', error);
-      throw error;
-    }
-  }
-
-  async checkEmailExists(email: string) {
-    try {
-      const response = await axios.get(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/check-email/${email}`,
-      );
-      return response.data.exists;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error checking email exists:', error);
-    }
-  }
-
-  async checkUsernameExists(username: string) {
-    try {
-      const response = await axios.get(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/check-username/${username}`,
-      );
-      return response.data.exists;
-    } catch (error) {
-      console.error('Error checking username exists:', error);
-      throw error;
-    }
-  }
-
-  async changeUserName(newUsername: string, userId: string, password: string) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/change-username`,
-        { newUsername, userId, password },
-      );
-
-      if (response.data.success) {
-        toast.success(response.data.message);
-      }
-      return response.data;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error changing user name:', error);
-      throw error;
-    }
-  }
-
-  async changeEmail(
-    userId: string,
-    currentEmail: string,
+  public login = async (
+    identifier: string,
     password: string,
-    newEmail: string,
-    onClose: () => void,
-    setErrorMessage: (message: string) => void,
-  ) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/change-email`,
-        { userId, currentEmail, password, newEmail },
-      );
+    rememberMe: boolean,
+  ) => {
+    const endpoint = `login`;
+    const data = { identifier, password, rememberMe };
 
-      if (response.data.success) {
-        toast.success(response.data.message);
-        onClose();
-      }
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      // @ts-expect-error eslint-disable-next-line
-      setErrorMessage(response.data.message);
-      onClose();
-      console.error('Error changing email:', error);
-    }
-  }
+    const response = await this.post(endpoint, data);
 
-  async changeCountry(userId: string, newCountry: string) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/change-country`,
-        { userId, newCountry },
-      );
-      if (response.data.success) {
-        toast.success(response.data.message);
-      }
-      return response.data;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      console.error('Error changing country:', error);
-      throw error;
-    }
-  }
+    this.setAccessToken(response.headers['authorization']);
+    this.setRefreshToken(response.headers['x-refresh-token']);
 
-  async deleteAccount(
-    userId: string,
-    password: string,
-    setErrorMessage: (message: string) => void,
-  ) {
-    try {
-      const response = await axios.post(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/delete-account`,
-        { userId, password },
-      );
+    return response;
+  };
 
-      if (response.data.success) {
-        toast.success(response.data.message);
-        sessionStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-      }
+  public autoLogin = async () => {
+    const refreshToken = this.getRefreshToken();
 
-      return response;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      toast.error(error.data.message || 'Internal Server Error');
-      // @ts-expect-error eslint-disable-next-line
-      setErrorMessage(response.data.message);
-      console.error('Error deleting account:', error);
-    }
-  }
+    const endpoint = `auto-login`;
+    const config = {
+      headers: { 'x-refresh-token': `Bearer ${refreshToken}` },
+    };
 
-  async getUserData() {
-    try {
-      const accessToken = sessionStorage.getItem('accessToken');
-      const response = await axios.get(
-        `${env.VITE_BACKEND_API_URL}/api/user/auth/user-data`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error) {
-      // @ts-expect-error eslint-disable-next-line
-      if (error.response.message !== 'jwt expired') {
-        // @ts-expect-error eslint-disable-next-line
-        toast.error(error.data.message || 'Internal Server Error');
-      }
-      console.error('Error getting user data:', error);
-    }
-  }
+    const response = await this.post(endpoint, null, config);
+
+    this.setAccessToken(response.headers['authorization']);
+
+    return response.data.userData;
+  };
+
+  public logout = async () => {
+    const refreshToken = this.getRefreshToken();
+    const accessToken = this.getAccessToken();
+
+    const endpoint = `logout`;
+    const config = {
+      headers: {
+        'x-refresh-token': `Bearer ${refreshToken}`,
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    await this.post(endpoint, null, config);
+    this.removeAccessToken();
+    this.removeRefreshToken();
+  };
+
+  public refreshToken = async () => {
+    const refreshToken = this.getRefreshToken();
+
+    const endpoint = `refresh-token`;
+    const config = { headers: { 'x-refresh-token': `Bearer ${refreshToken}` } };
+
+    const response = await this.post(endpoint, null, config);
+
+    this.setAccessToken(response.headers['authorization']);
+
+    return response.data.userData;
+  };
+
+  public getUserData = async () => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint = `user-data`;
+    const data = {
+      headers: { authorization: `Bearer ${accessToken}` },
+    };
+
+    const response = await this.get(endpoint, data);
+
+    return response.data.userData;
+  };
+
+  public resendVerificationToken = async () => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint = `resend-verification-token`;
+    const config = { headers: { authorization: `Bearer ${accessToken}` } };
+
+    const response = await this.post(endpoint, null, config);
+
+    return response.data.message;
+  };
+
+  public verificationStatus = async () => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint = `verification-status`;
+    const config = { headers: { authorization: `Bearer ${accessToken}` } };
+
+    const response = await this.get(endpoint, config);
+
+    return response.data.verified;
+  };
+
+  public verifyEmail = async (token: string, username: string) => {
+    const endpoint = `verify-email`;
+    const data = { token, username };
+
+    const response = await this.post(endpoint, data);
+
+    return response.data;
+  };
+
+  public updateTokens = async (userId: string) => {
+    const refreshToken = this.getRefreshToken();
+    const accessToken = this.getAccessToken();
+
+    const endpoint = `update-tokens`;
+    const data = { userId };
+    const config = {
+      headers: {
+        'x-refresh-token': `Bearer ${refreshToken}`,
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response = await this.post(endpoint, data, config);
+
+    this.setAccessToken(response.headers['authorization']);
+    this.setRefreshToken(response.headers['x-refresh-token']);
+
+    return response.data.userData;
+  };
+
+  public getWaitingTime = async () => {
+    const endpoint = `waiting-time`;
+
+    const response = await this.get(endpoint);
+
+    return response.data.waitingTime;
+  };
 }
 
 export const {
-  loginUser,
+  signup,
+  login,
   autoLogin,
-  logoutUser,
-  checkEmailExists,
-  registerUser,
-  waitingTimeResponse,
-  verificationStatus,
-  resendRegisterToken,
+  logout,
   refreshToken,
-  checkUsernameExists,
-  changeUserName,
-  changeEmail,
-  changeCountry,
-  deleteAccount,
   getUserData,
+  resendVerificationToken,
+  verificationStatus,
+  verifyEmail,
+  updateTokens,
+  getWaitingTime,
 } = new Auth();
