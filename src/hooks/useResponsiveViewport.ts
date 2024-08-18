@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-function useResponsiveViewport(width: number) {
+const useResponsiveViewport = (width: number): boolean => {
   const [isViewport, setIsViewport] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = (): void => {
       setIsViewport(window.innerWidth <= width);
     };
 
@@ -18,6 +18,6 @@ function useResponsiveViewport(width: number) {
   }, [width]);
 
   return isViewport;
-}
+};
 
 export default useResponsiveViewport;

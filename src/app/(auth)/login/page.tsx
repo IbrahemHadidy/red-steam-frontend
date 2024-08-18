@@ -1,12 +1,21 @@
 'use client';
-import { AuthContext } from 'contexts/AuthContext';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+
+// React
 import { useContext, useEffect } from 'react';
 
-const SignIn = dynamic(() => import('pages/Auth/SignInAndRecovery'), { ssr: false });
+// NextJS
+import { useRouter } from 'next/navigation';
 
-const SignInPage = () => {
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Components
+import SignIn from '../_SignInAndRecovery/SignInAndRecovery';
+
+// Types
+import type { FC, JSX } from 'react';
+
+const SignInPage: FC = (): JSX.Element => {
   const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter();
 
@@ -16,7 +25,7 @@ const SignInPage = () => {
     }
   }, [isLoggedIn, router]);
 
-  return !isLoggedIn ? <SignIn /> : null;
+  return <SignIn />;
 };
 
 export default SignInPage;

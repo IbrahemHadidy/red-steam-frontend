@@ -3,8 +3,9 @@
 // React
 import { useContext, useEffect, useState } from 'react';
 
-// Next.js
+// NextJS
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Contexts
 import { AuthContext } from 'contexts/AuthContext';
@@ -19,10 +20,13 @@ import { menuData, navigationItems } from 'services/menus/menuData-mobile';
 import defaultPFP from 'images/default-pfp.png';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 import type { GroupedMenuItem, MenuItem, menuTitle } from '../SecondNavbar.types';
 
-const MobileSecondNav: FC = () => {
+const MobileSecondNav: FC = (): JSX.Element => {
+  // Initializattions
+  const path = usePathname();
+
   // Contexts
   const { isLoggedIn, userPFP } = useContext(AuthContext);
 
@@ -31,15 +35,14 @@ const MobileSecondNav: FC = () => {
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 
   useEffect(() => {
-    const path = window.location.pathname;
     if (path.includes('/search')) {
       setIsSearchPage(true);
     } else {
       setIsSearchPage(false);
     }
-  }, []);
+  }, [path]);
 
-  const handleMenuClick = (menuTitle: menuTitle) => {
+  const handleMenuClick = (menuTitle: menuTitle): void => {
     if (openMenu === menuTitle) {
       setOpenMenu(null); // Close the menu if it's already open
     } else {
@@ -48,7 +51,7 @@ const MobileSecondNav: FC = () => {
   };
 
   const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(([menuTitle, menu]) => {
-    const items = menu.items;
+    const items: MenuItem[] = menu.items;
     const categoryGroups: Record<string, MenuItem[]> = {};
 
     items.forEach((item: MenuItem) => {
@@ -76,8 +79,8 @@ const MobileSecondNav: FC = () => {
                 alt="Avatar"
               />
             )}
-            {groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
-              <li key={index} className="nav-item nav-item-mobile dropdown">
+            {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
+              <li key={idx} className="nav-item nav-item-mobile dropdown">
                 <a
                   className={`nav-link navBarItem navBarItem-mobile ${
                     menuTitle === 'Your Store' && isLoggedIn ? 'special-class' : ''
@@ -142,8 +145,8 @@ const MobileSecondNav: FC = () => {
           </ul>
         </div>
 
-        {navigationItems.map((item, index) => (
-          <div key={index}>
+        {navigationItems.map((item, idx) => (
+          <div key={idx}>
             <ul className="navbar-nav">
               <li className="nav-item navbar-nav-mobile">
                 <Link className="nav-link navBarItem navBarItem-mobile" href={item.url}>

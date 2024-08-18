@@ -1,6 +1,6 @@
-const getPlatform = () => {
+const getPlatform = (): string => {
   if (typeof navigator !== 'undefined') {
-    const userAgent = navigator.userAgent.toLowerCase();
+    const userAgent: string = navigator.userAgent.toLowerCase();
 
     if (userAgent.includes('mac')) {
       return 'darwin';

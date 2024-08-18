@@ -1,23 +1,29 @@
-import Api from 'services/api';
 import { toast } from 'react-toastify';
+import Api from 'services/api';
+
+// Types
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { Review } from 'types/review.types';
+import type { Tag } from 'types/tag.types';
+import type { LibraryItem, WishlistItem } from 'types/user.types';
 
 class Interaction extends Api {
   constructor() {
     super('user/interaction');
   }
 
-  public changeTags = async (tags: number[]) => {
+  public changeTags = async (tags: number[]): Promise<{ message: string }> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `tags`;
+    const endpoint: string = `/tags`;
     const data = { tags };
-    const config = {
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.put(endpoint, data, config);
+    const response: AxiosResponse = await this.put(endpoint, data, config);
     if (response.status === 200) {
       toast.success(response.data.message);
     } else {
@@ -26,235 +32,247 @@ class Interaction extends Api {
     return response.data;
   };
 
-  public getTags = async () => {
-    const endpoint = `tags`;
+  public getTags = async (): Promise<{ tags: Tag[] }> => {
+    const endpoint: string = `/tags`;
 
-    const response = await this.get(endpoint);
-
-    return response.data;
-  };
-
-  public addToLibrary = async (itemsIds: number[]) => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `library`;
-    const data = { itemsIds };
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.post(endpoint, data, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public removeFromLibrary = async (itemsIds: number[]) => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `library`;
-    const config = {
-      data: { itemsIds },
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.delete(endpoint, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public clearLibrary = async () => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `library`;
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.delete(endpoint, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public addToWishlist = async (itemsIds: number[]) => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `wishlist`;
-    const data = { itemsIds };
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.post(endpoint, data, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public removeFromWishlist = async (itemsIds: number[]) => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `wishlist`;
-    const config = {
-      data: { itemsIds },
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.delete(endpoint, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public clearWishlist = async () => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `wishlist`;
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.delete(endpoint, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public addToCart = async (itemsIds: number[]) => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `cart`;
-    const data = { itemsIds };
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.post(endpoint, data, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public removeFromCart = async (itemsIds: number[]) => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `cart`;
-    const config = {
-      data: { itemsIds },
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.delete(endpoint, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public clearCart = async () => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `cart`;
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.delete(endpoint, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else if (response.status === 400) {
-      toast.warn(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
-    return response;
-  };
-
-  public getLibrary = async () => {
-    const accessToken = this.getAccessToken();
-
-    const endpoint = `library`;
-    const config = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
-
-    const response = await this.get(endpoint, config);
+    const response: AxiosResponse = await this.get(endpoint);
 
     return response.data;
   };
 
-  public getWishlist = async () => {
+  public addToLibrary = async (
+    itemsIds: number[]
+  ): Promise<{ data: { message: string }; status: number }> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `wishlist`;
-    const config = {
+    const endpoint: string = `/library`;
+    const data = { itemsIds };
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.get(endpoint, config);
+    const response: AxiosResponse = await this.post(endpoint, data, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public removeFromLibrary = async (
+    itemsIds: number[]
+  ): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/library`;
+    const config: AxiosRequestConfig = {
+      data: { itemsIds },
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.delete(endpoint, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public clearLibrary = async (): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/library`;
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.delete(endpoint, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public addToWishlist = async (
+    itemsIds: number[]
+  ): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/wishlist`;
+    const data = { itemsIds };
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.post(endpoint, data, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public removeFromWishlist = async (
+    itemsIds: number[]
+  ): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/wishlist`;
+    const config: AxiosRequestConfig = {
+      data: { itemsIds },
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.delete(endpoint, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public clearWishlist = async (): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/wishlist`;
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.delete(endpoint, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public addToCart = async (
+    itemsIds: number[]
+  ): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/cart`;
+    const data = { itemsIds };
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.post(endpoint, data, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public removeFromCart = async (
+    itemsIds: number[]
+  ): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/cart`;
+    const config: AxiosRequestConfig = {
+      data: { itemsIds },
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.delete(endpoint, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public clearCart = async (): Promise<{ data: { message: string }; status: number }> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/cart`;
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.delete(endpoint, config);
+    if (response.status === 200) {
+      toast.success(response.data.message);
+    } else if (response.status === 400) {
+      toast.warn(response.data.message);
+    } else {
+      toast.error('An error occurred. Please try again later.');
+    }
+    return response;
+  };
+
+  public getLibrary = async (): Promise<LibraryItem[]> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/library`;
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.get(endpoint, config);
+
+    return response.data;
+  };
+
+  public getWishlist = async (): Promise<WishlistItem[]> => {
+    const accessToken = this.getAccessToken();
+
+    const endpoint: string = `/wishlist`;
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const response: AxiosResponse = await this.get(endpoint, config);
 
     return response.data;
   };
@@ -262,14 +280,14 @@ class Interaction extends Api {
   public getCart = async () => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `cart`;
-    const config = {
+    const endpoint: string = `/cart`;
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.get(endpoint, config);
+    const response: AxiosResponse = await this.get(endpoint, config);
 
     return response.data;
   };
@@ -277,19 +295,19 @@ class Interaction extends Api {
   public reviewGame = async (
     gameId: number,
     positive: boolean,
-    content: string,
-  ) => {
+    content: string
+  ): Promise<{ message: string }> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `review`;
+    const endpoint: string = `/review`;
     const data = { gameId, positive, content };
-    const config = {
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.post(endpoint, data, config);
+    const response: AxiosResponse = await this.post(endpoint, data, config);
 
     if (response.status === 201) {
       toast.success(response.data.message);
@@ -298,17 +316,17 @@ class Interaction extends Api {
     return response.data;
   };
 
-  public getReviews = async () => {
+  public getReviews = async (): Promise<Review[]> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `reviews`;
-    const config = {
+    const endpoint: string = `/reviews`;
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.get(endpoint, config);
+    const response: AxiosResponse = await this.get(endpoint, config);
 
     return response.data;
   };

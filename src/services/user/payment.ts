@@ -1,38 +1,47 @@
 import Api from 'services/api';
 
+// Types
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+
 class Payment extends Api {
   constructor() {
     super('payment/order');
   }
 
-  public createOrder = async (totalPrice: string, cartItems: number[]) => {
-    const accessToken = this.getAccessToken();
+  public createOrder = async (
+    totalPrice: string,
+    cartItems: number[]
+  ): Promise<{ orderId: string }> => {
+    const accessToken: string | null = this.getAccessToken();
 
-    const endpoint = `create`;
+    const endpoint: string = `/create`;
     const data = { totalPrice, cartItems };
-    const config = {
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.post(endpoint, data, config);
+    const response: AxiosResponse = await this.post(endpoint, data, config);
 
     return response.data;
   };
 
-  public captureOrder = async (orderId: string, cartItems: number[]) => {
-    const accessToken = this.getAccessToken();
+  public captureOrder = async (
+    orderId: string,
+    cartItems: number[]
+  ): Promise<{ data: { orderId: string }; status: number }> => {
+    const accessToken: string | null = this.getAccessToken();
 
-    const endpoint = `capture`;
+    const endpoint: string = `/capture`;
     const data = { orderId, cartItems };
-    const config = {
+    const config: AxiosRequestConfig = {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.post(endpoint, data, config);
+    const response: AxiosResponse = await this.post(endpoint, data, config);
 
     return response.data;
   };

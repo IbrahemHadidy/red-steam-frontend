@@ -1,22 +1,19 @@
 'use client';
-import { AuthContext } from 'contexts/AuthContext';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
 
-const ForgotPassword = dynamic(() => import('pages/Auth/SignInAndRecovery'), { ssr: false });
+// Components
+import RedirectIfLoggedIn from 'components/RedirectIfLoggedIn';
+import ForgotPassword from '../_SignInAndRecovery/SignInAndRecovery';
 
-const ForgotPasswordPage = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  const router = useRouter();
+// Types
+import type { FC, JSX } from 'react';
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      router.push('/');
-    }
-  }, [isLoggedIn, router]);
-
-  return !isLoggedIn ? <ForgotPassword /> : null;
+const ForgotPasswordPage: FC = (): JSX.Element => {
+  return (
+    <>
+      <RedirectIfLoggedIn />
+      <ForgotPassword />
+    </>
+  );
 };
 
 export default ForgotPasswordPage;

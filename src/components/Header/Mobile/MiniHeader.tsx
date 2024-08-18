@@ -1,6 +1,6 @@
 'use client';
 
-// Next.js
+// NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,12 +9,12 @@ import headerLogo from 'images/header_logo.png';
 import headerHumburger from 'images/header_menu_hamburger.png';
 
 // Types
-import type { FC, MouseEvent as ReactMouseEvent } from 'react';
-interface MiniHeaderProps {
-  onMenuClick: (event: ReactMouseEvent<HTMLDivElement>) => void;
+import type { FC, MouseEvent } from 'react';
+interface Props {
+  onMenuClick: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-const MiniHeader: FC<MiniHeaderProps> = ({ onMenuClick }) => {
+const MiniHeader: FC<Props> = ({ onMenuClick }): JSX.Element => {
   return (
     <div className="header-mobile">
       <div>

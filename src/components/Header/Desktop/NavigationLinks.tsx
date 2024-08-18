@@ -1,9 +1,9 @@
 'use client';
 
 // React
-import { FC, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-// Next.js
+// NextJS
 import { usePathname, useRouter } from 'next/navigation';
 
 // Contexts
@@ -15,8 +15,11 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 // Links data
 import sharedData from '../sharedData';
 
-const NavigationLinks: FC = () => {
-  // Initializations
+// Types
+import type { FC, JSX, MouseEvent } from 'react';
+
+const NavigationLinks: FC = (): JSX.Element => {
+  // Init
   const router = useRouter();
   const pathname = usePathname();
 
@@ -26,11 +29,13 @@ const NavigationLinks: FC = () => {
   // States
   const [isOpen, setIsOpen] = useState<string | null>(null);
 
-  const handleDropdownToggle = (eventKey: string) => {
+  const handleDropdownToggle = (e: MouseEvent, eventKey: string): void => {
+    e.preventDefault();
     setIsOpen(eventKey === isOpen ? null : eventKey);
   };
 
-  const handleDropdownClick = (link: string) => {
+  const handleDropdownClick = (e: MouseEvent, link: string): void => {
+    e.preventDefault();
     setIsOpen(null);
     router.push(link);
   };
@@ -40,23 +45,25 @@ const NavigationLinks: FC = () => {
     renderKey: string,
     mainLink: string,
     items: { link: string; text: string }[]
-  ) => {
-    const isStoreActive =
-      pathname?.startsWith(mainLink) &&
-      !pathname?.startsWith('/user') &&
-      !pathname?.startsWith('/notfound') &&
-      !pathname?.startsWith('/library') &&
-      !pathname?.startsWith('/admin');
-    const dropdownStoreClassName = isStoreActive ? 'active-title' : '';
+  ): JSX.Element => {
+    const isStoreActive: boolean =
+      !pathname?.includes('/notfound') &&
+      !pathname?.includes('/library') &&
+      !pathname?.includes('/admin') &&
+      !pathname?.includes('/user');
 
-    const isUserActive = pathname?.startsWith('/user');
-    const dropdownUserClassName = isUserActive ? 'active-title' : '';
+    const dropdownStoreClassName: string = isStoreActive ? 'active-title' : '';
+
+    const isUserActive: boolean = pathname?.includes('/user');
+    const dropdownUserClassName: string = isUserActive ? 'active-title' : '';
+    const isAdminActive: boolean = pathname?.startsWith('/admin');
+    const dropdownAdminClassName: string = isAdminActive ? 'active-title' : '';
 
     return (
       <NavDropdown
         title={
           <span
-            className={`main-dropdowns ${title === 'STORE' ? dropdownStoreClassName : dropdownUserClassName}`}
+            className={`main-dropdowns ${title === 'STORE' ? dropdownStoreClassName : ''} ${title.includes('Profile') || title.includes(userData?.username as string) ? dropdownUserClassName : ''} ${title.includes('Admin') ? dropdownAdminClassName : ''}`}
           >
             {title}
           </span>
@@ -64,14 +71,14 @@ const NavigationLinks: FC = () => {
         id={renderKey}
         className="main-dropdowns"
         renderMenuOnMount
-        onMouseEnter={() => handleDropdownToggle(renderKey)}
-        onMouseLeave={() => handleDropdownToggle(renderKey)}
+        onMouseEnter={(e) => handleDropdownToggle(e, renderKey)}
+        onMouseLeave={(e) => handleDropdownToggle(e, renderKey)}
         show={isOpen === renderKey}
         key={renderKey}
-        onClick={() => handleDropdownClick(mainLink)}
+        onClick={(e) => handleDropdownClick(e, mainLink)}
       >
-        {items.map((item, index) => (
-          <NavDropdown.Item key={index} href={item.link}>
+        {items.map((item, idx) => (
+          <NavDropdown.Item key={idx} href={item.link}>
             {item.text}
           </NavDropdown.Item>
         ))}
@@ -79,20 +86,15 @@ const NavigationLinks: FC = () => {
     );
   };
 
-  const isAdminActive = pathname?.startsWith('/admin');
-  const dropdownAdminClassName = isAdminActive ? 'active-title' : '';
-  const isLibraryActive = pathname?.startsWith('/library');
-  const dropdownLibraryClassName = isLibraryActive ? 'active-title' : '';
+  const isLibraryActive: boolean = pathname?.startsWith('/library');
+  const dropdownLibraryClassName: string = isLibraryActive ? 'active-title' : '';
 
   useEffect(() => {
     setIsOpen(null);
   }, [router]);
 
-  const handleAdminNavigation = () => {
-    router.push('/admin');
-  };
-
-  const handleLibraryNavigation = () => {
+  const handleLibraryNavigation = (e: MouseEvent): void => {
+    e.preventDefault();
     router.push('/library');
   };
 
@@ -100,17 +102,17 @@ const NavigationLinks: FC = () => {
     <Nav>
       {renderNavDropdownWithHover('STORE', '1', '/', sharedData.subMenus[0].items)}
       {isLoggedIn && userData?.isAdmin && (
-        <Nav.Link
-          href="/admin"
-          onClick={handleAdminNavigation}
-          className={`main-dropdowns  ${dropdownAdminClassName}`}
-        >
-          Admin
-        </Nav.Link>
+        <>
+          {renderNavDropdownWithHover(
+            'Admin',
+            '2',
+            '/admin/create-game',
+            sharedData.subMenus[2].items
+          )}
+        </>
       )}
       {isLoggedIn && (
         <Nav.Link
-          href="/library"
           onClick={handleLibraryNavigation}
           className={`main-dropdowns  ${dropdownLibraryClassName}`}
         >

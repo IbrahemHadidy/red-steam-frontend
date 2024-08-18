@@ -1,6 +1,6 @@
-const getHoverInfo = (positiveReviews: number, negativeReviews: number) => {
-  const totalReviews = positiveReviews + negativeReviews;
-  const positivePercentage = (positiveReviews / totalReviews) * 100;
+const getHoverInfo = (positiveReviews: number, negativeReviews: number): string => {
+  const totalReviews: number = positiveReviews + negativeReviews;
+  const positivePercentage: number = (positiveReviews / totalReviews) * 100;
 
   return totalReviews === 0
     ? 'No reviews yet.'

@@ -1,43 +1,49 @@
-import gameData from "./gameData";
+import gameData from './gameData';
+
+// Types
+import { Game } from 'types/game.types';
 
 // Sort by positive reviews first
 const sortedByReviews = gameData.sort((a, b) => {
-    const positiveReviewsA = a.reviews.filter((review) => review.type === "positive").length;
-    const positiveReviewsB = b.reviews.filter((review) => review.type === "positive").length;
-    return positiveReviewsB - positiveReviewsA; // Sort in descending order of positive reviews
+  const positiveReviewsA: number = a.reviews.filter((review) => review.positive).length;
+  const positiveReviewsB: number = b.reviews.filter((review) => review.positive).length;
+  return positiveReviewsB - positiveReviewsA;
 });
 
 // Sort by release date
 const sortedByDate = gameData.sort((a, b) => {
-    const dateA = Date.parse(a.releaseDate);
-    const dateB = Date.parse(b.releaseDate);
-    return dateB - dateA; // Sort in descending order
+  const dateA: number = Date.parse(a.releaseDate.toISOString());
+  const dateB: number = Date.parse(b.releaseDate.toISOString());
+  return dateB - dateA;
 });
 
 const uniqueGames = [];
-const seenIds = new Set();
+const seenIds: Set<number> = new Set();
 
-let indexByReviews = 0, indexByDate = 0;
+let indexByReviews: number = 0,
+  indexByDate: number = 0;
 while (uniqueGames.length < 12) {
-    const gameByReviews = sortedByReviews[indexByReviews];
-    const gameByDate = sortedByDate[indexByDate];
+  const gameByReviews: Game = sortedByReviews[indexByReviews];
+  const gameByDate: Game = sortedByDate[indexByDate];
 
-    // Choose the game which has more positive reviews
-    if (gameByReviews.reviews.filter((review) => review.type === "positive").length >= gameByDate.reviews.filter((review) => review.type === "positive").length) {
-        if (!seenIds.has(gameByReviews.id)) {
-            uniqueGames.push(gameByReviews);
-            seenIds.add(gameByReviews.id);
-        }
-        indexByReviews++;
-    } else {
-        if (!seenIds.has(gameByDate.id)) {
-            uniqueGames.push(gameByDate);
-            seenIds.add(gameByDate.id);
-        }
-        indexByDate++;
+  if (
+    gameByReviews.reviews.filter((review) => review.positive).length >=
+    gameByDate.reviews.filter((review) => review.positive).length
+  ) {
+    if (!seenIds.has(gameByReviews.id)) {
+      uniqueGames.push(gameByReviews);
+      seenIds.add(gameByReviews.id);
     }
+    indexByReviews++;
+  } else {
+    if (!seenIds.has(gameByDate.id)) {
+      uniqueGames.push(gameByDate);
+      seenIds.add(gameByDate.id);
+    }
+    indexByDate++;
+  }
 }
 
-const featuredGames = uniqueGames;
+const featuredGames: Game[] = uniqueGames;
 
 export default featuredGames;

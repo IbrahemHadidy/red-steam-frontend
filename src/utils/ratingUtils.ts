@@ -1,4 +1,4 @@
-export const getRatingClass = (positivePercentage: number) => {
+export const getRatingClass = (positivePercentage: number): string => {
   if (positivePercentage < 75 && positivePercentage > 40) {
     return 'mixed';
   } else if (positivePercentage >= 75) {
@@ -10,8 +10,8 @@ export const getRatingClass = (positivePercentage: number) => {
   }
 };
 
-export const getRatingText = (positivePercentage: number) => {
-  let ratingText = '';
+export const getRatingText = (positivePercentage: number): string => {
+  let ratingText: string = '';
 
   if (positivePercentage >= 90) {
     ratingText = 'Overwhelmingly Positive';
@@ -34,8 +34,8 @@ export const getRatingText = (positivePercentage: number) => {
   return ratingText;
 };
 
-export const getHoverInfo = (positiveReviews: number, totalReviews: number) => {
-  const positivePercentage = (positiveReviews / totalReviews) * 100;
+export const getHoverInfo = (positiveReviews: number, totalReviews: number): string => {
+  const positivePercentage: number = (positiveReviews / totalReviews) * 100;
 
   return totalReviews === 0
     ? 'No reviews yet.'

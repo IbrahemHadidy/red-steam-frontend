@@ -3,7 +3,7 @@
 // React
 import { useState } from 'react';
 
-// Next.js
+// NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -16,7 +16,7 @@ import blank from 'images/blank.gif';
 // Types
 import type { ChangeEvent, FC } from 'react';
 
-const NavSearch: FC = () => {
+const NavSearch: FC = (): JSX.Element => {
   // States
   const [searchInput, setSearchInput] = useState<string>('');
 
@@ -53,11 +53,16 @@ const NavSearch: FC = () => {
             <Link key={game.id} className="search-match" href={`/game/${game.id}`}>
               <div className="match-name">{game.name}</div>
               <div className="match-img">
-                <Image width={120} height={45} src={game.searchImage} alt={game.name} />
+                <Image
+                  width={120}
+                  height={45}
+                  src={game.thumbnailEntries.searchImage}
+                  alt={game.name}
+                />
               </div>
               <div className="match-price">
-                {!game.free && '$'}
-                {game.discountPrice ? game.discountPrice : game.price}
+                {!game.pricing.free && '$'}
+                {game.pricing.discountPrice ? game.pricing.discountPrice : game.pricing.basePrice}
               </div>
             </Link>
           ))}

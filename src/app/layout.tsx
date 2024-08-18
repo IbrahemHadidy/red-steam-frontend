@@ -1,35 +1,60 @@
-import Toaster from 'components/Toaster/Toaster';
+// React
 import { AuthProvider } from 'contexts/AuthContext';
 
-// Import styles
+// Toast notifications
+import Toaster from 'components/Toaster/Toaster';
+
+// Images
+import favIcon from 'images/favicon.ico';
+
+// Styles
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
-import './globals.scss';
+import 'styles/globals.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import type { FC, JSX, ReactNode } from 'react';
+interface Props {
+  children: ReactNode;
+}
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_PATH || ''),
   icons: {
-    icon: 'images/favicon.ico',
+    icon: favIcon.src,
   },
   title: 'Welcome to Red Steam',
   description: 'Red Steam - Clone of Steam',
+  appleWebApp: {
+    title: 'Red Steam',
+    capable: true,
+  },
+  openGraph: {
+    title: 'Red Steam',
+    description: 'Red Steam - Clone of Steam',
+    url: '',
+    siteName: 'Red Steam',
+    images: 'images/pwa-icon.png',
+  },
+  twitter: {
+    site: 'Red Steam',
+    card: 'summary_large_image',
+  },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body style={{ backgroundColor: '#0b141b' }}>
-          <div id="root">
+    <html lang="en">
+      <body style={{ backgroundColor: '#0b141b' }}>
+        <div id="root">
+          <AuthProvider>
             <Toaster />
             {children}
-          </div>
-        </body>
-      </html>
-    </AuthProvider>
+          </AuthProvider>
+        </div>
+      </body>
+    </html>
   );
-}
+};
+
+export default RootLayout;

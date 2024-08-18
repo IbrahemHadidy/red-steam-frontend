@@ -1,6 +1,6 @@
 'use client';
 
-// Next.js
+// NextJS
 import Image from 'next/image';
 
 // React Spring
@@ -10,10 +10,10 @@ import { animated, useSpring } from 'react-spring';
 import { getRatingClass, getRatingText } from 'utils/ratingUtils';
 
 // Styles
-import './HoverSummary.scss';
+import 'styles/components/HoverSummary.scss';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 import type { HoverSummary } from './HoverSummary.types';
 
 const HoverSummary: FC<HoverSummary> = ({
@@ -26,14 +26,14 @@ const HoverSummary: FC<HoverSummary> = ({
   tags,
   leftArrow,
   rightArrow,
-}) => {
+}): JSX.Element => {
   const fadeEffect = useSpring({
     from: { opacity: 0 },
     to: { opacity: 1 },
     config: { duration: 280 },
   });
 
-  const ratingClass = getRatingClass(positivePercentage);
+  const ratingClass: string = getRatingClass(positivePercentage);
 
   return (
     <animated.div className="game-hover" style={fadeEffect}>
@@ -43,14 +43,14 @@ const HoverSummary: FC<HoverSummary> = ({
           <span className="hover-release">{date}</span>
           {screenshots ? (
             <div className="hover-screenshots">
-              {screenshots.map((screenshot, index) => (
+              {screenshots.map((screenshot, idx) => (
                 <Image
                   className="hover-screenshot"
                   src={screenshot}
                   width={274}
                   height={153}
-                  key={index}
-                  alt={`Screenshot ${index + 1}`}
+                  key={idx}
+                  alt={`Screenshot ${idx + 1}`}
                 />
               ))}
             </div>
@@ -68,8 +68,8 @@ const HoverSummary: FC<HoverSummary> = ({
           <div className="hover-tag-body">
             User tags: <br />
             <div className="hover-tag-row">
-              {tags.slice(0, 7).map((tag, index) => (
-                <div className="game-tag" key={index}>
+              {tags.slice(0, 7).map((tag, idx) => (
+                <div className="game-tag" key={idx}>
                   {tag}
                 </div>
               ))}

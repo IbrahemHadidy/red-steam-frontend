@@ -1,5 +1,8 @@
 import Api from 'services/api';
 
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { User } from 'types/user.types';
+
 class Auth extends Api {
   constructor() {
     super('user/auth');
@@ -9,12 +12,12 @@ class Auth extends Api {
     username: string,
     email: string,
     password: string,
-    country: string,
-  ) => {
-    const endpoint = `signup`;
+    country: string
+  ): Promise<{ data: { message: string }; status: number }> => {
+    const endpoint: string = `/signup`;
     const data = { username, email, password, country };
 
-    const response = await this.post(endpoint, data);
+    const response: AxiosResponse = await this.post(endpoint, data);
 
     return response;
   };
@@ -22,12 +25,15 @@ class Auth extends Api {
   public login = async (
     identifier: string,
     password: string,
-    rememberMe: boolean,
-  ) => {
-    const endpoint = `login`;
+    rememberMe: boolean
+  ): Promise<{
+    data: { userData: User; message: string };
+    status: number;
+  }> => {
+    const endpoint: string = `/login`;
     const data = { identifier, password, rememberMe };
 
-    const response = await this.post(endpoint, data);
+    const response: AxiosResponse = await this.post(endpoint, data);
 
     this.setAccessToken(response.headers['authorization']);
     this.setRefreshToken(response.headers['x-refresh-token']);
@@ -35,27 +41,27 @@ class Auth extends Api {
     return response;
   };
 
-  public autoLogin = async () => {
+  public autoLogin = async (): Promise<User> => {
     const refreshToken = this.getRefreshToken();
 
-    const endpoint = `auto-login`;
-    const config = {
+    const endpoint: string = `/auto-login`;
+    const config: AxiosRequestConfig = {
       headers: { 'x-refresh-token': `Bearer ${refreshToken}` },
     };
 
-    const response = await this.post(endpoint, null, config);
+    const response: AxiosResponse = await this.post(endpoint, null, config);
 
     this.setAccessToken(response.headers['authorization']);
 
     return response.data.userData;
   };
 
-  public logout = async () => {
+  public logout = async (): Promise<void> => {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getAccessToken();
 
-    const endpoint = `logout`;
-    const config = {
+    const endpoint: string = `/logout`;
+    const config: AxiosRequestConfig = {
       headers: {
         'x-refresh-token': `Bearer ${refreshToken}`,
         authorization: `Bearer ${accessToken}`,
@@ -67,77 +73,77 @@ class Auth extends Api {
     this.removeRefreshToken();
   };
 
-  public refreshToken = async () => {
+  public refreshToken = async (): Promise<User> => {
     const refreshToken = this.getRefreshToken();
 
-    const endpoint = `refresh-token`;
-    const config = { headers: { 'x-refresh-token': `Bearer ${refreshToken}` } };
+    const endpoint: string = `/refresh-token`;
+    const config: AxiosRequestConfig = { headers: { 'x-refresh-token': `Bearer ${refreshToken}` } };
 
-    const response = await this.post(endpoint, null, config);
+    const response: AxiosResponse = await this.post(endpoint, null, config);
 
     this.setAccessToken(response.headers['authorization']);
 
     return response.data.userData;
   };
 
-  public getUserData = async () => {
+  public getUserData = async (): Promise<User> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `user-data`;
+    const endpoint: string = `/user-data`;
     const data = {
       headers: { authorization: `Bearer ${accessToken}` },
     };
 
-    const response = await this.get(endpoint, data);
+    const response: AxiosResponse = await this.get(endpoint, data);
 
     return response.data.userData;
   };
 
-  public resendVerificationToken = async () => {
+  public resendVerificationToken = async (): Promise<string> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `resend-verification-token`;
-    const config = { headers: { authorization: `Bearer ${accessToken}` } };
+    const endpoint: string = `/resend-verification-token`;
+    const config: AxiosRequestConfig = { headers: { authorization: `Bearer ${accessToken}` } };
 
-    const response = await this.post(endpoint, null, config);
+    const response: AxiosResponse = await this.post(endpoint, null, config);
 
     return response.data.message;
   };
 
-  public verificationStatus = async () => {
+  public verificationStatus = async (): Promise<boolean> => {
     const accessToken = this.getAccessToken();
 
-    const endpoint = `verification-status`;
-    const config = { headers: { authorization: `Bearer ${accessToken}` } };
+    const endpoint: string = `/verification-status`;
+    const config: AxiosRequestConfig = { headers: { authorization: `Bearer ${accessToken}` } };
 
-    const response = await this.get(endpoint, config);
+    const response: AxiosResponse = await this.get(endpoint, config);
 
     return response.data.verified;
   };
 
-  public verifyEmail = async (token: string, username: string) => {
-    const endpoint = `verify-email`;
+  public verifyEmail = async (token: string, username: string): Promise<{ success: boolean }> => {
+    const endpoint: string = `/verify-email`;
     const data = { token, username };
 
-    const response = await this.post(endpoint, data);
+    const response: AxiosResponse = await this.post(endpoint, data);
 
     return response.data;
   };
 
-  public updateTokens = async (userId: string) => {
+  public updateTokens = async (userId: string): Promise<User> => {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getAccessToken();
 
-    const endpoint = `update-tokens`;
+    const endpoint: string = `/update-tokens`;
     const data = { userId };
-    const config = {
+    const config: AxiosRequestConfig = {
       headers: {
         'x-refresh-token': `Bearer ${refreshToken}`,
         authorization: `Bearer ${accessToken}`,
       },
     };
 
-    const response = await this.post(endpoint, data, config);
+    const response: AxiosResponse = await this.post(endpoint, data, config);
 
     this.setAccessToken(response.headers['authorization']);
     this.setRefreshToken(response.headers['x-refresh-token']);
@@ -145,10 +151,10 @@ class Auth extends Api {
     return response.data.userData;
   };
 
-  public getWaitingTime = async () => {
-    const endpoint = `waiting-time`;
+  public getWaitingTime = async (): Promise<number> => {
+    const endpoint: string = `/waiting-time`;
 
-    const response = await this.get(endpoint);
+    const response: AxiosResponse = await this.get(endpoint);
 
     return response.data.waitingTime;
   };

@@ -3,7 +3,7 @@
 // React
 import { useContext, useState } from 'react';
 
-// Next.js
+// NextJS
 import { useRouter } from 'next/navigation';
 
 // Bootstrap Components
@@ -20,10 +20,10 @@ import defaultPFP from 'images/default-pfp.png';
 import Link from 'next/link';
 
 // Types
-import type { FC, MouseEvent as ReactMouseEvent } from 'react';
+import type { FC, JSX, MouseEvent } from 'react';
 
-const ProfileDropdown: FC = () => {
-  // Initializations
+const ProfileDropdown: FC = (): JSX.Element => {
+  // Init
   const router = useRouter();
 
   // Contexts
@@ -32,12 +32,12 @@ const ProfileDropdown: FC = () => {
   // States
   const [isOpen, setIsOpen] = useState<string | null>(null);
 
-  const handleDropdownToggle = (e: ReactMouseEvent<HTMLElement>, eventKey: string) => {
+  const handleDropdownToggle = (e: MouseEvent<HTMLElement>, eventKey: string): void => {
     e.stopPropagation();
     setIsOpen((prevIsOpen) => (eventKey === prevIsOpen ? null : eventKey));
   };
 
-  const handleDropdownItemClick = (link: string) => {
+  const handleDropdownItemClick = (link: string): void => {
     router.push(link);
   };
 
@@ -46,7 +46,7 @@ const ProfileDropdown: FC = () => {
     renderKey: string,
     links: string[],
     items: string[]
-  ) => {
+  ): JSX.Element => {
     return (
       <NavDropdown
         title={title}
@@ -59,9 +59,9 @@ const ProfileDropdown: FC = () => {
         show={isOpen === renderKey}
         key={renderKey}
       >
-        {links.map((link, index) => (
-          <NavDropdown.Item href="#" key={index} onClick={() => handleDropdownItemClick(link)}>
-            {items[index]}
+        {links.map((link, idx) => (
+          <NavDropdown.Item href="#" key={idx} onClick={() => handleDropdownItemClick(link)}>
+            {items[idx]}
           </NavDropdown.Item>
         ))}
       </NavDropdown>
@@ -76,12 +76,7 @@ const ProfileDropdown: FC = () => {
         sharedData.minorMenuItems.map((item) => item.link),
         sharedData.minorMenuItems.map((item) => item.text)
       )}
-      <Link
-        href="user/settings"
-        target="_blank"
-        rel="noreferrer noopenner"
-        className="compact-profile-link"
-      >
+      <Link href="/user/settings" className="compact-profile-link">
         <img
           src={userPFP || defaultPFP.src}
           alt="Profile"

@@ -2,6 +2,8 @@ const sharedData = {
   menuItems: [
     { id: 'store', text: 'Store', link: '/' },
     { id: 'you-and-friends', text: 'Profile & Settings', link: '/user' },
+    { id: 'create', text: 'Create', link: '/create' },
+    { id: 'admin', text: 'Admin', link: '/admin' },
     { id: 'contact me', text: 'Support', link: '/support' },
   ],
   subMenus: [
@@ -18,6 +20,17 @@ const sharedData = {
         { id: 'you-friends-profile', text: 'Profile', link: '/user/settings' },
         { id: 'you-friends-inventory', text: 'Inventory', link: '/library' },
         { id: 'you-friends-tags', text: 'tags', link: '/user/tags' },
+      ],
+    },
+    {
+      title: 'ADMIN',
+      items: [
+        { id: 'create-game', text: 'Create game', link: '/admin/create-game' },
+        { id: 'developer', text: 'Developer', link: '/admin/developer' },
+        { id: 'publisher', text: 'Publisher', link: '/admin/publisher' },
+        { id: 'feature', text: 'Feature', link: '/create/feature' },
+        { id: 'tag', text: 'Tag', link: '/admin/tag' },
+        { id: 'language', text: 'Language', link: '/admin/language' },
       ],
     },
   ],

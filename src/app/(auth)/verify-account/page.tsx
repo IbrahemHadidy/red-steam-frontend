@@ -1,24 +1,37 @@
 'use client';
-import LoadingPage from 'components/LoadingPage/LoadingPage';
-import useDynamicMetaTags from 'hooks/useDynamicMetaTags';
+
+// React
+import { useEffect } from 'react';
+
+// NextJS
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FC, useEffect } from 'react';
+
+// Components
+import LoadingPage from 'app/loading';
+
+// Services
 import { verifyEmail } from 'services/user/auth';
 
-const VerifyAccount: FC = () => {
+// Types
+import type { FC, JSX } from 'react';
+
+const VerifyAccount: FC = (): JSX.Element => {
+  // Init
   const router = useRouter();
   const searchParams = useSearchParams();
-  const username = searchParams?.get('username');
-  const token = searchParams?.get('token');
 
-  useDynamicMetaTags({
-    title: 'Verifying...',
-  });
+  // Get params
+  const username: string | null = searchParams?.get('username');
+  const token: string | null = searchParams?.get('token');
+
+  useEffect(() => {
+    document.title = 'Verifying...';
+  }, []);
 
   useEffect(() => {
     if (username && token) {
-      const verifyEmailAsync = async () => {
-        const response = await verifyEmail(token, username);
+      const verifyEmailAsync = async (): Promise<void> => {
+        const response: { success: boolean } = await verifyEmail(token, username);
         if (response.success) {
           router.push('/');
         }

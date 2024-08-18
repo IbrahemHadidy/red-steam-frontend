@@ -1,22 +1,29 @@
 'use client';
-import { AuthContext } from 'contexts/AuthContext';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+
+// React
 import { useContext, useEffect } from 'react';
 
-const Logout = dynamic(() => import('pages/Auth/Logout'), { ssr: false });
+// NextJS
+import { useRouter } from 'next/navigation';
 
-const LogoutPage = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Types
+import type { FC } from 'react';
+
+const LogoutPage: FC = (): null => {
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push('/');
+      logout();
     }
-  }, [isLoggedIn, router]);
+    router.push('/');
+  }, [isLoggedIn, logout, router]);
 
-  return !isLoggedIn ? <Logout /> : null;
+  return null;
 };
 
 export default LogoutPage;

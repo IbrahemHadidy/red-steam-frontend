@@ -5,7 +5,10 @@ import { Slide, ToastContainer } from 'react-toastify';
 // Styles
 import 'react-toastify/dist/ReactToastify.css';
 
-const Toaster = () => {
+// Types
+import { FC, JSX } from 'react';
+
+const Toaster: FC = (): JSX.Element => {
   return (
     <>
       <style jsx>

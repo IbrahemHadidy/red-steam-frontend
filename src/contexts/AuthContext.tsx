@@ -1,69 +1,33 @@
 'use client';
-import {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode,
-} from 'react';
+import Loading from 'app/loading';
+import { VerifyModal } from 'components/SignUpVerifyModal/SignUpVerifyModal';
+import { usePathname, useRouter } from 'next/navigation';
+import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import {
+  autoLogin,
+  getUserData,
+  getWaitingTime,
   login as loginUser,
   logout as logoutUser,
-  getUserData,
   refreshToken,
-  autoLogin,
   resendVerificationToken,
   verificationStatus,
-  getWaitingTime,
 } from 'services/user/auth';
-import { VerifyModal } from 'pages/Auth/SignUpVerifyModal';
+
+// Types
+import type { JSX } from 'react';
+import type { Tag } from 'types/tag.types';
+import type { User } from 'types/user.types';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (
-    identifier: string,
-    password: string,
-    rememberMe: boolean,
-    token: string,
-  ) => Promise<void>;
+  login: (identifier: string, password: string, rememberMe: boolean) => Promise<void>;
   logout: () => void;
-  userData: UserData | null;
+  userData: User | null;
   userPFP: string | null;
   fetchData: () => void;
-}
-
-interface UserData {
-  id: string;
-  email: string;
-  username: string;
-  country: string;
-  phoneNumber?: string;
-  profilePicture?: string;
-  tags: { id: number; name: string }[];
-  isVerified: boolean;
-  isPhoneVerified?: boolean;
-  isAdmin: boolean;
-  isActive: boolean;
-  createdAt: Date;
-  wishlist: {
-    id: number;
-    addedOn: Date;
-  }[];
-  library: {
-    id: number;
-    addedOn: Date;
-  }[];
-  cart: {
-    id: number;
-    addedOn: Date;
-  }[];
-  reviews: {
-    id: number;
-    positive: boolean;
-    date: Date;
-    content: string;
-  }[];
+  isReady: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -73,19 +37,26 @@ export const AuthContext = createContext<AuthContextType>({
   userData: null,
   userPFP: null,
   fetchData: () => {},
+  isReady: false,
 });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [showVerifyModal, setShowVerifyModal] = useState(false);
-  const userPFP = userData?.profilePicture || null;
+export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const fetchData = useCallback(async () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userData, setUser] = useState<User | null>(null);
+  const [showVerifyModal, setShowVerifyModal] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
+
+  const userPFP: string | null = userData?.profilePicture || null;
+
+  const fetchData = useCallback(async (): Promise<void> => {
     if (isLoggedIn) {
       if (sessionStorage.getItem('authorization')) {
-        const userData = await getUserData();
-        setUserData(userData);
+        const userData: User = await getUserData();
+        setUser(userData);
+        setIsReady(true);
       }
     }
   }, [isLoggedIn]);
@@ -96,36 +67,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [fetchData, isLoggedIn]);
 
-  const logout = useCallback(() => {
-    logoutUser();
+  const logout = useCallback((): void => {
     setIsLoggedIn(false);
-    setUserData(null);
-    window.location.href = '/';
+    router.push('/');
+    logoutUser();
+    setUser(null);
     sessionStorage.setItem('verificationInProgress', 'false');
     sessionStorage.removeItem('authorization');
     localStorage.removeItem('x-refresh-token');
-  }, []);
+  }, [router]);
 
   const login = async (
     identifier: string,
     password: string,
-    rememberMe: boolean,
-  ) => {
+    rememberMe: boolean
+  ): Promise<void> => {
     try {
-      const response = await loginUser(identifier, password, rememberMe);
-      const userData = response.data.userData;
+      const response: { status: number; data: { userData: User } } = await loginUser(
+        identifier,
+        password,
+        rememberMe
+      );
+      const userData: User = response.data.userData;
       if (response.status === 200) {
+        router.push('/');
         setIsLoggedIn(true);
-        setUserData(userData);
+        setUser(userData);
+        setIsReady(true);
       }
     } catch (error) {
       setIsLoggedIn(false);
-      setUserData(null);
+      setUser(null);
+      setIsReady(true);
       console.error('Error during login:', error);
     }
   };
 
-  const refreshAuthorization = useCallback(async () => {
+  const refreshAuthorization = useCallback(async (): Promise<void> => {
     try {
       await refreshToken();
       fetchData();
@@ -137,112 +115,104 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchData, logout]);
 
   useEffect(() => {
-    async function autoLoginUser() {
-      const storedToken = localStorage.getItem('x-refresh-token');
+    let refreshInterval: NodeJS.Timeout;
+
+    const autoLoginUser = async (): Promise<void> => {
+      const storedToken: string | null = localStorage.getItem('x-refresh-token');
       if (storedToken) {
         try {
           await autoLogin();
           setIsLoggedIn(true);
           fetchData();
-          // Schedule token refresh every hour after successful auto-login
-          const refreshInterval = setInterval(
-            refreshAuthorization,
-            60 * 60 * 1000,
-          );
-          // Clear interval on component unmount
-          return () => clearInterval(refreshInterval);
+          refreshInterval = setInterval(refreshAuthorization, 60 * 60 * 1000);
         } catch (error) {
           console.error('Error auto-logging in:', error);
           setIsLoggedIn(false);
-          setUserData(null);
+          setUser(null);
+          setIsReady(true);
           logout();
         }
+      } else {
+        setIsReady(true);
       }
-    }
+    };
 
     autoLoginUser();
+
+    // Cleanup function to clear interval
+    return () => clearInterval(refreshInterval);
   }, [fetchData, logout, refreshAuthorization]);
 
-  const checkVerificationStatus = useCallback(async () => {
+  const checkVerificationStatus = useCallback(async (): Promise<void> => {
     if (sessionStorage.getItem('verificationInProgress') !== 'true') {
       sessionStorage.setItem('verificationInProgress', 'true');
       userData && (await resendVerificationToken());
       setShowVerifyModal(true);
-      // Fetch waiting time from the backend
-      const waitingTime = await getWaitingTime();
-      const intervalCheckVerificationStatus = async () => {
+      const waitingTime: number = await getWaitingTime();
+      const intervalCheckVerificationStatus = async (): Promise<void> => {
         try {
-          // Verify email
           const verificationResult = userData && (await verificationStatus());
-
-          // If verification is successful, close the verification modal
           if (verificationResult) {
             clearInterval(intervalId);
             setShowVerifyModal(false);
             toast.success('Email verified successfully!');
             setTimeout(() => {
-              if (window.location.pathname !== '/user/tags') {
-                window.location.href = '/user/tags';
+              if (pathname !== '/user/tags') {
+                router.push('/user/tags');
               }
             });
           }
         } catch (error) {
-          // If verification fails, display an error message
           console.error('Error during form submission:', error);
         }
       };
 
-      // Periodically check verification status and waiting time
-      const intervalId = setInterval(intervalCheckVerificationStatus, 5000);
-
+      const intervalId: NodeJS.Timeout = setInterval(intervalCheckVerificationStatus, 5000);
       setTimeout(() => {
         setShowVerifyModal(false);
-        toast.error(
-          'Email verification took too long. Please try again later.',
-        );
+        toast.error('Email verification took too long. Please try again later.');
         clearInterval(intervalId);
         logout();
       }, waitingTime);
     }
-  }, [logout, userData]);
+  }, [logout, pathname, router, userData]);
 
-  // Check if selected tags are less than 3
   useEffect(() => {
-    function checkVerifyAndTags() {
-      setTimeout(() => {
-        if (isLoggedIn && userData && !userData.isVerified) {
-          checkVerificationStatus();
-        } else if (
-          isLoggedIn &&
-          userData &&
-          !(window.location.pathname === '/user/tags')
-        ) {
-          const tags = userData.tags;
-          if (tags.length < 3) {
-            window.location.href = '/user/tags';
-          }
-        }
-      }, 2000);
-    }
+    if (isLoggedIn && userData) {
+      const tags: Tag[] = userData.tags;
 
-    checkVerifyAndTags();
-  }, [checkVerificationStatus, isLoggedIn, userData]);
+      if (userData && !userData.isVerified) {
+        checkVerificationStatus();
+      } else if (!(pathname === '/user/tags' || pathname === '/logout')) {
+        if (!tags || tags.length < 3) {
+          router.push('/user/tags');
+          toast.warn('Please add at least 3 tags to continue!');
+        }
+      }
+    }
+  }, [checkVerificationStatus, isLoggedIn, pathname, router, userData]);
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, login, logout, userData, userPFP, fetchData }}
+      value={{ isLoggedIn, login, logout, userData, userPFP, fetchData, isReady }}
     >
-      {children}
-      {isLoggedIn && userData && showVerifyModal && (
-        <VerifyModal
-          storedEmailAddress={userData.email}
-          setShowVerificationModal={setShowVerifyModal}
-          setFirstStep={() => {
-            logout();
-            setShowVerifyModal(false);
-            window.location.href = '/join';
-          }}
-        />
+      {isReady ? (
+        <>
+          {children}
+          {isLoggedIn && userData && showVerifyModal && (
+            <VerifyModal
+              storedEmailAddress={userData.email}
+              setShowVerificationModal={setShowVerifyModal}
+              setFirstStep={() => {
+                logout();
+                setShowVerifyModal(false);
+                router.push('signup');
+              }}
+            />
+          )}
+        </>
+      ) : (
+        <Loading />
       )}
     </AuthContext.Provider>
   );

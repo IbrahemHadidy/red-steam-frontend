@@ -3,7 +3,7 @@
 // React
 import { useContext, useState } from 'react';
 
-// Next.js
+// NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -26,15 +26,15 @@ import dropdown from 'images/dropdown.png';
 import valveLogo from 'images/logo_valve_footer.png';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 interface MenuItem {
   id: string;
   text: string;
   link: string;
 }
 
-const SteamMenu: FC = () => {
-  // Initializations
+const SteamMenu: FC = (): JSX.Element => {
+  // Init
   const router = useRouter();
 
   // Contexts
@@ -51,7 +51,7 @@ const SteamMenu: FC = () => {
     from: { height: 0, opacity: 0 },
   });
 
-  const toggleSubmenu = (submenuId: string) => {
+  const toggleSubmenu = (submenuId: string): void => {
     if (openSubmenu === submenuId) {
       setOpenSubmenu(null);
       setOpenedItems((prevState) => ({ ...prevState, [submenuId]: false }));
@@ -61,9 +61,10 @@ const SteamMenu: FC = () => {
     }
   };
 
-  const handleMenuItemClick = (menuItem: MenuItem) => {
+  const handleMenuItemClick = (menuItem: MenuItem): void => {
     if (
       menuItem.id === 'support' ||
+      menuItem.id === 'admin' ||
       menuItem.id === 'account-details' ||
       menuItem.id === 'store-preferences' ||
       menuItem.id === 'change-language' ||
@@ -75,13 +76,13 @@ const SteamMenu: FC = () => {
     }
   };
 
-  const generateMenuItems = (menuItems: MenuItem[], menuClass: string) => {
+  const generateMenuItems = (menuItems: MenuItem[], menuClass: string): (JSX.Element | null)[] => {
     return menuItems
-      .map((menuItem, index) => {
+      .map((menuItem, idx) => {
         const submenu = sharedData.subMenus.find((subMenu) => subMenu.title === menuItem.text);
-        const subMenuItemCount = submenu ? submenu.items.length : 0;
+        const subMenuItemCount: number = submenu ? submenu.items.length : 0;
 
-        const itemHeight = openedItems[menuItem.id] ? subMenuItemCount * 41.25 : 0;
+        const itemHeight: number = openedItems[menuItem.id] ? subMenuItemCount * 41.25 : 0;
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const dropdownAnimation = useSpring({
@@ -104,7 +105,7 @@ const SteamMenu: FC = () => {
               menuItem.id === 'change-user'
                 ? 'has-dropdown'
                 : ''
-            } ${openedItems[menuItem.id] ? 'opened' : ''} ${index === 0 ? 'first' : ''}`}
+            } ${openedItems[menuItem.id] ? 'opened' : ''} ${idx === 0 ? 'first' : ''}`}
             key={menuItem.id}
           >
             <div
@@ -115,7 +116,8 @@ const SteamMenu: FC = () => {
               {menuItem.id === 'notifications' ||
               menuItem.id === 'store' ||
               menuItem.id === 'you-and-friends' ||
-              menuItem.id === 'community' ? (
+              menuItem.id === 'community' ||
+              menuItem.id === 'create' ? (
                 <img
                   src={dropdown.src}
                   alt="Rotate Icon"
@@ -153,7 +155,7 @@ const SteamMenu: FC = () => {
       .filter(Boolean);
   };
 
-  const NotificationDropdown: FC = () => (
+  const NotificationDropdown: FC = (): JSX.Element => (
     <animated.div
       className={`menuitem_submenu_wrapper notification-dropdown ${
         showNotificationDropdown ? 'active' : ''
@@ -177,11 +179,11 @@ const SteamMenu: FC = () => {
     </animated.div>
   );
 
-  const handleNotificationDropdown = () => {
+  const handleNotificationDropdown = (): void => {
     setShowNotificationDropdown(!showNotificationDropdown);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (): void => {
     router.push('/login');
   };
 

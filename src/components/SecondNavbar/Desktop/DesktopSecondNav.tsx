@@ -3,7 +3,7 @@
 // React
 import { useContext, useEffect, useState } from 'react';
 
-// Next.js
+// NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,12 +25,12 @@ import cart from 'images/cart.svg';
 import defaultPFP from 'images/default-pfp.png';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 import type { SpringValue } from 'react-spring';
 import type { GroupedMenuItem, MenuItem } from '../SecondNavbar.types';
 
-const DesktopSecondNav: FC = () => {
-  // Initializations
+const DesktopSecondNav: FC = (): JSX.Element => {
+  // Init
   const pathname = usePathname();
 
   // Contexts
@@ -49,7 +49,7 @@ const DesktopSecondNav: FC = () => {
   }, [pathname]);
 
   const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(([menuTitle, menu]) => {
-    const items = menu.items;
+    const items: MenuItem[] = menu.items;
     const categoryGroups: Record<string, MenuItem[]> = {};
 
     items.forEach((item: MenuItem) => {
@@ -110,9 +110,9 @@ const DesktopSecondNav: FC = () => {
             {isLoggedIn && (
               <img className="profile-picture" src={userPFP || defaultPFP.src} alt="Avatar" />
             )}
-            {groupedMenuItems.map(({ menuTitle, categoryGroups }, index) => (
+            {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
               <li
-                key={index}
+                key={idx}
                 className="nav-item dropdown"
                 onPointerMove={() => setOpenMenu(menuTitle)}
                 onPointerLeave={() => setOpenMenu(null)}
@@ -183,8 +183,8 @@ const DesktopSecondNav: FC = () => {
               </li>
             ))}
 
-            {navigationItems.map((item, index) => (
-              <Link key={index} className="nav-link navBarItem" href={item.url}>
+            {navigationItems.map((item, idx) => (
+              <Link key={idx} className="nav-link navBarItem" href={item.url}>
                 {item.label}
               </Link>
             ))}

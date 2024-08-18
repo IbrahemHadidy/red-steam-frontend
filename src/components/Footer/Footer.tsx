@@ -1,7 +1,6 @@
-'use client';
-
-// Next.js
+// NextJS
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Images
 import footerLogo from 'images/footerLogo_valve_new.png';
@@ -10,20 +9,19 @@ import twitterIcon from 'images/ico_twitter.png';
 import steamFooterLogo from 'images/logo_steam_footer.png';
 
 // Styles
-import './Footer.scss';
+import 'styles/components/Footer.scss';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 
-const Footer: FC = () => {
+const Footer: FC = (): JSX.Element => {
   return (
     <div className="footer">
       <div className="footer-content">
         <div className="footer-rule"></div>
-        <div className="footer-steam-logo">
+        <Link href="/" className="footer-steam-logo">
           <Image src={steamFooterLogo} alt="Valve Software" />
-        </div>
-
+        </Link>
         <div className="footer-logo">
           <a href="http://www.valvesoftware.com">
             <Image src={footerLogo} alt="Valve Software" />
@@ -36,23 +34,23 @@ const Footer: FC = () => {
           </div>
           <div>
             <s>VAT included in all prices where applicable</s>.&nbsp;&nbsp;
-            <a href="#">
+            <a className="disabled">
               <s>Privacy Policy</s>
             </a>
             &nbsp; | &nbsp;
-            <a href="#">
+            <a className="disabled">
               <s>Legal</s>
             </a>
             &nbsp; | &nbsp;
-            <a href="#">
+            <a className="disabled">
               <s>Steam Subscriber Agreement</s>
             </a>
             &nbsp; | &nbsp;
-            <a href="#">
+            <a className="disabled">
               <s>Refunds</s>
             </a>
             &nbsp; | &nbsp;
-            <a href="#">
+            <a className="disabled">
               <s>Cookies</s>
             </a>
           </div>
@@ -64,36 +62,38 @@ const Footer: FC = () => {
         <div className="footer-rule"></div>
 
         <div className="footer-links">
-          <a href="http://www.valvesoftware.com/">Valve</a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="http://www.steampowered.com/">Steam</a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="#">
-            <s>Jobs</s>
-          </a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="#">
-            <s>Steam Distribution</s>
-          </a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="#">
-            <s>Support</s>
-          </a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="#">
-            <s>Gift Cards</s>
-          </a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="#">
-            <Image src={facebookIcon} alt="Facebook" />
-            &nbsp;<s>Steam</s>
-          </a>
-          &nbsp;&nbsp; | &nbsp;&nbsp;
-          <a href="http://twitter.com/steam">
-            <Image src={twitterIcon} alt="Twitter" />
-            &nbsp;<s>@steam</s>
-          </a>
-          <div style={{ display: 'inline-block', marginLeft: '235px' }}>
+          <div>
+            <a href="http://www.valvesoftware.com/">Valve</a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a href="http://www.steampowered.com/">Steam</a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a className="disabled">
+              <s>Jobs</s>
+            </a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a className="disabled">
+              <s>Steam Distribution</s>
+            </a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a className="disabled">
+              <s>Support</s>
+            </a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a className="disabled">
+              <s>Gift Cards</s>
+            </a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a className="disabled">
+              <Image src={facebookIcon} alt="Facebook" />
+              &nbsp;<s>Steam</s>
+            </a>
+            &nbsp;&nbsp; | &nbsp;&nbsp;
+            <a className="disabled">
+              <Image src={twitterIcon} alt="Twitter" />
+              &nbsp;<s>@steam</s>
+            </a>
+          </div>
+          <div>
             <a href="https://github.com/IbrahemHadidy">My Github</a>
             &nbsp;&nbsp; | &nbsp;&nbsp;
             <a href="https://github.com/IbrahemHadidy/red-steam">Repository</a>

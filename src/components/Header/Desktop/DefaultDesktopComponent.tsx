@@ -3,7 +3,7 @@
 // React
 import { useContext } from 'react';
 
-// Next.js
+// NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -27,24 +27,24 @@ import installSteamBtn from 'images/btn_header_installsteam_download.png';
 import steamLogo from 'images/logo_steam.svg';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 
-const DefaultDesktopComponent: FC = () => {
-  // Initializations
+const DefaultDesktopComponent: FC = (): JSX.Element => {
+  // Init
   const router = useRouter();
 
   // Contexts
   const { isLoggedIn } = useContext(AuthContext);
 
-  const handleRootNavigation = () => {
+  const handleRootNavigation = (): void => {
     router.push('/');
   };
 
-  const handleInstallSteamBtn = () => {
+  const handleInstallSteamBtn = (): void => {
     toast.warning('This is not the real Steam website, It is just a clone for learning purposes.');
   };
 
-  const handleNotificationBtn = () => {
+  const handleNotificationBtn = (): void => {
     toast.info(`Coming soon.`);
   };
 
@@ -91,7 +91,7 @@ const DefaultDesktopComponent: FC = () => {
               <div className="logging">
                 <Link href="/login">login</Link>
                 &nbsp; | &nbsp;
-                <Link href="/join">Sign Up</Link>
+                <Link href="signup">Sign Up</Link>
               </div>
             )}
           </Nav>

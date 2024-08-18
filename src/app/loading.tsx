@@ -1,9 +1,16 @@
-import loadingLogo from 'images/loading-logo.png';
+// NextJS
 import Image from 'next/image';
 
-import './loading.scss';
+// Images
+import loadingLogo from 'images/loading-logo.png';
 
-export default function Loading() {
+// Styles
+import 'styles/loading.scss';
+
+// Types
+import type { FC, JSX } from 'react';
+
+const Loading: FC = (): JSX.Element => {
   return (
     <div className="page-loading-container">
       <div className="img-container">
@@ -12,4 +19,6 @@ export default function Loading() {
       <div className="loading-spinner" />
     </div>
   );
-}
+};
+
+export default Loading;

@@ -17,9 +17,9 @@
     "paths": {
       "images/*": ["public/images/*"],
       "assets/*": ["src/assets/*"],
+      "app/*": ["src/app/*"],
       "components/*": ["src/components/*"],
       "configs/*": ["src/configs/*"],
-      "pages/*": ["src/pages/*"],
       "services/*": ["src/services/*"],
       "utils/*": ["src/utils/*"],
       "hooks/*": ["src/hooks/*"],

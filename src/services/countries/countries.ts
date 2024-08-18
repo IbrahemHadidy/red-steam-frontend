@@ -1,4 +1,4 @@
-export const countries = [
+export const countries: [string, string][] = [
   ['AF', 'Afghanistan'],
   ['AX', 'Aland Islands'],
   ['AL', 'Albania'],
@@ -250,7 +250,9 @@ export const countries = [
   ['ZW', 'Zimbabwe'],
 ];
 
-export function getCountryNameByCode(code: string) {
-  const country = countries.find(([countryCode]) => countryCode === code);
+export const getCountryNameByCode = (code: string): string => {
+  const country: [string, string] | undefined = countries.find(
+    ([countryCode]) => countryCode === code
+  );
   return country ? country[1] : 'Country not found';
-}
+};

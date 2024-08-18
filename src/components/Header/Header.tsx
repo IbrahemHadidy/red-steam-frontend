@@ -1,6 +1,6 @@
 'use client';
 
-// Next.js
+// NextJS
 import dynamic from 'next/dynamic';
 
 // Components
@@ -15,12 +15,12 @@ const CustomMobileComponent = dynamic(() => import('./Mobile/CustomMobileCompone
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Styles
-import './Header.scss';
+import 'styles/components/Header.scss';
 
 // Types
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 
-const Header: FC = () => {
+const Header: FC = (): JSX.Element => {
   const isViewport960 = useResponsiveViewport(960);
 
   return <>{isViewport960 ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;

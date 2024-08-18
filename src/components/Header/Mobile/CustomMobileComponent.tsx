@@ -8,26 +8,26 @@ import SteamMenu from './CustomMenu';
 import MiniHeader from './MiniHeader';
 
 // Types
-import { FC, MouseEvent as ReactMouseEvent } from 'react';
+import { FC, JSX, MouseEvent } from 'react';
 
-const CustomMobileComponent: FC = () => {
+const CustomMobileComponent: FC = (): JSX.Element => {
   // States
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   // Refs
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleMenu = (e: ReactMouseEvent<HTMLDivElement>) => {
+  const toggleMenu = (e: MouseEvent<HTMLDivElement>): void => {
     e.stopPropagation();
     setShowMenu(!showMenu);
   };
 
-  const closeMenu = () => {
+  const closeMenu = (): void => {
     setShowMenu(false);
   };
 
   const handleClickOutside = useCallback(
-    (e: Event) => {
+    (e: Event): void => {
       if (showMenu && menuRef.current && !menuRef.current.contains(e.target as Node)) {
         // Click occurred outside the menu, so close it
         closeMenu();

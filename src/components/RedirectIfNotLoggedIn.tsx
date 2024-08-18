@@ -1,15 +1,28 @@
 'use client';
-import { AuthContext } from 'contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+
+// React
 import { useContext, useEffect } from 'react';
 
-const RedirectIfNotLoggedIn = () => {
+// NextJS
+import { useRouter } from 'next/navigation';
+
+// Contexts
+import { AuthContext } from 'contexts/AuthContext';
+
+// Toast notifications
+import { toast } from 'react-toastify';
+
+// Types
+import type { FC } from 'react';
+
+const RedirectIfNotLoggedIn: FC = (): null => {
   const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push('/auth/login');
+      toast.info('Please log in first to access this page!');
+      router.push('/login');
     }
   }, [isLoggedIn, router]);
 

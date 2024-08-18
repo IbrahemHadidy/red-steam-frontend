@@ -1,10 +1,22 @@
 'use client';
-import { useRouter } from 'next/navigation';
+
+// React
 import { useEffect } from 'react';
 
-import './error.scss';
+// NextJS
+import { useRouter } from 'next/navigation';
 
-export default function ErrorBoundary({ error, reset }: { error: Error; reset: () => void }) {
+// Styles
+import 'styles/error.scss';
+
+// Types
+import type { FC, JSX } from 'react';
+interface Props {
+  error: Error;
+  reset: () => void;
+}
+
+const ErrorBoundary: FC<Props> = ({ error, reset }): JSX.Element => {
   const router = useRouter();
 
   useEffect(() => {
@@ -23,4 +35,6 @@ export default function ErrorBoundary({ error, reset }: { error: Error; reset: (
       <button onClick={() => router.push('/')}>Back to store</button>
     </div>
   );
-}
+};
+
+export default ErrorBoundary;
