@@ -1,4 +1,5 @@
-import { Tag } from 'types/tag.types';
+import type { Review } from 'types/review.types';
+import type { Tag } from 'types/tag.types';
 
 export interface User {
   id: string;
@@ -21,6 +22,7 @@ export interface User {
   wishlist: WishlistItem[];
   cart: CartItem[];
   library: LibraryItem[];
+  reviews: Review[];
 }
 
 export interface BaseItem {

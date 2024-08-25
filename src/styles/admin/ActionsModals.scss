@@ -1,0 +1,140 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1001;
+  width: 400px;
+  max-width: 90%;
+
+  h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #ddd;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      padding: 8px 16px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #555;
+      }
+
+      &:first-child {
+        background-color: #ff5252;
+
+        &:hover {
+          background-color: #ff3333;
+        }
+      }
+    }
+  }
+}
+
+.edit-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  z-index: 1001;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    .form-group {
+      margin-bottom: 15px;
+
+      &.checkbox {
+        display: flex;
+
+        label {
+          width: 90%;
+          font-size: 18px;
+        }
+
+        input {
+          width: 10%;
+          height: 25px;
+        }
+
+      }
+
+      label {
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 5px;
+        display: block;
+      }
+
+      input {
+        width: 94%;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #444;
+        background-color: #444;
+        color: #e0e0e0;
+        font-size: 16px;
+
+        &:focus {
+          outline: none;
+          border-color: #ffcc00;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          user-select: none;
+        }
+      }
+    }
+
+    button {
+      padding: 10px;
+      background-color: #555;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #777;
+      }
+    }
+  }
+}

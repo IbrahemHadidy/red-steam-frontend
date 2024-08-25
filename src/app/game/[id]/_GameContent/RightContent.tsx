@@ -11,13 +11,14 @@ import { useRouter } from 'next/navigation';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Services
 import { addToCart } from 'services/user/interaction';
 
 // Utils
+import convertToBase64Image from 'utils/convertToBase64Image';
 import formatDate from 'utils/formatDate';
 import getPlatform from 'utils/getPlatform';
 
@@ -92,42 +93,46 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
   };
 
   // Recommendation reasons
-  const firstDetails: JSX.Element = (
-    <>
-      <div className="recommendation-reason">Is this game relevant to you?</div>
-      <div className="recommendation-reasons">
-        {userData?.tags &&
-          userData.tags.filter((tag) => game.tags.some((gameTag) => gameTag.id === tag.id))
-            .length >= 3 && (
+  const firstDetails: JSX.Element | null =
+    (userData?.tags &&
+      userData.tags.filter((tag) => game.tags.some((gameTag) => gameTag.id === tag.id)).length >
+        0) ||
+    positivePercentage >= 80 ? (
+      <>
+        <div className="recommendation-reason">Is this game relevant to you?</div>
+        <div className="recommendation-reasons">
+          {userData?.tags &&
+            userData.tags.filter((tag) => game.tags.some((gameTag) => gameTag.id === tag.id))
+              .length >= 3 && (
+              <>
+                <p className="reason-for">Players like you love this game.</p>
+                <hr />
+              </>
+            )}
+          {positivePercentage >= 90 && (
             <>
-              <p className="reason-for">Players like you love this game.</p>
+              <p className="reason-for">
+                User reviews:&nbsp;
+                <span className="game-review-summary positive">Overwhelmingly Positive</span>
+              </p>
               <hr />
             </>
           )}
-        {positivePercentage >= 90 && (
-          <>
-            <p className="reason-for">
-              User reviews:&nbsp;
-              <span className="game-review-summary positive">Overwhelmingly Positive</span>
-            </p>
-            <hr />
-          </>
-        )}
-        {90 > positivePercentage && positivePercentage >= 80 && (
-          <>
-            <p className="reason-for">
-              User reviews:&nbsp;
-              <span className="game-review-summary positive">Very Positive</span>
-            </p>
-            <hr />
-          </>
-        )}
-        {/* TODO: top sellers backend logic */}
-        {/* <p className="reason-for"> In the Top Sellers </p> 
+          {90 > positivePercentage && positivePercentage >= 80 && (
+            <>
+              <p className="reason-for">
+                User reviews:&nbsp;
+                <span className="game-review-summary positive">Very Positive</span>
+              </p>
+              <hr />
+            </>
+          )}
+          {/* TODO: top sellers backend logic */}
+          {/* <p className="reason-for"> In the Top Sellers </p> 
 						 <hr /> */}
-      </div>
-    </>
-  );
+        </div>
+      </>
+    ) : null;
 
   // Game features
   const secondDetails: JSX.Element = (
@@ -136,10 +141,7 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
         {game.gamesFeatures.map((feature, idx) => (
           <Link className="game-area-details" href={`/search/${feature.id}`} key={idx}>
             <div className="feature-icon">
-              <img
-                src={`data:image/png;base64,${Buffer.from(feature.icon.data).toString('base64')}`}
-                alt={feature.name}
-              />
+              <img src={convertToBase64Image(feature.icon.data)} alt={feature.name} />
             </div>
             <div className="feature-label">{feature.name}</div>
           </Link>
@@ -234,24 +236,24 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
       </div>
       <div className="details-block" style={{ paddingTop: '14px' }}>
         {game.link && (
-          <a href={game.link} target="_blank" rel="noreferrer noopenner">
+          <a className="linkbar" href={game.link} target="_blank" rel="noreferrer noopenner">
             {' '}
             Visit the website <Image src={externalLinkIcon} alt="external link" />
           </a>
         )}
-        <a className="linkbar" href="">
+        <a className="linkbar" onClick={() => toast.info('Coming Soon!')}>
           {' '}
           View update history{' '}
         </a>
-        <a className="linkbar" href="">
+        <a className="linkbar" onClick={() => toast.info('Coming Soon!')}>
           {' '}
           Read related news{' '}
         </a>
-        <a className="linkbar" href="">
+        <a className="linkbar" onClick={() => toast.info('Coming Soon!')}>
           {' '}
           View discussions{' '}
         </a>
-        <a className="linkbar" href="">
+        <a className="linkbar" onClick={() => toast.info('Coming Soon!')}>
           {' '}
           Find Community Groups{' '}
         </a>

@@ -10,7 +10,7 @@ import Link from 'next/link';
 // Sanitization library
 import DomPurify from 'dompurify';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Utils

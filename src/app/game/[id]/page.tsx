@@ -12,8 +12,9 @@ const GameContent = dynamic(() => import('./_GameContent/layout'));
 const GameReviews = dynamic(() => import('./_GameReviews/page'));
 const MediaAndSummary = dynamic(() => import('./_MediaAndSummary/MediaAndSummary'));
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
+
 // Services
 import gameData from 'services/gameData/gameData';
 

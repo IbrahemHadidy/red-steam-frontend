@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 const useResponsiveViewport = (width: number): boolean => {
-  const [isViewport, setIsViewport] = useState(false);
+  const [isViewport, setIsViewport] = useState<boolean>(false);
 
   useEffect(() => {
     const handleResize = (): void => {

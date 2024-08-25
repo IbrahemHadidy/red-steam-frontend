@@ -5,7 +5,7 @@ import Api from 'services/api';
 // Types
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-class Management extends Api {
+class UserManagement extends Api {
   constructor() {
     super('user/management');
   }
@@ -244,4 +244,4 @@ export const {
   forgotPassword,
   resetPassword,
   deleteAccount,
-} = new Management();
+} = new UserManagement();

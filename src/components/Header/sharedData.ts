@@ -1,41 +1,38 @@
 const sharedData = {
   menuItems: [
     { id: 'store', text: 'Store', link: '/' },
-    { id: 'you-and-friends', text: 'Profile & Settings', link: '/user' },
-    { id: 'create', text: 'Create', link: '/create' },
+    { id: 'profile', text: 'Profile', link: '/user' },
     { id: 'admin', text: 'Admin', link: '/admin' },
     { id: 'contact me', text: 'Support', link: '/support' },
   ],
   subMenus: [
     {
-      title: 'Store',
+      title: 'Profile',
       items: [
-        { id: 'store-home', text: 'Home', link: '/' },
-        { id: 'store-wishlist', text: 'Wishlist', link: '/wishlist' },
+        { id: 'profile-settings', text: 'Settings', link: '/user/settings' },
+        { id: 'store-preferences', text: 'tags', link: '/user/tags' },
+        { id: 'inventory', text: 'Inventory', link: '/library' },
+        { id: 'wishlish', text: 'Wishlish', link: '/wishlist' },
+        { id: 'cart', text: 'Cart', link: '/cart' },
       ],
     },
     {
-      title: 'Profile & Settings',
-      items: [
-        { id: 'you-friends-profile', text: 'Profile', link: '/user/settings' },
-        { id: 'you-friends-inventory', text: 'Inventory', link: '/library' },
-        { id: 'you-friends-tags', text: 'tags', link: '/user/tags' },
-      ],
-    },
-    {
-      title: 'ADMIN',
+      title: 'Admin',
       items: [
         { id: 'create-game', text: 'Create game', link: '/admin/create-game' },
-        { id: 'developer', text: 'Developer', link: '/admin/developer' },
-        { id: 'publisher', text: 'Publisher', link: '/admin/publisher' },
-        { id: 'feature', text: 'Feature', link: '/create/feature' },
-        { id: 'tag', text: 'Tag', link: '/admin/tag' },
-        { id: 'language', text: 'Language', link: '/admin/language' },
+        { id: 'developers', text: 'Developers', link: '/admin/developers' },
+        { id: 'publishers', text: 'Publishers', link: '/admin/publishers' },
+        { id: 'features', text: 'Features', link: '/create/features' },
+        { id: 'tags', text: 'Tags', link: '/admin/tags' },
+        { id: 'languages', text: 'Languages', link: '/admin/languages' },
+        { id: 'users', text: 'Users', link: '/admin/users' },
+        { id: 'reviews', text: 'Reviews', link: '/admin/reviews' },
+        { id: 'offers', text: 'Offers', link: '/admin/offers' },
       ],
     },
   ],
   minorMenuItems: [
-    { id: 'view-profile', text: 'Profile Settings', link: '/user/settings' },
+    { id: 'profile-settings', text: 'Profile Settings', link: '/user/settings' },
     { id: 'store-preferences', text: 'Tags preferences', link: '/user/tags' },
     { id: 'change-user', text: 'Sign out of account...', link: '/logout' },
   ],

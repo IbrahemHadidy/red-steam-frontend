@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, FC, Fragment, JSX, RefObject, SetStateAction, useRef } from 'react';
-import type { Thumbnails } from '../create.types';
+import type { Thumbnails } from '../create-game.types';
 
 interface ThumbnailsProps {
   thumbnails: Thumbnails;

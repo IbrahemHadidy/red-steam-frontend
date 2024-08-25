@@ -13,7 +13,7 @@ const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'), { ssr: f
 // Skeletons
 const LoadingSkeleton = dynamic(() => import('./Desktop/Skeleton'), { ssr: false });
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Types

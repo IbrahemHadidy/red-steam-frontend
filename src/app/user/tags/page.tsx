@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 // Contexts
 import { AuthContext } from 'contexts/AuthContext';
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 
 // Services

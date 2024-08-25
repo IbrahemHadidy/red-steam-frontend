@@ -10,7 +10,7 @@ import Link from 'next/link';
 import HoverSummary from 'components/HoverSummary/HoverSummary';
 import Slider from 'react-slick';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Utils

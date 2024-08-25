@@ -17,7 +17,14 @@ import { SearchRight } from './_SearchRight/SearchRight';
 // Contexts
 import { AuthContext } from 'contexts/AuthContext';
 
-// Hooks
+// Services
+import { getAllDevelopers } from 'services/common/developers';
+import { getAllFeatures } from 'services/common/features';
+import { getAllLanguages } from 'services/common/languages';
+import { getAllPublishers } from 'services/common/publishers';
+import { getAllTags } from 'services/common/tags';
+
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
@@ -54,69 +61,102 @@ const SearchPage: FC = (): JSX.Element => {
       { id: 1, name: 'Featured only', check: 'unchecked' },
       { id: 5, name: 'Hide mature items', check: 'unchecked' },
     ],
-    tag: [
-      { id: 1, name: 'Battle Royal', check: 'unchecked' },
-      { id: 2, name: 'Multiplayer', check: 'unchecked' },
-      { id: 3, name: 'Martial Arts', check: 'unchecked' },
-      { id: 4, name: 'PvP', check: 'unchecked' },
-      { id: 5, name: 'Survival', check: 'unchecked' },
-      { id: 6, name: 'Shooter', check: 'unchecked' },
-      { id: 7, name: 'RPG', check: 'unchecked' },
-      { id: 8, name: 'Open World', check: 'unchecked' },
-      { id: 9, name: 'Story Rich', check: 'unchecked' },
-      { id: 10, name: 'Singleplayer', check: 'unchecked' },
-      { id: 11, name: 'Dark', check: 'unchecked' },
-      { id: 12, name: 'Fantasy', check: 'unchecked' },
-      { id: 13, name: 'Horror', check: 'unchecked' },
-      { id: 14, name: 'Difficult', check: 'unchecked' },
-      { id: 15, name: 'Action', check: 'unchecked' },
-      { id: 16, name: 'Souls-like', check: 'unchecked' },
-      // TODO: make it fetch dynamic from backend
-    ],
+    tag: [],
     os: [
       { id: 1, name: 'Windows', check: 'unchecked' },
       { id: 2, name: 'macOS', check: 'unchecked' },
     ],
-    publisher: [
-      { id: 1, name: 'Publisher 1', check: 'unchecked' },
-      { id: 2, name: 'Publisher 2', check: 'unchecked' },
-      // TODO: make it fetch dynamic from backend
-    ],
-    developer: [
-      { id: 1, name: 'Developer 1', check: 'unchecked' },
-      { id: 2, name: 'Developer 2', check: 'unchecked' },
-      // TODO: make it fetch dynamic from backend
-    ],
-    feature: [
-      { id: 1, name: 'Feature 1', check: 'unchecked' },
-      { id: 2, name: 'Feature 2', check: 'unchecked' },
-      // TODO: make it fetch dynamic from backend
-    ],
-    language: [
-      { id: 1, name: 'Language 1', check: 'unchecked' },
-      { id: 2, name: 'Language 2', check: 'unchecked' },
-      { id: 3, name: 'Language 3', check: 'unchecked' },
-      { id: 4, name: 'Language 4', check: 'unchecked' },
-      { id: 5, name: 'Language 5', check: 'unchecked' },
-      { id: 6, name: 'Language 6', check: 'unchecked' },
-      { id: 7, name: 'Language 7', check: 'unchecked' },
-      { id: 8, name: 'Language 8', check: 'unchecked' },
-      { id: 9, name: 'Language 9', check: 'unchecked' },
-      { id: 10, name: 'Language 10', check: 'unchecked' },
-      { id: 11, name: 'Language 11', check: 'unchecked' },
-      { id: 12, name: 'Language 12', check: 'unchecked' },
-      { id: 13, name: 'Language 13', check: 'unchecked' },
-      // TODO: make it fetch dynamic from backend
-    ],
+    publisher: [],
+    developer: [],
+    feature: [],
+    language: [],
   });
 
   // Refs
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // TODO: Delete this
   useEffect(() => {
     console.log(filters);
   }, [filters, searchParams]);
 
+  // Fetch initial tags
+  useEffect(() => {
+    const getTags = async () => {
+      const response = await getAllTags();
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        tag: response.map((tag) => ({ id: tag.id, name: tag.name, check: 'unchecked' })),
+      }));
+    };
+    getTags();
+  }, []);
+
+  // Fetch initial publishers
+  useEffect(() => {
+    const getPublishers = async () => {
+      const response = await getAllPublishers();
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        publisher: response.map((publisher) => ({
+          id: publisher.id,
+          name: publisher.name,
+          check: 'unchecked',
+        })),
+      }));
+    };
+    getPublishers();
+  }, []);
+
+  // Fetch initial developers
+  useEffect(() => {
+    const getDevelopers = async () => {
+      const response = await getAllDevelopers();
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        developer: response.map((developer) => ({
+          id: developer.id,
+          name: developer.name,
+          check: 'unchecked',
+        })),
+      }));
+    };
+    getDevelopers();
+  }, []);
+
+  // Fetch initial features
+  useEffect(() => {
+    const getFeatures = async () => {
+      const response = await getAllFeatures();
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        feature: response.map((feature) => ({
+          id: feature.id,
+          name: feature.name,
+          check: 'unchecked',
+        })),
+      }));
+    };
+    getFeatures();
+  }, []);
+
+  // Fetch initial languages
+  useEffect(() => {
+    const getLanguages = async () => {
+      const response = await getAllLanguages();
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        language: response.map((language) => ({
+          id: language.id,
+          name: language.name,
+          check: 'unchecked',
+        })),
+      }));
+    };
+    getLanguages();
+  }, []);
+
+  // Select options
   const selectOptions: string[] = [
     'Relevance',
     'Release date',
@@ -126,7 +166,8 @@ const SearchPage: FC = (): JSX.Element => {
     'User Reviews',
   ];
 
-  const labels: { label: string; value: number | null }[] = useMemo(
+  // Price range
+  const ranges: { label: string; value: number | null }[] = useMemo(
     () => [
       { label: 'Free', value: 0 },
       { label: 'Under $5.00', value: 5 },
@@ -165,9 +206,9 @@ const SearchPage: FC = (): JSX.Element => {
 
   const getPriceRangeLabel = useCallback(
     (value: number): string => {
-      return labels[value]?.label || '';
+      return ranges[value]?.label || '';
     },
-    [labels]
+    [ranges]
   );
 
   const updateFromURL = useCallback((): void => {
@@ -184,7 +225,7 @@ const SearchPage: FC = (): JSX.Element => {
 
     // Extract and update price range
     const priceValue = searchParams?.get('maxPrice') ? Number(searchParams.get('maxPrice')) : null;
-    const priceIndex = labels.findIndex((label) => label.value === priceValue);
+    const priceIndex = ranges.findIndex((range) => range.value === priceValue);
     setRangeValue(priceIndex);
 
     // Extract and update checked price options
@@ -303,7 +344,7 @@ const SearchPage: FC = (): JSX.Element => {
         checkedLanguages.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
-  }, [labels, searchParams]);
+  }, [ranges, searchParams]);
 
   useEffect(() => {
     updateFromURL();
@@ -317,7 +358,7 @@ const SearchPage: FC = (): JSX.Element => {
       return value || value === 0 ? `${key}=${encodeURIComponent(value)}` : '';
     };
 
-    const priceValue = labels[rangeValue].value !== null ? labels[rangeValue].value : '';
+    const priceValue = ranges[rangeValue].value !== null ? ranges[rangeValue].value : '';
 
     const queryParams = [
       createQueryString('term', savedSearchValue),
@@ -402,7 +443,7 @@ const SearchPage: FC = (): JSX.Element => {
 
     // Set request parameters
     setRequestParameters(decodeURIComponent(requestUrl.href.split('https://redsteam.com')[1]));
-  }, [filters, labels, rangeValue, router, savedSearchValue, selectedOption]);
+  }, [filters, ranges, rangeValue, router, savedSearchValue, selectedOption]);
 
   useEffect(() => {
     constructSearchURL();

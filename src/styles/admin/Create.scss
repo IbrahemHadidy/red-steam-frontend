@@ -38,6 +38,17 @@
   min-width: 250px;
   display: flex;
   flex-direction: column;
+
+  &.radio {
+    input {
+      margin-right: 0.5rem;
+    }
+
+    label {
+      margin-right: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
 }
 
 .form-label {

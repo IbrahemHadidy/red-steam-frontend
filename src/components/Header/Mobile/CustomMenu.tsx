@@ -63,11 +63,9 @@ const SteamMenu: FC = (): JSX.Element => {
 
   const handleMenuItemClick = (menuItem: MenuItem): void => {
     if (
-      menuItem.id === 'support' ||
-      menuItem.id === 'admin' ||
-      menuItem.id === 'account-details' ||
+      menuItem.id === 'store' ||
+      menuItem.id === 'profile-settings' ||
       menuItem.id === 'store-preferences' ||
-      menuItem.id === 'change-language' ||
       menuItem.id === 'change-user'
     ) {
       router.push(menuItem.link);
@@ -98,10 +96,9 @@ const SteamMenu: FC = (): JSX.Element => {
         return (
           <div
             className={`menu-item ${menuClass} ${
-              menuItem.id === 'view-profile' ||
-              menuItem.id === 'account-details' ||
+              menuItem.id === 'store' ||
+              menuItem.id === 'profile-settings' ||
               menuItem.id === 'store-preferences' ||
-              menuItem.id === 'change-language' ||
               menuItem.id === 'change-user'
                 ? 'has-dropdown'
                 : ''
@@ -114,10 +111,8 @@ const SteamMenu: FC = (): JSX.Element => {
             >
               <span className="menu-item-text">{menuItem.text}</span>
               {menuItem.id === 'notifications' ||
-              menuItem.id === 'store' ||
-              menuItem.id === 'you-and-friends' ||
-              menuItem.id === 'community' ||
-              menuItem.id === 'create' ? (
+              menuItem.id === 'profile' ||
+              menuItem.id === 'admin' ? (
                 <img
                   src={dropdown.src}
                   alt="Rotate Icon"
@@ -126,10 +121,9 @@ const SteamMenu: FC = (): JSX.Element => {
               ) : null}
             </div>
             {openedItems[menuItem.id] &&
-              menuItem.id !== 'support' &&
-              menuItem.id !== 'account-details' &&
+              menuItem.id !== 'store' &&
+              menuItem.id !== 'profile-settings' &&
               menuItem.id !== 'store-preferences' &&
-              menuItem.id !== 'change-language' &&
               menuItem.id !== 'change-user' && (
                 <animated.div
                   className={`submenu-wrapper inner-menu ${
@@ -239,7 +233,7 @@ const SteamMenu: FC = (): JSX.Element => {
               {generateMenuItems(sharedData.minorMenuItems, 'smallnav')}
             </div>
 
-            <div className="mainmenu_footer_spacer"></div>
+            <div className="mainmenu_footer_spacer" />
             <div className="mainmenu_footer">
               <div className="mainmenu_footer_logo">
                 <Image src={valveLogo} alt="Valve Footer Logo" />

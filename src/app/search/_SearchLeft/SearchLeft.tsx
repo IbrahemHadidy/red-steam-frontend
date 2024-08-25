@@ -12,7 +12,7 @@ import HoverSummary from 'components/HoverSummary/HoverSummary';
 // Contexts
 import { AuthContext } from 'contexts/AuthContext';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Utils

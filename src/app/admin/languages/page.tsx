@@ -10,26 +10,32 @@ import { toast } from 'react-toastify';
 import Admin from 'app/admin/_Admin/Admin';
 
 // Services
-import { createTag } from 'services/common/tags';
+import { createLanguage } from 'services/common/languages';
 
 // Types
 import type { FC, JSX } from 'react';
 
-const TagCreate: FC = (): JSX.Element => {
+const LanguagesAdmin: FC = (): JSX.Element => {
   // States
   const [name, setName] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
-    const result: { message: string } = await createTag(name);
+    const result: { message: string } = await createLanguage(name);
     toast.success(result.message);
     setSubmitted(submitted + 1);
     setName('');
   };
 
   return (
-    <Admin type="tag" name={name} setName={setName} onSubmit={onSubmit} submitted={submitted} />
+    <Admin
+      type="language"
+      name={name}
+      setName={setName}
+      onSubmit={onSubmit}
+      submitted={submitted}
+    />
   );
 };
 
-export default TagCreate;
+export default LanguagesAdmin;

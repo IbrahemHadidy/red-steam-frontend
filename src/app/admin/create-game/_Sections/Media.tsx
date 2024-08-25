@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
-import type { Screenshot, Video } from '../create.types';
+import type { Screenshot, Video } from '../game-admin.types';
 
 interface MediaProps {
   screenshots: Screenshot[];

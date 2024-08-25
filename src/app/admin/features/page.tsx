@@ -15,7 +15,7 @@ import { createFeature } from 'services/common/features';
 // Types
 import type { ChangeEvent, FC, JSX } from 'react';
 
-const FeatureCreate: FC = (): JSX.Element => {
+const FeaturesAdmin: FC = (): JSX.Element => {
   // States
   const [name, setName] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
@@ -55,4 +55,4 @@ const FeatureCreate: FC = (): JSX.Element => {
   );
 };
 
-export default FeatureCreate;
+export default FeaturesAdmin;

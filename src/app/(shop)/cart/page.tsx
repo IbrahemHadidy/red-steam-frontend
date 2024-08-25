@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 // Contexts
 import { AuthContext } from 'contexts/AuthContext';
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 

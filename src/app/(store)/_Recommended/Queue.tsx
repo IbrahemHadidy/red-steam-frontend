@@ -1,6 +1,6 @@
 'use client';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Toast notifications

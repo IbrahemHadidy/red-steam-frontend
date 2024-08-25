@@ -2,7 +2,7 @@
 import Create from './CreateForm';
 import ItemsList from './ItemsList';
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 
 // Types
@@ -17,6 +17,16 @@ const Admin: FC<Admin> = ({
   setWebsite,
   handleIconChange,
   icon,
+  gameId,
+  setGameId,
+  discountPrice,
+  setDiscountPrice,
+  offerType,
+  setOfferType,
+  discountStartDate,
+  setDiscountStartDate,
+  discountEndDate,
+  setDiscountEndDate,
   onSubmit,
   submitted,
 }): JSX.Element => {
@@ -25,16 +35,28 @@ const Admin: FC<Admin> = ({
 
   return (
     <>
-      <Create
-        type={type}
-        name={name}
-        setName={setName}
-        website={website}
-        setWebsite={setWebsite}
-        handleIconChange={handleIconChange}
-        icon={icon}
-        onSubmit={onSubmit}
-      />
+      {type !== 'review' && (
+        <Create
+          type={type}
+          name={name}
+          setName={setName}
+          website={website}
+          setWebsite={setWebsite}
+          handleIconChange={handleIconChange}
+          gameId={gameId}
+          setGameId={setGameId}
+          discountPrice={discountPrice}
+          setDiscountPrice={setDiscountPrice}
+          offerType={offerType}
+          setOfferType={setOfferType}
+          discountStartDate={discountStartDate}
+          setDiscountStartDate={setDiscountStartDate}
+          discountEndDate={discountEndDate}
+          setDiscountEndDate={setDiscountEndDate}
+          icon={icon}
+          onSubmit={onSubmit}
+        />
+      )}
       <ItemsList type={type} submitted={submitted} />
     </>
   );

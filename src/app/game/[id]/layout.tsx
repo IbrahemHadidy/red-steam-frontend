@@ -19,6 +19,7 @@ import gameData from 'services/gameData/gameData';
 import pwaIcon from 'images/pwa-icon.png';
 
 // Styles
+import 'styles/admin/ActionsModals.scss';
 import 'styles/game/game.scss';
 
 // Types

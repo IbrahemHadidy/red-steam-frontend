@@ -78,6 +78,12 @@
         color: #fff;
       }
 
+      .info-text {
+        color: #fcff52;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
       .media-container {
         display: flex;
         flex-direction: row;
@@ -94,6 +100,15 @@
           flex-direction: column;
           gap: 10px;
           margin-bottom: 20px;
+          border: 1px solid #555;
+
+          &.fetched {
+            border: 1px solid #fbff00;
+
+            .media-details {
+              background-color: #535000;
+            }
+          }
 
           @media screen and (max-width: 740px) {
             width: 100%;

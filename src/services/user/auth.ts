@@ -3,7 +3,7 @@ import Api from 'services/api';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { User } from 'types/user.types';
 
-class Auth extends Api {
+class UserAuth extends Api {
   constructor() {
     super('user/auth');
   }
@@ -172,4 +172,4 @@ export const {
   verifyEmail,
   updateTokens,
   getWaitingTime,
-} = new Auth();
+} = new UserAuth();

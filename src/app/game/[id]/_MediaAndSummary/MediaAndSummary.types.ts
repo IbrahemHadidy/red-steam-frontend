@@ -10,7 +10,7 @@ import type { ImageEntry, VideoEntry } from 'types/media.types';
 type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
 
 export interface MediaAndSummaryProps {
-  game: GameData;
+  game: Game;
 }
 
 export interface GameOwnedProps {
@@ -18,8 +18,7 @@ export interface GameOwnedProps {
 }
 
 export interface GameTitleAreaProps {
-  category: string;
-  name: string;
+  game: Game;
 }
 
 export interface QueueAreaProps {

@@ -4,6 +4,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 // NextJS
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 // Contexts
@@ -34,27 +35,13 @@ const NavigationLinks: FC = (): JSX.Element => {
     setIsOpen(eventKey === isOpen ? null : eventKey);
   };
 
-  const handleDropdownClick = (e: MouseEvent, link: string): void => {
-    e.preventDefault();
-    setIsOpen(null);
-    router.push(link);
-  };
-
   const renderNavDropdownWithHover = (
     title: string,
     renderKey: string,
     mainLink: string,
     items: { link: string; text: string }[]
   ): JSX.Element => {
-    const isStoreActive: boolean =
-      !pathname?.includes('/notfound') &&
-      !pathname?.includes('/library') &&
-      !pathname?.includes('/admin') &&
-      !pathname?.includes('/user');
-
-    const dropdownStoreClassName: string = isStoreActive ? 'active-title' : '';
-
-    const isUserActive: boolean = pathname?.includes('/user');
+    const isUserActive: boolean = pathname?.includes('/user') && !pathname?.includes('/admin');
     const dropdownUserClassName: string = isUserActive ? 'active-title' : '';
     const isAdminActive: boolean = pathname?.startsWith('/admin');
     const dropdownAdminClassName: string = isAdminActive ? 'active-title' : '';
@@ -63,7 +50,7 @@ const NavigationLinks: FC = (): JSX.Element => {
       <NavDropdown
         title={
           <span
-            className={`main-dropdowns ${title === 'STORE' ? dropdownStoreClassName : ''} ${title.includes('Profile') || title.includes(userData?.username as string) ? dropdownUserClassName : ''} ${title.includes('Admin') ? dropdownAdminClassName : ''}`}
+            className={`main-dropdowns ${title.includes('Profile') || title.includes(userData?.username as string) ? dropdownUserClassName : ''} ${title.includes('Admin') ? dropdownAdminClassName : ''}`}
           >
             {title}
           </span>
@@ -75,16 +62,23 @@ const NavigationLinks: FC = (): JSX.Element => {
         onMouseLeave={(e) => handleDropdownToggle(e, renderKey)}
         show={isOpen === renderKey}
         key={renderKey}
-        onClick={(e) => handleDropdownClick(e, mainLink)}
       >
         {items.map((item, idx) => (
-          <NavDropdown.Item key={idx} href={item.link}>
+          <Link key={idx} href={item.link} className="dropdown-item">
             {item.text}
-          </NavDropdown.Item>
+          </Link>
         ))}
       </NavDropdown>
     );
   };
+
+  const isStoreActive: boolean =
+    !pathname?.includes('/notfound') &&
+    !pathname?.includes('/library') &&
+    !pathname?.includes('/admin') &&
+    !pathname?.includes('/user');
+
+  const dropdownStoreClassName: string = isStoreActive ? 'active-title' : '';
 
   const isLibraryActive: boolean = pathname?.startsWith('/library');
   const dropdownLibraryClassName: string = isLibraryActive ? 'active-title' : '';
@@ -93,6 +87,11 @@ const NavigationLinks: FC = (): JSX.Element => {
     setIsOpen(null);
   }, [router]);
 
+  const handleStoreNavigation = (e: MouseEvent): void => {
+    e.preventDefault();
+    router.push('/');
+  };
+
   const handleLibraryNavigation = (e: MouseEvent): void => {
     e.preventDefault();
     router.push('/library');
@@ -100,14 +99,19 @@ const NavigationLinks: FC = (): JSX.Element => {
 
   return (
     <Nav>
-      {renderNavDropdownWithHover('STORE', '1', '/', sharedData.subMenus[0].items)}
+      <Nav.Link
+        onClick={handleStoreNavigation}
+        className={`main-dropdowns  ${dropdownStoreClassName}`}
+      >
+        Store
+      </Nav.Link>
       {isLoggedIn && userData?.isAdmin && (
         <>
           {renderNavDropdownWithHover(
             'Admin',
-            '2',
+            '1',
             '/admin/create-game',
-            sharedData.subMenus[2].items
+            sharedData.subMenus[1].items
           )}
         </>
       )}
@@ -122,9 +126,9 @@ const NavigationLinks: FC = (): JSX.Element => {
       {isLoggedIn &&
         renderNavDropdownWithHover(
           `${userData?.username ? userData.username : 'Profile'}`,
-          '3',
+          '2',
           '/user',
-          sharedData.subMenus[1].items
+          sharedData.subMenus[0].items
         )}
       <Nav.Link
         href="https://github.com/IbrahemHadidy/red-steam/issues"

@@ -20,7 +20,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 // Contexts
 import { AuthContext } from 'contexts/AuthContext';
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 
 // Utils

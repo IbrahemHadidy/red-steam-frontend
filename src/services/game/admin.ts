@@ -1,7 +1,7 @@
 import Api from 'services/api';
 
 // Types
-import type { Screenshot, Video } from 'app/admin/game/create.types';
+import type { Screenshot, Video } from 'app/admin/create-game/create-game.types';
 import type { AxiosRequestConfig } from 'axios';
 import type { Game } from 'types/game.types';
 type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
@@ -16,9 +16,9 @@ export type Thumbnails = {
   tabImage: File;
 };
 
-class GameApi extends Api {
+class AdminApi extends Api {
   constructor() {
-    super('game');
+    super('game/admin');
   }
 
   public createGame = async (
@@ -31,7 +31,7 @@ class GameApi extends Api {
 
     const formData: FormData = new FormData();
 
-    const body: { [key: string]: any } = {
+    const body: { [key: string]: unknown } = {
       name: gameData.name,
       category: gameData.category,
       description: gameData.description,
@@ -94,61 +94,16 @@ class GameApi extends Api {
     return data;
   };
 
-  public search = async (): Promise<Game[]> => {
-    const { data } = await this.get('search');
-    return data;
-  };
-
-  public getByParameters = async (parameters: string): Promise<Game[]> => {
-    const { data } = await this.get(`parameters/${parameters}`);
-    return data;
-  };
-
-  public getFeatured = async (limit: string): Promise<Game[]> => {
-    const { data } = await this.get(`featured/?limit=${limit}`);
-    return data;
-  };
-
-  public getByTags = async (tags: number[], limit: string): Promise<Game[]> => {
-    const { data } = await this.get(`tags/?tags=${tags}&limit=${limit}`);
-    return data;
-  };
-
-  public getById = async (id: string): Promise<Game[]> => {
-    const { data } = await this.get(`${id}`);
-    return data;
-  };
-
-  public getByOffers = async (): Promise<Game[]> => {
-    const { data } = await this.get(`offers`);
-    return data;
-  };
-
-  public getByNewest = async (): Promise<Game[]> => {
-    const { data } = await this.get(`newest`);
-    return data;
-  };
-
-  public getByTopSales = async (): Promise<Game[]> => {
-    const { data } = await this.get(`top-sales`);
-    return data;
-  };
-
-  public getBySpecials = async (): Promise<Game[]> => {
-    const { data } = await this.get(`specials`);
+  public deleteGame = async (id: number): Promise<{ message: string }> => {
+    const accessToken: string | null = this.getAccessToken();
+    const config: AxiosRequestConfig = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+    const { data } = await this.delete(`${id}`, config);
     return data;
   };
 }
 
-export const {
-  createGame,
-  search,
-  getByParameters,
-  getFeatured,
-  getByTags,
-  getById,
-  getByOffers,
-  getByNewest,
-  getByTopSales,
-  getBySpecials,
-} = new GameApi();
+export const { createGame, deleteGame } = new AdminApi();

@@ -1,5 +1,5 @@
 // Styles
-import 'styles/admin/GameCreate.scss';
+import 'styles/admin/GameAdmin.scss';
 import 'styles/game/game.scss';
 
 // Types

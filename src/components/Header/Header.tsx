@@ -11,7 +11,7 @@ const CustomMobileComponent = dynamic(() => import('./Mobile/CustomMobileCompone
   ssr: false,
 });
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Styles

@@ -15,7 +15,7 @@ import { createDeveloper } from 'services/common/developers';
 // Types
 import type { FC, JSX } from 'react';
 
-const DeveloperCreate: FC = (): JSX.Element => {
+const DevelopersAdmin: FC = (): JSX.Element => {
   // States
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
@@ -43,4 +43,4 @@ const DeveloperCreate: FC = (): JSX.Element => {
   );
 };
 
-export default DeveloperCreate;
+export default DevelopersAdmin;

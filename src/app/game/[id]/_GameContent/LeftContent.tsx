@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -13,7 +13,7 @@ import DomPurify from 'dompurify';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Services
@@ -59,8 +59,8 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
     [userData, game.id]
   );
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
+  useEffect(() => {
+    const handleResize = () => {
       if (aboutRef.current && aboutRef.current.scrollHeight >= 850) {
         setIsAboutExpanded(false);
       }
@@ -70,27 +70,13 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
       if (sysReqRef.current && sysReqRef.current.scrollHeight >= 220) {
         setIsSysReqExpanded(false);
       }
-    }, 2000);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     if (aboutRef.current && aboutRef.current.scrollHeight >= 850) {
-  //       setIsAboutExpanded(false);
-  //     }
-  //     if (matureRef.current && matureRef.current.scrollHeight >= 120) {
-  //       setIsMatureExpanded(false);
-  //     }
-  //     if (sysReqRef.current && sysReqRef.current.scrollHeight >= 220) {
-  //       setIsSysReqExpanded(false);
-  //     }
-  //   };
-
-  //   handleResize(); // Call on mount
-  //   window.addEventListener('resize', handleResize);
-
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
 
   const toggleExpand = (setExpand: Dispatch<SetStateAction<boolean>>, expanded: boolean): void => {
     setExpand(!expanded);

@@ -6,7 +6,7 @@ import { Fragment } from 'react';
 // NextJS
 import Link from 'next/link';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Components

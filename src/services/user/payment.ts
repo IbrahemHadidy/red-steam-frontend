@@ -3,7 +3,7 @@ import Api from 'services/api';
 // Types
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-class Payment extends Api {
+class UserPayment extends Api {
   constructor() {
     super('payment/order');
   }
@@ -47,4 +47,4 @@ class Payment extends Api {
   };
 }
 
-export const { createOrder, captureOrder } = new Payment();
+export const { createOrder, captureOrder } = new UserPayment();

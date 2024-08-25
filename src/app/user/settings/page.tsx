@@ -18,7 +18,7 @@ import ChangeModal from './_Modals/ChangeModal';
 import DeleteAccountModal from './_Modals/DeleteAccountModal';
 import DeletePhoneModal from './_Modals/DeletePhoneModal';
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 
 // Services

@@ -1,5 +1,5 @@
 import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
-import type { Pricing } from '../create.types';
+import type { Pricing } from '../create-game.types';
 interface PricingProps {
   pricing: Pricing;
   setPricing: Dispatch<SetStateAction<Pricing>>;

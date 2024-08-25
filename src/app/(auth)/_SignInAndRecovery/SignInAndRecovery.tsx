@@ -24,7 +24,7 @@ import { AuthContext } from 'contexts/AuthContext';
 import Footer from 'components/Footer/Footer';
 import Header from 'components/Header/Header';
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 

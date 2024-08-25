@@ -13,14 +13,14 @@ import Link from 'next/link';
 import HoverSummary from 'components/HoverSummary/HoverSummary';
 import Slider from 'react-slick';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Utils
 import formatDate from 'utils/formatDate';
 
 // Services
-import { getFeatured } from 'services/game/game';
+import { getFeatured } from 'services/game/data';
 
 // Types
 import type { FC, JSX } from 'react';

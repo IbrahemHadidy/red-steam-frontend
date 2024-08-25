@@ -3,7 +3,7 @@
 // NextJS
 import dynamic from 'next/dynamic';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Styles

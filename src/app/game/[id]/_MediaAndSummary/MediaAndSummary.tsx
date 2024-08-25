@@ -14,7 +14,7 @@ import { ScreenshotModal } from './LeftGameSummary/Screenshot/Screenshot';
 import { QueueArea } from './QueueArea/QueueArea';
 import { RightGameSummary } from './RightGameSummary/RightGameSummary';
 
-// Hooks
+// Custom Hooks
 import useResponsiveViewport from 'hooks/useResponsiveViewport';
 
 // Utils
@@ -295,7 +295,7 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
 
   return (
     <div className="MediaAndSummary" key={game.id}>
-      <GameTitleArea category={game.category} name={game.name} />
+      <GameTitleArea game={game} />
       <div className="game-background">
         <div className="game-page-content">
           <div className="media-summary-block">

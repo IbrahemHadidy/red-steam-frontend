@@ -5,6 +5,7 @@ import RedirectIfNotAdmin from 'components/RedirectIfNotAdmin';
 import RedirectIfNotLoggedIn from 'components/RedirectIfNotLoggedIn';
 
 // Styles
+import 'styles/admin/ActionsModals.scss';
 import 'styles/admin/Create.scss';
 import 'styles/admin/ItemsList.scss';
 
@@ -14,16 +15,16 @@ interface Props {
   children: ReactNode;
 }
 
-const CreateLayout: FC<Props> = ({ children }): JSX.Element => {
+const AdminLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <>
       <RedirectIfNotLoggedIn />
       <RedirectIfNotAdmin />
       <Header />
-      <main className="create">{children}</main>
+      <main className="admin">{children}</main>
       <Footer />
     </>
   );
 };
 
-export default CreateLayout;
+export default AdminLayout;

@@ -23,7 +23,7 @@ import ThumbnailsSection from './_Sections/Thumbnails';
 const GameContent = dynamic(() => import('app/game/[id]/_GameContent/layout'));
 const MediaAndSummary = dynamic(() => import('app/game/[id]/_MediaAndSummary/MediaAndSummary'));
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 
 // Utils
@@ -34,11 +34,11 @@ import { getDevelopers } from 'services/common/developers';
 import { getFeatures } from 'services/common/features';
 import { getPublishers } from 'services/common/publishers';
 import { getTags } from 'services/common/tags';
-import { createGame } from 'services/game/game';
+import { createGame } from 'services/game/admin';
 
 // Types
 import type { FC, JSX, MouseEvent, RefObject } from 'react';
-import type { Thumbnails as ServiceThumbnails } from 'services/game/game';
+import type { Thumbnails as ServiceThumbnails } from 'services/game/admin';
 import type { Game } from 'types/game.types';
 import type {
   Language,
@@ -48,7 +48,7 @@ import type {
   SystemRequirements as SystemRequirementsType,
   Thumbnails,
   Video,
-} from './create.types';
+} from './create-game.types';
 type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
 
 const GameCreate: FC = (): JSX.Element => {
@@ -628,7 +628,7 @@ const GameCreate: FC = (): JSX.Element => {
           </>
         ) : (
           <>
-            <MediaAndSummary game={gameData} />
+            <MediaAndSummary game={gameData as Game} />
             <GameContent game={gameData} />
           </>
         )}

@@ -1,12 +1,12 @@
-import { Developer, Publisher } from 'types/company.types';
-import { Feature } from 'types/feature.types';
-import { Language, LanguageSupportEntry } from 'types/language.types';
-import { ImageEntry, ThumbnailsEntry, VideoEntry } from 'types/media.types';
-import { PlatformEntry } from 'types/platform.types';
-import { Pricing } from 'types/pricing.types';
-import { Review } from 'types/review.types';
-import { SystemRequirementEntry } from 'types/system-requirements.types';
-import { Tag } from 'types/tag.types';
+import type { Developer, Publisher } from 'types/company.types';
+import type { Feature } from 'types/feature.types';
+import type { Language, LanguageSupportEntry } from 'types/language.types';
+import type { ImageEntry, ThumbnailsEntry, VideoEntry } from 'types/media.types';
+import type { PlatformEntry } from 'types/platform.types';
+import type { Pricing } from 'types/pricing.types';
+import type { Review } from 'types/review.types';
+import type { SystemRequirementEntry } from 'types/system-requirements.types';
+import type { Tag } from 'types/tag.types';
 
 export interface Game {
   id: number;

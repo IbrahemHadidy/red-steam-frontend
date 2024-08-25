@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 // Services
-import { getFeatured } from 'services/game/game';
+import { getFeatured } from 'services/game/data';
 
 // Types
 import type { FC, JSX } from 'react';

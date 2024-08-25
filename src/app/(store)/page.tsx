@@ -23,7 +23,7 @@ const Offers = dynamic(() => import('./_Offers/Offers'));
 // Skeletons
 const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
 
-// Hooks
+// Custom Hooks
 import useDynamicBackground from 'hooks/useDynamicBackground';
 
 // Types

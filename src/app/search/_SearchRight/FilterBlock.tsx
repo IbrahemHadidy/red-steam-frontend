@@ -1,5 +1,5 @@
 // React
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -28,11 +28,12 @@ export const FilterBlock: FC<FilterBlockProps> = ({
   const filterRef = useRef<HTMLDivElement>(null);
 
   // Add the dropdowns you want to be openend as default here
+  const defaultOpenDropdowns = useMemo((): string[] => ['Feature', 'Tag'], []);
   useEffect(() => {
-    if (title === 'Tag' || title === 'Feature') {
+    if (defaultOpenDropdowns.includes(title) && filters.length !== 0) {
       setIsOpen(true);
     }
-  }, [title]);
+  }, [defaultOpenDropdowns, filters.length, title]);
 
   useEffect(() => {
     setDropdownHeight(filterRef.current?.scrollHeight ?? 0);
@@ -86,7 +87,7 @@ export const FilterBlock: FC<FilterBlockProps> = ({
             )
             .map((row) => (
               <div
-                key={`included-${row.name}`}
+                key={`checked-${title}-${row.id}`}
                 className={`filter-control-row ${row.check === 'included' ? 'checked' : ''}`}
                 onClick={() => handleIncludeClick(row)}
               >
@@ -115,7 +116,7 @@ export const FilterBlock: FC<FilterBlockProps> = ({
                 )
                 .map((row) => (
                   <div
-                    key={`exluded${row.name}`}
+                    key={`excluded-${title}-${row.id}`}
                     className="filter-control-row excluded"
                     onClick={() => handleIncludeClick(row)}
                   >
@@ -145,7 +146,7 @@ export const FilterBlock: FC<FilterBlockProps> = ({
             )
             .map((row) => (
               <div
-                key={`tag${row.name}`}
+                key={`unchecked-${title}-${row.id}`}
                 className="filter-control-row"
                 onClick={() => handleIncludeClick(row)}
               >

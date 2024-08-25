@@ -5,6 +5,11 @@
   margin-left: auto;
   padding-bottom: 10px;
 
+  &.wide-list {
+    max-width: 1300px;
+    width: 99%;
+  }
+
   @media screen and (max-width: 960px) {
     padding: 24px 12px;
     width: 95%;
@@ -23,7 +28,6 @@
     align-items: center;
     margin: 20px 0;
     width: 100%;
-    max-width: 950px;
     margin-right: auto;
     margin-left: auto;
 
@@ -36,6 +40,8 @@
   .search-box {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 
     >div {
       display: flex;
@@ -89,6 +95,7 @@
   .items-per-page {
     margin: 20px 0;
     text-align: right;
+    width: 230px;
 
     label {
       margin-right: 10px;
@@ -128,13 +135,35 @@
         color: #fff;
         border-right: 1px solid #444;
 
+        &.center {
+          text-align: center;
+        }
+
         &.icon {
           width: 32px;
           text-align: center;
         }
 
+        &.user-id {
+          width: 100px;
+        }
+
+        &.mini {
+          text-align: center;
+          width: 90px;
+        }
+
+        &.created-at {
+          text-align: center;
+          width: 107px;
+        }
+
         &:first-child {
           width: 65px;
+
+          &.offer {
+            width: 93px;
+          }
         }
 
         &:last-child {
@@ -189,6 +218,23 @@
         border-right: none;
       }
 
+      &.copy-to-clipboard {
+        cursor: pointer;
+        user-select: none;
+      }
+
+      &.user-id {
+        color: #007bff;
+
+        &:hover {
+          color: #e0e0e0;
+        }
+      }
+
+      &.center {
+        text-align: center;
+      }
+
       &.icon {
         padding: 10px 7px;
       }
@@ -219,8 +265,6 @@
 
         .edit-icon,
         .delete-icon {
-          font-size: 18px;
-          color: #e0e0e0;
           transition: color 0.3s ease;
 
           &:hover {
@@ -276,126 +320,6 @@
         &:focus {
           outline: none;
         }
-      }
-    }
-  }
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
-}
-
-.delete-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
-  z-index: 1001;
-  width: 400px;
-  max-width: 90%;
-
-  h2 {
-    color: #fff;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: #ddd;
-    margin-bottom: 1.5rem;
-  }
-
-  .modal-actions {
-    display: flex;
-    justify-content: space-between;
-
-    button {
-      padding: 8px 16px;
-      background-color: #444;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #555;
-      }
-
-      &:first-child {
-        background-color: #ff5252;
-
-        &:hover {
-          background-color: #ff3333;
-        }
-      }
-    }
-  }
-}
-
-.edit-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
-  z-index: 1001;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-
-  form {
-    display: flex;
-    flex-direction: column;
-
-    .form-group {
-      margin-bottom: 15px;
-
-      label {
-        font-size: 14px;
-        color: #fff;
-        margin-bottom: 5px;
-        display: block;
-      }
-
-      input {
-        width: 94%;
-        padding: 10px;
-        border-radius: 4px;
-        border: 1px solid #444;
-        background-color: #444;
-        color: #e0e0e0;
-        font-size: 16px;
-
-        &:focus {
-          outline: none;
-          border-color: #ffcc00;
-        }
-      }
-    }
-
-    button {
-      padding: 10px;
-      background-color: #555;
-      color: #fff;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #777;
       }
     }
   }

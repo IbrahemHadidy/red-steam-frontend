@@ -1,3 +1,5 @@
+import type { Game } from 'types/game.types';
+
 export interface Pricing {
   id: number;
   free: boolean;
@@ -9,4 +11,5 @@ export interface Pricing {
   discountEndDate?: Date;
   offerType?: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
   price: number;
+  game?: Game;
 }

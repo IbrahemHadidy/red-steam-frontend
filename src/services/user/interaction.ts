@@ -7,7 +7,7 @@ import type { Review } from 'types/review.types';
 import type { Tag } from 'types/tag.types';
 import type { LibraryItem, WishlistItem } from 'types/user.types';
 
-class Interaction extends Api {
+class UserInteraction extends Api {
   constructor() {
     super('user/interaction');
   }
@@ -349,4 +349,4 @@ export const {
   getCart,
   reviewGame,
   getReviews,
-} = new Interaction();
+} = new UserInteraction();

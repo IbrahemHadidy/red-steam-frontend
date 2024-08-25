@@ -15,7 +15,7 @@ import { createPublisher } from 'services/common/publishers';
 // Types
 import type { FC, JSX } from 'react';
 
-const PublisherCreate: FC = (): JSX.Element => {
+const PublishersAdmin: FC = (): JSX.Element => {
   // States
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
@@ -42,4 +42,4 @@ const PublisherCreate: FC = (): JSX.Element => {
   );
 };
 
-export default PublisherCreate;
+export default PublishersAdmin;
