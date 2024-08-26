@@ -10,11 +10,17 @@ import { useRouter } from 'next/navigation';
 import 'styles/error.scss';
 
 // Types
+import type { Metadata } from 'next';
 import type { FC, JSX } from 'react';
 interface Props {
   error: Error;
   reset: () => void;
 }
+
+export const metadata: Metadata = {
+  title: 'Oops! Something went wrong.',
+  description: 'Please refresh the page or try again later.',
+};
 
 const ErrorBoundary: FC<Props> = ({ error, reset }): JSX.Element => {
   const router = useRouter();

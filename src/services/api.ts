@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 // Types
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -12,9 +12,6 @@ class Api {
   constructor(endpointPrefix: string = '') {
     this.axiosInstance = axios.create({
       baseURL: `${this.baseURL}/api/${endpointPrefix}`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
   }
 
@@ -48,7 +45,7 @@ class Api {
         this.handleError(error);
       } else {
         console.error('Unknown error:', error);
-        toast.error('An unknown error occurred. Please try again later.');
+        // toast.error('An unknown error occurred. Please try again later.');
       }
       throw error;
     }
@@ -67,7 +64,7 @@ class Api {
         this.handleError(error);
       } else {
         console.error('Unknown error:', error);
-        toast.error('An unknown error occurred. Please try again later.');
+        // toast.error('An unknown error occurred. Please try again later.');
       }
       throw error;
     }
@@ -86,7 +83,7 @@ class Api {
         this.handleError(error);
       } else {
         console.error('Unknown error:', error);
-        toast.error('An unknown error occurred. Please try again later.');
+        // toast.error('An unknown error occurred. Please try again later.');
       }
       throw error;
     }
@@ -105,7 +102,7 @@ class Api {
         this.handleError(error);
       } else {
         console.error('Unknown error:', error);
-        toast.error('An unknown error occurred. Please try again later.');
+        // toast.error('An unknown error occurred. Please try again later.');
       }
       throw error;
     }
@@ -120,7 +117,7 @@ class Api {
         this.handleError(error);
       } else {
         console.error('Unknown error:', error);
-        toast.error('An unknown error occurred. Please try again later.');
+        // toast.error('An unknown error occurred. Please try again later.');
       }
       throw error;
     }
@@ -130,15 +127,15 @@ class Api {
     if (!error.response) {
       // Network error
       console.error('Network error:', error.message);
-      toast.error('Network error. Please check your internet connection.');
+      // toast.error('Network error. Please check your internet connection.');
     } else if (error.response && error.response.data && error.response.data.message) {
       // Server error message
       console.error(error.response.data.message);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     } else {
       // General error
       console.error('Error:', error.message || error);
-      toast.error(`Error: ${error.message || error}`);
+      // toast.error(`Error: ${error.message || error}`);
     }
   };
 }

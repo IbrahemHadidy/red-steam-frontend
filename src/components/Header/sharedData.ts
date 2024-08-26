@@ -22,7 +22,7 @@ const sharedData = {
         { id: 'create-game', text: 'Create game', link: '/admin/create-game' },
         { id: 'developers', text: 'Developers', link: '/admin/developers' },
         { id: 'publishers', text: 'Publishers', link: '/admin/publishers' },
-        { id: 'features', text: 'Features', link: '/create/features' },
+        { id: 'features', text: 'Features', link: '/admin/features' },
         { id: 'tags', text: 'Tags', link: '/admin/tags' },
         { id: 'languages', text: 'Languages', link: '/admin/languages' },
         { id: 'users', text: 'Users', link: '/admin/users' },

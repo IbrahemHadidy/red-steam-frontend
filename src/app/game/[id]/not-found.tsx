@@ -1,9 +1,5 @@
 'use client';
 
-// Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
-
 // Images
 import glitchImage from 'images/glitch-image.png';
 
@@ -11,32 +7,11 @@ import glitchImage from 'images/glitch-image.png';
 import 'styles/not-found.scss';
 
 // Types
-import type { Metadata } from 'next';
 import type { FC, JSX } from 'react';
-
-export const metadata: Metadata = {
-  title: 'Page Not Found',
-  description:
-    'The page you are looking for could not be found. It seems like you have wandered into uncharted territory.',
-  robots: 'noindex, nofollow',
-  openGraph: {
-    title: '404 - Page Not Found',
-    description: 'Oops! The page you are looking for could not be found.',
-    url: '/notfound',
-    type: 'website',
-    images: [
-      {
-        url: glitchImage.src,
-        alt: 'Page Not Found',
-      },
-    ],
-  },
-};
 
 const NotFound: FC = (): JSX.Element => {
   return (
     <>
-      <Header />
       <div className="not-found">
         <img src={glitchImage.src} alt="Page Not Found" className="not-found-image" />
         <div className="not-found-content">
@@ -44,9 +19,9 @@ const NotFound: FC = (): JSX.Element => {
             404
           </h1>
           <p className="not-found-text" data-text="Oops! Page Not Found">
-            Oops! Page Not Found
+            Oops! Game Not Found
           </p>
-          <p className="not-found-text" data-text="The page you're looking for could not be found.">
+          <p className="not-found-text" data-text="The game you're looking for could not be found.">
             The page you're looking for could not be found.
           </p>
           <p
@@ -57,7 +32,6 @@ const NotFound: FC = (): JSX.Element => {
           </p>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

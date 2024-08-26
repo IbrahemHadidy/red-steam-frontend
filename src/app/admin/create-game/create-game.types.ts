@@ -1,12 +1,12 @@
 export interface Thumbnails {
-  mainImage: string | File | null;
-  backgroundImage: string | File | null;
-  menuImg: string | File | null;
-  horizontalHeaderImage: string | File | null;
-  verticalHeaderImage: string | File | null;
-  smallHeaderImage: string | File | null;
-  searchImage: string | File | null;
-  tabImage: string | File | null;
+  mainImage: File | null;
+  backgroundImage: File | null;
+  menuImg: File | null;
+  horizontalHeaderImage: File | null;
+  verticalHeaderImage: File | null;
+  smallHeaderImage: File | null;
+  searchImage: File | null;
+  tabImage: File | null;
 }
 export interface Screenshot {
   id: number;

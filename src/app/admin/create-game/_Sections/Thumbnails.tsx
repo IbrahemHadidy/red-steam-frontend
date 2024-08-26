@@ -31,11 +31,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
   const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>, key: keyof Thumbnails): void => {
     if (e.target.files?.length) {
       const file: File = e.target.files[0];
-      const reader: FileReader = new FileReader();
-      reader.onloadend = () => {
-        setThumbnails((prev) => ({ ...prev, [key]: reader.result }));
-      };
-      reader.readAsDataURL(file);
+      setThumbnails((prev) => ({ ...prev, [key]: file }));
     }
   };
 
@@ -61,7 +57,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
     <section className="section-thumbnails">
       <h2>Thumbnails</h2>
       <div>
-        {Object.entries(thumbnails).map(([key, src], idx) => {
+        {Object.entries(thumbnails).map(([key, file], idx) => {
           const ref = {
             mainImage: mainImageRef,
             backgroundImage: backgroundImageRef,
@@ -72,6 +68,8 @@ const Thumbnails: FC<ThumbnailsProps> = ({
             searchImage: searchImageRef,
             tabImage: tabImageRef,
           };
+
+          const imageUrl = file instanceof File ? URL.createObjectURL(file) : undefined;
 
           return (
             <Fragment key={idx}>
@@ -99,10 +97,10 @@ const Thumbnails: FC<ThumbnailsProps> = ({
                     className="upload-button"
                     onClick={() => triggerFileInput(key as keyof Thumbnails)}
                   >
-                    {src ? 'Change Image' : 'Add Image'}
+                    {file ? 'Change Image' : 'Add Image'}
                   </button>
                 </div>
-                {src && <img src={src} alt={key} className="thumbnail-image" />}
+                {file && <img src={imageUrl} alt={key} className="thumbnail-image" />}
               </div>
               {idx < Object.keys(thumbnails).length - 1 && <hr />}
             </Fragment>

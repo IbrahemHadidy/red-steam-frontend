@@ -83,8 +83,30 @@ const GameCreate: FC = (): JSX.Element => {
   const [languages, setLanguages] = useState<Language[]>([]);
   const [platforms, setPlatforms] = useState<Platforms>({ win: true, mac: false });
   const [systemRequirements, setSystemRequirements] = useState<SystemRequirementsType>({
-    mini: {},
-    recommended: {},
+    mini: {
+      os: '',
+      cpu: '',
+      ram: '',
+      gpu: '',
+      dx: '',
+      network: '',
+      storage: '',
+      soundCard: '',
+      vrSupport: '',
+      additionalNotes: '',
+    },
+    recommended: {
+      os: '',
+      cpu: '',
+      ram: '',
+      gpu: '',
+      dx: '',
+      network: '',
+      storage: '',
+      soundCard: '',
+      vrSupport: '',
+      additionalNotes: '',
+    },
   });
   const [link, setLink] = useState<string>('');
   const [about, setAbout] = useState<string>('');
@@ -96,6 +118,7 @@ const GameCreate: FC = (): JSX.Element => {
   const [hasduplicateError, setHasDuplicateError] = useState<boolean>(false);
   const [preview, setPreview] = useState<boolean>(false);
   const [gameData, setGameData] = useState<GameData>({} as GameData);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Refs
   const nameRef = useRef<HTMLInputElement>(null);
@@ -133,6 +156,7 @@ const GameCreate: FC = (): JSX.Element => {
   const aboutRef = useRef<HTMLTextAreaElement>(null);
   const matureDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const legalRef = useRef<HTMLTextAreaElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
 
   // Utils
   const errorStyle: string = 'border: 1px solid rgb(255, 82, 82);';
@@ -250,13 +274,18 @@ const GameCreate: FC = (): JSX.Element => {
       firstInvalidRef = firstInvalidRef || tabImageRef;
     }
     if (
-      ((videos.length === 0 && screenshots.length === 0) || hasduplicateError) &&
+      ((videos.length === 0 && screenshots.length < 4) || hasduplicateError) &&
       mediaRef.current
     ) {
       mediaRef.current.style.cssText += errorStyle;
       firstInvalidRef = firstInvalidRef || mediaRef;
     }
     if (hasduplicateError && mediaRef.current) {
+      mediaRef.current.style.cssText += errorStyle;
+      firstInvalidRef = firstInvalidRef || mediaRef;
+    }
+    if (screenshots.filter((screenshot) => screenshot.featured).length !== 4 && mediaRef.current) {
+      toast.error('Please mark 4 screenshots as featured');
       mediaRef.current.style.cssText += errorStyle;
       firstInvalidRef = firstInvalidRef || mediaRef;
     }
@@ -358,14 +387,21 @@ const GameCreate: FC = (): JSX.Element => {
       publishers: publishers.length > 0 ? await getPublishers(publishers) : [],
       developers: developers.length > 0 ? await getDevelopers(developers) : [],
       thumbnailEntries: {
-        mainImage: thumbnails.mainImage as string,
-        verticalHeaderImage: thumbnails.verticalHeaderImage as string,
-        smallHeaderImage: thumbnails.smallHeaderImage as string,
-        searchImage: thumbnails.searchImage as string,
-        tabImage: thumbnails.tabImage as string,
-        backgroundImage: thumbnails.backgroundImage as string,
-        menuImg: thumbnails.menuImg as string,
-        horizontalHeaderImage: thumbnails.horizontalHeaderImage as string,
+        mainImage: (thumbnails.mainImage && URL.createObjectURL(thumbnails.mainImage)) || '',
+        verticalHeaderImage:
+          (thumbnails.verticalHeaderImage && URL.createObjectURL(thumbnails.verticalHeaderImage)) ||
+          '',
+        smallHeaderImage:
+          (thumbnails.smallHeaderImage && URL.createObjectURL(thumbnails.smallHeaderImage)) || '',
+        searchImage: (thumbnails.searchImage && URL.createObjectURL(thumbnails.searchImage)) || '',
+        tabImage: (thumbnails.tabImage && URL.createObjectURL(thumbnails.tabImage)) || '',
+        backgroundImage:
+          (thumbnails.backgroundImage && URL.createObjectURL(thumbnails.backgroundImage)) || '',
+        menuImg: (thumbnails.menuImg && URL.createObjectURL(thumbnails.menuImg)) || '',
+        horizontalHeaderImage:
+          (thumbnails.horizontalHeaderImage &&
+            URL.createObjectURL(thumbnails.horizontalHeaderImage)) ||
+          '',
       },
       imageEntries: screenshots.map((entry) => ({
         ...entry,
@@ -426,7 +462,9 @@ const GameCreate: FC = (): JSX.Element => {
   }, [getGameData]);
 
   useDynamicBackground(
-    preview ? `url(${thumbnails.backgroundImage}) center top no-repeat #1b2838` : `#181A21`,
+    preview
+      ? `url(${thumbnails.backgroundImage && URL.createObjectURL(thumbnails.backgroundImage)}) center top no-repeat #1b2838`
+      : `#181A21`,
     [thumbnails.backgroundImage, preview]
   );
 
@@ -501,18 +539,25 @@ const GameCreate: FC = (): JSX.Element => {
     );
     if (response.message === 'Game created successfully') {
       router.push('/');
-      toast.success('Game created successfully');
     } else {
-      toast.error('Failed to create game, please try again');
       resetAllWarnings();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  const handleSubmitClick = (e: MouseEvent<HTMLButtonElement>): void => {
+  const handleSubmitClick = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
     if (checkFormValidation()) {
-      handleGameCreate;
+      setIsLoading(true);
+      try {
+        await toast.promise(handleGameCreate(), {
+          pending: 'Creating game...',
+          success: 'Game created successfully',
+          error: 'Failed to create game, please try again',
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -635,10 +680,17 @@ const GameCreate: FC = (): JSX.Element => {
         <div className="form-buttons">
           <button
             type="submit"
-            className="submit-button"
+            className={`submit-button ${isLoading ? 'loading' : ''}`}
             onClick={preview ? handleSubmitClick : handlePreviewClick}
+            ref={submitRef}
+            disabled={isLoading}
           >
             {preview ? 'Submit' : 'Preview'}
+            {isLoading && (
+              <div className="loading-container">
+                <div className="loading-spinner" />
+              </div>
+            )}
           </button>
           <button type="button" className="reset-button" onClick={handleResetClick}>
             Reset

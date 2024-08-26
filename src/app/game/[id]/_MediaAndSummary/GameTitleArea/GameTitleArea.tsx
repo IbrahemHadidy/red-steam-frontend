@@ -6,6 +6,7 @@ import { useContext, useState } from 'react';
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Toast notifications
 import { toast } from 'react-toastify';
@@ -24,6 +25,9 @@ import type { FC, JSX } from 'react';
 import type { GameTitleAreaProps } from '../MediaAndSummary.types';
 
 export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => {
+  // Init
+  const router = useRouter();
+
   // Contexts
   const { userData } = useContext(AuthContext);
 
@@ -38,6 +42,8 @@ export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => 
   const onDelete = (itemId: number): void => {
     setDeleteItemId(itemId);
     setDeleteModalOpen(true);
+    toast.success('Game deleted successfully');
+    router.replace('/');
   };
 
   return (

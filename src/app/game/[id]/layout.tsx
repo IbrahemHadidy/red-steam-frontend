@@ -13,7 +13,7 @@ import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
 const LoadingSkeleton = dynamic(() => import('./Skeleton'));
 
 // Services
-import gameData from 'services/gameData/gameData';
+import { getById } from 'services/game/data';
 
 // Images
 import pwaIcon from 'images/pwa-icon.png';
@@ -36,33 +36,41 @@ interface MetaDataProps {
 }
 
 export const generateMetadata = async ({ params }: MetaDataProps): Promise<Metadata> => {
-  const game: Game | undefined = gameData.find((game) => game.id === Number(params.id));
+  try {
+    const game: Game | undefined = await getById(Number(params.id));
 
-  const discountPercentage: string = game?.pricing.discountPercentage?.toString() || '';
+    const discountPercentage: string = game?.pricing.discountPercentage?.toString() || '';
 
-  return {
-    title: `${
-      game?.pricing.discount && discountPercentage
-        ? `Save ${discountPercentage.replace(/^-(\d+)/, '$1')}% on`
-        : ''
-    } ${game?.name} on Steam`,
-    description: game?.description,
-    openGraph: {
+    return {
       title: `${
         game?.pricing.discount && discountPercentage
           ? `Save ${discountPercentage.replace(/^-(\d+)/, '$1')}% on`
           : ''
       } ${game?.name} on Steam`,
       description: game?.description,
-      images: [
-        {
-          url: game?.thumbnailEntries.mainImage || pwaIcon.src,
-          width: 800,
-          height: 600,
-        },
-      ],
-    },
-  };
+      openGraph: {
+        title: `${
+          game?.pricing.discount && discountPercentage
+            ? `Save ${discountPercentage.replace(/^-(\d+)/, '$1')}% on`
+            : ''
+        } ${game?.name} on Steam`,
+        description: game?.description,
+        images: [
+          {
+            url: game?.thumbnailEntries.mainImage || pwaIcon.src,
+            width: 800,
+            height: 600,
+          },
+        ],
+      },
+    };
+  } catch (error) {
+    console.log('Error fetching game metadata:', error);
+    return {
+      title: 'Game not found',
+      description: 'Game not found',
+    };
+  }
 };
 
 const GameLayout: FC<Props> = ({ children }): JSX.Element => {

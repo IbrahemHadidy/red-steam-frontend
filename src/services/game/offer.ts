@@ -42,7 +42,10 @@ class OfferApi extends Api {
   ): Promise<{ items: Pricing[]; total: number; totalPages: number }> => {
     const endpoint: string = '/paginated';
     let queryString: string = `?page=${page}&limit=${limit}&orderBy=${orderBy}&order=${order}`;
-    if (searchQuery) queryString += `&searchQuery=${JSON.stringify(searchQuery)}`;
+    if (searchQuery) {
+      const encodedSearchQuery = encodeURIComponent(JSON.stringify(searchQuery));
+      queryString += `&searchQuery=${encodedSearchQuery}`;
+    }
 
     const { data } = await this.get(`${endpoint}${queryString}`);
     return data;

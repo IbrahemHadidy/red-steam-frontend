@@ -1,31 +1,39 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
 // Services
-import gameData from 'services/gameData/gameData';
+import { search } from 'services/game/data';
 
 // Images
 import blank from 'images/blank.gif';
 
 // Types
 import type { ChangeEvent, FC } from 'react';
+import type { Game } from 'types/game.types';
 
 const NavSearch: FC = (): JSX.Element => {
   // States
   const [searchInput, setSearchInput] = useState<string>('');
+  const [gameData, setGameData] = useState<Game[]>([]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchInput(e.target.value);
   };
 
-  // TODO: send searchInput to backend then fetch the requested data
-  // make the backend send 10 games at a time for every change
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedGameData = await search(searchInput);
+      setGameData(fetchedGameData);
+    };
+
+    fetchData();
+  }, [searchInput]);
 
   return (
     <div className="search-area">
@@ -61,8 +69,11 @@ const NavSearch: FC = (): JSX.Element => {
                 />
               </div>
               <div className="match-price">
-                {!game.pricing.free && '$'}
-                {game.pricing.discountPrice ? game.pricing.discountPrice : game.pricing.basePrice}
+                {game.pricing.free
+                  ? 'Free to Play'
+                  : game.pricing.discountPrice
+                    ? game.pricing.discountPrice
+                    : game.pricing.basePrice}
               </div>
             </Link>
           ))}

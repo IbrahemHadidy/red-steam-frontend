@@ -182,12 +182,12 @@ body {
 	cursor: pointer;
 	width: 270px;
 
-	&:hover {
+	&:not(:disabled):hover {
 		background: linear-gradient(90deg, #06BFFF 30%, #2D73FF 100%);
 	}
 
 	&.loading {
-		color: rgba(0, 0, 0, 0);
+		color: transparent !important;
 
 		.loading-container {
 			position: absolute;
@@ -225,6 +225,7 @@ body {
 
 	&:disabled {
 		opacity: .5;
+		cursor: not-allowed;
 	}
 }
 
