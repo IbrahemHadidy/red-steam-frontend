@@ -1,16 +1,16 @@
 'use client';
 
 // React
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 
 // Images
-import highlightSpacer from 'images/game_highlight_image_spacer.gif';
+import highlightSpacer from '@images/game_highlight_image_spacer.gif';
 
 // Styles
-import 'styles/game/SteamVideo.scss';
+import '@styles/game/SteamVideo.scss';
 
 // Types
 import type { ChangeEvent, EventHandler, FC, JSX, SyntheticEvent } from 'react';
@@ -24,8 +24,6 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   setAutoplay,
   autoplayInitialized,
   setAutoplayInitialized,
-  wasPausedBeforeSwap,
-  setWasPausedBeforeSwap,
 }): JSX.Element => {
   // States
   const [overlayBottom, setOverlayBottom] = useState<string>('-37px');
@@ -37,6 +35,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const [isMuted, setMuted] = useState<boolean>(
     JSON.parse(localStorage.getItem('isMuted') || 'false')
   );
+  const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState<boolean>(false);
 
   // Refs
   const playerAreaRef = useRef<HTMLDivElement | null>(null);
@@ -102,6 +101,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   const handleMouseLeave = (): void => {
     clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
+      // Hide the overlay after 1 second
       setOverlayBottom('-37px');
     }, 1000);
   };
@@ -152,25 +152,17 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     }
   };
 
-  const handleDurationChange = useCallback((): void => {
-    const video: HTMLVideoElement | null = videoRef.current;
-
-    if (video) {
-      setDuration(video.duration);
-    }
-  }, [videoRef]);
-
-  // handle visibility play/pause
+  // handle visibility change play/pause
   useEffect(() => {
     const video: HTMLVideoElement | null = videoRef.current;
 
     const handleVisibilityChange = (): void => {
       if (video && document.hidden) {
-        // Save the current playback state before swapping
+        // Save the current playback state before visibility change
         setWasPausedBeforeSwap(video.paused);
         video.pause();
       } else {
-        // Resume playback only if the video was not paused before the swap
+        // Resume playback only if the video was not paused before visibility change
         if (video && !wasPausedBeforeSwap) {
           video.play();
         }
@@ -184,6 +176,40 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     };
   }, [setWasPausedBeforeSwap, videoRef, wasPausedBeforeSwap]);
 
+  // handle video intersection
+  useEffect(() => {
+    const video: HTMLVideoElement | null = videoRef.current;
+
+    const observer = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]): void => {
+        entries.forEach((entry) => {
+          if (video) {
+            if (entry.isIntersecting) {
+              // Resume playback if the video was not paused before scrolling out of view
+              if (!wasPausedBeforeSwap) {
+                video.play();
+              }
+            } else {
+              // Save the current playback state before scrolling out of view
+              setWasPausedBeforeSwap(video.paused);
+              video.pause();
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.8, // Adjust threshold as needed
+      }
+    );
+
+    if (video) observer.observe(video);
+
+    return () => {
+      if (video) observer.unobserve(video);
+      observer.disconnect();
+    };
+  }, [setWasPausedBeforeSwap, videoRef, wasPausedBeforeSwap]);
+
   // Save autoplay setting to localStorage
   useEffect(() => {
     if (autoplayInitialized) {
@@ -191,6 +217,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     }
   }, [isAutoplay, autoplayInitialized]);
 
+  // Load autoplay setting from localStorage
   useEffect(() => {
     const storedAutoplay: string | null = localStorage.getItem('isAutoplay');
     if (storedAutoplay !== null) {
@@ -243,6 +270,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     localStorage.setItem('volume', volume.toString());
   }, [volume]);
 
+  // Load mute setting from localStorage
   useEffect(() => {
     const video: HTMLVideoElement | null = videoRef.current;
 
@@ -316,14 +344,20 @@ export const SteamVideo: FC<SteamVideoProps> = ({
     };
 
     const handleBufferProgress = (): void => {
-      const video: HTMLVideoElement | null = videoRef.current;
-
       if (video && bufferProgressBarRef.current && video.buffered.length > 0) {
-        const loaded: number = video.buffered.end(0);
-        const total: number = video.duration;
+        let bufferedAmount = 0;
+        for (let i = 0; i < video.buffered.length; i++) {
+          bufferedAmount = Math.max(bufferedAmount, video.buffered.end(i));
+        }
 
-        const progressPercentage: number = (loaded / total) * 100;
+        const progressPercentage: number = (bufferedAmount / video.duration) * 100;
         bufferProgressBarRef.current.value = progressPercentage;
+      }
+    };
+
+    const handleDurationChange = (): void => {
+      if (video) {
+        setDuration(video.duration);
       }
     };
 
@@ -338,13 +372,13 @@ export const SteamVideo: FC<SteamVideoProps> = ({
         video.removeEventListener('progress', handleBufferProgress);
       };
     }
-  }, [currentTime, duration, handleDurationChange, videoRef]);
+  }, [currentTime, duration, videoRef, bufferProgressBarRef]);
 
   return (
     <div
       className="player-area"
-      onPointerMove={handleMouseEnter}
-      onPointerLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       ref={playerAreaRef}
     >
       <Image className="area-spacer" src={highlightSpacer} alt="area-spacer" />

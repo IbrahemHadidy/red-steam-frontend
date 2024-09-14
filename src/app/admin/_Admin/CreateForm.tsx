@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 // Services
-import { getByParameters } from 'services/game/data';
+import { getByParameters } from '@services/game/data';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, FormEvent, JSX, RefObject } from 'react';
-import type { Game } from 'types/game.types';
 import type { CreateProps } from './admin.types';
 
 const Create: FC<CreateProps> = ({
@@ -55,7 +55,7 @@ const Create: FC<CreateProps> = ({
         websiteRef.current.style.cssText += errorStyle;
       }
       if (name === '' || website === '') {
-        toast.error('Please fill in all required fields');
+        toast.warn('Please fill in all required fields');
         return false;
       }
     } else if (type === 'feature') {
@@ -66,7 +66,7 @@ const Create: FC<CreateProps> = ({
         iconRef.current.style.cssText += errorStyle;
       }
       if (name === '' || icon === '') {
-        toast.error('Please fill in all required fields');
+        toast.warn('Please fill in all required fields');
         return false;
       }
     } else if (type === 'offer' && discountPriceRef.current) {
@@ -88,13 +88,13 @@ const Create: FC<CreateProps> = ({
         discountStartDate === null ||
         discountEndDate === null
       ) {
-        toast.error('Please fill in all required fields');
+        toast.warn('Please fill in all required fields');
         return false;
       }
     } else {
       if (name === '' && nameRef.current) {
         nameRef.current.style.cssText += errorStyle;
-        toast.error('Please fill in all required fields');
+        toast.warn('Please fill in all required fields');
         return false;
       }
     }
@@ -104,11 +104,12 @@ const Create: FC<CreateProps> = ({
 
   useEffect(() => {
     const fetchGames = async () => {
-      const games = await getByParameters('');
+      const games = await getByParameters({ offers: true });
       setGameList(games);
     };
-    fetchGames();
-  }, []);
+
+    type === 'offer' && fetchGames();
+  }, [type]);
 
   const resetAllWarnings = (): void => {
     const removeErrorStyle = (refs: RefObject<HTMLInputElement>[]) => {

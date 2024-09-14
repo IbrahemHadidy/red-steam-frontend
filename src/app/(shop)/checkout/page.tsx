@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -11,22 +11,22 @@ import { useRouter } from 'next/navigation';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
 // Services
-import gameData from 'services/gameData/gameData';
-import { captureOrder, createOrder } from 'services/user/payment';
+import { getByIds } from '@services/game/data';
+import { captureOrder, createOrder } from '@services/user/payment';
 
 // Images
-import steamLogo from 'images/logo_steam.svg';
+import steamLogo from '@images/logo_steam.svg';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { OnApproveData } from '@paypal/paypal-js';
 import type { FC, JSX } from 'react';
-import type { Game } from 'types/game.types';
 
 const CheckoutPage: FC = (): JSX.Element => {
   // Init
@@ -40,23 +40,22 @@ const CheckoutPage: FC = (): JSX.Element => {
   const [isReviewSelected, setIsReviewSelected] = useState(false);
   const [checkboxSelected, setCheckboxSelected] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [userCart, setUserCart] = useState<Game[]>([]);
+  const [totalPrice, setTotalPrice] = useState('0.00');
   const [finalPrice, setFinalPrice] = useState('0.00');
 
-  const userCart: Game[] = useMemo(() => {
-    return (
-      userData?.cart
-        ?.map((item) => {
-          return gameData.find((game) => game.id === item.id);
-        })
-        .filter((game): game is Game => game !== undefined) ?? []
-    );
-  }, [userData?.cart]);
-
-  const totalPrice: string = userCart
-    .reduce((total: number, game: Game) => {
-      return total + Number(game.pricing.price);
-    }, 0)
-    .toFixed(2);
+  useEffect(() => {
+    const fetchCartData = async (): Promise<void> => {
+      if (userData?.cart) {
+        const response: Game[] = await getByIds(userData.cart.map((item) => item.id));
+        setUserCart(response);
+        setTotalPrice(
+          response.reduce((acc, curr) => acc + (curr.pricing?.price ?? 0), 0).toFixed(2)
+        );
+      }
+    };
+    fetchCartData();
+  }, [fetchData, userData]);
 
   useEffect(() => {
     if (userData?.cart?.length === 0 && !isPaymentConfirmed) {
@@ -196,7 +195,7 @@ const CheckoutPage: FC = (): JSX.Element => {
                       <img src={game.thumbnailEntries.searchImage} alt={game.name} />
                     </div>
                     <div className="checkout-item-price">
-                      <div>${game.pricing.price} USD</div>
+                      <div>${game.pricing?.price} USD</div>
                     </div>
                     <div className="checkout-item-desc">
                       <div className="checkout-item-platform">

@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 // Services
-import { getFeatured } from 'services/game/data';
+import { getFeatured } from '@services/game/data';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
-import type { Game } from 'types/game.types';
 
 const FeaturedMobile: FC = (): JSX.Element => {
   const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
@@ -39,9 +39,9 @@ const FeaturedMobile: FC = (): JSX.Element => {
                 <div className="app-name">
                   <div>{slide.name}</div>
                 </div>
-                {!slide.pricing.discount ? (
+                {!slide.pricing?.discount ? (
                   <div className="no-discount">
-                    <div className="price">${slide.pricing.basePrice}</div>
+                    <div className="price">${slide.pricing?.basePrice}</div>
                   </div>
                 ) : (
                   <div className="discount">

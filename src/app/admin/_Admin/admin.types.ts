@@ -1,12 +1,12 @@
+import type { Company } from '@entities/company.entity';
+import type { Feature } from '@entities/feature.entity';
+import type { Game } from '@entities/game.entity';
+import type { Language } from '@entities/language.entity';
+import type { Pricing } from '@entities/pricing.entity';
+import type { Review } from '@entities/review.entity';
+import type { Tag } from '@entities/tag.entity';
+import type { User } from '@entities/user.entity';
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
-import type { Company } from 'types/company.types';
-import type { Feature } from 'types/feature.types';
-import type { Game } from 'types/game.types';
-import type { Language } from 'types/language.types';
-import type { Pricing } from 'types/pricing.types';
-import type { Review } from 'types/review.types';
-import type { Tag } from 'types/tag.types';
-import type { User } from 'types/user.types';
 
 export interface CreateProps {
   type: 'developer' | 'publisher' | 'feature' | 'tag' | 'language' | 'review' | 'offer';

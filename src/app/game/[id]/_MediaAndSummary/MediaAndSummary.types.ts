@@ -1,3 +1,4 @@
+import type { Game, ImageEntry, VideoEntry } from '@entities/game.entity';
 import type {
   Dispatch,
   MouseEventHandler,
@@ -5,9 +6,7 @@ import type {
   SetStateAction,
   VideoHTMLAttributes,
 } from 'react';
-import type { Game } from 'types/game.types';
-import type { ImageEntry, VideoEntry } from 'types/media.types';
-type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
+type GameData = Omit<Game, 'languages' | 'totalSales'>;
 
 export interface MediaAndSummaryProps {
   game: Game;
@@ -47,8 +46,6 @@ export interface LeftGameSummaryProps {
   openModal: MouseEventHandler<HTMLAnchorElement>;
   autoplayInitialized: boolean;
   setAutoplayInitialized: Dispatch<SetStateAction<boolean>>;
-  wasPausedBeforeSwap: boolean;
-  setWasPausedBeforeSwap: Dispatch<SetStateAction<boolean>>;
   slideAreaRef: RefObject<HTMLDivElement>;
 }
 
@@ -94,8 +91,6 @@ export interface SteamVideoProps {
   setAutoplay: Dispatch<SetStateAction<boolean>>;
   autoplayInitialized: boolean;
   setAutoplayInitialized: Dispatch<SetStateAction<boolean>>;
-  wasPausedBeforeSwap: boolean;
-  setWasPausedBeforeSwap: Dispatch<SetStateAction<boolean>>;
 }
 
 export type VideoSettings = Pick<

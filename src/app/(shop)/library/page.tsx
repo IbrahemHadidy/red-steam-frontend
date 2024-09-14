@@ -1,26 +1,26 @@
 'use client';
 
 // React
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicBackground from '@hooks/useDynamicBackground';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Services
-import gameData from 'services/gameData/gameData';
+import { getByIds } from '@services/game/data';
 
 // Types
+import type { Game } from '@entities/game.entity';
+import { ImageEntry, VideoEntry } from '@entities/game.entity';
 import type { ChangeEvent, FC, JSX } from 'react';
-import type { Game } from 'types/game.types';
-import { ImageEntry, VideoEntry } from 'types/media.types';
 
 const LibraryPage: FC = (): JSX.Element => {
   // Init
@@ -37,6 +37,7 @@ const LibraryPage: FC = (): JSX.Element => {
   const [cardSize, setCardSize] = useState<number>(250);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const [userLibrary, setUserLibrary] = useState<Game[]>([]);
 
   useEffect(() => {
     if (isViewport1000) {
@@ -44,13 +45,15 @@ const LibraryPage: FC = (): JSX.Element => {
     }
   }, [isViewport1000]);
 
-  const userLibrary: Game[] | undefined = useMemo(() => {
-    return userData?.library
-      ?.map((item) => {
-        return gameData.find((game) => game.id === item.id);
-      })
-      .filter((game): game is Game => game !== undefined);
-  }, [userData?.library]);
+  useEffect(() => {
+    const fetchUserLibrary = async () => {
+      if (userData) {
+        const response: Game[] = await getByIds(userData.library.map((item) => item.id));
+        setUserLibrary(response);
+      }
+    };
+    fetchUserLibrary();
+  }, [userData]);
 
   const handleSliderChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setCardSize(Number(event.target.value));

@@ -8,16 +8,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Components
 import NavSearch from '../NavSearch';
 
 // Services
-import { menuData, navigationItems } from 'services/menus/menuData-mobile';
+import { menuData, navigationItems } from '@services/menus/menuData-mobile';
 
 // Images
-import defaultPFP from 'images/default-pfp.png';
+import defaultPFP from '@images/default-pfp.png';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -28,7 +28,7 @@ const MobileSecondNav: FC = (): JSX.Element => {
   const path = usePathname();
 
   // Contexts
-  const { isLoggedIn, userPFP } = useContext(AuthContext);
+  const { isLoggedIn, userData } = useContext(AuthContext);
 
   // States
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
@@ -75,7 +75,7 @@ const MobileSecondNav: FC = (): JSX.Element => {
             {isLoggedIn && (
               <img
                 className="profile_picture-mobile"
-                src={userPFP || defaultPFP.src}
+                src={userData?.profilePicture || defaultPFP.src}
                 alt="Avatar"
               />
             )}

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
-import type { Screenshot, Video } from '../game-admin.types';
+import type { Screenshot, Video } from '../create-game.types';
 
 interface MediaProps {
   screenshots: Screenshot[];
@@ -131,7 +131,11 @@ const Media: FC<MediaProps> = ({
   };
 
   const handleVideoInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    if (!e.target.files || e.target.files.length === 0) return;
+    if (!e.target.files || e.target.files.length === 0) {
+      e.target.value = '';
+      toast.error('An error occurred. Please try again.');
+      return;
+    }
     toast.info('Now, please select a poster image for the video.');
     let posterFile: File | null = null;
 
@@ -146,6 +150,7 @@ const Media: FC<MediaProps> = ({
     };
 
     posterInput.click();
+    posterInput.remove();
   };
 
   const handleScreenshotOrderChange = (e: ChangeEvent<HTMLInputElement>, id: number): void => {
@@ -178,6 +183,7 @@ const Media: FC<MediaProps> = ({
   return (
     <section className="section-media" ref={mediaRef}>
       <h2>Media</h2>
+
       <button className="add-button" onClick={handleAddScreenshotClick}>
         Add Screenshot
       </button>
@@ -193,11 +199,6 @@ const Media: FC<MediaProps> = ({
       <button className="add-button" onClick={handleAddVideoClick}>
         Add Video
       </button>
-
-      <button className="reset-button" onClick={resetMedia}>
-        Reset
-      </button>
-
       <input
         type="file"
         accept="video/mp4, video/ogg, video/webm"
@@ -206,6 +207,10 @@ const Media: FC<MediaProps> = ({
         onChange={handleVideoInputChange}
         hidden
       />
+
+      <button className="reset-button" onClick={resetMedia}>
+        Reset
+      </button>
 
       <div className="media-container">
         {media

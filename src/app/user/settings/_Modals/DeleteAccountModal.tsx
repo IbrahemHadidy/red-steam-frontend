@@ -4,10 +4,10 @@
 import { useContext, useRef, useState } from 'react';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Services
-import { deleteAccount } from 'services/user/management';
+import { deleteAccount } from '@services/user/management';
 
 // Types
 import type { ChangeEvent, FC, JSX } from 'react';
@@ -35,7 +35,7 @@ const DeleteAccountModal: FC<DeleteAccountModalProps> = ({ onClose }): JSX.Eleme
         setErrorMessage
       );
 
-      if (response && response.status === 204) {
+      if (response && response.status === 200) {
         onClose();
         logout();
       }

@@ -18,22 +18,22 @@ import { toast } from 'react-toastify';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Utils
-import { validateEmail, validateName, validatePassword } from 'utils/inputValidations';
+import { validateEmail, validateName, validatePassword } from '@utils/inputValidations';
 
 // Services
-import { countries } from 'services/countries/countries';
-import { fetchUserCountry } from 'services/countries/countryCode';
-import { signup as registerUser } from 'services/user/auth';
-import { checkEmailExists, checkUsernameExists } from 'services/user/management';
+import { countries } from '@services/countries/countries';
+import { fetchUserCountry } from '@services/countries/countryCode';
+import { signup as registerUser } from '@services/user/auth';
+import { checkEmailExists, checkUsernameExists } from '@services/user/management';
 
 // Images
-import checkIcon from 'images/icon_check.png';
+import checkIcon from '@images/icon_check.png';
 
 // Types
 import type { ChangeEvent, FC, FormEvent, JSX, KeyboardEvent } from 'react';

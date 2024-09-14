@@ -1,16 +1,18 @@
 'use client';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Services
-import queueGames from 'services/gameData/queueGames';
-
 // Types
 import type { FC, JSX, MouseEvent } from 'react';
+
+interface queueGame {
+  imageNumber: string;
+  imageLink: string;
+}
 
 const Queue: FC = (): JSX.Element => {
   // Init
@@ -20,6 +22,25 @@ const Queue: FC = (): JSX.Element => {
     e.preventDefault();
     toast.info('Coming Soon!');
   };
+
+  const queueGames: queueGame[] = [
+    {
+      imageNumber: '1',
+      imageLink: 'https://cdn.cloudflare.steamstatic.com/steam/apps/2375550/header.jpg',
+    },
+    {
+      imageNumber: '2',
+      imageLink: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg',
+    },
+    {
+      imageNumber: '3',
+      imageLink: 'https://cdn.cloudflare.steamstatic.com/steam/apps/2103140/header.jpg',
+    },
+    {
+      imageNumber: '4',
+      imageLink: 'https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg',
+    },
+  ];
 
   return (
     <div className="home-section">

@@ -1,7 +1,7 @@
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
-import RedirectIfLoggedIn from 'components/RedirectIfLoggedIn';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
+import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 
 // Types
 import type { Metadata } from 'next';

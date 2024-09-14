@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import Link from 'next/link';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Types
 import type { FC, JSX } from 'react';

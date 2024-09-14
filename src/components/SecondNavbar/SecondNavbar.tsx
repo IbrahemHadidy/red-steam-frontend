@@ -4,10 +4,10 @@
 import dynamic from 'next/dynamic';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Styles
-import 'styles/components/SecondNavbar.scss';
+import '@styles/components/SecondNavbar.scss';
 
 // Types
 import type { FC, JSX } from 'react';

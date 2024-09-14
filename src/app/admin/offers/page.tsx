@@ -7,13 +7,13 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 // Components
-import Admin from 'app/admin/_Admin/Admin';
+import Admin from '@app/admin/_Admin/Admin';
 
 // Services
-import { createOffer } from 'services/game/offer';
+import { createOffer } from '@services/game/offer';
 
 // Utils
-import get7DaysFromNow from 'utils/get7DaysFromNow';
+import get7DaysFromNow from '@utils/get7DaysFromNow';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -37,8 +37,21 @@ const OffersAdmin: FC = (): JSX.Element => {
       discountStartDate,
       discountEndDate
     );
-    toast.success(result.message);
-    setSubmitted(submitted + 1);
+    await toast.promise(
+      new Promise<{ message: string }>((resolve, reject) => {
+        if (result.message) {
+          resolve(result);
+        } else {
+          reject(new Error('Failed to create offer'));
+        }
+      }),
+      {
+        success: result.message,
+        error: 'Failed to create offer',
+        pending: 'Creating offer...',
+      }
+    );
+    setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setGameId(0);
     setDiscountPrice(0);
     setOfferType('SPECIAL PROMOTION');

@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import Api from '@services/api';
 import { toast } from 'react-toastify';
-import Api from 'services/api';
 
 // Types
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 
 class UserManagement extends Api {
   constructor() {
@@ -30,14 +29,10 @@ class UserManagement extends Api {
     newUsername: string,
     password: string
   ): Promise<{ message: string }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/username`;
     const data = { newUsername, password };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.patch(endpoint, data, config);
@@ -57,14 +52,10 @@ class UserManagement extends Api {
     setErrorMessage: (message: string) => void
   ): Promise<{ message: string } | undefined> => {
     try {
-      const accessToken = this.getAccessToken();
-
       const endpoint: string = `/change-email`;
       const data = { currentEmail, password, newEmail };
       const config: AxiosRequestConfig = {
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-        },
+        withCredentials: true,
       };
 
       const response: AxiosResponse = await this.patch(endpoint, data, config);
@@ -75,19 +66,19 @@ class UserManagement extends Api {
       }
 
       return response.data;
-    } catch (error: any) {
-      setErrorMessage(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setErrorMessage(error.response?.data.message);
+      }
       onClose();
     }
   };
 
   public changeCountry = async (newCountry: string): Promise<{ message: string }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/country`;
     const data = { newCountry };
     const config: AxiosRequestConfig = {
-      headers: { authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.patch(endpoint, data, config);
@@ -102,8 +93,6 @@ class UserManagement extends Api {
   public uploadAvatar = async (
     avatarFile: File
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/avatar`;
 
     const formData = new FormData();
@@ -112,25 +101,19 @@ class UserManagement extends Api {
     const config: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'multipart/form-data',
-        authorization: `Bearer ${accessToken}`,
       },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.patch(endpoint, formData, config);
-
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    }
 
     return response;
   };
 
   public deleteAvatar = async (): Promise<{ message: string }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/avatar`;
     const config: AxiosRequestConfig = {
-      headers: { authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -148,15 +131,13 @@ class UserManagement extends Api {
     onClose: () => void,
     setErrorMessage: (message: string) => void
   ): Promise<{ message: string } | undefined> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/password/change`;
     const data = {
       oldPassword,
       newPassword,
     };
     const config: AxiosRequestConfig = {
-      headers: { authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
     };
 
     try {
@@ -164,9 +145,9 @@ class UserManagement extends Api {
       toast.success(response.data.message);
       onClose();
       return response.data;
-    } catch (error: any) {
-      if (error && error.response && error.response.data) {
-        setErrorMessage(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setErrorMessage(error.response?.data.message);
       }
     }
   };
@@ -206,11 +187,9 @@ class UserManagement extends Api {
     password: string,
     setErrorMessage: (message: string) => void
   ): Promise<{ data: { message: string }; status: number } | undefined> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/account`;
     const config: AxiosRequestConfig = {
-      headers: { authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
       data: { password },
     };
 
@@ -219,14 +198,12 @@ class UserManagement extends Api {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        this.removeAccessToken();
-        this.removeRefreshToken();
       }
 
       return response;
-    } catch (error: any) {
-      if (error && error.response && error.response.data) {
-        setErrorMessage(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setErrorMessage(error.response?.data.message);
       }
     }
   };

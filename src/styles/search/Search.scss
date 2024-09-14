@@ -17,7 +17,7 @@
 	margin-bottom: 6px;
 }
 
-.search-tag {
+.search-filter {
 	color: #67c1f5;
 	background: rgba(0, 0, 0, 0.2);
 	font-size: 12px;
@@ -232,8 +232,17 @@
 		}
 	}
 
+	.infinite-scroll-component {
+		all: unset;
+	}
+
 	.search-results {
 		max-width: 686px;
+
+		&.disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
 
 		.search-result-container {
 			@media screen and (min-width: 1070px) {

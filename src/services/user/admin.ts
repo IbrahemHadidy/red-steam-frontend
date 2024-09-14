@@ -1,7 +1,7 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
+import type { User } from '@entities/user.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { User } from 'types/user.types';
 
 class UserAdmin extends Api {
   constructor() {
@@ -31,26 +31,20 @@ class UserAdmin extends Api {
     isVerified: boolean,
     isAdmin: boolean
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       isVerified,
       isAdmin,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.put(`/${id}`, body, config);
     return data;
   };
 
   public deleteUser = async (id: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

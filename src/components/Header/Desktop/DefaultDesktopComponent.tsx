@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Bootstrap Components
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
@@ -22,9 +22,9 @@ import NavigationLinks from './NavigationLinks';
 import ProfileDropdown from './ProfileDropdown';
 
 // Images
-import bell from 'images/bell.svg';
-import installSteamBtn from 'images/btn_header_installsteam_download.png';
-import steamLogo from 'images/logo_steam.svg';
+import bell from '@images/bell.svg';
+import installSteamBtn from '@images/btn_header_installsteam_download.png';
+import steamLogo from '@images/logo_steam.svg';
 
 // Types
 import type { FC, JSX } from 'react';

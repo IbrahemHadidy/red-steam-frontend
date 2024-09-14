@@ -2,10 +2,10 @@
 import Image from 'next/image';
 
 // Images
-import loadingLogo from 'images/loading-logo.png';
+import loadingLogo from '@images/loading-logo.png';
 
 // Styles
-import 'styles/loading.scss';
+import '@styles/loading.scss';
 
 // Types
 import type { FC, JSX } from 'react';

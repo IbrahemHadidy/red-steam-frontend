@@ -1,7 +1,7 @@
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
-import RedirectIfNotLoggedIn from 'components/RedirectIfNotLoggedIn';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
+import RedirectIfNotLoggedIn from '@components/RedirectIfNotLoggedIn';
 
 // Types
 import type { FC, JSX, ReactNode } from 'react';

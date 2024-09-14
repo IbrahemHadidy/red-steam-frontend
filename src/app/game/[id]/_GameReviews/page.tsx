@@ -1,106 +1,100 @@
 'use client';
 
 // React
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Toast notifications
+import { toast } from 'react-toastify';
+
 // Sanitization library
-import DomPurify from 'dompurify';
+import { sanitize } from 'dompurify';
+
+// Infinite Scroll
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+// Services
+import { getGameReviews } from '@services/game/data';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
-import { getRatingClass, getRatingText } from 'utils/ratingUtils';
+import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Images
-import defaultPFP from 'images/default-pfp.png';
-import reviewIcon from 'images/icon_review_steam.png';
-import negative from 'images/negative.png';
-import positive from 'images/positive.png';
+import defaultPFP from '@images/default-pfp.png';
+import reviewIcon from '@images/icon_review_steam.png';
+import negative from '@images/negative.png';
+import positive from '@images/positive.png';
 
 // Styles
-import 'styles/game/GameReviews.scss';
+import '@styles/game/GameReviews.scss';
 
 // Types
+import type { Review } from '@entities/review.entity';
 import type { FC, JSX, SyntheticEvent } from 'react';
-import type { Review } from 'types/review.types';
 import type { GameReviewsProps } from './GameReviews.types';
 
 const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
   // Init
-  const sanitize = DomPurify.sanitize;
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
 
   // States
-  const [selectedFilter, setSelectedFilter] = useState<string>('All');
-  const [sortOption, setSortOption] = useState<string>('Date');
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [filter, setFilter] = useState<'positive' | 'negative' | 'all'>('all');
+  const [sort, setSort] = useState<'newest' | 'oldest'>('newest');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [isPartial, setIsPartial] = useState<boolean>(false);
-  // TODO: Set image source
-  const [imgSrc, setImgSrc] = useState<string>('');
 
-  const handleNoImage = (e: SyntheticEvent<HTMLImageElement, Event>): void => {
-    e.stopPropagation();
-    setImgSrc(defaultPFP.src);
-  };
-
-  const totalReviews = game.reviews.length;
-  const positiveReviews = game.reviews.filter((review: Review) => review.positive).length;
-  // TODO: refetch positve percentage from backend
-  const positivePercentage = (positiveReviews / totalReviews) * 100;
-
-  const summary = getRatingText(positivePercentage);
-  const ratingClass = getRatingClass(positivePercentage);
-
-  const filterReviews = (): Review[] => {
-    // Filter reviews based on positive or negative
-    const filteredReviews: Review[] = game.reviews.filter((review: Review) => {
-      if (selectedFilter === 'All') {
-        return true;
-      } else if (selectedFilter === 'Positive') {
-        return review.positive;
-      } else if (selectedFilter === 'Negative') {
-        return !review.positive;
-      }
-      return true;
-    });
-
-    // Sort reviews based on newest or oldest
-    if (sortOption === 'newest') {
-      return filteredReviews.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-    } else if (sortOption === 'oldest') {
-      return filteredReviews.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-      );
+  // Fetch data from API
+  const fetchData = useCallback(async (): Promise<void> => {
+    const newReviews: Review[] = await getGameReviews(game.id, filter, sort, currentPage, 5);
+    if (newReviews.length === 0) {
+      setHasMore(false);
     } else {
-      return filteredReviews;
+      setReviews((prevReviews) => [...prevReviews, ...newReviews]);
+      setCurrentPage(currentPage + 1);
     }
-  };
+  }, [filter, sort, currentPage, game.id]);
 
-  const filteredReviews: Review[] = filterReviews();
-  const totalFilteredReviews: number = filteredReviews.length;
-
+  // Fetch initial data
   useEffect(() => {
-    if (game.reviews.length > 0) {
-      const firstReviewContentLines = game.reviews[0].content
+    fetchData();
+  }, [fetchData]);
+
+  // Set partial view state
+  useEffect(() => {
+    if (reviews.length > 0) {
+      const firstReviewContentLines = reviews[0].content
         .split(/<br\s*\/?>/)
         .filter((line) => line.trim() !== '');
       setIsPartial(firstReviewContentLines.length >= (isViewport960 ? 6 : 12));
     }
-  }, [game.reviews, isViewport960]);
+  }, [reviews, isViewport960]);
 
+  // Event handlers
   const handleReviewTypeChange = (e: SyntheticEvent<HTMLSelectElement, Event>): void => {
-    setSelectedFilter(e.currentTarget.value);
+    const value = e.currentTarget.value as 'positive' | 'negative' | 'all';
+    if (['positive', 'negative', 'all'].includes(value)) {
+      setFilter(value);
+    } else {
+      toast.error('Invalid filter type');
+    }
   };
 
   const handleSortTypeChange = (e: SyntheticEvent<HTMLSelectElement, Event>): void => {
-    setSortOption(e.currentTarget.value);
+    const value = e.currentTarget.value as 'newest' | 'oldest';
+    if (['newest', 'oldest'].includes(value)) {
+      setSort(value);
+    } else {
+      toast.error('Invalid sort type');
+    }
   };
 
   const handleReadMoreClick = (): void => {
@@ -110,116 +104,122 @@ const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
   return (
     <div className="reviews-content">
       <div className="page-content">
-        <h2 className="user-reviews-header">Customer reviews</h2>
-        <div className="overall-summary-container">
-          <div className="overall-summary">
-            <div className="overall-section">
-              <div className="title">Overall Reviews:</div>
-              <span className={`game-review-summary ${ratingClass}`}>{summary || 'N/A'} </span>
-              <span>({totalReviews.toLocaleString()} reviews)</span>
+        {reviews.length === 0 ? (
+          <div className="review-comment">No reviews yet</div>
+        ) : (
+          <>
+            <h2 className="user-reviews-header">Customer reviews</h2>
+            <div className="overall-summary-container">
+              <div className="overall-summary">
+                <div className="overall-section">
+                  <div className="title">Overall Reviews:</div>
+                  <span className={`game-review-summary ${getRatingClass(game.averageRating)}`}>
+                    {getRatingText(game.averageRating, game.reviewsCount)}
+                  </span>
+                  <span>({game.reviewsCount.toString()} reviews)</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="filter-options">
-          <div className="review-type">
-            <span className="title">Review Type:</span>
-            <select id="review-type" value={selectedFilter} onChange={handleReviewTypeChange}>
-              <option value="All">All</option>
-              <option value="Positive">Positive</option>
-              <option value="Negative">Negative</option>
-            </select>
-          </div>
-          <div className="review-type">
-            <span className="title">Sort By Date:</span>
-            <select id="sort-type" value={sortOption} onChange={handleSortTypeChange}>
-              {' '}
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-            </select>
-          </div>
-        </div>
-        <div className="reviews-info">
-          <div className="reviews-filter-score">
-            <span>
-              Showing <b>{totalFilteredReviews}</b> reviews that match the filters above
-            </span>
-            {' ( '}
-            <span className={`game-review-summary ${ratingClass}`}>{summary || 'N/A'} </span>
-            {' ) '}
-          </div>
-        </div>
-        <div className="reviews-summary">
-          <div className="reviews-sub-header">{`${selectedFilter} User Reviews`}</div>
-          {filteredReviews.map((review) => (
-            <div className={`review-box ${isPartial ? 'partial' : ''}`} key={review.id}>
-              <div className="leftcol">
-                <div className="avatar">
-                  {/* TODO: userId backend logic */}
-                  <Link
-                    // href={`/id/${userId}`}
-                    href="/"
-                  >
-                    {/* TODO: isOnline backend logic */}
-                    <div
-                      className={`player-avatar ${
-                        {
-                          /*isOnline ? "online" : "offline"*/
-                        }
-                      }`}
-                    >
-                      <img src={imgSrc || defaultPFP.src} onError={handleNoImage} alt="pfp" />
+            <div className="filter-options">
+              <div className="review-type">
+                <span className="title">Review Type:</span>
+                <select id="review-type" value={filter} onChange={handleReviewTypeChange}>
+                  <option value="all">All</option>
+                  <option value="positive">Positive</option>
+                  <option value="negative">Negative</option>
+                </select>
+              </div>
+              <div className="review-type">
+                <span className="title">Sort By Date:</span>
+                <select id="sort-type" value={sort} onChange={handleSortTypeChange}>
+                  {' '}
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                </select>
+              </div>
+            </div>
+            <div className="reviews-info">
+              <div className="reviews-filter-score">
+                <span>
+                  Showing <b>{reviews.length}</b> reviews that match the filters above
+                </span>
+                {' ( '}
+                <span className={`game-review-summary ${getRatingClass(game.averageRating)}`}>
+                  {getRatingText(game.averageRating, game.reviewsCount)}
+                </span>
+                {' ) '}
+              </div>
+            </div>
+            <div className="reviews-summary">
+              <div className="reviews-sub-header">{`${filter} User Reviews`}</div>
+              <InfiniteScroll
+                dataLength={reviews.length}
+                next={fetchData}
+                hasMore={hasMore}
+                loader={<div className="review-comment">Loading...</div>}
+              >
+                {reviews.map((review) => (
+                  <div className={`review-box ${isPartial ? 'partial' : ''}`} key={review.id}>
+                    <div className="leftcol">
+                      <div className="avatar">
+                        <Link href={`/user/${review.user?.id}`}>
+                          <div
+                            className={`player-avatar ${review.user?.isActive ? 'online' : 'offline'}`}
+                          >
+                            <img src={review.user?.profilePicture || defaultPFP.src} alt="pfp" />
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="person-name">
+                        <Link href={`/user/${review.user?.id}`}>{review.user?.username}</Link>
+                      </div>
+                      {isViewport630 && (
+                        <div className="post-date"> Posted: {review.date.toLocaleDateString()}</div>
+                      )}
                     </div>
-                  </Link>
-                </div>
-                <div className="person-name">
-                  <Link
-                    // href={`/id/${userId}`}
-                    href="/"
-                  >
-                    {review.user.username}
-                  </Link>
-                </div>
-                {isViewport630 && (
-                  <div className="post-date"> Posted: {review.date.toLocaleDateString()}</div>
-                )}
-              </div>
-              <div className="rightcol">
-                <div className="vote-header">
-                  <div className="thumb">
-                    <Image
-                      src={review.positive ? positive : negative}
-                      alt={review.positive ? 'positive' : 'negative'}
-                    />
+                    <div className="rightcol">
+                      <div className="vote-header">
+                        <div className="thumb">
+                          <Image
+                            src={review.positive ? positive : negative}
+                            alt={review.positive ? 'positive' : 'negative'}
+                          />
+                        </div>
+                        <Image className="review-source" src={reviewIcon} alt="review source" />
+                        <div className="title">
+                          {!review.positive ? 'Not Recommended' : 'Recommended'}
+                        </div>
+                      </div>
+                      {!isViewport630 && (
+                        <div className="post-date"> Posted: {review.date.toLocaleDateString()}</div>
+                      )}
+                      <div className="content">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              typeof window !== 'undefined'
+                                ? sanitize(review.content)
+                                : review.content,
+                          }}
+                        />
+                        {isPartial ? <div className="gradient" /> : ''}
+                      </div>
+                      {isPartial && (
+                        <div className="posted">
+                          <div className="view-more">
+                            <a onClick={handleReadMoreClick}>Read More</a>
+                          </div>{' '}
+                          &nbsp;
+                          <div className="hr" />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <Image className="review-source" src={reviewIcon} alt="review source" />
-                  <div className="title">
-                    {!review.positive ? 'Not Recommended' : 'Recommended'}
-                  </div>
-                </div>
-                {!isViewport630 && (
-                  <div className="post-date"> Posted: {review.date.toLocaleDateString()}</div>
-                )}
-                <div className="content">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: sanitize(review.content),
-                    }}
-                  />
-                  {isPartial ? <div className="gradient" /> : ''}
-                </div>
-                {isPartial && (
-                  <div className="posted">
-                    <div className="view-more">
-                      <a onClick={handleReadMoreClick}>Read More</a>
-                    </div>{' '}
-                    &nbsp;
-                    <div className="hr"></div>
-                  </div>
-                )}
-              </div>
+                ))}
+              </InfiniteScroll>
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

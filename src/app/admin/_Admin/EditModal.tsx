@@ -5,17 +5,17 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 // Services
-import { updateDeveloper } from 'services/common/developers';
-import { updateFeature } from 'services/common/features';
-import { updateLanguage } from 'services/common/languages';
-import { updatePublisher } from 'services/common/publishers';
-import { updateTag } from 'services/common/tags';
-import { updateOffer } from 'services/game/offer';
-import { updateUser } from 'services/user/admin';
+import { updateDeveloper } from '@services/common/developers';
+import { updateFeature } from '@services/common/features';
+import { updateLanguage } from '@services/common/languages';
+import { updatePublisher } from '@services/common/publishers';
+import { updateTag } from '@services/common/tags';
+import { updateOffer } from '@services/game/offer';
+import { updateUser } from '@services/user/admin';
 
 // Utils
-import formatDate from 'utils/formatDate';
-import get7DaysFromNow from 'utils/get7DaysFromNow';
+import formatDate from '@utils/formatDate';
+import get7DaysFromNow from '@utils/get7DaysFromNow';
 
 // Types
 import type { ChangeEvent, FC, FormEvent, JSX } from 'react';

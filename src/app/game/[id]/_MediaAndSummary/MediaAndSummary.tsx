@@ -4,7 +4,7 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Components
 import { GameOwned } from './GameOwned/GameOwned';
@@ -15,17 +15,17 @@ import { QueueArea } from './QueueArea/QueueArea';
 import { RightGameSummary } from './RightGameSummary/RightGameSummary';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
-import isVideoEntry from 'utils/checkMediaEntry';
+import isVideoEntry from '@utils/checkMediaEntry';
 
 // Styles
-import 'styles/game/MediaAndSummary.scss';
+import '@styles/game/MediaAndSummary.scss';
 
 // Types
+import type { ImageEntry, VideoEntry } from '@entities/game.entity';
 import type { FC, JSX, MouseEvent, MutableRefObject } from 'react';
-import type { ImageEntry, VideoEntry } from 'types/media.types';
 import type { MediaAndSummaryProps } from './MediaAndSummary.types';
 
 const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
@@ -44,7 +44,6 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
   const [isMouseOverScreenshot, setIsMouseOverScreenshot] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentScreenshotIndex, setCurrentScreenshotIndex] = useState<number>(0);
-  const [wasPausedBeforeSwap, setWasPausedBeforeSwap] = useState<boolean>(false);
 
   // Refs
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -317,8 +316,6 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
               setSelectedItem={setSelectedItem}
               handleSliderClick={handleSliderClick}
               openModal={openModal}
-              wasPausedBeforeSwap={wasPausedBeforeSwap}
-              setWasPausedBeforeSwap={setWasPausedBeforeSwap}
               videoRef={videoRef}
               slideAreaRef={slideAreaRef}
             />

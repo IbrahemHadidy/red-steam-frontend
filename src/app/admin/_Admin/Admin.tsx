@@ -3,7 +3,7 @@ import Create from './CreateForm';
 import ItemsList from './ItemsList';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Types
 import type { FC, JSX } from 'react';

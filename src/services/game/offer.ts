@@ -1,8 +1,8 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
+import type { Pricing } from '@entities/pricing.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { Pricing } from 'types/pricing.types';
 
 class OfferApi extends Api {
   constructor() {
@@ -16,7 +16,6 @@ class OfferApi extends Api {
     discountStartDate: Date,
     discountEndDate: Date
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       gameId,
       discountPrice,
@@ -25,9 +24,7 @@ class OfferApi extends Api {
       discountEndDate,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.post('', body, config);
     return data;
@@ -59,12 +56,9 @@ class OfferApi extends Api {
     discountStartDate: Date,
     discountEndDate: Date
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const endpoint: string = `/offer/${id}`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const body = {
@@ -80,12 +74,9 @@ class OfferApi extends Api {
   };
 
   public deleteOffer = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const endpoint: string = `/offer/${id}`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(endpoint, config);
     return data;

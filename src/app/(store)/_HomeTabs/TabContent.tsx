@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
 import type { TabContentProps } from './HomeTabs.types';
 
@@ -12,6 +13,7 @@ const TabContent: FC<TabContentProps> = ({
   isOpened,
   seeMore,
   onTabHover,
+  setHoveredGame,
 }): JSX.Element => {
   const [focusedTab, setFocusedTab] = useState<number | null>(null);
   const [hasHovered, setHasHovered] = useState(false);
@@ -21,12 +23,14 @@ const TabContent: FC<TabContentProps> = ({
       setFocusedTab(0);
       onTabHover(0);
       setHasHovered(true);
+      setHoveredGame(items[0]);
     }
-  }, [title, isOpened, onTabHover, hasHovered]);
+  }, [title, isOpened, onTabHover, hasHovered, setHoveredGame, items]);
 
-  const handleMouseEnter = (idx: number): void => {
+  const handleMouseEnter = (game: Game, idx: number): void => {
     setFocusedTab(idx);
     onTabHover(idx);
+    setHoveredGame(game);
   };
 
   return (
@@ -45,7 +49,7 @@ const TabContent: FC<TabContentProps> = ({
           className={`tab-item ${idx === focusedTab ? 'focus' : ''}`}
           href={`/game/${tabItem.id}`}
           key={tabItem.id}
-          onPointerMove={() => handleMouseEnter(idx)}
+          onMouseEnter={() => handleMouseEnter(tabItem, idx)}
         >
           <div className="tab-item-cap">
             <img
@@ -55,9 +59,9 @@ const TabContent: FC<TabContentProps> = ({
             />
           </div>
           <div className="tab-item-discount">
-            {!tabItem.pricing.discount ? (
+            {!tabItem.pricing?.discount ? (
               <div className="tab-final-price">
-                {tabItem.pricing.free ? 'Free to Play' : `$${tabItem.pricing.basePrice}`}
+                {tabItem.pricing?.free ? 'Free to Play' : `$${tabItem.pricing?.basePrice}`}
               </div>
             ) : (
               <>
@@ -75,19 +79,23 @@ const TabContent: FC<TabContentProps> = ({
               <span className={tabItem.platformEntries.win ? 'win' : ''}></span>
               <span className={tabItem.platformEntries.mac ? 'mac' : ''}></span>
               <div className="tab-item-top-tags">
-                <span className="tab-top-tag">{tabItem.tags[0].name}</span>
-                <span className="tab-top-tag">
-                  {tabItem.tags[1] && ', '}
-                  {tabItem.tags[1].name}
-                </span>
-                <span className="tab-top-tag">
-                  {tabItem.tags[2] && ', '}
-                  {tabItem.tags[2].name}
-                </span>
-                <span className="tab-top-tag">
-                  {tabItem.tags[3] && ', '}
-                  {tabItem.tags[3].name}
-                </span>
+                {tabItem.tags && (
+                  <>
+                    <span className="tab-top-tag">{tabItem.tags[0].name}</span>
+                    <span className="tab-top-tag">
+                      {tabItem.tags[1] && ', '}
+                      {tabItem.tags[1].name}
+                    </span>
+                    <span className="tab-top-tag">
+                      {tabItem.tags[2] && ', '}
+                      {tabItem.tags[2].name}
+                    </span>
+                    <span className="tab-top-tag">
+                      {tabItem.tags[3] && ', '}
+                      {tabItem.tags[3].name}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -1,11 +1,11 @@
+import Api from '@services/api';
 import { toast } from 'react-toastify';
-import Api from 'services/api';
 
 // Types
+import type { Review } from '@entities/review.entity';
+import type { Tag } from '@entities/tag.entity';
+import type { LibraryItem, WishlistItem } from '@entities/user.entity';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import type { Review } from 'types/review.types';
-import type { Tag } from 'types/tag.types';
-import type { LibraryItem, WishlistItem } from 'types/user.types';
 
 class UserInteraction extends Api {
   constructor() {
@@ -13,14 +13,10 @@ class UserInteraction extends Api {
   }
 
   public changeTags = async (tags: number[]): Promise<{ message: string }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/tags`;
     const data = { tags };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.put(endpoint, data, config);
@@ -43,18 +39,14 @@ class UserInteraction extends Api {
   public addToLibrary = async (
     itemsIds: number[]
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/library`;
     const data = { itemsIds };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
-    if (response.status === 200) {
+    if (response.status === 201) {
       toast.success(response.data.message);
     } else if (response.status === 400) {
       toast.warn(response.data.message);
@@ -67,14 +59,10 @@ class UserInteraction extends Api {
   public removeFromLibrary = async (
     itemsIds: number[]
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/library`;
     const config: AxiosRequestConfig = {
       data: { itemsIds },
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -89,13 +77,9 @@ class UserInteraction extends Api {
   };
 
   public clearLibrary = async (): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/library`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -112,18 +96,14 @@ class UserInteraction extends Api {
   public addToWishlist = async (
     itemsIds: number[]
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/wishlist`;
     const data = { itemsIds };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
-    if (response.status === 200) {
+    if (response.status === 201) {
       toast.success(response.data.message);
     } else if (response.status === 400) {
       toast.warn(response.data.message);
@@ -136,14 +116,10 @@ class UserInteraction extends Api {
   public removeFromWishlist = async (
     itemsIds: number[]
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/wishlist`;
     const config: AxiosRequestConfig = {
       data: { itemsIds },
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -158,13 +134,9 @@ class UserInteraction extends Api {
   };
 
   public clearWishlist = async (): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/wishlist`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -181,18 +153,14 @@ class UserInteraction extends Api {
   public addToCart = async (
     itemsIds: number[]
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/cart`;
     const data = { itemsIds };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
-    if (response.status === 200) {
+    if (response.status === 201) {
       toast.success(response.data.message);
     } else if (response.status === 400) {
       toast.warn(response.data.message);
@@ -205,14 +173,10 @@ class UserInteraction extends Api {
   public removeFromCart = async (
     itemsIds: number[]
   ): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/cart`;
     const config: AxiosRequestConfig = {
       data: { itemsIds },
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -227,13 +191,9 @@ class UserInteraction extends Api {
   };
 
   public clearCart = async (): Promise<{ data: { message: string }; status: number }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/cart`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.delete(endpoint, config);
@@ -248,13 +208,9 @@ class UserInteraction extends Api {
   };
 
   public getLibrary = async (): Promise<LibraryItem[]> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/library`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.get(endpoint, config);
@@ -263,13 +219,9 @@ class UserInteraction extends Api {
   };
 
   public getWishlist = async (): Promise<WishlistItem[]> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/wishlist`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.get(endpoint, config);
@@ -278,13 +230,9 @@ class UserInteraction extends Api {
   };
 
   public getCart = async () => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/cart`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.get(endpoint, config);
@@ -297,14 +245,10 @@ class UserInteraction extends Api {
     positive: boolean,
     content: string
   ): Promise<{ message: string }> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/review`;
     const data = { gameId, positive, content };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
@@ -317,13 +261,9 @@ class UserInteraction extends Api {
   };
 
   public getReviews = async (): Promise<Review[]> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/reviews`;
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.get(endpoint, config);

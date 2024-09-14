@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Styles
-import 'styles/error.scss';
+import '@styles/error.scss';
 
 // Types
 import type { Metadata } from 'next';

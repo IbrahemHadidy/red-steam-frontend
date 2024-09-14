@@ -8,14 +8,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Services
-import { search } from 'services/game/data';
+import { search } from '@services/game/data';
 
 // Images
-import blank from 'images/blank.gif';
+import blank from '@images/blank.gif';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { ChangeEvent, FC } from 'react';
-import type { Game } from 'types/game.types';
 
 const NavSearch: FC = (): JSX.Element => {
   // States
@@ -32,7 +32,7 @@ const NavSearch: FC = (): JSX.Element => {
       setGameData(fetchedGameData);
     };
 
-    fetchData();
+    searchInput !== '' && fetchData();
   }, [searchInput]);
 
   return (

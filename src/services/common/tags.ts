@@ -1,8 +1,8 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
+import type { Tag } from '@entities/tag.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { Tag } from 'types/tag.types';
 
 class TagApi extends Api {
   constructor() {
@@ -10,14 +10,11 @@ class TagApi extends Api {
   }
 
   public createTag = async (name: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.post('', body, config);
     return data;
@@ -57,25 +54,19 @@ class TagApi extends Api {
   };
 
   public updateTag = async (id: number, name: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.put(`/${id}`, body, config);
     return data;
   };
 
   public deleteTag = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

@@ -1,6 +1,6 @@
+import type { Language } from '@entities/language.entity';
+import Api from '@services/api';
 import type { AxiosRequestConfig } from 'axios';
-import Api from 'services/api';
-import type { Language } from 'types/language.types';
 
 class LanguageApi extends Api {
   constructor() {
@@ -8,14 +8,11 @@ class LanguageApi extends Api {
   }
 
   public createLanguage = async (name: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.post('', body, config);
     return data;
@@ -55,25 +52,19 @@ class LanguageApi extends Api {
   };
 
   public updateLanguage = async (id: number, name: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.put(`/${id}`, body, config);
     return data;
   };
 
   public deleteLanguage = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

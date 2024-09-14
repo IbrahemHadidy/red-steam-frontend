@@ -1,9 +1,10 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
-import type { Game } from 'types/game.types';
+import type { Game } from '@entities/game.entity';
+import type { Review } from '@entities/review.entity';
 
-class DataApi extends Api {
+class GameDataApi extends Api {
   constructor() {
     super('game/data');
   }
@@ -17,22 +18,31 @@ class DataApi extends Api {
     searchData: {
       sort?: 'relevance' | 'name' | 'lowestPrice' | 'highestPrice' | 'releaseDate' | 'reviews';
       partialName?: string;
-      maxPrice?: string;
-      tags?: string[];
-      excludeTags?: string[];
+      maxPrice?: number;
+      tags?: number[];
+      excludeTags?: number[];
       paid?: boolean;
       offers?: boolean;
       platforms?: ('win' | 'mac')[];
-      publishers?: string[];
-      developers?: string[];
-      features?: string[];
-      languages?: string[];
+      publishers?: number[];
+      developers?: number[];
+      features?: number[];
+      languages?: number[];
       featured?: boolean;
       excludeMature?: boolean;
+      excludedGames?: number[];
+      upcomingMode?: 'onlyUpcoming' | 'exclude';
     },
-    pagination: { offset: string; limit: string }
+    pagination?: { offset?: number; limit?: number }
   ): Promise<Game[]> => {
-    const queryParams = new URLSearchParams({});
+    const queryParams = new URLSearchParams();
+
+    const appendArrayParam = (key: string, array?: unknown[]) => {
+      if (array && array.length > 0) {
+        queryParams.append(key, array.join(','));
+      }
+    };
+
     if (searchData.sort) {
       queryParams.append('sort', searchData.sort);
     }
@@ -40,17 +50,7 @@ class DataApi extends Api {
       queryParams.append('partialName', searchData.partialName);
     }
     if (searchData.maxPrice) {
-      queryParams.append('maxPrice', searchData.maxPrice);
-    }
-    if (searchData.tags) {
-      searchData.tags.forEach((tag) => {
-        queryParams.append('tags', tag);
-      });
-    }
-    if (searchData.excludeTags) {
-      searchData.excludeTags.forEach((tag) => {
-        queryParams.append('excludeTags', tag);
-      });
+      queryParams.append('maxPrice', searchData.maxPrice.toString());
     }
     if (searchData.paid) {
       queryParams.append('paid', 'true');
@@ -58,57 +58,53 @@ class DataApi extends Api {
     if (searchData.offers) {
       queryParams.append('offers', 'true');
     }
-    if (searchData.platforms) {
-      searchData.platforms.forEach((platform) => {
-        queryParams.append('platforms', platform);
-      });
-    }
-    if (searchData.publishers) {
-      searchData.publishers.forEach((publisher) => {
-        queryParams.append('publishers', publisher);
-      });
-    }
-    if (searchData.developers) {
-      searchData.developers.forEach((developer) => {
-        queryParams.append('developers', developer);
-      });
-    }
-    if (searchData.features) {
-      searchData.features.forEach((feature) => {
-        queryParams.append('features', feature);
-      });
-    }
-    if (searchData.languages) {
-      searchData.languages.forEach((language) => {
-        queryParams.append('languages', language);
-      });
-    }
     if (searchData.featured) {
       queryParams.append('featured', 'true');
     }
     if (searchData.excludeMature) {
       queryParams.append('excludeMature', 'true');
     }
+    if (searchData.upcomingMode) {
+      queryParams.append('upcomingMode', searchData.upcomingMode);
+    }
 
-    queryParams.append('offset', pagination.offset);
-    queryParams.append('limit', pagination.limit);
+    appendArrayParam('tags', searchData.tags);
+    appendArrayParam('excludeTags', searchData.excludeTags);
+    appendArrayParam('platforms', searchData.platforms);
+    appendArrayParam('publishers', searchData.publishers);
+    appendArrayParam('developers', searchData.developers);
+    appendArrayParam('features', searchData.features);
+    appendArrayParam('languages', searchData.languages);
+    appendArrayParam('excludedGames', searchData.excludedGames);
 
-    const { data } = await this.get(`search${queryParams}`);
+    if (pagination && pagination.offset) {
+      queryParams.append('offset', pagination.offset.toString());
+    }
+    if (pagination && pagination.limit) {
+      queryParams.append('limit', pagination.limit.toString());
+    }
+
+    const { data } = await this.get(`search?${queryParams.toString()}`);
     return data;
   };
 
   public getFeatured = async (limit: string): Promise<Game[]> => {
-    const { data } = await this.get(`featured/?limit=${limit}`);
+    const { data } = await this.get(`featured?limit=${limit}`);
     return data;
   };
 
   public getByTags = async (tags: number[], limit: string): Promise<Game[]> => {
-    const { data } = await this.get(`tags/?tags=${tags}&limit=${limit}`);
+    const { data } = await this.get(`tags?tags=${tags.join(',')}&limit=${limit}`);
     return data;
   };
 
   public getById = async (id: number): Promise<Game> => {
     const { data } = await this.get(`${id}`);
+    return data;
+  };
+
+  public getByIds = async (ids: number[]): Promise<Game[]> => {
+    const { data } = await this.get(`bulk?ids=${ids.join(',')}`);
     return data;
   };
 
@@ -131,6 +127,24 @@ class DataApi extends Api {
     const { data } = await this.get(`specials`);
     return data;
   };
+
+  public getByUpcoming = async (): Promise<Game[]> => {
+    const { data } = await this.get(`upcomming`);
+    return data;
+  };
+
+  public getGameReviews = async (
+    gameId: number,
+    filter: 'positive' | 'negative' | 'all',
+    sort: 'newest' | 'oldest',
+    limit: number,
+    offset: number
+  ): Promise<Review[]> => {
+    const { data } = await this.get(
+      `${gameId}/reviews?filter=${filter}&sort=${sort}&limit=${limit}&offset=${offset}`
+    );
+    return data;
+  };
 }
 
 export const {
@@ -139,8 +153,11 @@ export const {
   getFeatured,
   getByTags,
   getById,
+  getByIds,
   getByOffers,
   getByNewest,
   getByTopSales,
   getBySpecials,
-} = new DataApi();
+  getByUpcoming,
+  getGameReviews,
+} = new GameDataApi();

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
 // Styles
-import 'styles/components/SignUpVerifyModal.scss';
+import '@styles/components/SignUpVerifyModal.scss';
 
 // Types
 import type { Dispatch, FC, JSX, SetStateAction } from 'react';

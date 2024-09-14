@@ -9,7 +9,7 @@ import { SliderButtons, SlidesArea } from './SlidesArea';
 import { SteamVideo } from './Video/SteamVideo';
 
 // Utils
-import isVideoEntry from 'utils/checkMediaEntry';
+import isVideoEntry from '@utils/checkMediaEntry';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -29,8 +29,6 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
   openModal,
   autoplayInitialized,
   setAutoplayInitialized,
-  wasPausedBeforeSwap,
-  setWasPausedBeforeSwap,
   slideAreaRef,
 }): JSX.Element => {
   const transitions = useTransition(selectedEntry, {
@@ -52,8 +50,6 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
             setAutoplay={setAutoplay}
             autoplayInitialized={autoplayInitialized}
             setAutoplayInitialized={setAutoplayInitialized}
-            wasPausedBeforeSwap={wasPausedBeforeSwap}
-            setWasPausedBeforeSwap={setWasPausedBeforeSwap}
           />
         )}
 

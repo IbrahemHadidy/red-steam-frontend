@@ -14,7 +14,7 @@ const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'), { ssr: f
 const LoadingSkeleton = dynamic(() => import('./Desktop/Skeleton'), { ssr: false });
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Types
 import type { FC, JSX } from 'react';

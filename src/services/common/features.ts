@@ -1,8 +1,8 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
+import type { Feature } from '@entities/feature.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { Feature } from 'types/feature.types';
 
 class FeatureApi extends Api {
   constructor() {
@@ -10,15 +10,12 @@ class FeatureApi extends Api {
   }
 
   public createFeature = async (name: string, icon: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
       icon,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.post('', body, config);
     return data;
@@ -62,26 +59,20 @@ class FeatureApi extends Api {
     name: string,
     icon: string
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
       icon,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.put(`/${id}`, body, config);
     return data;
   };
 
   public deleteFeature = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

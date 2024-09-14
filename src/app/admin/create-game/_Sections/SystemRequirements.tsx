@@ -1,5 +1,5 @@
 import type { ChangeEvent, FC, JSX, RefObject } from 'react';
-import type { SystemRequirements } from '../create-game.types';
+import type { SystemRequirements } from '../create-game.entity';
 interface SystemRequirementsProps {
   systemRequirements: SystemRequirements;
   setSystemRequirements: (systemRequirements: SystemRequirements) => void;

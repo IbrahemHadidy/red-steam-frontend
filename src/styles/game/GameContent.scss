@@ -123,7 +123,13 @@
 					display: flex;
 					align-items: center;
 
-
+					&:hover {
+						.feature-label {
+							text-decoration: none;
+							color: #ffffff;
+							background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
+						}
+					}
 
 					.feature-icon {
 						padding: 0px 6px;
@@ -145,12 +151,6 @@
 						width: 100%;
 						border-radius: 1px;
 						color: #66c0f4;
-
-						&:hover {
-							text-decoration: none;
-							color: #ffffff;
-							background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
-						}
 					}
 				}
 			}

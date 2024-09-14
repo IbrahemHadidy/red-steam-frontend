@@ -1,8 +1,8 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
+import type { Review } from '@entities/review.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { Developer } from 'types/company.types';
 
 class ReviewApi extends Api {
   constructor() {
@@ -15,7 +15,7 @@ class ReviewApi extends Api {
     orderBy: 'id' | 'name',
     order: 'ASC' | 'DESC',
     searchQuery: { [key: string]: string }
-  ): Promise<{ items: Developer[]; total: number; totalPages: number }> => {
+  ): Promise<{ items: Review[]; total: number; totalPages: number }> => {
     const endpoint: string = '/paginated';
     let queryString: string = `?page=${page}&limit=${limit}&orderBy=${orderBy}&order=${order}`;
     if (searchQuery) {
@@ -28,11 +28,8 @@ class ReviewApi extends Api {
   };
 
   public deleteReview = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

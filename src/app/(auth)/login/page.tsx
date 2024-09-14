@@ -7,7 +7,7 @@ import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Components
 import SignIn from '../_SignInAndRecovery/SignInAndRecovery';

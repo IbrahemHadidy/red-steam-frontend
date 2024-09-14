@@ -1,9 +1,9 @@
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
 
 // Styles
-import 'styles/shop/Library.scss';
+import '@styles/shop/Library.scss';
 
 // Types
 import type { Metadata } from 'next';

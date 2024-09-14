@@ -3,20 +3,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Images
-import footerLogo from 'images/footerLogo_valve_new.png';
-import facebookIcon from 'images/ico_facebook.png';
-import twitterIcon from 'images/ico_twitter.png';
-import steamFooterLogo from 'images/logo_steam_footer.png';
+import footerLogo from '@images/footerLogo_valve_new.png';
+import facebookIcon from '@images/ico_facebook.png';
+import twitterIcon from '@images/ico_twitter.png';
+import steamFooterLogo from '@images/logo_steam_footer.png';
 
 // Styles
-import 'styles/components/Footer.scss';
+import '@styles/components/Footer.scss';
 
 // Types
 import type { FC, JSX } from 'react';
 
 const Footer: FC = (): JSX.Element => {
   return (
-    <div className="footer">
+    <footer className="footer">
       <div className="footer-content">
         <div className="footer-rule"></div>
         <Link href="/" className="footer-steam-logo">
@@ -100,7 +100,7 @@ const Footer: FC = (): JSX.Element => {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

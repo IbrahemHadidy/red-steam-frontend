@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 // Components
-import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
+import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 import AdditionalInfoSection from './_Sections/AdditionalInfo';
 import BasicInfoSection from './_Sections/BasicInfo';
 import CompaniesSection from './_Sections/Companies';
@@ -20,26 +20,26 @@ import PricingSection from './_Sections/Pricing';
 import SpecificationsSection from './_Sections/Specifications';
 import SystemRequirementsSection from './_Sections/SystemRequirements';
 import ThumbnailsSection from './_Sections/Thumbnails';
-const GameContent = dynamic(() => import('app/game/[id]/_GameContent/layout'));
-const MediaAndSummary = dynamic(() => import('app/game/[id]/_MediaAndSummary/MediaAndSummary'));
+const GameContent = dynamic(() => import('@app/game/[id]/_GameContent/layout'));
+const MediaAndSummary = dynamic(() => import('@app/game/[id]/_MediaAndSummary/MediaAndSummary'));
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Utils
-import { validateUrl } from 'utils/inputValidations';
+import { validateUrl } from '@utils/inputValidations';
 
 // Services
-import { getDevelopers } from 'services/common/developers';
-import { getFeatures } from 'services/common/features';
-import { getPublishers } from 'services/common/publishers';
-import { getTags } from 'services/common/tags';
-import { createGame } from 'services/game/admin';
+import { getDevelopers } from '@services/common/developers';
+import { getFeatures } from '@services/common/features';
+import { getPublishers } from '@services/common/publishers';
+import { getTags } from '@services/common/tags';
+import { createGame } from '@services/game/admin';
 
 // Types
+import type { Game } from '@entities/game.entity';
+import type { Thumbnails as ServiceThumbnails } from '@services/game/admin';
 import type { FC, JSX, MouseEvent, RefObject } from 'react';
-import type { Thumbnails as ServiceThumbnails } from 'services/game/admin';
-import type { Game } from 'types/game.types';
 import type {
   Language,
   Platforms,
@@ -49,7 +49,7 @@ import type {
   Thumbnails,
   Video,
 } from './create-game.types';
-type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
+type GameData = Omit<Game, 'languages' | 'totalSales'>;
 
 const GameCreate: FC = (): JSX.Element => {
   // Init
@@ -302,9 +302,7 @@ const GameCreate: FC = (): JSX.Element => {
       firstInvalidRef = firstInvalidRef || languagesRef;
     }
     if (
-      languages.some(
-        (language) => !language.fullAudio && !language.subtitles && !language.interface
-      ) &&
+      languages.some((language) => !language.fullAudio && !language.interface) &&
       languagesTableRef.current
     ) {
       languagesTableRef.current.style.cssText += errorStyle;
@@ -429,6 +427,8 @@ const GameCreate: FC = (): JSX.Element => {
       systemRequirements,
       legal,
       reviews: [],
+      averageRating: 0,
+      reviewsCount: 0,
     };
   }, [
     name,

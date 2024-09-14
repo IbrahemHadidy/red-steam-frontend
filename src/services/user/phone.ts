@@ -1,4 +1,4 @@
-import axios from 'configs/axiosConfig';
+import axios from '@configs/axiosConfig';
 import { toast } from 'react-toastify';
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
@@ -41,10 +41,7 @@ export async function verifyOTP(phoneNumber: string, otp: string) {
   }
 }
 
-export async function verifyVerificationCode(
-  phoneNumber: string,
-  verificationCode: string,
-) {
+export async function verifyVerificationCode(phoneNumber: string, verificationCode: string) {
   const url = `${backendUrl}/api/user/phone/verify-verification-code`;
   const data = { phoneNumber, verificationCode };
 

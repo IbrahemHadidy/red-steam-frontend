@@ -10,26 +10,26 @@ import Image from 'next/image';
 import { toast } from 'react-toastify';
 
 // Components
-import DeleteModal from 'app/admin/_Admin/DeleteModal';
-import EditModal from 'app/admin/_Admin/EditModal';
+import DeleteModal from '@app/admin/_Admin/DeleteModal';
+import EditModal from '@app/admin/_Admin/EditModal';
 
 // Services
-import { getUsersPaginated } from 'services/user/admin';
+import { getUsersPaginated } from '@services/user/admin';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Utils
-import debounce from 'utils/debounce';
-import formatDate from 'utils/formatDate';
+import debounce from '@utils/debounce';
+import formatDate from '@utils/formatDate';
 
 // Images
-import deleteIcon from 'images/delete.png';
-import editIcon from 'images/edit.png';
+import deleteIcon from '@images/delete.png';
+import editIcon from '@images/edit.png';
 
 // Types
+import type { User } from '@entities/user.entity';
 import type { ChangeEvent, FC, JSX } from 'react';
-import type { User } from 'types/user.types';
 type Sort = 'username' | 'email' | 'country' | 'isVerified' | 'isAdmin' | 'createdAt';
 
 const UsersAdmin: FC = (): JSX.Element => {

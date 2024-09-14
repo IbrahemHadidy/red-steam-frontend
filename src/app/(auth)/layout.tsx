@@ -1,5 +1,5 @@
 // Styles
-import 'styles/auth/SignInUp.scss';
+import '@styles/auth/SignInUp.scss';
 
 import type { FC, JSX, ReactNode } from 'react';
 interface Props {

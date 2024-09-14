@@ -1,10 +1,10 @@
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
-import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
+import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 
 // Styles
-import 'styles/shop/Cart.scss';
+import '@styles/shop/Cart.scss';
 
 // Types
 import type { Metadata } from 'next';

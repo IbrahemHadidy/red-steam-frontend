@@ -1,7 +1,7 @@
 'use client';
 
 // Utils
-import isVideoEntry from 'utils/checkMediaEntry';
+import isVideoEntry from '@utils/checkMediaEntry';
 
 // Types
 import type { FC, JSX } from 'react';

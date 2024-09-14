@@ -5,8 +5,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 
 // Images
-import dropdown from 'images/dropdown.png';
-import excludedSearch from 'images/search_checkbox_not.svg';
+import dropdown from '@images/dropdown.png';
+import excludedSearch from '@images/search_checkbox_not.svg';
 
 // Types
 import type { ChangeEvent, FC, JSX } from 'react';

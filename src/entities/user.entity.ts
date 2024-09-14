@@ -1,5 +1,5 @@
-import type { Review } from 'types/review.types';
-import type { Tag } from 'types/tag.types';
+import type { Review } from '@entities/review.entity';
+import type { Tag } from '@entities/tag.entity';
 
 export interface User {
   id: string;
@@ -22,7 +22,7 @@ export interface User {
   wishlist: WishlistItem[];
   cart: CartItem[];
   library: LibraryItem[];
-  reviews: Review[];
+  reviews?: Review[];
 }
 
 export interface BaseItem {

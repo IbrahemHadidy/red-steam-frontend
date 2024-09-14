@@ -5,27 +5,27 @@ import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
-import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
+import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 
 // Skeletons
 const LoadingSkeleton = dynamic(() => import('./Skeleton'));
 
 // Services
-import { getById } from 'services/game/data';
+import { getById } from '@services/game/data';
 
 // Images
-import pwaIcon from 'images/pwa-icon.png';
+import pwaIcon from '@images/pwa-icon.png';
 
 // Styles
-import 'styles/admin/ActionsModals.scss';
-import 'styles/game/game.scss';
+import '@styles/admin/ActionsModals.scss';
+import '@styles/game/game.scss';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { Metadata } from 'next';
 import type { FC, JSX, ReactNode } from 'react';
-import type { Game } from 'types/game.types';
 interface Props {
   children: ReactNode;
 }

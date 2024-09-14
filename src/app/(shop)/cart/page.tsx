@@ -8,19 +8,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicBackground from '@hooks/useDynamicBackground';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Services
-import gameData from 'services/gameData/gameData';
-import { clearCart, removeFromCart } from 'services/user/interaction';
+import { getByIds } from '@services/game/data';
+import { clearCart, removeFromCart } from '@services/user/interaction';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
-import type { Game } from 'types/game.types';
 
 const CartPage: FC = (): JSX.Element => {
   // Intializations
@@ -39,14 +39,14 @@ const CartPage: FC = (): JSX.Element => {
   const removeAllBtnRef = useRef<HTMLDivElement>(null);
 
   const updateCart = useCallback(async (): Promise<void> => {
-    setUserCart(
-      userData?.cart
-        ?.map((item) => {
-          return gameData.find((game) => game.id === item.id);
-        })
-        .filter((game): game is Game => game !== undefined) ?? []
-    );
-  }, [userData?.cart]);
+    const fetchCartData = async (): Promise<void> => {
+      if (userData) {
+        const response: Game[] = await getByIds(userData.cart.map((item) => item.id));
+        setUserCart(response);
+      }
+    };
+    fetchCartData();
+  }, [userData]);
 
   useEffect(() => {
     if (userData) {
@@ -84,7 +84,7 @@ const CartPage: FC = (): JSX.Element => {
 
   const totalPrice = userCart
     .reduce((total: number, game: Game) => {
-      return total + Number(game.pricing.price);
+      return total + Number(game.pricing?.price);
     }, 0)
     .toFixed(2);
 
@@ -157,12 +157,14 @@ const CartPage: FC = (): JSX.Element => {
                         </div>
                         <div className="cart-price-container">
                           <span className="cart-price">
-                            {!game.pricing.discount && (
+                            {!game.pricing?.discount && (
                               <div className="no-discount-price">
-                                {game.pricing.free ? 'Free to Play' : `$${game.pricing.basePrice}`}
+                                {game.pricing?.free
+                                  ? 'Free to Play'
+                                  : `$${game.pricing?.basePrice}`}
                               </div>
                             )}
-                            {game.pricing.discount && (
+                            {game.pricing?.discount && (
                               <>
                                 <span className="discount-percentage">
                                   -{game.pricing.discountPercentage}%

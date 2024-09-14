@@ -1,31 +1,31 @@
 'use client';
 
 // React
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
 
 // Components
-import HoverSummary from 'components/HoverSummary/HoverSummary';
+import HoverSummary from '@components/HoverSummary/HoverSummary';
 import Slider from 'react-slick';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
-import formatDate from 'utils/formatDate';
+import formatDate from '@utils/formatDate';
 
 // Services
-import { offeredGames, specialOffers } from 'services/gameData/OfferedGames';
+import { getByOffers } from '@services/game/data';
 
 // Images
-import responsiveChevron from 'images/ResponsiveChevron.svg';
+import responsiveChevron from '@images/ResponsiveChevron.svg';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
-import type { Game } from 'types/game.types';
 
 const Offers: FC = (): JSX.Element => {
   // Init
@@ -33,6 +33,8 @@ const Offers: FC = (): JSX.Element => {
 
   // States
   const [offerHoverStates, setOfferHoverStates] = useState<{ [key: string]: boolean }>({});
+  const [weekendOffers, setWeekendOffers] = useState<Game[]>([]);
+  const [specialOffers, setSpecialOffers] = useState<Game[]>([]);
 
   const offersSettings: SliderSettings = {
     dots: true,
@@ -42,6 +44,22 @@ const Offers: FC = (): JSX.Element => {
     fade: true,
   };
 
+  useEffect(() => {
+    const fetchOffers = async (): Promise<void> => {
+      const data: Game[] = await getByOffers();
+      data.forEach((game) => {
+        if (game.pricing?.offerType === 'SPECIAL PROMOTION') {
+          setSpecialOffers((prev) => [...prev, game]);
+        }
+        if (game.pricing?.offerType === 'WEEKEND DEAL') {
+          setWeekendOffers((prev) => [...prev, game]);
+        }
+      });
+    };
+
+    fetchOffers();
+  }, []);
+
   const handleOfferPointerMove = (offerId: number): void => {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: true }));
   };
@@ -50,109 +68,97 @@ const Offers: FC = (): JSX.Element => {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: false }));
   };
 
-  const BigOfferDiv = (offer: Game, idx: number): JSX.Element => {
-    const positiveCount = offer.reviews.filter((review) => review.positive).length;
-    const totalReviews = offer.reviews.length;
-    const positivePercentage = (positiveCount / totalReviews) * 100;
-
-    return (
-      <div
-        className="offer-result-container big"
-        key={`offer-${idx}`}
-        onPointerMove={() => handleOfferPointerMove(offer.id)}
-        onPointerLeave={() => handleOfferPointerLeave(offer.id)}
-      >
-        <Link href={`/game/${offer.id}`} className="offer-bg">
-          <div className="spotlight-img">
-            <img
-              src={offer.thumbnailEntries.verticalHeaderImage || '/spotlight_background.jpg'}
-              alt={offer.name}
-            />
+  const BigOfferDiv = (offer: Game, idx: number): JSX.Element => (
+    <div
+      className="offer-result-container big"
+      key={`offer-${idx}`}
+      onMouseEnter={() => handleOfferPointerMove(offer.id)}
+      onMouseLeave={() => handleOfferPointerLeave(offer.id)}
+    >
+      <Link href={`/game/${offer.id}`} className="offer-bg">
+        <div className="spotlight-img">
+          <img
+            src={offer.thumbnailEntries.verticalHeaderImage || '/spotlight_background.jpg'}
+            alt={offer.name}
+          />
+        </div>
+        <div className="spotlight-content">
+          <h2>{offer.pricing?.offerType}</h2>
+          <div className="spotlight-body">
+            Offer ends {formatDate(offer.pricing?.discountEndDate)}
           </div>
-          <div className="spotlight-content">
-            <h2>{offer.pricing.offerType}</h2>
-            <div className="spotlight-body">
-              Offer ends {formatDate(offer.pricing.discountEndDate)}
+          <div className="spotlight-body spotlight-price price">
+            <div className="discount-block-offers">
+              <div className="discount-Percentage-offers">
+                -{offer.pricing?.discountPercentage}%
+              </div>
+              <div className="discount-prices-offers">
+                <div className="original-price-offers">${offer.pricing?.price}</div>
+                <div className="final-price-offers">${offer.pricing?.discountPrice}</div>
+              </div>
             </div>
-            <div className="spotlight-body spotlight-price price">
-              <div className="discount-block-offers">
-                <div className="discount-Percentage-offers">
-                  -{offer.pricing.discountPercentage}%
-                </div>
-                <div className="discount-prices-offers">
-                  <div className="original-price-offers">${offer.pricing.price}</div>
-                  <div className="final-price-offers">${offer.pricing.discountPrice}</div>
-                </div>
+          </div>
+        </div>
+      </Link>
+      {!isViewport960 && offerHoverStates[offer.id] && (
+        <div>
+          <HoverSummary
+            title={offer.name}
+            date={formatDate(offer.releaseDate)}
+            screenshots={offer.imageEntries.map((item) => item.link)}
+            description={offer.description}
+            positivePercentage={offer.averageRating}
+            totalReviews={offer.reviewsCount}
+            tags={offer.tags?.map((tag) => tag.name) || []}
+            leftArrow={!isViewport960}
+            rightArrow={!isViewport960}
+          />
+        </div>
+      )}
+    </div>
+  );
+
+  const renderSmallGroupDiv = (offer: Game, idx: number): JSX.Element => (
+    <div className="offer-result-container small" key={`special-${idx}`}>
+      <div
+        className="specials"
+        onMouseEnter={() => handleOfferPointerMove(offer.id)}
+        onMouseLeave={() => handleOfferPointerLeave(offer.id)}
+      >
+        <Link className="special-capsule" href={`/game/${offer.id}`}>
+          <div className="header-capsule">
+            <img src={offer.thumbnailEntries.horizontalHeaderImage} alt={offer.name} />
+          </div>
+          <div>
+            <div className="discount-block-offers">
+              <div className="discount-Percentage-offers">
+                -{offer.pricing?.discountPercentage}%
+              </div>
+              <div className="discount-prices-offers">
+                <div className="original-price-offers">${offer.pricing?.basePrice}</div>
+                <div className="final-price-offers">${offer.pricing?.discountPrice}</div>
               </div>
             </div>
           </div>
         </Link>
-        {!isViewport960 && offerHoverStates[offer.id] && (
-          <div>
-            <HoverSummary
-              title={offer.name}
-              date={formatDate(offer.releaseDate)}
-              screenshots={offer.imageEntries.map((item) => item.link)}
-              description={offer.description}
-              positivePercentage={positivePercentage}
-              totalReviews={totalReviews}
-              tags={offer.tags.map((tag) => tag.name)}
-              leftArrow={!isViewport960}
-              rightArrow={!isViewport960}
-            />
-          </div>
-        )}
       </div>
-    );
-  };
-
-  const renderSmallGroupDiv = (offer: Game, idx: number): JSX.Element => {
-    const positiveCount = offer.reviews.filter((review) => review.positive).length;
-    const totalReviews = offer.reviews.length;
-    const positivePercentage = (positiveCount / totalReviews) * 100;
-
-    return (
-      <div className="offer-result-container small" key={`special-${idx}`}>
-        <div
-          className="specials"
-          onPointerMove={() => handleOfferPointerMove(offer.id)}
-          onPointerLeave={() => handleOfferPointerLeave(offer.id)}
-        >
-          <Link className="special-capsule" href={`/game/${offer.id}`}>
-            <div className="header-capsule">
-              <img src={offer.thumbnailEntries.horizontalHeaderImage} alt={offer.name} />
-            </div>
-            <div>
-              <div className="discount-block-offers">
-                <div className="discount-Percentage-offers">
-                  -{offer.pricing.discountPercentage}%
-                </div>
-                <div className="discount-prices-offers">
-                  <div className="original-price-offers">${offer.pricing.basePrice}</div>
-                  <div className="final-price-offers">${offer.pricing.discountPrice}</div>
-                </div>
-              </div>
-            </div>
-          </Link>
+      {!isViewport960 && offerHoverStates[offer.id] && (
+        <div>
+          <HoverSummary
+            title={offer.name}
+            date={formatDate(offer.releaseDate)}
+            screenshots={offer.imageEntries.map((item) => item.link)}
+            description={offer.description}
+            positivePercentage={offer.averageRating}
+            totalReviews={offer.reviewsCount}
+            tags={offer.tags?.map((tag) => tag.name) || []}
+            leftArrow={!isViewport960}
+            rightArrow={!isViewport960}
+          />
         </div>
-        {!isViewport960 && offerHoverStates[offer.id] && (
-          <div>
-            <HoverSummary
-              title={offer.name}
-              date={formatDate(offer.releaseDate)}
-              screenshots={offer.imageEntries.map((item) => item.link)}
-              description={offer.description}
-              positivePercentage={positivePercentage}
-              totalReviews={totalReviews}
-              tags={offer.tags.map((tag) => tag.name)}
-              leftArrow={!isViewport960}
-              rightArrow={!isViewport960}
-            />
-          </div>
-        )}
-      </div>
-    );
-  };
+      )}
+    </div>
+  );
 
   const renderSmallGroups = (specialOffers: Game[]): JSX.Element[] => {
     const smallGroups: JSX.Element[] = [];
@@ -192,7 +198,7 @@ const Offers: FC = (): JSX.Element => {
 
     // Process big offers
     let bigOfferCount: number = 0;
-    offeredGames.forEach((offer, idx): void => {
+    weekendOffers.forEach((offer, idx): void => {
       const bigOffer = BigOfferDiv(offer, idx);
       if (bigOfferCount < 2) {
         addOfferToSlide(bigOffer, BIG_OFFER_SLOTS);

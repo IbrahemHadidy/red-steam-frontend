@@ -1,5 +1,5 @@
-import type { Game } from 'types/game.types';
-type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
+import type { Game } from '@entities/game.entity';
+type GameData = Omit<Game, 'languages' | 'totalSales'>;
 
 export interface GameContentProps {
   game: GameData;

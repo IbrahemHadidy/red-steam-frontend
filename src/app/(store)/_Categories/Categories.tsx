@@ -7,18 +7,18 @@ import { Fragment } from 'react';
 import Link from 'next/link';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Components
 import Slider from 'react-slick';
 
 // Services
-import categories from 'services/menus/categoryItems';
+import categories from '@services/menus/categoryItems';
 
 // Types
 import type { FC, JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
-import type { Category } from '../Store.types';
+import type { Category } from '../Store.entity';
 
 const Categories: FC = (): JSX.Element => {
   // Init

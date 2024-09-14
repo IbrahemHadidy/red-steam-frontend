@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Components
 import ChangeModal from './_Modals/ChangeModal';
@@ -19,31 +19,31 @@ import DeleteAccountModal from './_Modals/DeleteAccountModal';
 import DeletePhoneModal from './_Modals/DeletePhoneModal';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Services
-import { countries } from 'services/countries/countries';
+import { countries } from '@services/countries/countries';
 import {
   changeCountry,
   changeUserName,
   checkUsernameExists,
   deleteAvatar,
   uploadAvatar,
-} from 'services/user/management';
+} from '@services/user/management';
 
 // Images
-import defaultPFP from 'images/default-pfp.png';
-import emailIcon from 'images/icon_email.png';
-import mobileIcon from 'images/icon_mobile.png';
-import profileIcon from 'images/icon_profile.png';
-import guardIcon from 'images/icon_steamguard.png';
+import defaultPFP from '@images/default-pfp.png';
+import emailIcon from '@images/icon_email.png';
+import mobileIcon from '@images/icon_mobile.png';
+import profileIcon from '@images/icon_profile.png';
+import guardIcon from '@images/icon_steamguard.png';
 
 // Types
 import type { ChangeEvent, FC, FormEvent, JSX, MouseEvent, SetStateAction } from 'react';
 
 const SettingsPage: FC = (): JSX.Element => {
   // Contexts
-  const { userData, userPFP, fetchData } = useContext(AuthContext);
+  const { userData, fetchData } = useContext(AuthContext);
   useDynamicBackground('#1b2838');
 
   // States
@@ -55,7 +55,9 @@ const SettingsPage: FC = (): JSX.Element => {
   const [isDeletePhoneModalOpen, setIsDeletePhoneModalOpen] = useState<boolean>(false);
   const [nameAvailable, setNameAvailable] = useState<boolean>(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(userPFP || null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(
+    userData?.profilePicture || null
+  );
   const [selectedCountry, setSelectedCountry] = useState<string>('PS');
   const [modalType, setModalType] = useState<string>('');
 
@@ -120,8 +122,12 @@ const SettingsPage: FC = (): JSX.Element => {
       if (avatarFile) {
         if (userData?.id) {
           submitAvatarRef.current!.disabled = true;
-          const response: { status: number } = await uploadAvatar(avatarFile);
-          if (response && response.status === 200) fetchData();
+          await toast.promise(uploadAvatar(avatarFile), {
+            pending: 'Uploading avatar...',
+            success: 'Avatar uploaded successfully',
+            error: 'An error occurred while uploading avatar. Please try again.',
+          });
+          fetchData();
         } else {
           toast.error('An error occurred while updating avatar. Please try again.');
         }

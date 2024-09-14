@@ -7,14 +7,13 @@ import { Suspense, useContext } from 'react';
 import dynamic from 'next/dynamic';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Components
 const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
 const Categories = dynamic(() => import('./_Categories/Categories'));
 const Featured = dynamic(() => import('./_Featured/Featured'));
 const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'));
-const PopularVR = dynamic(() => import('./_PopularVR/PopularVR'));
 const LoginQueue = dynamic(() => import('./_Recommended/LoginQueue'));
 const Queue = dynamic(() => import('./_Recommended/Queue'));
 const Recommended = dynamic(() => import('./_Recommended/Recommended'));
@@ -24,7 +23,7 @@ const Offers = dynamic(() => import('./_Offers/Offers'));
 const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -49,7 +48,6 @@ const StorePage: FC = (): JSX.Element => {
         <LoginQueue />
       )}
       <BrowseSteam />
-      <PopularVR />
       <HomeTabs />
     </div>
   );

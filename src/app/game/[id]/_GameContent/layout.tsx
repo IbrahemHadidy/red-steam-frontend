@@ -5,7 +5,7 @@ import LeftContent from './LeftContent';
 import RightContent from './RightContent';
 
 // Styles
-import 'styles/game/GameContent.scss';
+import '@styles/game/GameContent.scss';
 
 // Types
 import type { FC, JSX } from 'react';

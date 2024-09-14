@@ -1,10 +1,10 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
-import type { Screenshot, Video } from 'app/admin/create-game/create-game.types';
+import type { Screenshot, Video } from '@app/admin/create-game/create-game.types';
+import type { Game } from '@entities/game.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { Game } from 'types/game.types';
-type GameData = Omit<Game, 'languages' | 'totalSales' | 'averageRating' | 'reviewsCount'>;
+type GameData = Omit<Game, 'languages' | 'totalSales'>;
 export type Thumbnails = {
   mainImage: File;
   backgroundImage: File;
@@ -16,7 +16,7 @@ export type Thumbnails = {
   tabImage: File;
 };
 
-class AdminApi extends Api {
+class GameAdminApi extends Api {
   constructor() {
     super('game/admin');
   }
@@ -27,8 +27,6 @@ class AdminApi extends Api {
     images: Screenshot[],
     videos: Video[]
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
-
     const formData: FormData = new FormData();
 
     const body: { [key: string]: unknown } = {
@@ -37,8 +35,8 @@ class AdminApi extends Api {
       description: gameData.description,
       releaseDate: gameData.releaseDate,
       featured: gameData.featured,
-      publishers: gameData.publishers.map((publisher) => publisher.id),
-      developers: gameData.developers.map((developer) => developer.id),
+      publishers: gameData.publishers?.map((publisher) => publisher.id),
+      developers: gameData.developers?.map((developer) => developer.id),
       imageEntries: gameData.imageEntries.map((entry) => ({
         ...entry,
         link: undefined,
@@ -49,11 +47,11 @@ class AdminApi extends Api {
         posterLink: undefined,
       })),
       pricing: {
-        free: gameData.pricing.free,
-        price: gameData.pricing.price,
+        free: gameData.pricing?.free,
+        price: gameData.pricing?.price,
       },
-      tags: gameData.tags.map((tag) => tag.id),
-      gamesFeatures: gameData.gamesFeatures.map((feature) => feature.id),
+      tags: gameData.tags?.map((tag) => tag.id),
+      gamesFeatures: gameData.gamesFeatures?.map((feature) => feature.id),
       languages: gameData.languageSupport,
       platformEntries: gameData.platformEntries,
       link: gameData.link,
@@ -86,8 +84,8 @@ class AdminApi extends Api {
     const config: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'multipart/form-data',
-        authorization: `Bearer ${accessToken}`,
       },
+      withCredentials: true,
     };
 
     const { data } = await this.post('', formData, config);
@@ -95,15 +93,12 @@ class AdminApi extends Api {
   };
 
   public deleteGame = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`${id}`, config);
     return data;
   };
 }
 
-export const { createGame, deleteGame } = new AdminApi();
+export const { createGame, deleteGame } = new GameAdminApi();

@@ -1,9 +1,19 @@
 'use client';
-import Loading from 'app/loading';
-import { VerifyModal } from 'components/SignUpVerifyModal/SignUpVerifyModal';
+
+// React
+import { createContext, useCallback, useEffect, useState } from 'react';
+
+// NextJS
 import { usePathname, useRouter } from 'next/navigation';
-import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
+
+// Toast notifications
 import { toast } from 'react-toastify';
+
+// Components
+import Loading from '@app/loading';
+import { VerifyModal } from '@components/SignUpVerifyModal/SignUpVerifyModal';
+
+// Services
 import {
   autoLogin,
   getUserData,
@@ -13,19 +23,18 @@ import {
   refreshToken,
   resendVerificationToken,
   verificationStatus,
-} from 'services/user/auth';
+} from '@services/user/auth';
 
 // Types
-import type { JSX } from 'react';
-import type { Tag } from 'types/tag.types';
-import type { User } from 'types/user.types';
+import type { Tag } from '@entities/tag.entity';
+import type { User } from '@entities/user.entity';
+import type { JSX, ReactNode } from 'react';
 
 interface AuthContextType {
   isLoggedIn: boolean;
   login: (identifier: string, password: string, rememberMe: boolean) => Promise<void>;
   logout: () => void;
   userData: User | null;
-  userPFP: string | null;
   fetchData: () => void;
   isReady: boolean;
 }
@@ -35,48 +44,22 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: () => {},
   userData: null,
-  userPFP: null,
   fetchData: () => {},
   isReady: false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+  // Init
   const router = useRouter();
   const pathname = usePathname();
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userData, setUser] = useState<User | null>(null);
+  // States
   const [showVerifyModal, setShowVerifyModal] = useState<boolean>(false);
-  const [isReady, setIsReady] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Global state
+  const [userData, setUser] = useState<User | null>(null); // Global state
+  const [isReady, setIsReady] = useState<boolean>(false); // Global state
 
-  const userPFP: string | null = userData?.profilePicture || null;
-
-  const fetchData = useCallback(async (): Promise<void> => {
-    if (isLoggedIn) {
-      if (sessionStorage.getItem('authorization')) {
-        const userData: User = await getUserData();
-        setUser(userData);
-        setIsReady(true);
-      }
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchData();
-    }
-  }, [fetchData, isLoggedIn]);
-
-  const logout = useCallback((): void => {
-    setIsLoggedIn(false);
-    router.push('/');
-    logoutUser();
-    setUser(null);
-    sessionStorage.setItem('verificationInProgress', 'false');
-    sessionStorage.removeItem('authorization');
-    localStorage.removeItem('x-refresh-token');
-  }, [router]);
-
+  // Login (Global function)
   const login = async (
     identifier: string,
     password: string,
@@ -94,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         setIsLoggedIn(true);
         setUser(userData);
         setIsReady(true);
+        sessionStorage.setItem('isSessionLogin', 'true');
       }
     } catch (error) {
       setIsLoggedIn(false);
@@ -103,45 +87,83 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     }
   };
 
-  const refreshAuthorization = useCallback(async (): Promise<void> => {
-    try {
-      await refreshToken();
-      fetchData();
-    } catch (error) {
-      console.error('Error refreshing access token:', error);
-      toast.error('Your session has expired. Please login again.');
-      logout();
-    }
-  }, [fetchData, logout]);
+  // Logout (Global function)
+  const logout = useCallback(async (): Promise<void> => {
+    setIsLoggedIn(false);
+    router.push('/');
+    await logoutUser();
+    setUser(null);
+    sessionStorage.setItem('verificationInProgress', 'false');
+  }, [router]);
 
+  // Fetch user data (Global function)
+  const fetchData = useCallback(async (): Promise<void> => {
+    if (isLoggedIn) {
+      try {
+        const userData: User = await getUserData();
+        setUser(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        logout();
+      } finally {
+        setIsReady(true);
+      }
+    }
+  }, [isLoggedIn, logout]);
+
+  // Fetch data on load (If user is logged in)
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchData();
+    }
+  }, [fetchData, isLoggedIn]);
+
+  // Refresh authorization (If user is logged in)
   useEffect(() => {
     let refreshInterval: NodeJS.Timeout;
 
+    const refreshAuthorization = async () => {
+      try {
+        await refreshToken();
+        fetchData();
+        refreshInterval = setInterval(refreshAuthorization, 60 * 60 * 1000);
+      } catch (error) {
+        console.error('Error refreshing access token:', error);
+        toast.error('Your session has expired. Please login again.');
+        logout();
+      }
+    };
+
+    // Refresh authorization if isSessionLogin is not true
+    if (isLoggedIn && sessionStorage.getItem('isSessionLogin') !== 'true') {
+      refreshAuthorization();
+    }
+
+    // Cleanup function to clear interval
+    return () => clearInterval(refreshInterval);
+  }, [fetchData, isLoggedIn, logout]);
+
+  // Auto login user on load
+  useEffect(() => {
     const autoLoginUser = async (): Promise<void> => {
-      const storedToken: string | null = localStorage.getItem('x-refresh-token');
-      if (storedToken) {
-        try {
-          await autoLogin();
-          setIsLoggedIn(true);
-          fetchData();
-          refreshInterval = setInterval(refreshAuthorization, 60 * 60 * 1000);
-        } catch (error) {
-          console.error('Error auto-logging in:', error);
-          setIsLoggedIn(false);
-          setUser(null);
+      try {
+        const userData: User | null = await autoLogin();
+        if (!userData) {
           setIsReady(true);
-          logout();
+          return;
         }
-      } else {
+        setUser(userData);
+        setIsLoggedIn(true);
+        fetchData();
+      } catch (error) {
+        console.error('Error auto-logging in:', error);
         setIsReady(true);
       }
     };
 
     autoLoginUser();
-
-    // Cleanup function to clear interval
-    return () => clearInterval(refreshInterval);
-  }, [fetchData, logout, refreshAuthorization]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const checkVerificationStatus = useCallback(async (): Promise<void> => {
     if (sessionStorage.getItem('verificationInProgress') !== 'true') {
@@ -193,9 +215,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   }, [checkVerificationStatus, isLoggedIn, pathname, router, userData]);
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, login, logout, userData, userPFP, fetchData, isReady }}
-    >
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, userData, fetchData, isReady }}>
       {isReady ? (
         <>
           {children}

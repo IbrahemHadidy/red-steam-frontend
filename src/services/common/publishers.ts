@@ -1,6 +1,6 @@
+import type { Publisher } from '@entities/company.entity';
+import Api from '@services/api';
 import type { AxiosRequestConfig } from 'axios';
-import Api from 'services/api';
-import type { Publisher } from 'types/company.types';
 
 class PublisherApi extends Api {
   constructor() {
@@ -8,15 +8,12 @@ class PublisherApi extends Api {
   }
 
   public createPublisher = async (name: string, website: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
       website,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.post('', body, config);
     return data;
@@ -60,26 +57,20 @@ class PublisherApi extends Api {
     name: string,
     website: string
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
       website,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.put(`/${id}`, body, config);
     return data;
   };
 
   public deletePublisher = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

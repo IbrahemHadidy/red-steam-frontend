@@ -8,23 +8,23 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 // Sanitization library
-import DomPurify from 'dompurify';
+import { sanitize } from 'dompurify';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Services
-import { addToCart, addToLibrary } from 'services/user/interaction';
+import { addToCart, addToLibrary } from '@services/user/interaction';
 
 // Utils
-import formatDate from 'utils/formatDate';
-import getPlatform from 'utils/getPlatform';
+import formatDate from '@utils/formatDate';
+import getPlatform from '@utils/getPlatform';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Types
 import type { Dispatch, FC, JSX, MouseEvent, SetStateAction } from 'react';
@@ -34,7 +34,6 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
   // Init
   const router = useRouter();
   const platform = getPlatform();
-  const sanitize = DomPurify.sanitize;
   const isViewport630 = useResponsiveViewport(630);
 
   // Contexts
@@ -95,11 +94,7 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
       addToCartBtnRef.current.style.pointerEvents = 'none';
 
       const response = await addToCart([itemId]);
-      if (response?.status === 200) {
-        fetchData();
-      } else {
-        toast.error('An error occurred. Please try again later.');
-      }
+      if (response?.status === 201) fetchData();
 
       addToCartBtnRef.current.classList.remove('loading');
       addToCartBtnRef.current.style.pointerEvents = 'auto';
@@ -148,7 +143,7 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                 <span className="platform-img win"></span>
               )}
             </div>
-            {game.pricing.free ? (
+            {game.pricing?.free ? (
               <>
                 <h1>Play {game.name}</h1>
                 <div className="game-purchase-action">
@@ -161,7 +156,7 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                         </Link>
                       </div>
                     ) : (
-                      <div className="addtocart-btn">
+                      <div className="addtocart-btn" ref={addToCartBtnRef}>
                         <a
                           className="blue-btn"
                           onClick={(e) => handleAddToLibraryClick(e, game.id)}
@@ -173,13 +168,13 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                   </div>
                 </div>
               </>
-            ) : !game.pricing.discount ? (
+            ) : !game.pricing?.discount ? (
               <>
                 {!isInLibrary ? <h1>Buy {game.name}</h1> : <h1>Play {game.name}</h1>}
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
                     {!isInLibrary && (
-                      <div className="game-purchase-price"> ${game.pricing.basePrice} USD </div>
+                      <div className="game-purchase-price"> ${game.pricing?.basePrice} USD </div>
                     )}
                     {isInLibrary ? (
                       <div className="play-game-btn">
@@ -274,7 +269,7 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
             <h2>ABOUT THIS GAME</h2>
             <div
               dangerouslySetInnerHTML={{
-                __html: sanitize(game.about),
+                __html: typeof window !== 'undefined' ? sanitize(game.about) : game.about,
               }}
             />
           </div>
@@ -300,7 +295,10 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
               <h2>MATURE CONTENT DESCRIPTION</h2>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: sanitize(game.matureDescription),
+                  __html:
+                    typeof window !== 'undefined'
+                      ? sanitize(game.matureDescription)
+                      : game.matureDescription,
                 }}
               />
             </div>
@@ -497,7 +495,7 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
             <div className="legal-area">
               <p
                 dangerouslySetInnerHTML={{
-                  __html: sanitize(game.legal),
+                  __html: typeof window !== 'undefined' ? sanitize(game.legal) : game.legal,
                 }}
               />
             </div>

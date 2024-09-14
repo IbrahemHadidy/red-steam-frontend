@@ -1,3 +1,5 @@
+import type { Game } from '@entities/game.entity';
+
 export interface Category {
   title: string;
   link: string;
@@ -10,11 +12,11 @@ export interface LeftSectionProps {
   handleTabClick: (tabTitle: string) => void;
   hoveredTabIndex: number | null;
   onTabHover: (index: number | null) => void;
+  setHoveredGame: (game: Game | null) => void;
 }
 
 export interface RightSectionProps {
-  openedTab: string | number;
-  hoveredTabIndex: number | null;
+  game: Game | null;
 }
 
 export interface TabProps {

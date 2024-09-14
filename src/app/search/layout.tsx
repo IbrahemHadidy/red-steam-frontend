@@ -1,5 +1,5 @@
 // Styles
-import 'styles/search/Search.scss';
+import '@styles/search/Search.scss';
 
 // Types
 import type { Metadata } from 'next';

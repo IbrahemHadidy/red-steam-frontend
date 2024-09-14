@@ -7,7 +7,7 @@ import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Toast notifications
 import { toast } from 'react-toastify';

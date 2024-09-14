@@ -4,13 +4,13 @@
 import { useState } from 'react';
 
 // Components
-import Admin from 'app/admin/_Admin/Admin';
+import Admin from '@app/admin/_Admin/Admin';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
 // Services
-import { createDeveloper } from 'services/common/developers';
+import { createDeveloper } from '@services/common/developers';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -24,8 +24,21 @@ const DevelopersAdmin: FC = (): JSX.Element => {
   // Event Handlers
   const onSubmit = async (): Promise<void> => {
     const result: { message: string } = await createDeveloper(name, website);
-    toast.success(result.message);
-    setSubmitted(submitted + 1);
+    await toast.promise(
+      new Promise<{ message: string }>((resolve, reject) => {
+        if (result.message) {
+          resolve(result);
+        } else {
+          reject(new Error('Failed to create developer'));
+        }
+      }),
+      {
+        success: result.message,
+        error: 'Failed to create developer',
+        pending: 'Creating developer...',
+      }
+    );
+    setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');
     setWebsite('');
   };

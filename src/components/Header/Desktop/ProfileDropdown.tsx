@@ -10,13 +10,13 @@ import { useRouter } from 'next/navigation';
 import { NavDropdown } from 'react-bootstrap';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Links Data
 import sharedData from '../sharedData';
 
 // Images
-import defaultPFP from 'images/default-pfp.png';
+import defaultPFP from '@images/default-pfp.png';
 import Link from 'next/link';
 
 // Types
@@ -27,7 +27,7 @@ const ProfileDropdown: FC = (): JSX.Element => {
   const router = useRouter();
 
   // Contexts
-  const { userData, userPFP } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
 
   // States
   const [isOpen, setIsOpen] = useState<string | null>(null);
@@ -78,7 +78,7 @@ const ProfileDropdown: FC = (): JSX.Element => {
       )}
       <Link href="/user/settings" className="compact-profile-link">
         <img
-          src={userPFP || defaultPFP.src}
+          src={userData?.profilePicture || defaultPFP.src}
           alt="Profile"
           width="40"
           height="40"

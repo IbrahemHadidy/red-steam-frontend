@@ -12,25 +12,24 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Services
-import { addToCart } from 'services/user/interaction';
+import { addToCart } from '@services/user/interaction';
 
 // Utils
-import convertToBase64Image from 'utils/convertToBase64Image';
-import formatDate from 'utils/formatDate';
-import getPlatform from 'utils/getPlatform';
+import convertToBase64Image from '@utils/convertToBase64Image';
+import formatDate from '@utils/formatDate';
+import getPlatform from '@utils/getPlatform';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Images
-import externalLinkIcon from 'images/ico_external_link.gif';
+import externalLinkIcon from '@images/ico_external_link.gif';
 
 // Types
 import type { FC, JSX, MouseEvent } from 'react';
-import type { Review } from 'types/review.types';
 import type { RightContentProps } from './GameContent.types';
 
 const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
@@ -65,10 +64,6 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
     setShowAllLanguages(!showAllLanguages);
   };
 
-  const positiveReviews = game.reviews.filter((review: Review) => review.positive).length;
-  const negativeReviews = game.reviews.filter((review: Review) => !review.positive).length;
-  const positivePercentage = (positiveReviews / (positiveReviews + negativeReviews)) * 100;
-
   const handleAddToCartClick = async (
     e: MouseEvent<HTMLAnchorElement>,
     itemId: number
@@ -81,9 +76,8 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
       addToCartRef.current.classList.add('loading');
       addToCartRef.current.style.pointerEvents = 'none';
       const response = await addToCart([itemId]);
-      if (response?.status === 200) {
+      if (response?.status === 201) {
         fetchData();
-        toast.success('Added to cart!');
       } else {
         toast.error('An error occurred. Please try again later.');
       }
@@ -95,21 +89,21 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
   // Recommendation reasons
   const firstDetails: JSX.Element | null =
     (userData?.tags &&
-      userData.tags.filter((tag) => game.tags.some((gameTag) => gameTag.id === tag.id)).length >
+      userData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id)).length >
         0) ||
-    positivePercentage >= 80 ? (
+    game.averageRating >= 80 ? (
       <>
         <div className="recommendation-reason">Is this game relevant to you?</div>
         <div className="recommendation-reasons">
           {userData?.tags &&
-            userData.tags.filter((tag) => game.tags.some((gameTag) => gameTag.id === tag.id))
+            userData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id))
               .length >= 3 && (
               <>
                 <p className="reason-for">Players like you love this game.</p>
                 <hr />
               </>
             )}
-          {positivePercentage >= 90 && (
+          {game.averageRating >= 90 && (
             <>
               <p className="reason-for">
                 User reviews:&nbsp;
@@ -118,7 +112,7 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
               <hr />
             </>
           )}
-          {90 > positivePercentage && positivePercentage >= 80 && (
+          {90 > game.averageRating && game.averageRating >= 80 && (
             <>
               <p className="reason-for">
                 User reviews:&nbsp;
@@ -138,7 +132,7 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
   const secondDetails: JSX.Element = (
     <div className="game-details-first">
       <div className="game-area-features-list">
-        {game.gamesFeatures.map((feature, idx) => (
+        {game.gamesFeatures?.map((feature, idx) => (
           <Link className="game-area-details" href={`/search/${feature.id}`} key={idx}>
             <div className="feature-icon">
               <img src={convertToBase64Image(feature.icon.data)} alt={feature.name} />
@@ -186,15 +180,16 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
             ))}
           </tbody>
         </table>
-        {!showAllLanguages ? (
-          <a className="all-languages" onClick={toggleAllLanguages}>
-            See all {game.languageSupport.length} supported languages
-          </a>
-        ) : (
-          <a className="all-languages" onClick={toggleAllLanguages}>
-            Collapse Languages
-          </a>
-        )}
+        {game.languageSupport.length > 5 &&
+          (!showAllLanguages ? (
+            <a className="all-languages" onClick={toggleAllLanguages}>
+              See all {game.languageSupport.length} supported languages
+            </a>
+          ) : (
+            <a className="all-languages" onClick={toggleAllLanguages}>
+              Collapse Languages
+            </a>
+          ))}
       </div>
     </div>
   );
@@ -207,27 +202,29 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
         {game.name}
         <br />
         <b>Genre: </b>&nbsp;
-        <span>
-          <a>{game.tags[0].name}</a>,&nbsp;
-          <a>{game.tags[1].name}</a>,&nbsp;
-          <a>{game.tags[2].name}</a>,&nbsp;
-          <a>{game.tags[3].name}</a>
-        </span>
+        {game.tags && (
+          <span>
+            <a>{game.tags[0].name}</a>,&nbsp;
+            <a>{game.tags[1].name}</a>,&nbsp;
+            <a>{game.tags[2].name}</a>,&nbsp;
+            <a>{game.tags[3].name}</a>
+          </span>
+        )}
         <div className="dev-row">
           <b>Developers:</b>&nbsp;
-          {game.developers.map((developer, idx) => (
+          {game.developers?.map((developer, idx) => (
             <Fragment key={developer.id}>
               <a href={developer.website}>{developer.name}</a>
-              {idx < game.developers.length - 1 && ', '}
+              {game.developers && idx < game.developers?.length - 1 && ', '}
             </Fragment>
           ))}
         </div>
         <div className="dev-row">
           <b>Publishers:</b>&nbsp;
-          {game.publishers.map((publisher, idx) => (
+          {game.publishers?.map((publisher, idx) => (
             <Fragment key={publisher.id}>
               <a href={publisher.website}>{publisher.name}</a>
-              {idx < game.publishers.length - 1 && ', '}
+              {game.publishers && idx < game.publishers?.length - 1 && ', '}
             </Fragment>
           ))}
         </div>
@@ -274,7 +271,7 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
                 <span className="platform-img win"></span>
               )}
             </div>
-            {game.pricing.free ? (
+            {game.pricing?.free ? (
               <>
                 <h1>Play {game.name}</h1>
                 <div className="game-purchase-action">
@@ -296,12 +293,12 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
                   </div>
                 </div>
               </>
-            ) : !game.pricing.discount ? (
+            ) : !game.pricing?.discount ? (
               <>
                 <h1>Buy {game.name}</h1>
                 <div className="game-purchase-action">
                   <div className="game-purchase-action-background">
-                    <div className="game-purchase-price"> ${game.pricing.basePrice} </div>
+                    <div className="game-purchase-price"> ${game.pricing?.basePrice} </div>
                     {isInLibrary ? (
                       <div className="play-game-btn">
                         <a className="green-btn" href="">
@@ -309,7 +306,7 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
                         </a>
                       </div>
                     ) : (
-                      <div className="addtocart-btn">
+                      <div className="addtocart-btn" ref={addToCartRef}>
                         {!isInCart ? (
                           <a
                             className="green-btn"

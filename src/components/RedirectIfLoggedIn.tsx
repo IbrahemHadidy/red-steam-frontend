@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Types
 import type { FC } from 'react';

@@ -1,5 +1,5 @@
 // Styles
-import 'styles/user/Tags.scss';
+import '@styles/user/Tags.scss';
 
 // Types
 import type { Metadata } from 'next';

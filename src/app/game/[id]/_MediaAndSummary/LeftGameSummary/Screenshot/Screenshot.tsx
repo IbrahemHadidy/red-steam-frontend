@@ -4,12 +4,12 @@
 import Image from 'next/image';
 
 // Images
-import highlightSpacer from 'images/game_highlight_image_spacer.gif';
-import externalLinkIcon from 'images/ico_external_link.gif';
+import highlightSpacer from '@images/game_highlight_image_spacer.gif';
+import externalLinkIcon from '@images/ico_external_link.gif';
 
 // Types
+import type { ImageEntry } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
-import type { ImageEntry } from 'types/media.types';
 import type { ScreenshotModalProps, ScreenshotProps } from '../../MediaAndSummary.types';
 
 export const ScreenshotModal: FC<ScreenshotModalProps> = ({
@@ -84,7 +84,7 @@ export const Screenshot: FC<ScreenshotProps> = ({
   <div className="player-area">
     <Image className="area-spacer" src={highlightSpacer} alt="" />
     <div className="player-item">
-      <div className="screenshot-holder" onPointerMove={onEnter} onPointerLeave={onLeave}>
+      <div className="screenshot-holder" onMouseEnter={onEnter} onMouseLeave={onLeave}>
         <a className="screenshot-link" onClick={openModal}>
           <img src={imgSrc} alt="Screenshot" />
         </a>

@@ -7,10 +7,10 @@ import Image from 'next/image';
 import { animated, useSpring } from 'react-spring';
 
 // Utils
-import { getRatingClass, getRatingText } from 'utils/ratingUtils';
+import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Styles
-import 'styles/components/HoverSummary.scss';
+import '@styles/components/HoverSummary.scss';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -32,8 +32,6 @@ const HoverSummary: FC<HoverSummary> = ({
     to: { opacity: 1 },
     config: { duration: 280 },
   });
-
-  const ratingClass: string = getRatingClass(positivePercentage);
 
   return (
     <animated.div className="game-hover" style={fadeEffect}>
@@ -59,8 +57,8 @@ const HoverSummary: FC<HoverSummary> = ({
           )}
           <div className="hover-review-summary">
             <div className="hover-review-title">Overall user reviews:</div>
-            <span className={`game-review-summary ${ratingClass}`}>
-              {getRatingText(positivePercentage)}
+            <span className={`game-review-summary ${getRatingClass(positivePercentage)}`}>
+              {getRatingText(positivePercentage, totalReviews)}
               &nbsp;
             </span>
             {totalReviews !== 0 && `(${totalReviews} reviews)`}

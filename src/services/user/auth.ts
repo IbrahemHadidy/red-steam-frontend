@@ -1,7 +1,7 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
+import type { User } from '@entities/user.entity';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import type { User } from 'types/user.types';
 
 class UserAuth extends Api {
   constructor() {
@@ -32,66 +32,50 @@ class UserAuth extends Api {
   }> => {
     const endpoint: string = `/login`;
     const data = { identifier, password, rememberMe };
+    const config: AxiosRequestConfig = {
+      withCredentials: true,
+    };
 
-    const response: AxiosResponse = await this.post(endpoint, data);
-
-    this.setAccessToken(response.headers['authorization']);
-    this.setRefreshToken(response.headers['x-refresh-token']);
+    const response: AxiosResponse = await this.post(endpoint, data, config);
 
     return response;
   };
 
-  public autoLogin = async (): Promise<User> => {
-    const refreshToken = this.getRefreshToken();
-
+  public autoLogin = async (): Promise<User | null> => {
     const endpoint: string = `/auto-login`;
     const config: AxiosRequestConfig = {
-      headers: { 'x-refresh-token': `Bearer ${refreshToken}` },
+      withCredentials: true,
     };
 
-    const response: AxiosResponse = await this.post(endpoint, null, config);
-
-    this.setAccessToken(response.headers['authorization']);
-
-    return response.data.userData;
+    try {
+      const response: AxiosResponse = await this.post(endpoint, null, config, false);
+      return response.data.userData;
+    } catch (error) {
+      return null;
+    }
   };
 
   public logout = async (): Promise<void> => {
-    const refreshToken = this.getRefreshToken();
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/logout`;
     const config: AxiosRequestConfig = {
-      headers: {
-        'x-refresh-token': `Bearer ${refreshToken}`,
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     await this.post(endpoint, null, config);
-    this.removeAccessToken();
-    this.removeRefreshToken();
   };
 
   public refreshToken = async (): Promise<User> => {
-    const refreshToken = this.getRefreshToken();
-
     const endpoint: string = `/refresh-token`;
-    const config: AxiosRequestConfig = { headers: { 'x-refresh-token': `Bearer ${refreshToken}` } };
+    const config: AxiosRequestConfig = { withCredentials: true };
 
     const response: AxiosResponse = await this.post(endpoint, null, config);
-
-    this.setAccessToken(response.headers['authorization']);
-
     return response.data.userData;
   };
 
   public getUserData = async (): Promise<User> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/user-data`;
     const data = {
-      headers: { authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.get(endpoint, data);
@@ -100,10 +84,10 @@ class UserAuth extends Api {
   };
 
   public resendVerificationToken = async (): Promise<string> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/resend-verification-token`;
-    const config: AxiosRequestConfig = { headers: { authorization: `Bearer ${accessToken}` } };
+    const config: AxiosRequestConfig = {
+      withCredentials: true,
+    };
 
     const response: AxiosResponse = await this.post(endpoint, null, config);
 
@@ -111,10 +95,10 @@ class UserAuth extends Api {
   };
 
   public verificationStatus = async (): Promise<boolean> => {
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/verification-status`;
-    const config: AxiosRequestConfig = { headers: { authorization: `Bearer ${accessToken}` } };
+    const config: AxiosRequestConfig = {
+      withCredentials: true,
+    };
 
     const response: AxiosResponse = await this.get(endpoint, config);
 
@@ -131,22 +115,13 @@ class UserAuth extends Api {
   };
 
   public updateTokens = async (userId: string): Promise<User> => {
-    const refreshToken = this.getRefreshToken();
-    const accessToken = this.getAccessToken();
-
     const endpoint: string = `/update-tokens`;
     const data = { userId };
     const config: AxiosRequestConfig = {
-      headers: {
-        'x-refresh-token': `Bearer ${refreshToken}`,
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
-
-    this.setAccessToken(response.headers['authorization']);
-    this.setRefreshToken(response.headers['x-refresh-token']);
 
     return response.data.userData;
   };

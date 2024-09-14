@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Images
-import headerLogo from 'images/header_logo.png';
-import headerHumburger from 'images/header_menu_hamburger.png';
+import headerLogo from '@images/header_logo.png';
+import headerHumburger from '@images/header_menu_hamburger.png';
 
 // Types
 import type { FC, MouseEvent } from 'react';

@@ -1,11 +1,19 @@
-import { Tag } from 'types/tag.types';
+import { Tag } from '@entities/tag.entity';
 
 const isTagInUserTags = (gametags: Tag[], userTags: Tag[]): boolean => {
-  const commonTags: string[] = gametags
-    .filter((gt) => userTags.some((ut) => ut.name === gt.name))
-    .map((gt) => gt.name);
+  if (gametags.length === 0 || userTags.length === 0) {
+    return false;
+  }
 
-  return commonTags.length >= 3;
+  const userTagNames = new Set(userTags.map((ut) => ut.name));
+  const commonTagsCount = gametags.reduce((count, gt) => {
+    if (userTagNames.has(gt.name)) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
+
+  return commonTagsCount >= 3;
 };
 
 export default isTagInUserTags;

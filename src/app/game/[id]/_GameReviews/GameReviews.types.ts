@@ -1,4 +1,4 @@
-import type { Game } from 'types/game.types';
+import type { Game } from '@entities/game.entity';
 
 export interface GameReviewsProps {
   game: Game;

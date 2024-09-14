@@ -5,15 +5,15 @@ import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 // Services
-import { deleteDeveloper } from 'services/common/developers';
-import { deleteFeature } from 'services/common/features';
-import { deleteLanguage } from 'services/common/languages';
-import { deletePublisher } from 'services/common/publishers';
-import { deleteReview } from 'services/common/reviews';
-import { deleteTag } from 'services/common/tags';
-import { deleteGame } from 'services/game/admin';
-import { deleteOffer } from 'services/game/offer';
-import { deleteUser } from 'services/user/admin';
+import { deleteDeveloper } from '@services/common/developers';
+import { deleteFeature } from '@services/common/features';
+import { deleteLanguage } from '@services/common/languages';
+import { deletePublisher } from '@services/common/publishers';
+import { deleteReview } from '@services/common/reviews';
+import { deleteTag } from '@services/common/tags';
+import { deleteGame } from '@services/game/admin';
+import { deleteOffer } from '@services/game/offer';
+import { deleteUser } from '@services/user/admin';
 
 // Types
 import type { FC, JSX } from 'react';

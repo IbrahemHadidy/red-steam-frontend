@@ -15,17 +15,18 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": "./",
     "paths": {
-      "images/*": ["public/images/*"],
-      "assets/*": ["src/assets/*"],
-      "app/*": ["src/app/*"],
-      "components/*": ["src/components/*"],
-      "configs/*": ["src/configs/*"],
-      "services/*": ["src/services/*"],
-      "utils/*": ["src/utils/*"],
-      "hooks/*": ["src/hooks/*"],
-      "contexts/*": ["src/contexts/*"],
-      "types/*": ["src/types/*"],
-      "styles/*": ["src/styles/*"]
+      "@images/*": ["public/images/*"],
+      "@assets/*": ["src/assets/*"],
+      "@app/*": ["src/app/*"],
+      "@components/*": ["src/components/*"],
+      "@configs/*": ["src/configs/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@types/*": ["src/types/*"],
+      "@entities/*": ["src/entities/*"],
+      "@styles/*": ["src/styles/*"]
     }
   },
   "include": [

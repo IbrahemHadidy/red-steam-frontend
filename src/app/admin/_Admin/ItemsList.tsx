@@ -12,24 +12,25 @@ import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
 
 // Services
-import { getDevelopersPaginated } from 'services/common/developers';
-import { getFeaturesPaginated } from 'services/common/features';
-import { getLanguagesPaginated } from 'services/common/languages';
-import { getPublishersPaginated } from 'services/common/publishers';
-import { getReviewsPaginated } from 'services/common/reviews';
-import { getTagsPaginated } from 'services/common/tags';
-import { getOffersPaginated } from 'services/game/offer';
+import { getDevelopersPaginated } from '@services/common/developers';
+import { getFeaturesPaginated } from '@services/common/features';
+import { getLanguagesPaginated } from '@services/common/languages';
+import { getPublishersPaginated } from '@services/common/publishers';
+import { getReviewsPaginated } from '@services/common/reviews';
+import { getTagsPaginated } from '@services/common/tags';
+import { getOffersPaginated } from '@services/game/offer';
 
 // Utils
-import convertToBase64Image from 'utils/convertToBase64Image';
-import debounce from 'utils/debounce';
-import formatDate from 'utils/formatDate';
+import convertToBase64Image from '@utils/convertToBase64Image';
+import debounce from '@utils/debounce';
+import formatDate from '@utils/formatDate';
+import { isCompany, isFeature, isPricing, isReview } from '@utils/typeGuards';
 
 // Images
-import deleteIcon from 'images/delete.png';
-import editIcon from 'images/edit.png';
-import negativeIcon from 'images/negative.png';
-import positiveIcon from 'images/positive.png';
+import deleteIcon from '@images/delete.png';
+import editIcon from '@images/edit.png';
+import negativeIcon from '@images/negative.png';
+import positiveIcon from '@images/positive.png';
 
 // Types
 import type { ChangeEvent, FC, JSX } from 'react';
@@ -308,7 +309,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
       <div className="search-box">
         {type === 'offer' && searchByGame}
         {!['review', 'offer'].includes(type) && searchByName}
-        {type === ('developer' || 'publisher') && searchByWebsite}
+        {['developer', 'publisher'].includes(type) && searchByWebsite}
         {type === 'review' && (
           <>
             {searchByUser}
@@ -387,7 +388,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
         {idHeader}
         {type === 'feature' && iconHeader}
         {type !== 'review' && type !== 'offer' && nameHeader}
-        {type === ('developer' || 'publisher') && websiteHeader}
+        {['developer', 'publisher'].includes(type) && websiteHeader}
         {type === 'review' && (
           <>
             {userHeader}
@@ -414,10 +415,10 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
 
   // Table body
   const idRow = (item: Item): JSX.Element => {
-    return <td>{type === 'offer' ? ('game' in item ? item.game?.id : '') : item.id}</td>;
+    return <td>{type === 'offer' ? (isPricing(item) ? item.game?.id : '') : item.id}</td>;
   };
   const iconRow = (item: Item): JSX.Element => {
-    if ('icon' in item) {
+    if (isFeature(item)) {
       return (
         <td className="icon">
           <img src={convertToBase64Image(item.icon.data)} alt={item.name} />
@@ -428,7 +429,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const nameRow = (item: Item): JSX.Element => {
-    if ('name' in item) {
+    if (!isPricing(item) && !isReview(item)) {
       return (
         <td
           className="copy-to-clipboard"
@@ -443,7 +444,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const websiteRow = (item: Item): JSX.Element => {
-    if ('website' in item) {
+    if (isCompany(item)) {
       return (
         <td
           className="copy-to-clipboard"
@@ -458,14 +459,14 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const userRow = (item: Item): JSX.Element => {
-    if ('user' in item) {
+    if (isReview(item)) {
       return (
         <td
           className="copy-to-clipboard"
           title="Copy to clipboard"
-          onClick={() => copyToClipboard('Username', item.user.username)}
+          onClick={() => copyToClipboard('Username', item.user?.username ?? '')}
         >
-          {item.user.username}
+          {item.user?.username}
         </td>
       );
     } else {
@@ -473,7 +474,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const gameRow = (item: Item): JSX.Element => {
-    if ('game' in item) {
+    if (isReview(item)) {
       return (
         <td
           className="copy-to-clipboard"
@@ -488,7 +489,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const reviewContentRow = (item: Item): JSX.Element => {
-    if ('content' in item) {
+    if (isReview(item)) {
       return (
         <td
           className="copy-to-clipboard"
@@ -503,7 +504,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const reviewRatingRow = (item: Item): JSX.Element => {
-    if ('positive' in item) {
+    if (isReview(item)) {
       return (
         <td>
           {item.positive ? (
@@ -518,42 +519,42 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const basePriceRow = (item: Item): JSX.Element => {
-    if ('basePrice' in item) {
+    if (isPricing(item)) {
       return <td>${item.basePrice} USD</td>;
     } else {
       return <></>;
     }
   };
   const discountPriceRow = (item: Item): JSX.Element => {
-    if ('discountPrice' in item) {
+    if (isPricing(item)) {
       return <td>${item.discountPrice} USD</td>;
     } else {
       return <></>;
     }
   };
   const discountPercentageRow = (item: Item): JSX.Element => {
-    if ('discountPercentage' in item) {
+    if (isPricing(item)) {
       return <td>{item.discountPercentage}%</td>;
     } else {
       return <></>;
     }
   };
   const offerTypeRow = (item: Item): JSX.Element => {
-    if ('offerType' in item) {
+    if (isPricing(item)) {
       return <td>{item.offerType}</td>;
     } else {
       return <></>;
     }
   };
   const discountStartDateRow = (item: Item): JSX.Element => {
-    if ('discountStartDate' in item) {
+    if (isPricing(item)) {
       return <td>{formatDate(item.discountStartDate)}</td>;
     } else {
       return <></>;
     }
   };
   const discountEndDateRow = (item: Item): JSX.Element => {
-    if ('discountEndDate' in item) {
+    if (isPricing(item)) {
       return <td>{formatDate(item.discountEndDate)}</td>;
     } else {
       return <></>;
@@ -578,8 +579,8 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
           {idRow(item)}
           {type === 'feature' && iconRow(item)}
           {type !== 'review' && nameRow(item)}
-          {type === ('developer' || 'publisher') && websiteRow(item)}
-          {type === 'review' && 'user' in item && 'game' in item && 'content' in item && (
+          {['developer', 'publisher'].includes(type) && websiteRow(item)}
+          {type === 'review' && isReview(item) && (
             <>
               {userRow(item)}
               {gameRow(item)}

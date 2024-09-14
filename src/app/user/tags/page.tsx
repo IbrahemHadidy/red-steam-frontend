@@ -11,18 +11,18 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Services
-import { getAllTags } from 'services/common/tags';
-import { changeTags } from 'services/user/interaction';
+import { getAllTags } from '@services/common/tags';
+import { changeTags } from '@services/user/interaction';
 
 // Types
+import type { Tag } from '@entities/tag.entity';
 import type { ChangeEvent, FC, JSX } from 'react';
-import type { Tag } from 'types/tag.types';
 
 const TagsPage: FC = (): JSX.Element => {
   // Init

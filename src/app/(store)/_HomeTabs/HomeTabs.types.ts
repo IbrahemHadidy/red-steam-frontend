@@ -1,17 +1,10 @@
-import type { Game } from 'types/game.types';
-import type { Review } from 'types/review.types';
-
-export interface GetGameDetails {
-  gameName: string;
-  reviews: Review[];
-  tags: string[];
-  screenshots: string[];
-}
+import type { Game } from '@entities/game.entity';
 
 export interface TabContentProps {
   items: Game[];
   title: string;
   isOpened: boolean;
   seeMore: string;
-  onTabHover: (idx: number | null) => void;
+  onTabHover: (game: number | null) => void;
+  setHoveredGame: (game: Game | null) => void;
 }

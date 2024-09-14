@@ -1,5 +1,5 @@
 // Components
-import RedirectIfNotLoggedIn from 'components/RedirectIfNotLoggedIn';
+import RedirectIfNotLoggedIn from '@components/RedirectIfNotLoggedIn';
 
 // Types
 import type { FC, JSX, ReactNode } from 'react';

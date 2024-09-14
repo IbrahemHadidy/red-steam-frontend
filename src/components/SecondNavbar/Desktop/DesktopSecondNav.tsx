@@ -12,17 +12,17 @@ import { usePathname } from 'next/navigation';
 import { animated, useSpring } from 'react-spring';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Services
-import { menuData, navigationItems } from 'services/menus/menuData';
+import { menuData, navigationItems } from '@services/menus/menuData';
 
 // Components
 import NavSearch from '../NavSearch';
 
 // Images
-import cart from 'images/cart.svg';
-import defaultPFP from 'images/default-pfp.png';
+import cart from '@images/cart.svg';
+import defaultPFP from '@images/default-pfp.png';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -34,7 +34,7 @@ const DesktopSecondNav: FC = (): JSX.Element => {
   const pathname = usePathname();
 
   // Contexts
-  const { isLoggedIn, userPFP, userData } = useContext(AuthContext);
+  const { isLoggedIn, userData } = useContext(AuthContext);
 
   // States
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -108,14 +108,18 @@ const DesktopSecondNav: FC = (): JSX.Element => {
         <nav className="navbar navbar-expand-sm navbarBg">
           <ul className="navbar-nav">
             {isLoggedIn && (
-              <img className="profile-picture" src={userPFP || defaultPFP.src} alt="Avatar" />
+              <img
+                className="profile-picture"
+                src={userData?.profilePicture || defaultPFP.src}
+                alt="Avatar"
+              />
             )}
             {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
               <li
                 key={idx}
                 className="nav-item dropdown"
-                onPointerMove={() => setOpenMenu(menuTitle)}
-                onPointerLeave={() => setOpenMenu(null)}
+                onMouseEnter={() => setOpenMenu(menuTitle)}
+                onMouseLeave={() => setOpenMenu(null)}
               >
                 <a
                   className={`nav-link navBarItem ${

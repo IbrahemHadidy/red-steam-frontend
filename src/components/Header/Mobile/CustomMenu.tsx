@@ -15,15 +15,15 @@ import { animated, useSpring } from 'react-spring';
 import { toast } from 'react-toastify';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Links Data
 import sharedData from '../sharedData';
 
 // Images
-import defaultPFP from 'images/default-pfp.png';
-import dropdown from 'images/dropdown.png';
-import valveLogo from 'images/logo_valve_footer.png';
+import defaultPFP from '@images/default-pfp.png';
+import dropdown from '@images/dropdown.png';
+import valveLogo from '@images/logo_valve_footer.png';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -38,7 +38,7 @@ const SteamMenu: FC = (): JSX.Element => {
   const router = useRouter();
 
   // Contexts
-  const { userData, userPFP, isLoggedIn } = useContext(AuthContext);
+  const { userData, isLoggedIn } = useContext(AuthContext);
 
   // States
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
@@ -192,7 +192,7 @@ const SteamMenu: FC = (): JSX.Element => {
                 <div className="responsive_menu_user_persona persona offline">
                   <div className="playerAvatar offline">
                     <Link href={`/user/${userData?.id}/`}>
-                      <img src={userPFP || defaultPFP.src} alt="User Avatar" />
+                      <img src={userData?.profilePicture || defaultPFP.src} alt="User Avatar" />
                     </Link>
                   </div>
                   <Link href={`/user/${userData?.id}/`}>{userData?.username}</Link>

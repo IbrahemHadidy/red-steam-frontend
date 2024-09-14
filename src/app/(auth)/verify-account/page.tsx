@@ -7,10 +7,10 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Components
-import LoadingPage from 'app/loading';
+import LoadingPage from '@app/loading';
 
 // Services
-import { verifyEmail } from 'services/user/auth';
+import { verifyEmail } from '@services/user/auth';
 
 // Types
 import type { FC, JSX } from 'react';

@@ -1,4 +1,4 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -12,14 +12,10 @@ class UserPayment extends Api {
     totalPrice: string,
     cartItems: number[]
   ): Promise<{ orderId: string }> => {
-    const accessToken: string | null = this.getAccessToken();
-
     const endpoint: string = `/create`;
     const data = { totalPrice, cartItems };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
@@ -31,14 +27,10 @@ class UserPayment extends Api {
     orderId: string,
     cartItems: number[]
   ): Promise<{ data: { orderId: string }; status: number }> => {
-    const accessToken: string | null = this.getAccessToken();
-
     const endpoint: string = `/capture`;
     const data = { orderId, cartItems };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
 
     const response: AxiosResponse = await this.post(endpoint, data, config);

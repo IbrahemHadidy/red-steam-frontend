@@ -5,5 +5,5 @@
     "source.fixAll": "always",
     "source.organizeImports": "always"
   },
-  "eslint.workingDirectories": ["./NextJs"]
+  "workbench.iconTheme": "material-icon-theme"
 }

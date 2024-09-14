@@ -14,15 +14,15 @@ const GameReviews = dynamic(() => import('./_GameReviews/page'));
 const MediaAndSummary = dynamic(() => import('./_MediaAndSummary/MediaAndSummary'));
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Services
-import { getById } from 'services/game/data';
+import { getById } from '@services/game/data';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
-import type { Game } from 'types/game.types';
-import type { GameProps } from './Game.types';
+import type { GameProps } from './Game.entity';
 
 const GamePage: FC<GameProps> = ({ params }): JSX.Element | null => {
   const router = useRouter();

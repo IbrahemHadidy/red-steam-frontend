@@ -2,18 +2,18 @@
 import { useEffect, useState } from 'react';
 
 // React-Select
+import defaultDarkStyles from '@styles/react-select/react-select-dark';
 import Select from 'react-select';
-import defaultDarkStyles from 'styles/react-select/react-select-dark';
 
 // Services
-import { getAllFeatures } from 'services/common/features';
-import { getAllLanguages } from 'services/common/languages';
-import { getAllTags } from 'services/common/tags';
+import { getAllFeatures } from '@services/common/features';
+import { getAllLanguages } from '@services/common/languages';
+import { getAllTags } from '@services/common/tags';
 
 // Types
 import type { Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
 import type { MultiValue } from 'react-select';
-import type { Language, Platforms } from '../create.types';
+import type { Language, Platforms } from '../create-game.types';
 interface SpecificationsProps {
   tags: number[];
   setTags: Dispatch<SetStateAction<number[]>>;

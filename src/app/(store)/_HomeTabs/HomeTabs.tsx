@@ -8,12 +8,14 @@ import LeftSection from './LeftSection';
 import RightSection from './RightSection';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
 
 const HomeTabs: FC = (): JSX.Element => {
   // States
   const [openedTab, setOpenedTab] = useState<string | number>('New & Trending');
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
+  const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
 
   const handleTabClick = (tab: string): void => {
     setOpenedTab(tab);
@@ -31,8 +33,9 @@ const HomeTabs: FC = (): JSX.Element => {
           handleTabClick={handleTabClick}
           hoveredTabIndex={hoveredTabIndex}
           onTabHover={handleTabHover}
+          setHoveredGame={setHoveredGame}
         />
-        <RightSection openedTab={openedTab} hoveredTabIndex={hoveredTabIndex} />
+        <RightSection game={hoveredGame} />
       </div>
     </div>
   );

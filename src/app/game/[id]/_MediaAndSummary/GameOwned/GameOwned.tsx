@@ -7,17 +7,17 @@ import { useContext } from 'react';
 import Link from 'next/link';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Images
-import defaultPFP from 'images/default-pfp.png';
+import defaultPFP from '@images/default-pfp.png';
 
 // Types
 import type { FC, MouseEvent } from 'react';
 import type { GameOwnedProps } from '../MediaAndSummary.types';
 
 export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
-  const { userPFP } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
 
   const handleFormattingHelpClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
@@ -63,15 +63,9 @@ export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
               </div>
               <div className="avatar-block">
                 {/* TODO: logged in userId backend logic */}
-                <Link
-                  href={`/id/${
-                    {
-                      /*userId*/
-                    }
-                  }`}
-                >
+                <Link href={`/id/${game.id}`}>
                   <div className="avatar online">
-                    <img src={userPFP || defaultPFP.src} alt="pfp" />
+                    <img src={userData?.profilePicture || defaultPFP.src} alt="pfp" />
                   </div>
                 </Link>
               </div>

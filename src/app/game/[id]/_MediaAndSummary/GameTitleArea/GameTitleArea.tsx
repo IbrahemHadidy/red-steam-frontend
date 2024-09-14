@@ -12,13 +12,13 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 // Components
-import DeleteModal from 'app/admin/_Admin/DeleteModal';
+import DeleteModal from '@app/admin/_Admin/DeleteModal';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Images
-import deleteIcon from 'images/delete.png';
+import deleteIcon from '@images/delete.png';
 
 // Types
 import type { FC, JSX } from 'react';

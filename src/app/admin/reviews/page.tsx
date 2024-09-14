@@ -4,7 +4,7 @@
 import { useState } from 'react';
 
 // Components
-import Admin from 'app/admin/_Admin/Admin';
+import Admin from '@app/admin/_Admin/Admin';
 
 // Types
 import type { FC, JSX } from 'react';

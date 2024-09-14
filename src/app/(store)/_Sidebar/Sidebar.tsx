@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import Link from 'next/link';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Bootstrap components
 import { Nav } from 'react-bootstrap';
@@ -18,7 +18,7 @@ import { Nav } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 // Images
-import steamPromoCard from 'images/steamcards_promo_03.png';
+import steamPromoCard from '@images/steamcards_promo_03.png';
 
 // Types
 import type { FC, JSX, MouseEvent } from 'react';

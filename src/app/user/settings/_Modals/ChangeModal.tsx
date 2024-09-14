@@ -4,14 +4,14 @@
 import { useContext, useRef, useState } from 'react';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Services
-import { changeEmail, changePassword } from 'services/user/management';
-import { changePhoneNumber } from 'services/user/phone';
+import { changeEmail, changePassword } from '@services/user/management';
+import { changePhoneNumber } from '@services/user/phone';
 
 // Utils
-import { validateEmail, validatePassword, validatePhone } from 'utils/inputValidations';
+import { validateEmail, validatePassword, validatePhone } from '@utils/inputValidations';
 
 // Types
 import type { ChangeEvent, FC, JSX } from 'react';

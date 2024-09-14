@@ -10,10 +10,20 @@ export const getRatingClass = (positivePercentage: number): string => {
   }
 };
 
-export const getRatingText = (positivePercentage: number): string => {
+export const getRatingText = (positivePercentage: number, totalReviews: number): string => {
   let ratingText: string = '';
 
-  if (positivePercentage >= 90) {
+  if (totalReviews === 0) {
+    ratingText = 'N/A';
+  } else if (totalReviews <= 50) {
+    if (positivePercentage < 60 && positivePercentage > 40) {
+      ratingText = 'Mixed';
+    } else if (positivePercentage >= 60) {
+      ratingText = 'Positive';
+    } else if (positivePercentage >= 40) {
+      ratingText = 'Negative';
+    }
+  } else if (positivePercentage >= 90) {
     ratingText = 'Overwhelmingly Positive';
   } else if (positivePercentage >= 80) {
     ratingText = 'Very Positive';
@@ -27,16 +37,12 @@ export const getRatingText = (positivePercentage: number): string => {
     ratingText = 'Very Negative';
   } else if (positivePercentage <= 40) {
     ratingText = 'Mostly Negative';
-  } else {
-    ratingText = 'No reviews yet.';
   }
 
   return ratingText;
 };
 
-export const getHoverInfo = (positiveReviews: number, totalReviews: number): string => {
-  const positivePercentage: number = (positiveReviews / totalReviews) * 100;
-
+export const getHoverInfo = (positivePercentage: number, totalReviews: number): string => {
   return totalReviews === 0
     ? 'No reviews yet.'
     : `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;

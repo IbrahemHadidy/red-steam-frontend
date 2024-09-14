@@ -1,14 +1,14 @@
 'use client';
 
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
 
 // Images
-import glitchImage from 'images/glitch-image.png';
+import glitchImage from '@images/glitch-image.png';
 
 // Styles
-import 'styles/not-found.scss';
+import '@styles/not-found.scss';
 
 // Types
 import type { Metadata } from 'next';

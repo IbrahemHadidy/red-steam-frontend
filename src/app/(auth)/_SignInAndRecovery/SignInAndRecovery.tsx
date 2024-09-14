@@ -18,18 +18,18 @@ import { toast } from 'react-toastify';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicBackground from '@hooks/useDynamicBackground';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Services
-import { checkEmailExists, forgotPassword, resetPassword } from 'services/user/management';
+import { checkEmailExists, forgotPassword, resetPassword } from '@services/user/management';
 
 // Utils
 import {
@@ -37,10 +37,10 @@ import {
   validateName,
   validatePassword,
   validatePhone,
-} from 'utils/inputValidations';
+} from '@utils/inputValidations';
 
 // Images
-import check from 'images/check.svg';
+import check from '@images/check.svg';
 
 // Types
 import type { ChangeEvent, FC, FormEvent, JSX } from 'react';

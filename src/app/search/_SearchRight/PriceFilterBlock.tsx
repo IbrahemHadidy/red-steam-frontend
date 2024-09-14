@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 // Images
-import dropdown from 'images/dropdown.png';
+import dropdown from '@images/dropdown.png';
 
 // Types
 import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';

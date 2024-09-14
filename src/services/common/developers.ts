@@ -1,8 +1,8 @@
-import Api from 'services/api';
+import Api from '@services/api';
 
 // Types
+import type { Developer } from '@entities/company.entity';
 import type { AxiosRequestConfig } from 'axios';
-import type { Developer } from 'types/company.types';
 
 class DeveloperApi extends Api {
   constructor() {
@@ -10,15 +10,12 @@ class DeveloperApi extends Api {
   }
 
   public createDeveloper = async (name: string, website: string): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
       website,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.post('', body, config);
     return data;
@@ -62,26 +59,20 @@ class DeveloperApi extends Api {
     name: string,
     website: string
   ): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const body = {
       name,
       website,
     };
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.put(`/${id}`, body, config);
     return data;
   };
 
   public deleteDeveloper = async (id: number): Promise<{ message: string }> => {
-    const accessToken: string | null = this.getAccessToken();
     const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      withCredentials: true,
     };
     const { data } = await this.delete(`/${id}`, config);
     return data;

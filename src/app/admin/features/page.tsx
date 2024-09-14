@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 // Components
-import Admin from 'app/admin/_Admin/Admin';
+import Admin from '@app/admin/_Admin/Admin';
 
 // Services
-import { createFeature } from 'services/common/features';
+import { createFeature } from '@services/common/features';
 
 // Types
 import type { ChangeEvent, FC, JSX } from 'react';
@@ -31,13 +31,28 @@ const FeaturesAdmin: FC = (): JSX.Element => {
           setIcon(reader.result.split(',')[1]); // Extract the Base64 string
         }
       };
+    } else {
+      setIcon('');
     }
   };
 
   const onSubmit = async (): Promise<void> => {
     const result: { message: string } = await createFeature(name, icon);
-    toast.success(result.message);
-    setSubmitted(submitted + 1);
+    await toast.promise(
+      new Promise<{ message: string }>((resolve, reject) => {
+        if (result.message) {
+          resolve(result);
+        } else {
+          reject(new Error('Failed to create feature'));
+        }
+      }),
+      {
+        success: result.message,
+        error: 'Failed to create feature',
+        pending: 'Creating feature...',
+      }
+    );
+    setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');
     setIcon('');
   };

@@ -9,16 +9,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
 // Services
-import { addToWishlist, removeFromWishlist } from 'services/user/interaction';
+import { addToWishlist, removeFromWishlist } from '@services/user/interaction';
 
 // Images
-import selectedIcon from 'images/ico_selected.png';
+import selectedIcon from '@images/ico_selected.png';
 
 // Types
 import type { FC, JSX } from 'react';

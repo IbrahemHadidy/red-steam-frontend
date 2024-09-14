@@ -51,9 +51,9 @@ export const SearchRight: FC<SearchRightProps> = ({
       />
       <FilterBlock
         title="Preference"
-        filters={filters.option}
+        filters={filters.preference}
         handleIncludeClick={handleOptionRowClick}
-        hasSearch={filters.option.length > 10}
+        hasSearch={filters.preference.length > 10}
       />
       <FilterBlock
         title="Tag"

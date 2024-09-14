@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 // Components
-import Admin from 'app/admin/_Admin/Admin';
+import Admin from '@app/admin/_Admin/Admin';
 
 // Services
-import { createTag } from 'services/common/tags';
+import { createTag } from '@services/common/tags';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -21,9 +21,23 @@ const TagsAdmin: FC = (): JSX.Element => {
   const [submitted, setSubmitted] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
-    const result: { message: string } = await createTag(name);
-    toast.success(result.message);
-    setSubmitted(submitted + 1);
+    const result = await createTag(name);
+    await toast.promise(
+      new Promise<{ message: string }>((resolve, reject) => {
+        if (result.message) {
+          resolve(result);
+        } else {
+          reject(new Error('Failed to create tag'));
+        }
+      }),
+      {
+        success: result.message,
+        error: 'Failed to create tag',
+        pending: 'Creating tag...',
+      }
+    );
+
+    setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');
   };
 

@@ -12,10 +12,10 @@ const CustomMobileComponent = dynamic(() => import('./Mobile/CustomMobileCompone
 });
 
 // Custom Hooks
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Styles
-import 'styles/components/Header.scss';
+import '@styles/components/Header.scss';
 
 // Types
 import type { FC, JSX } from 'react';

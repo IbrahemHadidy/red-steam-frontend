@@ -1,4 +1,5 @@
-import { ChangeEvent, MouseEvent, RefObject } from 'react';
+import type { Game } from '@entities/game.entity';
+import type { ChangeEvent, MouseEvent, RefObject } from 'react';
 
 export interface Filter {
   id: number;
@@ -8,7 +9,7 @@ export interface Filter {
 
 export interface FilterState {
   price: Filter[];
-  option: Filter[];
+  preference: Filter[];
   tag: Filter[];
   os: Filter[];
   publisher: Filter[];
@@ -19,7 +20,9 @@ export interface FilterState {
 
 export interface SearchLeftProps {
   toggleDropdown: () => void;
-  selectedOption: string;
+  sortOption: string;
+  hasMore: boolean;
+  fetchGamesData: () => void;
   isOpen: boolean;
   selectOptions: string[];
   selectOption: (option: string) => void;
@@ -28,9 +31,8 @@ export interface SearchLeftProps {
   handleSearch: () => void;
   handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleSearchButton: (event: MouseEvent<HTMLButtonElement>) => void;
-  hideLibrary: boolean;
-  hideWishlist: boolean;
-  hideCart: boolean;
+  fetchedGames: Game[];
+  disabled: boolean;
   isViewport960: boolean;
 }
 

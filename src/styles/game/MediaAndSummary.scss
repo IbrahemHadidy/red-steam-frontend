@@ -142,6 +142,8 @@
           padding-right: 10px;
           min-width: 94px;
           color: #556772;
+          display: inline-flex;
+          align-items: center;
         }
 
         .summary-column {
@@ -173,6 +175,8 @@
             left: 2%;
             transition: opacity 0.2s ease-in-out;
             pointer-events: none;
+            display: inline-flex;
+            align-items: center;
           }
 
           .game-review-summary:hover~.review-tooltip {

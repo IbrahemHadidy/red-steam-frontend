@@ -10,13 +10,11 @@ import Link from 'next/link';
 import TagsModal from './TagsModal';
 
 // Utils
-import formatDate from 'utils/formatDate';
-import getHoverInfo from 'utils/getHoverInfo';
-import { getRatingClass, getRatingText } from 'utils/ratingUtils';
+import formatDate from '@utils/formatDate';
+import { getHoverInfo, getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Types
 import type { FC, JSX } from 'react';
-import type { Review } from 'types/review.types';
 import type { RightGameSummaryProps } from '../MediaAndSummary.types';
 
 export const RightGameSummary: FC<RightGameSummaryProps> = ({
@@ -30,15 +28,6 @@ export const RightGameSummary: FC<RightGameSummaryProps> = ({
   const toggleModal = (): void => {
     setShowModal(!showModal);
   };
-
-  const totalReviews = game.reviews.length;
-  const positiveReviews = game.reviews.filter((review: Review) => review.positive).length;
-  const negativeReviews = game.reviews.filter((review: Review) => !review.positive).length;
-
-  const positivePercentage = (positiveReviews / totalReviews) * 100;
-  const hoverInfo = getHoverInfo(positiveReviews, negativeReviews);
-  const summary = getRatingText(positivePercentage);
-  const ratingClass = getRatingClass(positivePercentage);
 
   return (
     <div className="right-game-summary">
@@ -56,12 +45,13 @@ export const RightGameSummary: FC<RightGameSummaryProps> = ({
           <div className="user-reviews-summary">
             <div className="summary-subtitle">All Reviews:</div>
             <div className="summary-column">
-              <span className={`game-review-summary ${ratingClass}`}>{summary || 'N/A'}</span>
-              <span className="game-review-count">
-                {' '}
-                ({(positiveReviews + negativeReviews).toLocaleString()})
+              <span className={`game-review-summary ${getRatingClass(game.averageRating)}`}>
+                {getRatingText(game.averageRating, game.reviewsCount)}
               </span>
-              <span className="review-tooltip">{hoverInfo}</span>
+              <span className="game-review-count"> ({game.reviewsCount.toString()})</span>
+              <span className="review-tooltip">
+                {getHoverInfo(game.averageRating, game.reviewsCount)}
+              </span>
             </div>
           </div>
         </div>
@@ -72,10 +62,10 @@ export const RightGameSummary: FC<RightGameSummaryProps> = ({
         <div className="dev-publish">
           <div className="summary-subtitle">Developer:</div>
           <div className="summary-column">
-            {game.developers.map((developer, idx) => (
+            {game.developers?.map((developer, idx) => (
               <Fragment key={developer.id}>
                 <a href={developer.website}>{developer.name}</a>
-                {idx !== game.developers.length - 1 && ', '}
+                {game.developers && idx !== game.developers?.length - 1 && ', '}
               </Fragment>
             ))}
           </div>
@@ -83,10 +73,10 @@ export const RightGameSummary: FC<RightGameSummaryProps> = ({
         <div className="dev-publish">
           <div className="summary-subtitle">Publisher:</div>
           <div className="summary-column">
-            {game.publishers.map((publisher, idx) => (
+            {game.publishers?.map((publisher, idx) => (
               <Fragment key={publisher.id}>
                 <a href={publisher.website}>{publisher.name}</a>
-                {idx !== game.publishers.length - 1 && ', '}
+                {game.publishers && idx !== game.publishers.length - 1 && ', '}
               </Fragment>
             ))}
           </div>
@@ -97,22 +87,22 @@ export const RightGameSummary: FC<RightGameSummaryProps> = ({
         {!isViewport960 ? (
           <div className="glance-tags">
             {!showModal &&
-              game.tags.slice(0, 4).map((tag) => (
+              game.tags?.slice(0, 4).map((tag) => (
                 <Link key={tag.id} className="game-tag" href={`/search?tags=${tag.id}`}>
                   {tag.name}
                 </Link>
               ))}
-            {!showModal && game.tags.length > 3 && (
+            {!showModal && game.tags && game.tags?.length > 3 && (
               <a className="game-tag" onClick={toggleModal}>
                 +
               </a>
             )}
             {showModal && (
-              <TagsModal onClose={toggleModal} tags={game.tags.map((tag) => tag.name)} />
+              <TagsModal onClose={toggleModal} tags={game.tags?.map((tag) => tag.name) || []} />
             )}
           </div>
         ) : (
-          game.tags.map((tag) => (
+          game.tags?.map((tag) => (
             <Link key={tag.id} className="game-tag" href={`/search?tags=${tag.id}`}>
               {tag.name}
             </Link>

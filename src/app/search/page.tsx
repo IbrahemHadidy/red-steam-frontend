@@ -8,32 +8,58 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Components
-import Footer from 'components/Footer/Footer';
-import Header from 'components/Header/Header';
-import SecondNavbar from 'components/SecondNavbar/SecondNavbar';
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
+import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 import { SearchLeft } from './_SearchLeft/SearchLeft';
 import { SearchRight } from './_SearchRight/SearchRight';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Services
-import { getAllDevelopers } from 'services/common/developers';
-import { getAllFeatures } from 'services/common/features';
-import { getAllLanguages } from 'services/common/languages';
-import { getAllPublishers } from 'services/common/publishers';
-import { getAllTags } from 'services/common/tags';
+import { getAllDevelopers } from '@services/common/developers';
+import { getAllFeatures } from '@services/common/features';
+import { getAllLanguages } from '@services/common/languages';
+import { getAllPublishers } from '@services/common/publishers';
+import { getAllTags } from '@services/common/tags';
+import { getByParameters } from '@services/game/data';
 
 // Custom Hooks
-import useDynamicBackground from 'hooks/useDynamicBackground';
-import useResponsiveViewport from 'hooks/useResponsiveViewport';
+import useDynamicBackground from '@hooks/useDynamicBackground';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
+
+// Utils
+import debounce from '@utils/debounce';
 
 // Images
-import searchCrouton from 'images/search_crouton_not.svg';
+import searchCrouton from '@images/search_crouton_not.svg';
 
 // Types
+import type { Game } from '@entities/game.entity';
 import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';
 import type { Filter, FilterState } from './Search.types';
+interface RequestParams {
+  searchData: {
+    sort?: 'relevance' | 'name' | 'lowestPrice' | 'highestPrice' | 'releaseDate' | 'reviews';
+    partialName?: string;
+    maxPrice?: number;
+    tags?: number[];
+    excludeTags?: number[];
+    paid?: boolean;
+    offers?: boolean;
+    platforms?: ('win' | 'mac')[];
+    publishers?: number[];
+    developers?: number[];
+    features?: number[];
+    languages?: number[];
+    featured?: boolean;
+    excludeMature?: boolean;
+    excludedGames?: number[];
+    upcomingMode?: 'onlyUpcoming' | 'exclude';
+  };
+  pagination: { offset: number; limit: number };
+}
 
 const SearchPage: FC = (): JSX.Element => {
   // Intitializations
@@ -43,23 +69,24 @@ const SearchPage: FC = (): JSX.Element => {
   useDynamicBackground('#1b2838');
 
   // Contexts
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, userData } = useContext(AuthContext);
 
   // States
-  const [requestParameters, setRequestParameters] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>('Relevance');
-  const [searchValue, setSearchValue] = useState<string>('enter search term or tag');
+  const [sortOption, setSortOption] = useState<string>('Relevance');
+  const [searchValue, setSearchValue] = useState<string>('enter game name');
   const [savedSearchValue, setSavedSearchValue] = useState<string>('');
   const [rangeValue, setRangeValue] = useState<number>(13);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [filters, setFilters] = useState<FilterState>({
     price: [
       { id: 1, name: 'Special Offers', check: 'unchecked' },
       { id: 2, name: 'Hide free to play games', check: 'unchecked' },
     ],
-    option: [
+    preference: [
       { id: 1, name: 'Featured only', check: 'unchecked' },
-      { id: 5, name: 'Hide mature items', check: 'unchecked' },
+      { id: 6, name: 'Exclude mature', check: 'unchecked' },
+      { id: 7, name: 'Exclude upcoming', check: 'unchecked' },
     ],
     tag: [],
     os: [
@@ -71,90 +98,73 @@ const SearchPage: FC = (): JSX.Element => {
     feature: [],
     language: [],
   });
+  const [requestParameters, setRequestParameters] = useState<RequestParams>({
+    searchData: {},
+    pagination: { offset: 0, limit: 20 },
+  });
+  const [fetchedGames, setFetchedGames] = useState<Game[]>([]);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   // Refs
   const inputRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // TODO: Delete this
+  // Get filters functions
   useEffect(() => {
-    console.log(filters);
-  }, [filters, searchParams]);
+    const fetchFilters = async () => {
+      const [tags, features, publishers, developers, languages] = await Promise.all([
+        getAllTags(),
+        getAllFeatures(),
+        getAllPublishers(),
+        getAllDevelopers(),
+        getAllLanguages(),
+      ]);
 
-  // Fetch initial tags
-  useEffect(() => {
-    const getTags = async () => {
-      const response = await getAllTags();
       setFilters((prevFilters) => ({
         ...prevFilters,
-        tag: response.map((tag) => ({ id: tag.id, name: tag.name, check: 'unchecked' })),
-      }));
-    };
-    getTags();
-  }, []);
-
-  // Fetch initial publishers
-  useEffect(() => {
-    const getPublishers = async () => {
-      const response = await getAllPublishers();
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        publisher: response.map((publisher) => ({
-          id: publisher.id,
-          name: publisher.name,
-          check: 'unchecked',
-        })),
-      }));
-    };
-    getPublishers();
-  }, []);
-
-  // Fetch initial developers
-  useEffect(() => {
-    const getDevelopers = async () => {
-      const response = await getAllDevelopers();
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        developer: response.map((developer) => ({
-          id: developer.id,
-          name: developer.name,
-          check: 'unchecked',
-        })),
-      }));
-    };
-    getDevelopers();
-  }, []);
-
-  // Fetch initial features
-  useEffect(() => {
-    const getFeatures = async () => {
-      const response = await getAllFeatures();
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        feature: response.map((feature) => ({
+        tag: tags.map((tag) => ({ id: tag.id, name: tag.name, check: 'unchecked' })),
+        feature: features.map((feature) => ({
           id: feature.id,
           name: feature.name,
           check: 'unchecked',
         })),
-      }));
-    };
-    getFeatures();
-  }, []);
-
-  // Fetch initial languages
-  useEffect(() => {
-    const getLanguages = async () => {
-      const response = await getAllLanguages();
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        language: response.map((language) => ({
+        publisher: publishers.map((publisher) => ({
+          id: publisher.id,
+          name: publisher.name,
+          check: 'unchecked',
+        })),
+        developer: developers.map((developer) => ({
+          id: developer.id,
+          name: developer.name,
+          check: 'unchecked',
+        })),
+        language: languages.map((language) => ({
           id: language.id,
           name: language.name,
           check: 'unchecked',
         })),
       }));
     };
-    getLanguages();
+
+    fetchFilters();
   }, []);
+
+  useEffect(() => {
+    const wishlistFilter = filters.preference.find((f) => f.name === 'Hide items in my wishlist');
+    const cartFilter = filters.preference.find((f) => f.name === 'Hide items in my cart');
+    const libraryFilter = filters.preference.find((f) => f.name === 'Hide items in my library');
+    if (isLoggedIn && !wishlistFilter && !cartFilter && !libraryFilter) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        preference: [
+          ...prevFilters.preference,
+          { id: 2, name: 'Hide items in my library', check: 'unchecked' },
+          { id: 3, name: 'Hide items in my wishlist', check: 'unchecked' },
+          { id: 4, name: 'Hide items in my cart', check: 'unchecked' },
+        ],
+      }));
+    }
+  }, [isLoggedIn, filters.preference]);
 
   // Select options
   const selectOptions: string[] = [
@@ -187,23 +197,6 @@ const SearchPage: FC = (): JSX.Element => {
     []
   );
 
-  // Add additional filters to options if logged in
-  useEffect(() => {
-    if (isLoggedIn) {
-      setFilters((prevFilters) => {
-        return {
-          ...prevFilters,
-          option: [
-            ...prevFilters.option,
-            { id: 2, name: 'Hide items in my library', check: 'unchecked' },
-            { id: 3, name: 'Hide items in my wishlist', check: 'unchecked' },
-            { id: 4, name: 'Hide items in my cart', check: 'unchecked' },
-          ],
-        };
-      });
-    }
-  }, [isLoggedIn]);
-
   const getPriceRangeLabel = useCallback(
     (value: number): string => {
       return ranges[value]?.label || '';
@@ -213,22 +206,22 @@ const SearchPage: FC = (): JSX.Element => {
 
   const updateFromURL = useCallback((): void => {
     // Extract and update search term
-    const searchTerm: string = searchParams?.get('term') || 'enter search term or tag';
+    const searchTerm: string = searchParams?.get('term') || 'enter game name';
     setSearchValue(decodeURIComponent(searchTerm));
-    if (searchTerm !== 'enter search term or tag') {
+    if (searchTerm !== 'enter game name') {
       setSavedSearchValue(decodeURIComponent(searchTerm));
     }
 
     // Extract and update sort option
     const sortOption = searchParams?.get('sort') || 'Relevance';
-    setSelectedOption(decodeURIComponent(sortOption));
+    setSortOption(decodeURIComponent(sortOption));
 
     // Extract and update price range
     const priceValue = searchParams?.get('maxPrice') ? Number(searchParams.get('maxPrice')) : null;
     const priceIndex = ranges.findIndex((range) => range.value === priceValue);
     setRangeValue(priceIndex);
 
-    // Extract and update checked price options
+    // Extract and update included price options
     const priceOptions =
       searchParams
         ?.get('priceOptions')
@@ -238,6 +231,19 @@ const SearchPage: FC = (): JSX.Element => {
       ...prevState,
       price: prevState.price.map((row) =>
         priceOptions.includes(row.id) ? { ...row, check: 'included' } : row
+      ),
+    }));
+
+    // Extract and update included preference options
+    const includedPreferenceOptions =
+      searchParams
+        ?.get('preferenceOptions')
+        ?.split(',')
+        .map((id) => Number(id)) || [];
+    setFilters((prevState) => ({
+      ...prevState,
+      preference: prevState.preference.map((row) =>
+        includedPreferenceOptions.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
 
@@ -254,8 +260,8 @@ const SearchPage: FC = (): JSX.Element => {
       ),
     }));
 
-    // Extract and update checked tag rows
-    const checkedTags =
+    // Extract and update included tag rows
+    const includedTags =
       searchParams
         ?.get('tags')
         ?.split(',')
@@ -263,7 +269,7 @@ const SearchPage: FC = (): JSX.Element => {
     setFilters((prevState) => ({
       ...prevState,
       tag: prevState.tag.map((row) =>
-        checkedTags.includes(row.id) ? { ...row, check: 'included' } : row
+        includedTags.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
 
@@ -280,8 +286,8 @@ const SearchPage: FC = (): JSX.Element => {
       ),
     }));
 
-    // Extract and update checked feature rows
-    const checkedFeatures =
+    // Extract and update included feature rows
+    const includedFeatures =
       searchParams
         ?.get('features')
         ?.split(',')
@@ -289,12 +295,12 @@ const SearchPage: FC = (): JSX.Element => {
     setFilters((prevState) => ({
       ...prevState,
       feature: prevState.feature.map((row) =>
-        checkedFeatures.includes(row.id) ? { ...row, check: 'included' } : row
+        includedFeatures.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
 
-    // Extract and update checked developer rows
-    const checkedDevelopers =
+    // Extract and update included developer rows
+    const includedDevelopers =
       searchParams
         ?.get('developers')
         ?.split(',')
@@ -302,12 +308,12 @@ const SearchPage: FC = (): JSX.Element => {
     setFilters((prevState) => ({
       ...prevState,
       developer: prevState.developer.map((row) =>
-        checkedDevelopers.includes(row.id) ? { ...row, check: 'included' } : row
+        includedDevelopers.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
 
-    // Extract and update checked publisher rows
-    const checkedPublishers =
+    // Extract and update included publisher rows
+    const includedPublishers =
       searchParams
         ?.get('publishers')
         ?.split(',')
@@ -315,12 +321,12 @@ const SearchPage: FC = (): JSX.Element => {
     setFilters((prevState) => ({
       ...prevState,
       publisher: prevState.publisher.map((row) =>
-        checkedPublishers.includes(row.id) ? { ...row, check: 'included' } : row
+        includedPublishers.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
 
-    // Extract and update checked OS rows
-    const checkedOS =
+    // Extract and update included OS rows
+    const includedOS =
       searchParams
         ?.get('os')
         ?.split(',')
@@ -328,12 +334,12 @@ const SearchPage: FC = (): JSX.Element => {
     setFilters((prevState) => ({
       ...prevState,
       os: prevState.os.map((row) =>
-        checkedOS.includes(row.id) ? { ...row, check: 'included' } : row
+        includedOS.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
 
-    // Extract and update checked language rows
-    const checkedLanguages =
+    // Extract and update included language rows
+    const includedLanguages =
       searchParams
         ?.get('languages')
         ?.split(',')
@@ -341,7 +347,7 @@ const SearchPage: FC = (): JSX.Element => {
     setFilters((prevState) => ({
       ...prevState,
       language: prevState.language.map((row) =>
-        checkedLanguages.includes(row.id) ? { ...row, check: 'included' } : row
+        includedLanguages.includes(row.id) ? { ...row, check: 'included' } : row
       ),
     }));
   }, [ranges, searchParams]);
@@ -362,15 +368,15 @@ const SearchPage: FC = (): JSX.Element => {
 
     const queryParams = [
       createQueryString('term', savedSearchValue),
-      createQueryString('sort', selectedOption),
+      createQueryString('sort', sortOption),
       createQueryString('maxPrice', priceValue),
       createQueryString(
         'priceOptions',
         filters.price.filter((f) => f.check === 'included').map((f) => f.id)
       ),
       createQueryString(
-        'options',
-        filters.option.filter((f) => f.check === 'included').map((f) => f.id)
+        'preferenceOptions',
+        filters.preference.filter((f) => f.check === 'included').map((f) => f.id)
       ),
       createQueryString(
         'tags',
@@ -407,66 +413,259 @@ const SearchPage: FC = (): JSX.Element => {
     const fullURL: string = queryString ? `${baseURL}?${queryString}` : baseURL;
 
     router.replace(fullURL, { scroll: false });
+  }, [
+    filters.developer,
+    filters.feature,
+    filters.language,
+    filters.os,
+    filters.preference,
+    filters.price,
+    filters.publisher,
+    filters.tag,
+    rangeValue,
+    ranges,
+    router,
+    savedSearchValue,
+    sortOption,
+  ]);
 
-    // Construct request URL
-    const requestUrl: URL = new URL(fullURL, 'https://redsteam.com');
+  // Construct search parameters
+  useEffect(() => {
+    const searchData: RequestParams['searchData'] = {};
 
-    // Handle price options
-    requestUrl.searchParams.delete('priceOptions');
-    if (filters.price.find((f) => f.id === 1 && f.check === 'included')) {
-      requestUrl.searchParams.append('offers', 'true');
-    }
-    if (filters.price.find((f) => f.id === 2 && f.check === 'included')) {
-      requestUrl.searchParams.append('paid', 'true');
-    }
-
-    // Handle options
-    requestUrl.searchParams.delete('options');
-    if (filters.option.find((f) => f.id === 1 && f.check === 'included')) {
-      requestUrl.searchParams.append('featured', 'true');
-    }
-    if (filters.option.find((f) => f.id === 5 && f.check === 'included')) {
-      requestUrl.searchParams.append('excludeMature', 'true');
-    }
-
-    // Collect all selected platforms and append them as a comma-separated string
-    const platforms: string[] = [];
-    if (filters.os.find((f) => f.id === 1 && f.check === 'included')) {
-      platforms.push('win');
-    }
-    if (filters.os.find((f) => f.id === 2 && f.check === 'included')) {
-      platforms.push('mac');
-    }
-    if (platforms.length > 0) {
-      requestUrl.searchParams.append('platforms', platforms.join(','));
+    // Get saved search value
+    if (savedSearchValue) {
+      searchData.partialName = savedSearchValue;
     }
 
-    // Set request parameters
-    setRequestParameters(decodeURIComponent(requestUrl.href.split('https://redsteam.com')[1]));
-  }, [filters, ranges, rangeValue, router, savedSearchValue, selectedOption]);
+    // Get sort option
+    if (sortOption === 'Relevance') {
+      searchData.sort = 'relevance';
+    } else if (sortOption === 'Name') {
+      searchData.sort = 'name';
+    } else if (sortOption === 'Lowest Price') {
+      searchData.sort = 'lowestPrice';
+    } else if (sortOption === 'Highest Price') {
+      searchData.sort = 'highestPrice';
+    } else if (sortOption === 'Release Date') {
+      searchData.sort = 'releaseDate';
+    } else if (sortOption === 'User Reviews') {
+      searchData.sort = 'reviews';
+    }
 
+    // Get price range
+    if (ranges[rangeValue].value !== null) {
+      searchData.maxPrice = ranges[rangeValue].value;
+    }
+
+    // Get tags
+    if (filters.tag.filter((f) => f.check === 'included').length > 0) {
+      searchData.tags = filters.tag.filter((f) => f.check === 'included').map((f) => f.id);
+    }
+
+    // Get excluded tags
+    if (filters.tag.filter((f) => f.check === 'excluded').length > 0) {
+      searchData.excludeTags = filters.tag.filter((f) => f.check === 'excluded').map((f) => f.id);
+    }
+
+    // Get paid only
+    if (
+      filters.price.filter((f) => f.name === 'Hide free to play games' && f.check === 'included')
+        .length > 0
+    ) {
+      searchData.paid = true;
+    }
+
+    // Get offers only
+    if (
+      filters.price.filter((f) => f.name === 'Special Offers' && f.check === 'included').length > 0
+    ) {
+      searchData.offers = true;
+    }
+
+    // Get platforms
+    if (filters.os.filter((f) => f.check === 'included').length > 0) {
+      const platforms = filters.os.filter((f) => f.check === 'included').map((f) => f.name);
+      const convertedPlatforms: ('win' | 'mac')[] = platforms
+        .map((platform) => {
+          if (platform === 'macOS') {
+            return 'mac';
+          }
+          if (platform === 'Windows') {
+            return 'win';
+          }
+        })
+        .filter((platform) => platform !== undefined);
+
+      searchData.platforms = convertedPlatforms;
+    }
+
+    // Get publishers
+    if (filters.publisher.filter((f) => f.check === 'included').length > 0) {
+      searchData.publishers = filters.publisher
+        .filter((f) => f.check === 'included')
+        .map((f) => f.id);
+    }
+
+    // Get developers
+    if (filters.developer.filter((f) => f.check === 'included').length > 0) {
+      searchData.developers = filters.developer
+        .filter((f) => f.check === 'included')
+        .map((f) => f.id);
+    }
+
+    // Get features
+    if (filters.feature.filter((f) => f.check === 'included').length > 0) {
+      searchData.features = filters.feature.filter((f) => f.check === 'included').map((f) => f.id);
+    }
+
+    // Get languages
+    if (filters.language.filter((f) => f.check === 'included').length > 0) {
+      searchData.languages = filters.language
+        .filter((f) => f.check === 'included')
+        .map((f) => f.id);
+    }
+
+    // Get featured only
+    if (
+      filters.preference.filter((f) => f.name === 'Featured only' && f.check === 'included')
+        .length > 0
+    ) {
+      searchData.featured = true;
+    }
+
+    // Get exclude mature
+    if (
+      filters.preference.filter((f) => f.name === 'Exclude mature' && f.check === 'included')
+        .length > 0
+    ) {
+      searchData.excludeMature = true;
+    }
+
+    // Get exclude upcoming
+    if (
+      filters.preference.filter(
+        (f) => f.name === 'Exclude upcoming games' && f.check === 'included'
+      ).length > 0
+    ) {
+      searchData.upcomingMode = 'exclude';
+    }
+
+    // Get excluded games ids
+    if (userData) {
+      const newExcludedIds: Set<number> = new Set();
+
+      const wishlistFilter = filters.preference.find((f) => f.name === 'Hide items in my wishlist');
+      const cartFilter = filters.preference.find((f) => f.name === 'Hide items in my cart');
+      const libraryFilter = filters.preference.find((f) => f.name === 'Hide items in my library');
+
+      if (wishlistFilter && wishlistFilter.check === 'included') {
+        userData.wishlist.forEach((item) => newExcludedIds.add(item.id));
+      }
+      if (cartFilter && cartFilter.check === 'included') {
+        userData.cart.forEach((item) => newExcludedIds.add(item.id));
+      }
+      if (libraryFilter && libraryFilter.check === 'included') {
+        userData.library.forEach((item) => newExcludedIds.add(item.id));
+      }
+
+      // Update searchData with the newly computed excluded game IDs.
+      searchData.excludedGames = Array.from(newExcludedIds);
+    }
+
+    setRequestParameters((prevState) => ({
+      ...prevState,
+      searchData: searchData,
+    }));
+  }, [
+    filters.developer,
+    filters.feature,
+    filters.language,
+    filters.os,
+    filters.preference,
+    filters.price,
+    filters.publisher,
+    filters.tag,
+    rangeValue,
+    ranges,
+    savedSearchValue,
+    sortOption,
+    userData,
+  ]);
+
+  // Handle filter updates
   useEffect(() => {
     constructSearchURL();
-  }, [constructSearchURL, filters]);
+  }, [constructSearchURL]);
+
+  const fetchGamesData = useCallback(async () => {
+    const response: Game[] = await getByParameters(
+      requestParameters.searchData,
+      requestParameters.pagination
+    );
+
+    if (response.length === 0) {
+      setHasMore(false);
+    } else {
+      // Add new games to the current list
+      setFetchedGames((prevReviews) =>
+        prevReviews.concat(
+          response.filter((newItem) => !prevReviews.some((prevItem) => prevItem.id === newItem.id))
+        )
+      );
+      setRequestParameters((prevState) => ({
+        ...prevState,
+        pagination: {
+          ...prevState.pagination,
+          offset: prevState.pagination.offset++,
+        },
+      }));
+    }
+    setDisabled(false);
+  }, [requestParameters.pagination, requestParameters.searchData]);
+
+  const debouncedFetchGamesData = useMemo(() => debounce(fetchGamesData, 500), [fetchGamesData]);
+
+  // Fetch data from API when filters change
+  useEffect(() => {
+    setDisabled(true);
+    debouncedFetchGamesData();
+
+    return () => {
+      debouncedFetchGamesData.cancel();
+    };
+  }, [debouncedFetchGamesData]);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setRequestParameters((prevState) => ({
+      ...prevState,
+      pagination: {
+        ...prevState.pagination,
+        offset: 0,
+      },
+    }));
+    contentRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [filters]);
 
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
 
   const selectOption = (option: string): void => {
-    setSelectedOption(option);
+    setSortOption(option);
     setIsOpen(false);
   };
 
   const handleSearch = (): void => {
-    if (searchValue === 'enter search term or tag') {
+    if (searchValue === 'enter game name') {
       setSearchValue('');
     }
   };
 
   const handleSearchButton = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
-    if (searchValue === 'enter search term or tag' || searchValue.trim() === '') {
+    if (searchValue === 'enter game name' || searchValue.trim() === '') {
       setSavedSearchValue('');
     } else {
       setSavedSearchValue(searchValue);
@@ -506,17 +705,17 @@ const SearchPage: FC = (): JSX.Element => {
     updateFilters(filterType, row.id, newCheck);
   };
 
-  const handleFilterDelete = (filterType: keyof FilterState, id: number): void => {
-    setFilters((prevFilters) => {
-      const updatedFilters: { id: number; name: string; check: string }[] = prevFilters[
-        filterType
-      ].map((filter) => (filter.id === id ? { ...filter, check: 'unchecked' } : filter));
-      return { ...prevFilters, [filterType]: updatedFilters };
-    });
-  };
+  const handleFilterDelete = useCallback((filterType: keyof FilterState, id: number) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterType]: prevFilters[filterType].map((filter) =>
+        filter.id === id ? { ...filter, check: 'unchecked' } : filter
+      ),
+    }));
+  }, []);
 
   const handleSearchDeleteFilter = (): void => {
-    setSearchValue('enter search term or tag');
+    setSearchValue('enter game name');
     setSavedSearchValue('');
   };
 
@@ -526,7 +725,7 @@ const SearchPage: FC = (): JSX.Element => {
       setRangeValue={setRangeValue}
       handlePriceChange={handlePriceChange}
       handlePriceRowClick={(row) => handleFilterIncludeClick('price', row)}
-      handleOptionRowClick={(row) => handleFilterIncludeClick('option', row)}
+      handleOptionRowClick={(row) => handleFilterIncludeClick('preference', row)}
       handleTagRowClick={(row) => handleFilterIncludeClick('tag', row)}
       handleTagRowExcludeClick={(e, row) => handleFilterExcludeClick(e, 'tag', row)}
       handleFeatureRowClick={(row) => handleFilterIncludeClick('feature', row)}
@@ -543,7 +742,9 @@ const SearchPage: FC = (): JSX.Element => {
   const searchLeft: JSX.Element = (
     <SearchLeft
       toggleDropdown={toggleDropdown}
-      selectedOption={selectedOption}
+      sortOption={sortOption}
+      hasMore={hasMore}
+      fetchGamesData={fetchGamesData}
       isOpen={isOpen}
       selectOptions={selectOptions}
       selectOption={selectOption}
@@ -552,9 +753,8 @@ const SearchPage: FC = (): JSX.Element => {
       handleSearch={handleSearch}
       handleInputChange={handleInputChange}
       handleSearchButton={handleSearchButton}
-      hideLibrary={!!filters.option.find((f) => f.id === 2 && f.check === 'included')}
-      hideWishlist={!!filters.option.find((f) => f.id === 3 && f.check === 'included')}
-      hideCart={!!filters.option.find((f) => f.id === 4 && f.check === 'included')}
+      fetchedGames={fetchedGames}
+      disabled={disabled}
       isViewport960={isViewport960}
     />
   );
@@ -565,7 +765,11 @@ const SearchPage: FC = (): JSX.Element => {
       <Header />
       <div className="search-header">
         <SecondNavbar />
-        <div className="page-content" style={{ marginTop: '20px', paddingLeft: '2px' }}>
+        <div
+          className="page-content"
+          style={{ marginTop: '20px', paddingLeft: '2px' }}
+          ref={contentRef}
+        >
           {Object.values(filters)
             .flat()
             .filter((row) => row.check !== 'unchecked').length === 0 && savedSearchValue === '' ? (
@@ -573,34 +777,36 @@ const SearchPage: FC = (): JSX.Element => {
           ) : (
             <>
               {savedSearchValue !== '' && (
-                <div className="search-tag">
+                <div className="search-filter">
                   {savedSearchValue}
                   <a onClick={handleSearchDeleteFilter} />
                 </div>
               )}
-              {Object.values(filters)
-                .flat()
-                .map(
-                  (row: Filter) =>
-                    row.check === 'included' && (
-                      <div className="search-tag" key={row.name}>
-                        {row.name}
-                        <a onClick={() => handleFilterDelete('tag', row.id)} />
-                      </div>
-                    )
-                )}
-              {Object.values(filters)
-                .flat()
-                .map(
-                  (row: Filter) =>
-                    row.check === 'excluded' && (
-                      <div className="search-tag excluded" key={row.name}>
-                        <Image src={searchCrouton} alt="excluded" />
-                        {row.name}
-                        <a onClick={() => handleFilterDelete('tag', row.id)} />
-                      </div>
-                    )
-                )}
+              {Object.entries(filters).flatMap(([filterType, filterArray]) =>
+                filterArray.map((row: Filter) =>
+                  row.check === 'included' ? (
+                    <div className="search-filter" key={`${filterType}-${row.id}-include`}>
+                      {row.name}
+                      <a
+                        onClick={() => handleFilterDelete(filterType as keyof FilterState, row.id)}
+                      />
+                    </div>
+                  ) : null
+                )
+              )}
+              {Object.entries(filters).flatMap(([filterType, filterArray]) =>
+                filterArray.map((row: Filter) =>
+                  row.check === 'excluded' ? (
+                    <div className="search-filter excluded" key={`${filterType}-${row.id}-exclude`}>
+                      <Image src={searchCrouton} alt="excluded" />
+                      {row.name}
+                      <a
+                        onClick={() => handleFilterDelete(filterType as keyof FilterState, row.id)}
+                      />
+                    </div>
+                  ) : null
+                )
+              )}
             </>
           )}
         </div>

@@ -1,5 +1,5 @@
 // Styles
-import 'styles/shop/Checkout.scss';
+import '@styles/shop/Checkout.scss';
 
 // Types
 import type { Metadata } from 'next';

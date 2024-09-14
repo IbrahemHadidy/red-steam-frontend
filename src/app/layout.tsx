@@ -1,15 +1,15 @@
 // React
-import { AuthProvider } from 'contexts/AuthContext';
+import { AuthProvider } from '@contexts/AuthContext';
 
 // Toast notifications
-import Toaster from 'components/Toaster/Toaster';
+import Toaster from '@components/Toaster/Toaster';
 
 // Images
-import favIcon from 'images/favicon.ico';
+import favIcon from '@images/favicon.ico';
 
 // Styles
+import '@styles/globals.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'styles/globals.scss';
 
 // Types
 import type { Metadata } from 'next';
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: 'Red Steam - Clone of Steam',
     url: '',
     siteName: 'Red Steam',
-    images: 'images/pwa-icon.png',
+    images: '@images/pwa-icon.png',
   },
   twitter: {
     site: 'Red Steam',

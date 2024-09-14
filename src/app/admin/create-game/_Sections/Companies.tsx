@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 
 // React-Select
+import defaultDarkStyles from '@styles/react-select/react-select-dark';
 import Select from 'react-select';
-import defaultDarkStyles from 'styles/react-select/react-select-dark';
 
 // Services
-import { getAllDevelopers } from 'services/common/developers';
-import { getAllPublishers } from 'services/common/publishers';
+import { getAllDevelopers } from '@services/common/developers';
+import { getAllPublishers } from '@services/common/publishers';
 
 // Types
 import type { Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';

@@ -4,10 +4,10 @@
 import { useContext, useRef } from 'react';
 
 // Contexts
-import { AuthContext } from 'contexts/AuthContext';
+import { AuthContext } from '@contexts/AuthContext';
 
 // Services
-import { removePhoneNumber } from 'services/user/phone';
+import { removePhoneNumber } from '@services/user/phone';
 
 // Types
 import type { FC, JSX } from 'react';
