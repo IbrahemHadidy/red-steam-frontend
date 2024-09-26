@@ -4,14 +4,15 @@ import path from 'path';
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'cdn.akamai.steamstatic.com' },
-      { protocol: 'https', hostname: 'cdn.cloudflare.steamstatic.com' },
-      { protocol: 'https', hostname: 'www.dropbox.com' },
-    ],
+    remotePatterns: [{ protocol: 'https', hostname: 'www.dropbox.com' }],
   },
   sassOptions: {
     includePaths: [path.resolve('src/styles')],
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
 };
 

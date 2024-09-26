@@ -1,11 +1,14 @@
 'use client';
 
 // React
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Components
 import Tab from './Tab';
 import TabContent from './TabContent';
+
+// Contexts
+import { AuthContext } from '@contexts/AuthContext';
 
 // Services
 import { getByNewest, getBySpecials, getByTopSales, getByUpcoming } from '@services/game/data';
@@ -21,6 +24,10 @@ const LeftSection: FC<LeftSectionProps> = ({
   onTabHover,
   setHoveredGame,
 }): JSX.Element => {
+  // Contexts
+  const { userData } = useContext(AuthContext);
+
+  // States
   const [newAndTrending, setNewAndTrending] = useState<Game[]>([]);
   const [popularUpcoming, setPopularUpcoming] = useState<Game[]>([]);
   const [specials, setSpecials] = useState<Game[]>([]);
@@ -32,10 +39,10 @@ const LeftSection: FC<LeftSectionProps> = ({
       try {
         setLoading(true);
         const [newAndTrending, specials, topSellers, popularUpcoming] = await Promise.all([
-          getByTopSales(),
-          getBySpecials(),
-          getByNewest(),
-          getByUpcoming(),
+          getByTopSales((userData && userData.library.map((game) => game.id)) || []),
+          getBySpecials((userData && userData.library.map((game) => game.id)) || []),
+          getByNewest((userData && userData.library.map((game) => game.id)) || []),
+          getByUpcoming((userData && userData.library.map((game) => game.id)) || []),
         ]);
         setNewAndTrending(newAndTrending);
         setSpecials(specials);
@@ -46,7 +53,7 @@ const LeftSection: FC<LeftSectionProps> = ({
       }
     };
     fetchData();
-  }, []);
+  }, [userData]);
 
   const tabsRow = [
     { tabName: 'newreleases', tabTitle: 'New & Trending' },

@@ -5,9 +5,10 @@ import type { Language } from '@entities/language.entity';
 import type { Pricing } from '@entities/pricing.entity';
 import type { Review } from '@entities/review.entity';
 import type { Tag } from '@entities/tag.entity';
+import type { User } from '@entities/user.entity';
 
 export const isFeature = (obj: object): obj is Feature => {
-  return 'id' in obj && 'name' in obj && 'link' in obj && 'icon' in obj;
+  return 'id' in obj && 'name' in obj && 'icon' in obj;
 };
 
 export const isCompany = (obj: object): obj is Company => {
@@ -24,6 +25,10 @@ export const isLanguage = (obj: object): obj is Language => {
 
 export const isReview = (obj: object): obj is Review => {
   return 'id' in obj && 'positive' in obj && 'date' in obj && 'content' in obj;
+};
+
+export const isUser = (obj: object): obj is User => {
+  return 'id' in obj && 'username' in obj && 'email' in obj;
 };
 
 export const isGame = (obj: object): obj is Game => {

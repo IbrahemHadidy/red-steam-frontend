@@ -5,5 +5,6 @@
     "source.fixAll": "always",
     "source.organizeImports": "always"
   },
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.activeIconPack": "react_redux"
 }

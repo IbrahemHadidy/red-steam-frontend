@@ -1,5 +1,5 @@
+// Types
 import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
-
 interface BasicInfoProps {
   name: string;
   category: string;
@@ -35,15 +35,15 @@ const BasicInfo: FC<BasicInfoProps> = ({
 }): JSX.Element => {
   // Event Handlers
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value);
+    setName(e.target.value.trim());
   };
 
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setCategory(e.target.value);
+    setCategory(e.target.value.trim());
   };
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setDescription(e.target.value);
+    setDescription(e.target.value.trim());
   };
 
   const handleReleaseDateChange = (e: ChangeEvent<HTMLInputElement>): void => {

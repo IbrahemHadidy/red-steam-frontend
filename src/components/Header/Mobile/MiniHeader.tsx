@@ -28,7 +28,7 @@ const MiniHeader: FC<Props> = ({ onMenuClick }): JSX.Element => {
         </div>
         <div className="mobile-logo">
           <Link href="/">
-            <Image src={headerLogo} height="36" alt="header logo" />
+            <Image src={headerLogo} height="36" alt="header logo" priority />
           </Link>
         </div>
       </div>

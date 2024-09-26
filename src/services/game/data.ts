@@ -16,7 +16,14 @@ class GameDataApi extends Api {
 
   public getByParameters = async (
     searchData: {
-      sort?: 'relevance' | 'name' | 'lowestPrice' | 'highestPrice' | 'releaseDate' | 'reviews';
+      sort?:
+        | 'relevance'
+        | 'name'
+        | 'lowestPrice'
+        | 'highestPrice'
+        | 'releaseDate'
+        | 'reviews'
+        | 'totalSales';
       partialName?: string;
       maxPrice?: number;
       tags?: number[];
@@ -88,13 +95,19 @@ class GameDataApi extends Api {
     return data;
   };
 
-  public getFeatured = async (limit: string): Promise<Game[]> => {
-    const { data } = await this.get(`featured?limit=${limit}`);
+  public getFeatured = async (excludedGames: number[], limit: number): Promise<Game[]> => {
+    const endpoint = `featured?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}&limit=${limit}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
-  public getByTags = async (tags: number[], limit: string): Promise<Game[]> => {
-    const { data } = await this.get(`tags?tags=${tags.join(',')}&limit=${limit}`);
+  public getByTags = async (
+    tags: number[],
+    excludedGames: number[],
+    limit?: number
+  ): Promise<Game[]> => {
+    const endpoint = `tags?${tags.length > 0 ? `tags=${tags.join(',')}` : ''}${excludedGames.length > 0 ? `&excludedGames=${excludedGames.join(',')}` : ''}${limit ? `&limit=${limit}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
@@ -104,32 +117,38 @@ class GameDataApi extends Api {
   };
 
   public getByIds = async (ids: number[]): Promise<Game[]> => {
-    const { data } = await this.get(`bulk?ids=${ids.join(',')}`);
+    const endpoint = `bulk?${ids.length > 0 ? `ids=${ids.join(',')}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
-  public getByOffers = async (): Promise<Game[]> => {
-    const { data } = await this.get(`offers`);
+  public getByOffers = async (excludedGames: number[]): Promise<Game[]> => {
+    const endpoint = `offers?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
-  public getByNewest = async (): Promise<Game[]> => {
-    const { data } = await this.get(`newest`);
+  public getByNewest = async (excludedGames: number[]): Promise<Game[]> => {
+    const endpoint = `newest?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
-  public getByTopSales = async (): Promise<Game[]> => {
-    const { data } = await this.get(`top-sales`);
+  public getByTopSales = async (excludedGames: number[]): Promise<Game[]> => {
+    const endpoint = `top-sales?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
-  public getBySpecials = async (): Promise<Game[]> => {
-    const { data } = await this.get(`specials`);
+  public getBySpecials = async (excludedGames: number[]): Promise<Game[]> => {
+    const endpoint = `specials?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 
-  public getByUpcoming = async (): Promise<Game[]> => {
-    const { data } = await this.get(`upcomming`);
+  public getByUpcoming = async (excludedGames: number[]): Promise<Game[]> => {
+    const endpoint = `upcoming?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`;
+    const { data } = await this.get(endpoint);
     return data;
   };
 

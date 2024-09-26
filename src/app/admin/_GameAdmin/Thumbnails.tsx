@@ -1,6 +1,9 @@
-import { ChangeEvent, Dispatch, FC, Fragment, JSX, RefObject, SetStateAction, useRef } from 'react';
-import type { Thumbnails } from '../create-game.types';
+// React
+import { Fragment, useRef } from 'react';
 
+// Types
+import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { Thumbnails } from './game-admin.types';
 interface ThumbnailsProps {
   thumbnails: Thumbnails;
   setThumbnails: Dispatch<SetStateAction<Thumbnails>>;
@@ -26,12 +29,22 @@ const Thumbnails: FC<ThumbnailsProps> = ({
   searchImageRef,
   tabImageRef,
 }): JSX.Element => {
+  // Refs
   const fileInputRefs = useRef<{ [key in keyof Thumbnails]?: HTMLInputElement }>({});
 
+  // Event handlers
   const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>, key: keyof Thumbnails): void => {
     if (e.target.files?.length) {
       const file: File = e.target.files[0];
-      setThumbnails((prev) => ({ ...prev, [key]: file }));
+      if (
+        thumbnails[key].file &&
+        thumbnails[key].file instanceof File &&
+        (thumbnails[key].file.size !== file.size || thumbnails[key].file.type !== file.type)
+      ) {
+        setThumbnails((prev) => ({ ...prev, [key]: { file, changed: true } }));
+      } else {
+        setThumbnails((prev) => ({ ...prev, [key]: { file, changed: false } }));
+      }
     }
   };
 
@@ -39,6 +52,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
     fileInputRefs.current[key]?.click();
   };
 
+  // Utils
   const getDimensions = (key: keyof Thumbnails): string => {
     const dimensions: { [key in keyof Thumbnails]: string } = {
       mainImage: '616 x 353',
@@ -57,7 +71,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
     <section className="section-thumbnails">
       <h2>Thumbnails</h2>
       <div>
-        {Object.entries(thumbnails).map(([key, file], idx) => {
+        {Object.entries(thumbnails).map(([key, { file }], idx) => {
           const ref = {
             mainImage: mainImageRef,
             backgroundImage: backgroundImageRef,
@@ -69,7 +83,12 @@ const Thumbnails: FC<ThumbnailsProps> = ({
             tabImage: tabImageRef,
           };
 
-          const imageUrl = file instanceof File ? URL.createObjectURL(file) : undefined;
+          const imageUrl =
+            file instanceof File
+              ? URL.createObjectURL(file)
+              : typeof file === 'string'
+                ? file
+                : undefined;
 
           return (
             <Fragment key={idx}>
@@ -84,7 +103,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
                   </div>
                   <input
                     type="file"
-                    accept="image/png, image/jpeg, image/jpg, image/webp"
+                    accept="image/jpeg"
                     className="field-input"
                     ref={(el) => {
                       el && (fileInputRefs.current[key as keyof Thumbnails] = el);

@@ -27,7 +27,7 @@ class UserAuth extends Api {
     password: string,
     rememberMe: boolean
   ): Promise<{
-    data: { userData: User; message: string };
+    data: { userData: User; isSessionLoggedIn: boolean; message: string };
     status: number;
   }> => {
     const endpoint: string = `/login`;

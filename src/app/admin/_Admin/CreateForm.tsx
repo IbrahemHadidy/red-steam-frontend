@@ -34,6 +34,7 @@ const Create: FC<CreateProps> = ({
 }): JSX.Element => {
   // States
   const [gameList, setGameList] = useState<Game[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Refs
   const nameRef = useRef<HTMLInputElement>(null);
@@ -127,7 +128,12 @@ const Create: FC<CreateProps> = ({
     e.preventDefault();
     if (checkFormValidation()) {
       resetAllWarnings();
-      onSubmit && onSubmit(e);
+      try {
+        setIsLoading(true);
+        onSubmit && onSubmit(e);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -237,7 +243,7 @@ const Create: FC<CreateProps> = ({
                 />
               </div>
             )}
-            {type === ('developer' || 'publisher') && setWebsite && (
+            {['developer', 'publisher'].includes(type) && setWebsite && (
               <div className="form-area">
                 <label className="form-label">Website</label>
                 <input
@@ -264,7 +270,7 @@ const Create: FC<CreateProps> = ({
               </div>
             )}
           </div>
-          <button className="submit-button" onClick={handleSubmit}>
+          <button className="submit-button" onClick={handleSubmit} disabled={isLoading}>
             Submit
           </button>
         </section>

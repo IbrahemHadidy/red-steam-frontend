@@ -16,32 +16,35 @@ import { updateUser } from '@services/user/admin';
 // Utils
 import formatDate from '@utils/formatDate';
 import get7DaysFromNow from '@utils/get7DaysFromNow';
+import { isCompany, isFeature, isPricing, isReview, isUser } from '@utils/typeGuards';
 
 // Types
 import type { ChangeEvent, FC, FormEvent, JSX } from 'react';
 import type { EditModalProps } from './admin.types';
 
 const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => {
-  const [name, setName] = useState<string>('name' in item ? item.name : '');
-  const [website, setWebsite] = useState<string>('website' in item ? item.website : '');
-  const [icon, setIcon] = useState<string>(
-    'icon' in item && item instanceof String ? (item.icon as unknown as string) : ''
+  // States
+  const [name, setName] = useState<string>(
+    !isUser(item) && !isPricing(item) && !isReview(item) ? item.name : ''
   );
-  const [admin, setAdmin] = useState<boolean>('isAdmin' in item ? item.isAdmin : false);
-  const [verified, setVerified] = useState<boolean>('isVerified' in item ? item.isVerified : false);
-  const [discount, setDiscount] = useState<boolean>('discount' in item ? !!item.discount : false);
+  const [website, setWebsite] = useState<string>(isCompany(item) ? item.website : '');
+  const [icon, setIcon] = useState<string>(isFeature(item) ? (item.icon as unknown as string) : '');
+  const [admin, setAdmin] = useState<boolean>(isUser(item) ? item.isAdmin : false);
+  const [verified, setVerified] = useState<boolean>(isUser(item) ? item.isVerified : false);
+  const [discount, setDiscount] = useState<boolean>(isPricing(item) ? !!item.discount : false);
   const [discountPrice, setDiscountPrice] = useState<number>(
-    'discountPrice' in item ? item.discountPrice ?? 0 : 0
+    isPricing(item) ? item.discountPrice ?? 0 : 0
   );
   const [offerType, setOfferType] = useState<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>(
-    'offerType' in item ? item.offerType ?? 'SPECIAL PROMOTION' : 'SPECIAL PROMOTION'
+    isPricing(item) ? item.offerType ?? 'SPECIAL PROMOTION' : 'SPECIAL PROMOTION'
   );
   const [discountStartDate, setDiscountStartDate] = useState<Date>(
-    'discountStartDate' in item ? item.discountStartDate ?? new Date() : new Date()
+    isPricing(item) ? item.discountStartDate ?? new Date() : new Date()
   );
   const [discountEndDate, setDiscountEndDate] = useState<Date>(
-    'discountEndDate' in item ? item.discountEndDate ?? get7DaysFromNow() : get7DaysFromNow()
+    isPricing(item) ? item.discountEndDate ?? get7DaysFromNow() : get7DaysFromNow()
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = useCallback(
     async (e: FormEvent): Promise<void> => {
@@ -49,15 +52,17 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
 
       // Create a mapping between the type and the corresponding update function
       const updateFunctions = {
-        feature: () => updateFeature(typeof item.id === 'number' ? item.id : 0, name, icon),
-        developer: () => updateDeveloper(typeof item.id === 'number' ? item.id : 0, name, website),
-        publisher: () => updatePublisher(typeof item.id === 'number' ? item.id : 0, name, website),
-        tag: () => updateTag(typeof item.id === 'number' ? item.id : 0, name),
-        language: () => updateLanguage(typeof item.id === 'number' ? item.id : 0, name),
+        feature: () => updateFeature(typeof item.id === 'number' ? item.id : 0, name.trim(), icon),
+        developer: () =>
+          updateDeveloper(typeof item.id === 'number' ? item.id : 0, name.trim(), website.trim()),
+        publisher: () =>
+          updatePublisher(typeof item.id === 'number' ? item.id : 0, name.trim(), website.trim()),
+        tag: () => updateTag(typeof item.id === 'number' ? item.id : 0, name.trim()),
+        language: () => updateLanguage(typeof item.id === 'number' ? item.id : 0, name.trim()),
         user: () => updateUser(typeof item.id === 'string' ? item.id : '0', verified, admin),
         offer: () =>
           updateOffer(
-            'game' in item && typeof item.game?.id === 'number' ? item.game.id : 0,
+            isPricing(item) && typeof item.game?.id === 'number' ? item.game.id : 0,
             discount,
             discountPrice,
             offerType,
@@ -71,8 +76,10 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
       const updateFunction = updateFunctions[type];
       if (updateFunction) {
         // Call the respective function based on the type
+        setIsLoading(true);
         const message: string = (await updateFunction()).message;
         toast.success(message);
+        setIsLoading(false);
         setOpen(false);
         return;
       }
@@ -166,7 +173,7 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
                   id="username"
                   name="username"
                   type="text"
-                  value={'username' in item ? item.username : ''}
+                  value={isUser(item) ? item.username : ''}
                   disabled
                 />
               </div>
@@ -176,7 +183,7 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
                   id="email"
                   name="email"
                   type="text"
-                  value={'email' in item ? item.email : ''}
+                  value={isUser(item) ? item.email : ''}
                   disabled
                 />
               </div>
@@ -209,7 +216,7 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
                   id="discount"
                   name="discount"
                   type="text"
-                  checked={'discount' in item ? item.discount : false}
+                  checked={isPricing(item) ? item.discount : false}
                   onChange={handleDiscountChange}
                 />
               </div>
@@ -311,7 +318,9 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
             </>
           )}
 
-          <button type="submit">Save</button>
+          <button type="submit" disabled={isLoading}>
+            Save
+          </button>
         </form>
       </div>
     </>

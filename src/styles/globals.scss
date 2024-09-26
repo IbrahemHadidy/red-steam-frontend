@@ -37,6 +37,7 @@ body {
 	color: #c6d4df;
 	letter-spacing: -0.2px;
 	word-spacing: -1px;
+	background-color: #1b2838;
 
 
 	@media screen and (min-width: 1001px) {
@@ -100,6 +101,17 @@ body {
 	&:hover {
 		background: #4e5157;
 	}
+}
+
+#loading-portal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	transform: translate(-50%, -50%);
+	z-index: 1000;
+	pointer-events: none;
 }
 
 @keyframes throbber {

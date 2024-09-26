@@ -60,6 +60,7 @@
     text-overflow: ellipsis;
     user-select: none;
     transition: background-color 0.3s ease;
+
     &.selected {
       background: linear-gradient(135deg, #67c1f5 0%, #417a9b 100%);
       text-decoration: none;
@@ -88,6 +89,15 @@
     text-align: center;
     cursor: pointer;
     width: 270px;
+
+    &:disabled {
+      opacity: 0.5;
+
+      &:hover {
+        background: linear-gradient(90deg, #06bfff 0%, #2d73ff 100%);
+      }
+    }
+
     &:hover {
       background: linear-gradient(90deg, #06bfff 30%, #2d73ff 100%);
     }
@@ -98,7 +108,7 @@
   .tag-select-container {
     width: auto;
     margin: auto;
-    
+
     .user-tags-warning {
       margin-top: 70px;
     }

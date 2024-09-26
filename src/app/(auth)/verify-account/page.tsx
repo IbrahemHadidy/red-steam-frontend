@@ -31,7 +31,7 @@ const VerifyAccount: FC = (): JSX.Element => {
   useEffect(() => {
     if (username && token) {
       const verifyEmailAsync = async (): Promise<void> => {
-        const response: { success: boolean } = await verifyEmail(token, username);
+        const response = await verifyEmail(token, username);
         if (response.success) {
           router.push('/');
         }

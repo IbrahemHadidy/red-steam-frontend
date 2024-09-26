@@ -6,7 +6,7 @@ import { useContext, useState } from 'react';
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 // Toast notifications
 import { toast } from 'react-toastify';
@@ -19,6 +19,7 @@ import { AuthContext } from '@contexts/AuthContext';
 
 // Images
 import deleteIcon from '@images/delete.png';
+import updateIcon from '@images/edit.png';
 
 // Types
 import type { FC, JSX } from 'react';
@@ -27,6 +28,7 @@ import type { GameTitleAreaProps } from '../MediaAndSummary.types';
 export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => {
   // Init
   const router = useRouter();
+  const pathname = usePathname();
 
   // Contexts
   const { userData } = useContext(AuthContext);
@@ -37,6 +39,10 @@ export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => 
 
   const handleCommunityBtnClick = (): void => {
     toast.warn('Community Hub is not available yet');
+  };
+
+  const onUpdate = (itemId: number): void => {
+    router.push(`/admin/update-game/${itemId}`);
   };
 
   const onDelete = (itemId: number): void => {
@@ -70,7 +76,22 @@ export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => 
           </div>
           <div className="game-name-block">
             <div className="main-game-name">{game.name}</div>
-            {userData?.isAdmin && (
+            {userData?.isAdmin && !pathname?.includes('/admin') && (
+              <div
+                className="update-icon-container"
+                title="Update game"
+                onClick={() => onUpdate(game.id)}
+              >
+                <Image
+                  src={updateIcon}
+                  alt="Update"
+                  className="update-icon"
+                  width={18}
+                  height={18}
+                />
+              </div>
+            )}
+            {userData?.isAdmin && !pathname?.includes('/admin') && (
               <div
                 className="delete-icon-container"
                 title="Delete game"

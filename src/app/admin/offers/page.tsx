@@ -30,27 +30,15 @@ const OffersAdmin: FC = (): JSX.Element => {
   const [submitted, setSubmitted] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
-    const result: { message: string } = await createOffer(
-      gameId,
-      discountPrice,
-      offerType,
-      discountStartDate,
-      discountEndDate
-    );
     await toast.promise(
-      new Promise<{ message: string }>((resolve, reject) => {
-        if (result.message) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to create offer'));
-        }
-      }),
+      createOffer(gameId, discountPrice, offerType, discountStartDate, discountEndDate),
       {
-        success: result.message,
-        error: 'Failed to create offer',
         pending: 'Creating offer...',
+        success: 'Offer created successfully',
+        error: 'Failed to create offer, please try again',
       }
     );
+
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setGameId(0);
     setDiscountPrice(0);

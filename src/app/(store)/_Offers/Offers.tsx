@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -9,6 +9,9 @@ import Link from 'next/link';
 // Components
 import HoverSummary from '@components/HoverSummary/HoverSummary';
 import Slider from 'react-slick';
+
+// Contexts
+import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -31,22 +34,27 @@ const Offers: FC = (): JSX.Element => {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
+  // Contexts
+  const { userData } = useContext(AuthContext);
+
   // States
   const [offerHoverStates, setOfferHoverStates] = useState<{ [key: string]: boolean }>({});
   const [weekendOffers, setWeekendOffers] = useState<Game[]>([]);
   const [specialOffers, setSpecialOffers] = useState<Game[]>([]);
+  const [totalSlides, setTotalSlides] = useState(0);
 
   const offersSettings: SliderSettings = {
-    dots: true,
+    dots: totalSlides > 1,
     infinite: true,
     speed: 500,
     autoplay: false,
     fade: true,
+    arrows: totalSlides > 1,
   };
 
   useEffect(() => {
     const fetchOffers = async (): Promise<void> => {
-      const data: Game[] = await getByOffers();
+      const data = await getByOffers((userData && userData.library.map((game) => game.id)) || []);
       data.forEach((game) => {
         if (game.pricing?.offerType === 'SPECIAL PROMOTION') {
           setSpecialOffers((prev) => [...prev, game]);
@@ -58,7 +66,7 @@ const Offers: FC = (): JSX.Element => {
     };
 
     fetchOffers();
-  }, []);
+  }, [userData]);
 
   const handleOfferPointerMove = (offerId: number): void => {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: true }));
@@ -68,7 +76,7 @@ const Offers: FC = (): JSX.Element => {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: false }));
   };
 
-  const BigOfferDiv = (offer: Game, idx: number): JSX.Element => (
+  const WeekendOfferDiv = (offer: Game, idx: number): JSX.Element => (
     <div
       className="offer-result-container big"
       key={`offer-${idx}`}
@@ -105,7 +113,7 @@ const Offers: FC = (): JSX.Element => {
           <HoverSummary
             title={offer.name}
             date={formatDate(offer.releaseDate)}
-            screenshots={offer.imageEntries.map((item) => item.link)}
+            screenshots={offer.imageEntries.filter((img) => img.featured).map((img) => img.link)}
             description={offer.description}
             positivePercentage={offer.averageRating}
             totalReviews={offer.reviewsCount}
@@ -118,7 +126,7 @@ const Offers: FC = (): JSX.Element => {
     </div>
   );
 
-  const renderSmallGroupDiv = (offer: Game, idx: number): JSX.Element => (
+  const SpecialOfferDiv = (offer: Game, idx: number): JSX.Element => (
     <div className="offer-result-container small" key={`special-${idx}`}>
       <div
         className="specials"
@@ -147,7 +155,7 @@ const Offers: FC = (): JSX.Element => {
           <HoverSummary
             title={offer.name}
             date={formatDate(offer.releaseDate)}
-            screenshots={offer.imageEntries.map((item) => item.link)}
+            screenshots={offer.imageEntries.filter((img) => img.featured).map((img) => img.link)}
             description={offer.description}
             positivePercentage={offer.averageRating}
             totalReviews={offer.reviewsCount}
@@ -165,8 +173,8 @@ const Offers: FC = (): JSX.Element => {
     for (let i = 0; i < specialOffers.length; i += 2) {
       const smallGroup: JSX.Element = (
         <div className="small-group" key={`small-group-${i}`}>
-          {renderSmallGroupDiv(specialOffers[i], i)}
-          {specialOffers[i + 1] && renderSmallGroupDiv(specialOffers[i + 1], i + 1)}
+          {SpecialOfferDiv(specialOffers[i], i)}
+          {specialOffers[i + 1] && SpecialOfferDiv(specialOffers[i + 1], i + 1)}
         </div>
       );
       smallGroups.push(smallGroup);
@@ -199,7 +207,7 @@ const Offers: FC = (): JSX.Element => {
     // Process big offers
     let bigOfferCount: number = 0;
     weekendOffers.forEach((offer, idx): void => {
-      const bigOffer = BigOfferDiv(offer, idx);
+      const bigOffer = WeekendOfferDiv(offer, idx);
       if (bigOfferCount < 2) {
         addOfferToSlide(bigOffer, BIG_OFFER_SLOTS);
         bigOfferCount += 1;
@@ -226,6 +234,11 @@ const Offers: FC = (): JSX.Element => {
     // Push the last slide if it is full
     if (currentSlots === SLOTS_PER_SLIDE) {
       slides.push(<div className="offers-row">{currentSlide}</div>);
+    }
+
+    // Set the total number of slides
+    if (totalSlides !== slides.length) {
+      setTotalSlides(slides.length);
     }
 
     // Limit the number of slides to 6

@@ -1,24 +1,39 @@
+interface Thumbnail {
+  file: File | string | null;
+  changed: boolean;
+}
 export interface Thumbnails {
-  mainImage: File | null;
-  backgroundImage: File | null;
-  menuImg: File | null;
-  horizontalHeaderImage: File | null;
-  verticalHeaderImage: File | null;
-  smallHeaderImage: File | null;
-  searchImage: File | null;
-  tabImage: File | null;
+  mainImage: Thumbnail;
+  backgroundImage: Thumbnail;
+  menuImg: Thumbnail;
+  horizontalHeaderImage: Thumbnail;
+  verticalHeaderImage: Thumbnail;
+  smallHeaderImage: Thumbnail;
+  searchImage: Thumbnail;
+  tabImage: Thumbnail;
 }
 export interface Screenshot {
-  id: number;
-  image: File;
+  id: string;
+  image: File | string;
+  change: 'added' | 'deleted' | 'unchanged';
   featured?: boolean;
   order: number;
 }
 export interface Video {
-  id: number;
-  video: File;
-  poster: File;
+  id: string;
+  video: File | string;
+  poster: File | string;
+  change: 'added' | 'deleted' | 'unchanged';
   order: number;
+}
+export interface ChangedOrder {
+  type: 'screenshot' | 'video';
+  oldOrder: number;
+  newOrder: number;
+}
+export interface ChangedFeatured {
+  order: number;
+  featured: boolean;
 }
 export interface Pricing {
   free: boolean;

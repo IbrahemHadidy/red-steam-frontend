@@ -132,6 +132,14 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
 
+      &:disabled {
+        opacity: 0.5;
+
+        &:hover {
+          background-color: #555;
+        }
+      }
+
       &:hover {
         background-color: #777;
       }

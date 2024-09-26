@@ -26,7 +26,6 @@ import { getAllTags } from '@services/common/tags';
 import { getByParameters } from '@services/game/data';
 
 // Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
@@ -38,35 +37,13 @@ import searchCrouton from '@images/search_crouton_not.svg';
 // Types
 import type { Game } from '@entities/game.entity';
 import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';
-import type { Filter, FilterState } from './Search.types';
-interface RequestParams {
-  searchData: {
-    sort?: 'relevance' | 'name' | 'lowestPrice' | 'highestPrice' | 'releaseDate' | 'reviews';
-    partialName?: string;
-    maxPrice?: number;
-    tags?: number[];
-    excludeTags?: number[];
-    paid?: boolean;
-    offers?: boolean;
-    platforms?: ('win' | 'mac')[];
-    publishers?: number[];
-    developers?: number[];
-    features?: number[];
-    languages?: number[];
-    featured?: boolean;
-    excludeMature?: boolean;
-    excludedGames?: number[];
-    upcomingMode?: 'onlyUpcoming' | 'exclude';
-  };
-  pagination: { offset: number; limit: number };
-}
+import type { Filter, FilterState, RequestParams } from './Search.types';
 
 const SearchPage: FC = (): JSX.Element => {
-  // Intitializations
+  // Init
   const router = useRouter();
   const searchParams = useSearchParams();
   const isViewport960 = useResponsiveViewport(960);
-  useDynamicBackground('#1b2838');
 
   // Contexts
   const { isLoggedIn, userData } = useContext(AuthContext);
@@ -98,6 +75,7 @@ const SearchPage: FC = (): JSX.Element => {
     feature: [],
     language: [],
   });
+  const [isFiltersFetched, setIsFiltersFetched] = useState<boolean>(false);
   const [requestParameters, setRequestParameters] = useState<RequestParams>({
     searchData: {},
     pagination: { offset: 0, limit: 20 },
@@ -144,6 +122,8 @@ const SearchPage: FC = (): JSX.Element => {
           check: 'unchecked',
         })),
       }));
+
+      setIsFiltersFetched(true);
     };
 
     fetchFilters();
@@ -169,11 +149,12 @@ const SearchPage: FC = (): JSX.Element => {
   // Select options
   const selectOptions: string[] = [
     'Relevance',
-    'Release date',
+    'Release Date',
     'Name',
     'Lowest Price',
     'Highest Price',
     'User Reviews',
+    'Top Sales',
   ];
 
   // Price range
@@ -204,215 +185,159 @@ const SearchPage: FC = (): JSX.Element => {
     [ranges]
   );
 
-  const updateFromURL = useCallback((): void => {
-    // Extract and update search term
-    const searchTerm: string = searchParams?.get('term') || 'enter game name';
-    setSearchValue(decodeURIComponent(searchTerm));
-    if (searchTerm !== 'enter game name') {
-      setSavedSearchValue(decodeURIComponent(searchTerm));
+  // Set `Hide free to play games` to unchecked if price range is set to `Free`
+  useEffect(() => {
+    if (rangeValue === 0) {
+      setFilters((prevState) => ({
+        ...prevState,
+        price: prevState.price.map((row) => ({
+          ...row,
+          check: row.id === 2 ? 'unchecked' : row.check,
+        })),
+      }));
     }
+  }, [rangeValue]);
 
-    // Extract and update sort option
-    const sortOption = searchParams?.get('sort') || 'Relevance';
-    setSortOption(decodeURIComponent(sortOption));
+  const updateFromURL = useCallback((): void => {
+    if (isFiltersFetched) {
+      // Extract and update search term
+      const searchTerm: string = searchParams?.get('term') || 'enter game name';
+      setSearchValue(decodeURIComponent(searchTerm));
+      if (searchTerm !== 'enter game name') {
+        setSavedSearchValue(decodeURIComponent(searchTerm));
+      }
 
-    // Extract and update price range
-    const priceValue = searchParams?.get('maxPrice') ? Number(searchParams.get('maxPrice')) : null;
-    const priceIndex = ranges.findIndex((range) => range.value === priceValue);
-    setRangeValue(priceIndex);
+      // Extract and update sort option
+      const sortOption = searchParams?.get('sort') || 'Relevance';
+      setSortOption(decodeURIComponent(sortOption));
 
-    // Extract and update included price options
-    const priceOptions =
-      searchParams
-        ?.get('priceOptions')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      price: prevState.price.map((row) =>
-        priceOptions.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Extract and update price range
+      const priceValue = searchParams?.get('maxPrice')
+        ? Number(searchParams.get('maxPrice'))
+        : null;
+      const priceIndex = ranges.findIndex((range) => range.value === priceValue);
+      setRangeValue(priceIndex);
 
-    // Extract and update included preference options
-    const includedPreferenceOptions =
-      searchParams
-        ?.get('preferenceOptions')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      preference: prevState.preference.map((row) =>
-        includedPreferenceOptions.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Reusable function to update filter rows
+      const updateFilter = (
+        key:
+          | 'priceOptions'
+          | 'preferenceOptions'
+          | 'tags'
+          | 'excludedTags'
+          | 'features'
+          | 'developers'
+          | 'publishers'
+          | 'os'
+          | 'languages', // the searchParams key
+        field: keyof FilterState, // the field to update in the filter state
+        status: 'included' | 'excluded' // the status to set for the check property
+      ) => {
+        const options =
+          searchParams
+            ?.get(key)
+            ?.split(',')
+            .map((id) => Number(id)) || [];
 
-    // Extract and update excluded price options
-    const excludedPriceOptions =
-      searchParams
-        ?.get('excludedPriceOptions')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      price: prevState.price.map((row) =>
-        excludedPriceOptions.includes(row.id) ? { ...row, check: 'excluded' } : row
-      ),
-    }));
+        setFilters((prevState) => ({
+          ...prevState,
+          [field]: prevState[field].map((row) =>
+            options.includes(row.id) ? { ...row, check: status } : row
+          ),
+        }));
+      };
 
-    // Extract and update included tag rows
-    const includedTags =
-      searchParams
-        ?.get('tags')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      tag: prevState.tag.map((row) =>
-        includedTags.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Update included price options
+      updateFilter('priceOptions', 'price', 'included');
 
-    // Extract and update excluded tag rows
-    const excludedTags =
-      searchParams
-        ?.get('excludedTags')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      tag: prevState.tag.map((row) =>
-        excludedTags.includes(row.id) ? { ...row, check: 'excluded' } : row
-      ),
-    }));
+      // Update included preference options
+      updateFilter('preferenceOptions', 'preference', 'included');
 
-    // Extract and update included feature rows
-    const includedFeatures =
-      searchParams
-        ?.get('features')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      feature: prevState.feature.map((row) =>
-        includedFeatures.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Update included and excluded tag rows
+      updateFilter('tags', 'tag', 'included');
+      updateFilter('excludedTags', 'tag', 'excluded');
 
-    // Extract and update included developer rows
-    const includedDevelopers =
-      searchParams
-        ?.get('developers')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      developer: prevState.developer.map((row) =>
-        includedDevelopers.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Update included feature rows
+      updateFilter('features', 'feature', 'included');
 
-    // Extract and update included publisher rows
-    const includedPublishers =
-      searchParams
-        ?.get('publishers')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      publisher: prevState.publisher.map((row) =>
-        includedPublishers.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Update included developer rows
+      updateFilter('developers', 'developer', 'included');
 
-    // Extract and update included OS rows
-    const includedOS =
-      searchParams
-        ?.get('os')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      os: prevState.os.map((row) =>
-        includedOS.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
+      // Update included publisher rows
+      updateFilter('publishers', 'publisher', 'included');
 
-    // Extract and update included language rows
-    const includedLanguages =
-      searchParams
-        ?.get('languages')
-        ?.split(',')
-        .map((id) => Number(id)) || [];
-    setFilters((prevState) => ({
-      ...prevState,
-      language: prevState.language.map((row) =>
-        includedLanguages.includes(row.id) ? { ...row, check: 'included' } : row
-      ),
-    }));
-  }, [ranges, searchParams]);
+      // Update included OS rows
+      updateFilter('os', 'os', 'included');
+
+      // Update included language rows
+      updateFilter('languages', 'language', 'included');
+    }
+  }, [isFiltersFetched, ranges, searchParams]);
 
   useEffect(() => {
     updateFromURL();
   }, [updateFromURL]);
 
   const constructSearchURL = useCallback((): void => {
-    const createQueryString = (key: string, value: string | number | number[]): string => {
-      if (Array.isArray(value)) {
-        return value.length > 0 ? `${key}=${value.join(',')}` : '';
-      }
-      return value || value === 0 ? `${key}=${encodeURIComponent(value)}` : '';
-    };
+    if (isFiltersFetched) {
+      // Reusable function to create query string
+      const createQueryString = (key: string, value: string | number | number[]): string => {
+        if (Array.isArray(value)) {
+          return value.length > 0 ? `${key}=${value.join(',')}` : '';
+        }
+        return value || value === 0 ? `${key}=${encodeURIComponent(value)}` : '';
+      };
 
-    const priceValue = ranges[rangeValue].value !== null ? ranges[rangeValue].value : '';
+      const priceValue = ranges[rangeValue].value !== null ? ranges[rangeValue].value : '';
 
-    const queryParams = [
-      createQueryString('term', savedSearchValue),
-      createQueryString('sort', sortOption),
-      createQueryString('maxPrice', priceValue),
-      createQueryString(
-        'priceOptions',
-        filters.price.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'preferenceOptions',
-        filters.preference.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'tags',
-        filters.tag.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'excludedTags',
-        filters.tag.filter((f) => f.check === 'excluded').map((f) => f.id)
-      ),
-      createQueryString(
-        'features',
-        filters.feature.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'developers',
-        filters.developer.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'publishers',
-        filters.publisher.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'os',
-        filters.os.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-      createQueryString(
-        'languages',
-        filters.language.filter((f) => f.check === 'included').map((f) => f.id)
-      ),
-    ];
+      const queryParams = [
+        createQueryString('term', savedSearchValue),
+        createQueryString('sort', sortOption),
+        createQueryString('maxPrice', priceValue),
+        createQueryString(
+          'priceOptions',
+          filters.price.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'preferenceOptions',
+          filters.preference.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'tags',
+          filters.tag.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'excludedTags',
+          filters.tag.filter((f) => f.check === 'excluded').map((f) => f.id)
+        ),
+        createQueryString(
+          'features',
+          filters.feature.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'developers',
+          filters.developer.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'publishers',
+          filters.publisher.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'os',
+          filters.os.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+        createQueryString(
+          'languages',
+          filters.language.filter((f) => f.check === 'included').map((f) => f.id)
+        ),
+      ];
 
-    const baseURL: string = '/search'; // Change to your base URL or path
-    const queryString: string = queryParams.filter((param) => param !== '').join('&');
-    const fullURL: string = queryString ? `${baseURL}?${queryString}` : baseURL;
+      const baseURL: string = '/search'; // Change to your base URL or path
+      const queryString: string = queryParams.filter((param) => param !== '').join('&');
+      const fullURL: string = queryString ? `${baseURL}?${queryString}` : baseURL;
 
-    router.replace(fullURL, { scroll: false });
+      router.replace(fullURL, { scroll: false });
+    }
   }, [
     filters.developer,
     filters.feature,
@@ -422,6 +347,7 @@ const SearchPage: FC = (): JSX.Element => {
     filters.price,
     filters.publisher,
     filters.tag,
+    isFiltersFetched,
     rangeValue,
     ranges,
     router,
@@ -451,6 +377,8 @@ const SearchPage: FC = (): JSX.Element => {
       searchData.sort = 'releaseDate';
     } else if (sortOption === 'User Reviews') {
       searchData.sort = 'reviews';
+    } else if (sortOption === 'Top Sales') {
+      searchData.sort = 'totalSales';
     }
 
     // Get price range
@@ -598,33 +526,36 @@ const SearchPage: FC = (): JSX.Element => {
     constructSearchURL();
   }, [constructSearchURL]);
 
-  const fetchGamesData = useCallback(async () => {
-    const response: Game[] = await getByParameters(
-      requestParameters.searchData,
-      requestParameters.pagination
-    );
-
-    if (response.length === 0) {
-      setHasMore(false);
-    } else {
-      // Add new games to the current list
-      setFetchedGames((prevReviews) =>
-        prevReviews.concat(
-          response.filter((newItem) => !prevReviews.some((prevItem) => prevItem.id === newItem.id))
-        )
+  const fetchGamesData = useCallback(
+    async (addToEnd = false): Promise<void> => {
+      const response = await getByParameters(
+        requestParameters.searchData,
+        requestParameters.pagination
       );
-      setRequestParameters((prevState) => ({
-        ...prevState,
-        pagination: {
-          ...prevState.pagination,
-          offset: prevState.pagination.offset++,
-        },
-      }));
-    }
-    setDisabled(false);
-  }, [requestParameters.pagination, requestParameters.searchData]);
 
-  const debouncedFetchGamesData = useMemo(() => debounce(fetchGamesData, 500), [fetchGamesData]);
+      if (response.length === 0) {
+        setHasMore(false);
+      }
+
+      // Add new games to the current list, avoiding duplicates
+      if (addToEnd) {
+        setFetchedGames((prevGames) =>
+          prevGames.concat(
+            response.filter((newGame) => !prevGames.some((prevGame) => prevGame.id === newGame.id))
+          )
+        );
+      } else {
+        setFetchedGames(response);
+      }
+      setDisabled(false);
+    },
+    [requestParameters.pagination, requestParameters.searchData]
+  );
+
+  const debouncedFetchGamesData = useMemo(
+    () => debounce<() => void>(fetchGamesData, 500),
+    [fetchGamesData]
+  );
 
   // Fetch data from API when filters change
   useEffect(() => {
@@ -641,11 +572,10 @@ const SearchPage: FC = (): JSX.Element => {
     setRequestParameters((prevState) => ({
       ...prevState,
       pagination: {
-        ...prevState.pagination,
+        limit: 20,
         offset: 0,
       },
     }));
-    contentRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [filters]);
 
   const toggleDropdown = (): void => {
@@ -744,6 +674,7 @@ const SearchPage: FC = (): JSX.Element => {
       toggleDropdown={toggleDropdown}
       sortOption={sortOption}
       hasMore={hasMore}
+      setRequestParameters={setRequestParameters}
       fetchGamesData={fetchGamesData}
       isOpen={isOpen}
       selectOptions={selectOptions}

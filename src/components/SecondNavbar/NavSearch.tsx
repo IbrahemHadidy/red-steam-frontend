@@ -69,11 +69,11 @@ const NavSearch: FC = (): JSX.Element => {
                 />
               </div>
               <div className="match-price">
-                {game.pricing.free
+                {game.pricing?.free
                   ? 'Free to Play'
-                  : game.pricing.discountPrice
-                    ? game.pricing.discountPrice
-                    : game.pricing.basePrice}
+                  : game.pricing?.discountPrice
+                    ? game.pricing?.discountPrice
+                    : game.pricing?.basePrice}
               </div>
             </Link>
           ))}

@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
 // NextJS
 import { usePathname, useRouter } from 'next/navigation';
@@ -59,6 +59,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   const [userData, setUser] = useState<User | null>(null); // Global state
   const [isReady, setIsReady] = useState<boolean>(false); // Global state
 
+  // Broadcasts
+  const loginStatusChannel = useMemo(() => new BroadcastChannel('login-status'), []);
+
+  useEffect(() => {
+    // Listen for login status updates
+    loginStatusChannel.onmessage = (event) => {
+      if (event.data.isLoggedIn) {
+        setIsLoggedIn(true);
+        setUser(event.data.userData);
+        setIsReady(true);
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+        setIsReady(true);
+      }
+    };
+
+    return () => {
+      loginStatusChannel.close();
+    };
+  }, [loginStatusChannel]);
+
   // Login (Global function)
   const login = async (
     identifier: string,
@@ -66,18 +88,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     rememberMe: boolean
   ): Promise<void> => {
     try {
-      const response: { status: number; data: { userData: User } } = await loginUser(
-        identifier,
-        password,
-        rememberMe
-      );
-      const userData: User = response.data.userData;
+      const response = await loginUser(identifier, password, rememberMe);
+      const userData = response.data.userData;
+      const isSessionLoggedIn = response.data.isSessionLoggedIn;
       if (response.status === 200) {
+        loginStatusChannel.postMessage({ isLoggedIn: true, userData });
         router.push('/');
         setIsLoggedIn(true);
         setUser(userData);
         setIsReady(true);
-        sessionStorage.setItem('isSessionLogin', 'true');
+        if (isSessionLoggedIn) {
+          sessionStorage.setItem('isSessionLogin', 'true');
+        }
       }
     } catch (error) {
       setIsLoggedIn(false);
@@ -89,18 +111,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
 
   // Logout (Global function)
   const logout = useCallback(async (): Promise<void> => {
+    loginStatusChannel.postMessage({ isLoggedIn: false });
     setIsLoggedIn(false);
     router.push('/');
     await logoutUser();
     setUser(null);
     sessionStorage.setItem('verificationInProgress', 'false');
-  }, [router]);
+    localStorage.removeItem('recentGames');
+  }, [loginStatusChannel, router]);
 
   // Fetch user data (Global function)
   const fetchData = useCallback(async (): Promise<void> => {
     if (isLoggedIn) {
       try {
-        const userData: User = await getUserData();
+        const userData = await getUserData();
         setUser(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -147,7 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   useEffect(() => {
     const autoLoginUser = async (): Promise<void> => {
       try {
-        const userData: User | null = await autoLogin();
+        const userData = await autoLogin();
         if (!userData) {
           setIsReady(true);
           return;
@@ -170,7 +194,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       sessionStorage.setItem('verificationInProgress', 'true');
       userData && (await resendVerificationToken());
       setShowVerifyModal(true);
-      const waitingTime: number = await getWaitingTime();
+
+      const waitingTime = await getWaitingTime();
       const intervalCheckVerificationStatus = async (): Promise<void> => {
         try {
           const verificationResult = userData && (await verificationStatus());

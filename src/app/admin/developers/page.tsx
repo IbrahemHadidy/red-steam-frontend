@@ -23,21 +23,11 @@ const DevelopersAdmin: FC = (): JSX.Element => {
 
   // Event Handlers
   const onSubmit = async (): Promise<void> => {
-    const result: { message: string } = await createDeveloper(name, website);
-    await toast.promise(
-      new Promise<{ message: string }>((resolve, reject) => {
-        if (result.message) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to create developer'));
-        }
-      }),
-      {
-        success: result.message,
-        error: 'Failed to create developer',
-        pending: 'Creating developer...',
-      }
-    );
+    await toast.promise(createDeveloper(name.trim(), website.trim()), {
+      pending: 'Creating developer...',
+      success: 'Developer created successfully',
+      error: 'Failed to create developer, please try again',
+    });
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');
     setWebsite('');

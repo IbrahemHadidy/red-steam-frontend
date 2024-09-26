@@ -1,9 +1,7 @@
-//!! TODO: CHANGE THE TAGS AND GENRES TO AVAILABLE TAGS/SORT OPTIONS USED IN THE SITE
-
 'use client';
 
 // React
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -11,21 +9,41 @@ import Link from 'next/link';
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
 
-// Bootstrap components
-import { Nav } from 'react-bootstrap';
-
 // Toast notifications
 import { toast } from 'react-toastify';
+
+// Services
+import { getTags } from '@services/common/tags';
 
 // Images
 import steamPromoCard from '@images/steamcards_promo_03.png';
 
 // Types
+import type { Tag } from '@entities/tag.entity';
 import type { FC, JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
 const Sidebar: FC = (): JSX.Element => {
-  const { isLoggedIn } = useContext(AuthContext);
+  // Contexts
+  const { isLoggedIn, userData } = useContext(AuthContext);
+  const [yourTags, setYourTags] = useState<Tag[]>([]);
+
+  // Get user tags
+  useEffect(() => {
+    if (isLoggedIn) {
+      const fetchUserTags = async (): Promise<void> => {
+        const fetchedTags = await getTags(userData?.tags.map((tag) => tag.id) || []);
+        setYourTags(fetchedTags);
+      };
+
+      fetchUserTags();
+    }
+  }, [isLoggedIn, userData?.tags]);
+
+  // Get recently viewed games
+  const recentGames: { id: number; name: string; timestamp: number }[] = JSON.parse(
+    localStorage.getItem('recentGames') || '[]'
+  );
 
   // Helper function to generate links
   const generateLinks = (links: LinkItem[]): JSX.Element[] => {
@@ -36,69 +54,39 @@ const Sidebar: FC = (): JSX.Element => {
     ));
   };
 
-  // TODO: Backend logic, render recently viewed games, max 5 latest viewed games, remove them from database after 4 days
-  const recentlyViewedLinks: LinkItem[] = [
-    // Define recently viewed game links
-    { to: '/game/PUBG_BATTLEGROUNDS', text: 'PUBG: BATTLEGROUNDS' },
-    { to: '/game/NARAKA_BLADEPOINT', text: 'NARAKA: BLADEPOINT' },
-    { to: '/game/Call_of_Duty', text: 'Call of Duty®' },
-  ];
+  // Recently viewed Games
+  const recentlyViewedLinks: LinkItem[] = recentGames
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5)
+    .map((game) => ({
+      to: `/game/${game.id}`,
+      text: game.name,
+    }));
 
-  // TODO: Backend logic, render tags dynamically depending on user's tags selection (most 5 tags having games)
-  const tagsLinks: LinkItem[] = [
-    // Define tag links
-    { to: '/tags/en/Mod/', text: 'Mod' },
-    {
-      to: '/tags/en/Dark%20Fantasy/',
-      text: 'Dark Fantasy',
-    },
-    {
-      to: '/tags/en/Psychological/',
-      text: 'Psychological',
-    },
-    {
-      to: '/tags/en/Open%20World/',
-      text: 'Open World',
-    },
-    { to: '/tags/en/Fantasy/', text: 'Fantasy' },
-  ];
-
-  // TODO: Backend logic, conditional redirection
-  const recommendedLinks: LinkItem[] = [
-    // Define recommended links
-    // TODO: Not working link need to add code for handling friend activity
-    {
-      to: isLoggedIn ? '/recommended/friendactivity/' : '/login',
-      text: 'By Friends',
-    },
-    { to: isLoggedIn ? '/tag/browse/#yours' : '/login', text: 'Tags' },
-  ];
+  const tagsLinks: LinkItem[] = yourTags.slice(0, 5).map((tag) => ({
+    to: `/search?tags=${tag.id}`,
+    text: tag.name,
+  }));
 
   const categoryLinks: LinkItem[] = [
-    // Define category links
-    { to: '/category/topsellers', text: 'Top Sellers' },
-    { to: '/category/new', text: 'New Releases' },
-    { to: '/category/upcoming', text: 'Upcoming' },
-    { to: '/category/specials', text: 'Specials' },
-    { to: '/category/vr', text: 'VR Titles' },
-    { to: '/category/controller-friendly', text: 'Controller-Friendly' },
-    { to: '/category/greatondeck', text: 'Great on Deck' },
+    { to: '/search?sort=Top%20Sales', text: 'Top Sellers' },
+    { to: '/search?sort=Release%20Date&preferenceOptions=7', text: 'New Releases' },
+    { to: '/search?sort=Release%20Date', text: 'Upcoming' },
+    { to: '/search?priceOptions=1', text: 'Specials' },
   ];
 
   const genreLinks: LinkItem[] = [
-    // Define genre links
-    { to: '/genre/free-to-play', text: 'Free to Play' },
-    { to: '/genre/early-access', text: 'Early Access' },
-    { to: '/genre/action', text: 'Action' },
-    { to: '/genre/adventure', text: 'Adventure' },
-    { to: '/genre/casual', text: 'Casual' },
-    { to: '/genre/indie', text: 'Indie' },
-    { to: '/genre/massively-multiplayer', text: 'Massively Multiplayer' },
-    { to: '/genre/racing', text: 'Racing' },
-    { to: '/genre/rpg', text: 'RPG' },
-    { to: '/genre/simulation', text: 'Simulation' },
-    { to: '/genre/sports', text: 'Sports' },
-    { to: '/genre/strategy', text: 'Strategy' },
+    { to: '/search?tags=32', text: 'Free to Play' },
+    { to: '/search?tags=8', text: 'Action' },
+    { to: '/search?tags=30', text: 'Adventure' },
+    { to: '/search?tags=49', text: 'Casual' },
+    { to: '/search?tags=50', text: 'Indie' },
+    { to: '/search?tags=25', text: 'Massively Multiplayer' },
+    { to: '/search?tags=51', text: 'Racing' },
+    { to: '/search?tags=35', text: 'RPG' },
+    { to: '/search?tags=19', text: 'Simulation' },
+    { to: '/search?tags=52', text: 'Sports' },
+    { to: '/search?tags=13', text: 'Strategy' },
   ];
 
   const handleItemClick = (e: MouseEvent<HTMLAnchorElement>): void => {
@@ -108,8 +96,7 @@ const Sidebar: FC = (): JSX.Element => {
 
   return (
     <div className="fixed-sidebar">
-      <Nav className="sidebar">
-        {/* Steam Gift Cards section */}
+      <div className="sidebar">
         <div>
           <a className="item" onClick={handleItemClick}>
             <div className="gift-card">
@@ -120,38 +107,30 @@ const Sidebar: FC = (): JSX.Element => {
           </a>
         </div>
 
-        {/* Recently Viewed section */}
-        <div className="recents" id="hom-elj">
-          <div className="header">Recently Viewed</div>
-          <div>{generateLinks(recentlyViewedLinks)}</div>
-        </div>
+        {isLoggedIn && recentlyViewedLinks.length > 0 && (
+          <div className="recents" id="hom-elj">
+            <div className="header">Recently Viewed</div>
+            <div>{generateLinks(recentlyViewedLinks)}</div>
+          </div>
+        )}
 
-        {/* Your Tags section */}
         {isLoggedIn && (
           <div>
             <div className="header tag">Your Tags</div>
             <div>{generateLinks(tagsLinks)}</div>
           </div>
         )}
-
-        {/* Recommended section */}
-        <div>
-          <div className="header">Recommended</div>
-          <div>{generateLinks(recommendedLinks)}</div>
-        </div>
-
         {/* Browse Categories section */}
         <div>
           <div className="header">Browse Categories</div>
           <div>{generateLinks(categoryLinks)}</div>
         </div>
 
-        {/* Browse by Genre section */}
         <div>
           <div className="header">Browse by genre</div>
           {generateLinks(genreLinks)}
         </div>
-      </Nav>
+      </div>
     </div>
   );
 };

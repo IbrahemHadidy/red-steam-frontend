@@ -21,21 +21,11 @@ const LanguagesAdmin: FC = (): JSX.Element => {
   const [submitted, setSubmitted] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
-    const result = await createLanguage(name);
-    await toast.promise(
-      new Promise<{ message: string }>((resolve, reject) => {
-        if (result.message) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to create language'));
-        }
-      }),
-      {
-        success: result.message,
-        error: 'Failed to create language',
-        pending: 'Creating language...',
-      }
-    );
+    await toast.promise(createLanguage(name.trim()), {
+      pending: 'Creating language...',
+      success: 'Language created successfully',
+      error: 'Failed to create language, please try again',
+    });
 
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');

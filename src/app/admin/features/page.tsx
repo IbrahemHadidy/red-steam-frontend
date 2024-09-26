@@ -37,24 +37,13 @@ const FeaturesAdmin: FC = (): JSX.Element => {
   };
 
   const onSubmit = async (): Promise<void> => {
-    const result: { message: string } = await createFeature(name, icon);
-    await toast.promise(
-      new Promise<{ message: string }>((resolve, reject) => {
-        if (result.message) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to create feature'));
-        }
-      }),
-      {
-        success: result.message,
-        error: 'Failed to create feature',
-        pending: 'Creating feature...',
-      }
-    );
+    await toast.promise(createFeature(name.trim(), icon), {
+      pending: 'Creating feature...',
+      success: 'Feature created successfully',
+      error: 'Failed to create feature, please try again',
+    });
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');
-    setIcon('');
   };
 
   return (

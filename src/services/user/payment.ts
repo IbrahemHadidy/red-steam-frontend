@@ -5,14 +5,14 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 class UserPayment extends Api {
   constructor() {
-    super('payment/order');
+    super('user/payment');
   }
 
   public createOrder = async (
-    totalPrice: string,
+    totalPrice: number,
     cartItems: number[]
   ): Promise<{ orderId: string }> => {
-    const endpoint: string = `/create`;
+    const endpoint: string = `/order/create`;
     const data = { totalPrice, cartItems };
     const config: AxiosRequestConfig = {
       withCredentials: true,
@@ -27,7 +27,7 @@ class UserPayment extends Api {
     orderId: string,
     cartItems: number[]
   ): Promise<{ data: { orderId: string }; status: number }> => {
-    const endpoint: string = `/capture`;
+    const endpoint: string = `/order/capture`;
     const data = { orderId, cartItems };
     const config: AxiosRequestConfig = {
       withCredentials: true,
@@ -35,7 +35,7 @@ class UserPayment extends Api {
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
 
-    return response.data;
+    return response;
   };
 }
 

@@ -1,5 +1,6 @@
+// Types
 import type { ChangeEvent, FC, JSX, RefObject } from 'react';
-import type { SystemRequirements } from '../create-game.entity';
+import type { SystemRequirements } from './game-admin.types';
 interface SystemRequirementsProps {
   systemRequirements: SystemRequirements;
   setSystemRequirements: (systemRequirements: SystemRequirements) => void;
@@ -50,7 +51,7 @@ const SystemRequirements: FC<SystemRequirementsProps> = ({
         ...systemRequirements,
         [section]: {
           ...systemRequirements[section],
-          [key]: e.target.value,
+          [key]: e.target.value.trim(),
         },
       });
     };

@@ -52,19 +52,9 @@ const UsersAdmin: FC = (): JSX.Element => {
   const [editUser, setEditUser] = useState<User>();
   const [deleteUserId, setDeleteUserId] = useState<string>();
 
-  const getPaginatedUsers = async (
-    page: number,
-    itemsPerPage: number = 10,
-    sortBy: Sort,
-    direction: 'ASC' | 'DESC',
-    searchQuery: { [key: string]: string }
-  ): Promise<{ items: User[]; totalPages: number }> => {
-    return await getUsersPaginated(page, itemsPerPage, sortBy, direction, searchQuery);
-  };
-
-  // Fetch items
-  const fetchItemsData = useCallback(async () => {
-    const data: { items: User[]; totalPages: number } = await getPaginatedUsers(
+  // Fetch users
+  const fetchUsersData = useCallback(async () => {
+    const data = await getUsersPaginated(
       currentPage,
       usersPerPage,
       sortConfig.key,
@@ -76,21 +66,21 @@ const UsersAdmin: FC = (): JSX.Element => {
     setDisabled(false);
   }, [currentPage, searchQuery, sortConfig, usersPerPage]);
 
-  // Debounce the fetchItemsData function
-  const debouncedFetchItemsData = useMemo(() => debounce(fetchItemsData, 500), [fetchItemsData]);
+  // Debounce the fetchUsersData function
+  const debouncedFetchUsersData = useMemo(() => debounce(fetchUsersData, 500), [fetchUsersData]);
 
-  // Fetch items on mount or when search query changes or edit or delete modal close
+  // Fetch users on mount or when search query changes or edit or delete modal close
   useEffect(() => {
     if (!editModalOpen && !deleteModalOpen) {
       setDisabled(true);
-      debouncedFetchItemsData();
+      debouncedFetchUsersData();
 
       // Cleanup function to cancel any pending debounced function call
       return () => {
-        debouncedFetchItemsData.cancel();
+        debouncedFetchUsersData.cancel();
       };
     }
-  }, [debouncedFetchItemsData, editModalOpen, deleteModalOpen]);
+  }, [debouncedFetchUsersData, editModalOpen, deleteModalOpen]);
 
   // Pagination handling
   const handlePageChange = (newPage: number): void => {

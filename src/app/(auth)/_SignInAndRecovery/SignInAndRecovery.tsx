@@ -252,7 +252,7 @@ const SignInAndRecovery: FC = (): JSX.Element => {
         setIsSearching(true);
 
         // Simulate checking if the account exists in the database
-        const accountExists: boolean = await checkEmailExists(forgotEmail);
+        const accountExists = await checkEmailExists(forgotEmail);
 
         // Use recaptchaValue along with other form data for submission
         if (recaptchaValue) {
@@ -263,7 +263,7 @@ const SignInAndRecovery: FC = (): JSX.Element => {
             );
             setNotFound(true);
           } else {
-            const status: number = await forgotPassword(formData.email);
+            const status = await forgotPassword(formData.email);
 
             if (status === 200) {
               toast.success('Password reset email sent successfully. Please check your email.');

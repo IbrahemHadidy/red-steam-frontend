@@ -22,21 +22,12 @@ const PublishersAdmin: FC = (): JSX.Element => {
   const [submitted, setSubmitted] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
-    const result: { message: string } = await createPublisher(name, website);
-    await toast.promise(
-      new Promise<{ message: string }>((resolve, reject) => {
-        if (result.message) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to create publisher'));
-        }
-      }),
-      {
-        success: result.message,
-        error: 'Failed to create publisher',
-        pending: 'Creating publisher...',
-      }
-    );
+    await toast.promise(createPublisher(name.trim(), website.trim()), {
+      pending: 'Creating publisher...',
+      success: 'Publisher created successfully',
+      error: 'Failed to create publisher, please try again',
+    });
+
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');
     setWebsite('');

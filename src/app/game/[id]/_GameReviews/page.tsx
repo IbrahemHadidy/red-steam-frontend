@@ -54,7 +54,7 @@ const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
 
   // Fetch data from API
   const fetchData = useCallback(async (): Promise<void> => {
-    const newReviews: Review[] = await getGameReviews(game.id, filter, sort, currentPage, 5);
+    const newReviews = await getGameReviews(game.id, filter, sort, currentPage, 5);
     if (newReviews.length === 0) {
       setHasMore(false);
     } else {

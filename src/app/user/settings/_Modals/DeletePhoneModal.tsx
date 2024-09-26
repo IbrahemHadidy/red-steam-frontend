@@ -23,7 +23,7 @@ const DeletePhoneModal: FC<DeletePhoneModalProps> = ({ onClose }): JSX.Element =
   const handleDelete = async (): Promise<void> => {
     deleteBtnRef.current?.setAttribute('disabled', 'true');
     if (userData) {
-      const response: { status: number } | undefined = await removePhoneNumber(userData.id);
+      const response = await removePhoneNumber(userData.id);
       if (response && response.status === 200) {
         onClose();
         fetchData();

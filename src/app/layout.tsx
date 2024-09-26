@@ -25,10 +25,6 @@ export const metadata: Metadata = {
   },
   title: 'Welcome to Red Steam',
   description: 'Red Steam - Clone of Steam',
-  appleWebApp: {
-    title: 'Red Steam',
-    capable: true,
-  },
   openGraph: {
     title: 'Red Steam',
     description: 'Red Steam - Clone of Steam',
@@ -45,13 +41,14 @@ export const metadata: Metadata = {
 const RootLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <html lang="en">
-      <body style={{ backgroundColor: '#0b141b' }}>
+      <body>
         <div id="root">
           <AuthProvider>
             <Toaster />
             {children}
           </AuthProvider>
         </div>
+        <div id="loading-portal" />
       </body>
     </html>
   );

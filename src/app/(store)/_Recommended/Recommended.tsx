@@ -45,9 +45,10 @@ const Recommended: FC = (): JSX.Element => {
   useEffect(() => {
     const fetchRecommendedGames = async (): Promise<void> => {
       if (userData) {
-        const data: Game[] = await getByTags(
+        const data = await getByTags(
           userData.tags.map((tag) => tag.id),
-          '24'
+          userData.library.map((game) => game.id) || [],
+          24
         );
         setRecommendedGames(data);
       }
@@ -60,11 +61,12 @@ const Recommended: FC = (): JSX.Element => {
     userData?.tags && userData.tags.length > 0 && userData.tags.map((tag) => tag.id).join(',');
 
   const recommendedSettings: SliderSettings = {
-    dots: true,
+    dots: recommendedGames.length >= 8,
     infinite: true,
     speed: 500,
     autoplay: false,
     fade: true,
+    arrows: recommendedGames.length >= 8,
   };
 
   const handleMiniItemPointerMove = (id: number): void => {
@@ -113,7 +115,7 @@ const Recommended: FC = (): JSX.Element => {
           <HoverSummary
             title={game.name}
             date={formatDate(game.releaseDate)}
-            screenshots={game.imageEntries.map((item) => item.link)}
+            screenshots={game.imageEntries.filter((img) => img.featured).map((img) => img.link)}
             description={game.description}
             positivePercentage={game.averageRating}
             totalReviews={game.reviewsCount}

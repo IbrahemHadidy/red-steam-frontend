@@ -1,71 +1,58 @@
-'use client';
-
-// React
-import { Suspense, useEffect, useState } from 'react';
-
-// NextJS
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-
 // Components
-import LoadingSkeleton from './Skeleton';
-const GameContent = dynamic(() => import('./_GameContent/layout'));
-const GameReviews = dynamic(() => import('./_GameReviews/page'));
-const MediaAndSummary = dynamic(() => import('./_MediaAndSummary/MediaAndSummary'));
-
-// Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
+import Game from './game';
 
 // Services
 import { getById } from '@services/game/data';
 
+// Images
+import pwaIcon from '@images/pwa-icon.png';
+
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Metadata } from 'next';
 import type { FC, JSX } from 'react';
-import type { GameProps } from './Game.entity';
+import type { GameProps } from './Game.types';
 
-const GamePage: FC<GameProps> = ({ params }): JSX.Element | null => {
-  const router = useRouter();
+export const generateMetadata = async ({ params }: GameProps): Promise<Metadata> => {
   const { id } = params;
-  const [game, setGame] = useState<Game | undefined>();
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchGame = async (): Promise<void> => {
-      try {
-        const fetchedGame = await getById(Number(id));
-        console.log(fetchedGame);
-        setGame(fetchedGame);
-      } finally {
-        setLoading(false);
-      }
+  try {
+    const gameId = Number(id);
+    const game: Game | undefined = !isNaN(gameId) ? await getById(gameId) : undefined;
+
+    const discountPercentage: string = game?.pricing?.discountPercentage?.toString() || '';
+
+    return {
+      title: `${
+        game?.pricing?.discount && discountPercentage
+          ? `Save ${discountPercentage.replace(/^-(\d+)/, '$1')}% on`
+          : ''
+      } ${game?.name} on Steam`,
+      description: game?.description,
+      openGraph: {
+        title: `${
+          game?.pricing?.discount && discountPercentage
+            ? `Save ${discountPercentage.replace(/^-(\d+)/, '$1')}% on`
+            : ''
+        } ${game?.name} on Steam`,
+        description: game?.description,
+        images: [
+          {
+            url: game?.thumbnailEntries.mainImage || pwaIcon.src,
+            width: 800,
+            height: 600,
+          },
+        ],
+      },
     };
-
-    fetchGame();
-  }, [id, router]);
-
-  useDynamicBackground(
-    `url(${game?.thumbnailEntries.backgroundImage}) center top no-repeat #1b2838`,
-    [game?.thumbnailEntries.backgroundImage]
-  );
-
-  if (loading) {
-    return <LoadingSkeleton />;
-  } else if (game) {
-    return (
-      <>
-        <MediaAndSummary game={game} />
-        <GameContent game={game} />
-        <Suspense fallback={<div>Loading reviews...</div>}>
-          <GameReviews game={game} />
-        </Suspense>
-      </>
-    );
-  } else {
-    console.error('Error fetching game');
-    router.replace('/notfound');
-    return null;
+  } catch (error) {
+    console.log('Error fetching game metadata:', error);
+    return {
+      title: 'Game not found',
+      description: 'Game not found',
+    };
   }
 };
+
+const GamePage: FC<GameProps> = ({ params }): JSX.Element | null => <Game params={params} />;
 
 export default GamePage;

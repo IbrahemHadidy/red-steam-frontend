@@ -89,8 +89,8 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
   // Recommendation reasons
   const firstDetails: JSX.Element | null =
     (userData?.tags &&
-      userData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id)).length >
-        0) ||
+      userData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id)).length >=
+        3) ||
     game.averageRating >= 80 ? (
       <>
         <div className="recommendation-reason">Is this game relevant to you?</div>
@@ -132,7 +132,7 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
   const secondDetails: JSX.Element = (
     <div className="game-details-first">
       <div className="game-area-features-list">
-        {game.gamesFeatures?.map((feature, idx) => (
+        {game.features?.map((feature, idx) => (
           <Link className="game-area-details" href={`/search/${feature.id}`} key={idx}>
             <div className="feature-icon">
               <img src={convertToBase64Image(feature.icon.data)} alt={feature.name} />
@@ -165,19 +165,25 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
               <th className="checkcol">Full Audio</th>
               <th className="checkcol">Subtitles</th>
             </tr>
-            {game.languageSupport.map((language, idx) => (
-              <tr
-                key={language.name}
-                style={{
-                  display: showAllLanguages || idx < 5 ? 'table-row' : 'none',
-                }}
-              >
-                <td className="game-language-name"> {language.name}</td>
-                <td className="checkcol">{language.interface && <span>✔</span>}</td>
-                <td className="checkcol">{language.fullAudio && <span>✔</span>}</td>
-                <td className="checkcol">{language.subtitles && <span>✔</span>}</td>
-              </tr>
-            ))}
+            {game.languageSupport
+              .sort((a, b) => {
+                if (a.fullAudio && !b.fullAudio) return -1;
+                if (!a.fullAudio && b.fullAudio) return 1;
+                return a.name.localeCompare(b.name);
+              })
+              .map((language, idx) => (
+                <tr
+                  key={language.name}
+                  style={{
+                    display: showAllLanguages || idx < 5 ? 'table-row' : 'none',
+                  }}
+                >
+                  <td className="game-language-name"> {language.name}</td>
+                  <td className="checkcol">{language.interface && <span>✔</span>}</td>
+                  <td className="checkcol">{language.fullAudio && <span>✔</span>}</td>
+                  <td className="checkcol">{language.subtitles && <span>✔</span>}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
         {game.languageSupport.length > 5 &&

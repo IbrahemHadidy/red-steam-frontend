@@ -21,21 +21,11 @@ const TagsAdmin: FC = (): JSX.Element => {
   const [submitted, setSubmitted] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
-    const result = await createTag(name);
-    await toast.promise(
-      new Promise<{ message: string }>((resolve, reject) => {
-        if (result.message) {
-          resolve(result);
-        } else {
-          reject(new Error('Failed to create tag'));
-        }
-      }),
-      {
-        success: result.message,
-        error: 'Failed to create tag',
-        pending: 'Creating tag...',
-      }
-    );
+    await toast.promise(createTag(name.trim()), {
+      pending: 'Creating tag...',
+      success: 'Tag created successfully',
+      error: 'Failed to create tag, please try again',
+    });
 
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setName('');

@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
@@ -18,33 +18,26 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
 import formatDate from '@utils/formatDate';
-
-// Services
-import { getFeatured } from '@services/game/data';
+import isTagInUserTags from '@utils/recommendationReason';
 
 // Types
 import type { Game, ImageEntry } from '@entities/game.entity';
-import isTagInUserTags from '@utils/recommendationReason';
 import type { FC, JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
+interface FeaturedDesktopProps {
+  featuredGames: Game[];
+}
 
-const FeaturedDesktop: FC = (): JSX.Element => {
+const FeaturedDesktop: FC<FeaturedDesktopProps> = ({ featuredGames }): JSX.Element => {
   // Init
   const { userData } = useContext(AuthContext);
+
+  // Contexts
   const isViewport1600 = useResponsiveViewport(1600);
 
   // States
   const [summaryHoverStates, setSummaryHoverStates] = useState<{ [key: string]: boolean }>({});
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
-
-  const fetchFeatured = async (): Promise<void> => {
-    const data: Game[] = await getFeatured('12');
-    setFeaturedGames(data);
-  };
-  useEffect(() => {
-    fetchFeatured();
-  }, []);
 
   const handleMouseEnterImage = (img: ImageEntry): void => {
     setHoveredImage(img.link);
@@ -75,13 +68,14 @@ const FeaturedDesktop: FC = (): JSX.Element => {
   };
 
   const featuredSettings: SliderSettings = {
-    dots: true,
+    dots: featuredGames.length > 1,
     lazyLoad: 'ondemand',
     infinite: true,
     speed: 500,
     autoplay: true,
     autoplaySpeed: 5000,
     fade: true,
+    arrows: featuredGames.length > 1,
   };
 
   return (
@@ -169,7 +163,9 @@ const FeaturedDesktop: FC = (): JSX.Element => {
                   <HoverSummary
                     title={slide.name}
                     date={formatDate(slide.releaseDate)}
-                    screenshots={slide.imageEntries.map((img) => img.link)}
+                    screenshots={slide.imageEntries
+                      .filter((img) => img.featured)
+                      .map((img) => img.link)}
                     description={slide.description}
                     positivePercentage={slide.averageRating}
                     totalReviews={slide.reviewsCount}

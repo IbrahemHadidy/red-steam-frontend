@@ -1,3 +1,4 @@
+// Types
 import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
 interface AdditionalInfoProps {
   about: string;
@@ -32,7 +33,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   };
 
   const handleMatureDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setMatureDescription(e.target.value);
+    setMatureDescription(e.target.value.trim());
   };
 
   const handleLegalChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
@@ -86,7 +87,7 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       )}
       <div className="form-field">
         <label className="field-label">
-          Legal (<span>optional</span>):
+          Legal (<span>optional, &nbsp;HTML &nbsp;allowed</span>):
         </label>
         <textarea
           className="field-input"

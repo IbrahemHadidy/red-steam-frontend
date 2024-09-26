@@ -27,6 +27,7 @@ export const SearchLeft: FC<SearchLeftProps> = ({
   toggleDropdown,
   sortOption,
   hasMore,
+  setRequestParameters,
   fetchGamesData,
   isOpen,
   selectOptions,
@@ -53,7 +54,14 @@ export const SearchLeft: FC<SearchLeftProps> = ({
   // Event handlers
   const handleNextItems = (): void => {
     if (!disabled) {
-      fetchGamesData();
+      fetchGamesData(true);
+      setRequestParameters((prevState) => ({
+        ...prevState,
+        pagination: {
+          ...prevState.pagination,
+          offset: prevState.pagination.offset + 1,
+        },
+      }));
     }
   };
 
@@ -211,7 +219,9 @@ export const SearchLeft: FC<SearchLeftProps> = ({
                   <HoverSummary
                     title={result.name}
                     date={formatDate(result.releaseDate)}
-                    screenshots={result.imageEntries.map((item) => item.link)}
+                    screenshots={result.imageEntries
+                      .filter((img) => img.featured)
+                      .map((img) => img.link)}
                     description={result.description}
                     positivePercentage={result.averageRating}
                     totalReviews={result.reviewsCount}

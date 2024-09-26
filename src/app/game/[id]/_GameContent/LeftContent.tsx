@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -58,34 +58,25 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
     [userData, game.id]
   );
 
-  useEffect(() => {
-    const handleResize = () => {
+  useLayoutEffect(() => {
+    setTimeout(() => {
       if (aboutRef.current && aboutRef.current.scrollHeight >= 850) {
         setIsAboutExpanded(false);
       }
       if (matureRef.current && matureRef.current.scrollHeight >= 120) {
         setIsMatureExpanded(false);
       }
-      if (sysReqRef.current && sysReqRef.current.scrollHeight >= 220) {
+      if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250) {
         setIsSysReqExpanded(false);
       }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
+    }, 500);
   }, []);
 
   const toggleExpand = (setExpand: Dispatch<SetStateAction<boolean>>, expanded: boolean): void => {
     setExpand(!expanded);
   };
 
-  const handleAddToCartClick = async (
-    e: MouseEvent<HTMLElement>,
-    itemId: number
-  ): Promise<void> => {
-    e.preventDefault();
+  const handleAddToCartClick = async (itemId: number): Promise<void> => {
     if (!isLoggedIn) {
       toast.warn('Please login to add items to your cart.');
       router.push('/login');
@@ -183,14 +174,11 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                         </Link>
                       </div>
                     ) : (
-                      <div className="addtocart-btn">
+                      <div className="addtocart-btn" ref={addToCartBtnRef}>
                         {!isInCart ? (
-                          <a
-                            className="green-btn"
-                            onClick={(e) => handleAddToCartClick(e, game.id)}
-                          >
+                          <div className="green-btn" onClick={() => handleAddToCartClick(game.id)}>
                             <span className="medium-btn">Add to Cart</span>
-                          </a>
+                          </div>
                         ) : (
                           <Link href="/cart" className="green-btn">
                             <span className="medium-btn">In Cart</span>
@@ -233,14 +221,14 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                     ) : (
                       <div className="addtocart-btn" ref={addToCartBtnRef}>
                         {!isInCart ? (
-                          <a className="green-btn">
+                          <div className="green-btn">
                             <span
                               className="medium-btn"
-                              onClick={(e) => handleAddToCartClick(e, game.id)}
+                              onClick={() => handleAddToCartClick(game.id)}
                             >
                               Add to Cart
                             </span>
-                          </a>
+                          </div>
                         ) : (
                           <Link href="/cart" className="green-btn">
                             <span className="medium-btn">In Cart</span>

@@ -5,6 +5,10 @@ import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 
 import Sidebar from './_Sidebar/Sidebar';
 
+// Slick Styles
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+
 // Styles
 import '@styles/store/BrowseSteam.scss';
 import '@styles/store/Categories.scss';
@@ -14,8 +18,6 @@ import '@styles/store/Offers.scss';
 import '@styles/store/Queue.scss';
 import '@styles/store/Sidebar.scss';
 import '@styles/store/Store.scss';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 
 // Types
 import type { Metadata } from 'next';

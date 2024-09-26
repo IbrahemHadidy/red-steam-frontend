@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Services
@@ -26,7 +25,6 @@ const CartPage: FC = (): JSX.Element => {
   // Intializations
   const router = useRouter();
   const isViewport840 = useResponsiveViewport(840);
-  useDynamicBackground('#1b2838');
 
   // Contexts
   const { userData, fetchData } = useContext(AuthContext);
@@ -41,7 +39,7 @@ const CartPage: FC = (): JSX.Element => {
   const updateCart = useCallback(async (): Promise<void> => {
     const fetchCartData = async (): Promise<void> => {
       if (userData) {
-        const response: Game[] = await getByIds(userData.cart.map((item) => item.id));
+        const response = await getByIds(userData.cart.map((item) => item.id));
         setUserCart(response);
       }
     };
@@ -58,7 +56,7 @@ const CartPage: FC = (): JSX.Element => {
     if (removeBtnRef.current) {
       removeBtnRef.current.classList.add('loading');
       removeBtnRef.current.style.pointerEvents = 'none';
-      const response: { status: number } = await removeFromCart([itemId]);
+      const response = await removeFromCart([itemId]);
       if (response?.status === 200) {
         fetchData();
         updateCart();
@@ -72,7 +70,7 @@ const CartPage: FC = (): JSX.Element => {
     if (removeAllBtnRef.current) {
       removeAllBtnRef.current.classList.add('loading');
       removeAllBtnRef.current.style.pointerEvents = 'none';
-      const response: { status: number } = await clearCart();
+      const response = await clearCart();
       if (response?.status === 200) {
         fetchData();
         updateCart();

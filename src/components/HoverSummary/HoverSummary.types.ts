@@ -1,4 +1,4 @@
-export interface HoverSummary {
+export interface HoverSummaryType {
   title: string;
   date: string;
   screenshots: string[];

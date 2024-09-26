@@ -20,11 +20,7 @@ class UserInteraction extends Api {
     };
 
     const response: AxiosResponse = await this.put(endpoint, data, config);
-    if (response.status === 200) {
-      toast.success(response.data.message);
-    } else {
-      toast.error('An error occurred. Please try again later.');
-    }
+
     return response.data;
   };
 

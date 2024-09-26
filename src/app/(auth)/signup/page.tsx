@@ -154,7 +154,7 @@ const SignUpPage: FC = (): JSX.Element => {
 
     try {
       submitButtonRef.current?.setAttribute('disabled', 'true');
-      const exists: boolean = await checkEmailExists(email);
+      const exists = await checkEmailExists(email);
 
       if (exists) {
         // Email already exists
@@ -212,7 +212,7 @@ const SignUpPage: FC = (): JSX.Element => {
 
     try {
       setIsSearching(true);
-      const isExisting: boolean = await checkEmailExists(email);
+      const isExisting = await checkEmailExists(email);
 
       if (isExisting) {
         // Email already exists
@@ -245,7 +245,7 @@ const SignUpPage: FC = (): JSX.Element => {
         return;
       } else {
         try {
-          const exists: boolean = await checkUsernameExists(accountName);
+          const exists = await checkUsernameExists(accountName);
 
           if (!exists) {
             setNameAvailable(true);
@@ -327,12 +327,7 @@ const SignUpPage: FC = (): JSX.Element => {
     e.preventDefault();
 
     try {
-      const response: { status: number } = await registerUser(
-        accountName,
-        email,
-        password,
-        selectedCountry
-      );
+      const response = await registerUser(accountName, email, password, selectedCountry);
 
       if (response && response.status === 201) {
         toast.success('Account created successfully!');

@@ -13,7 +13,7 @@ import { getAllTags } from '@services/common/tags';
 // Types
 import type { Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
 import type { MultiValue } from 'react-select';
-import type { Language, Platforms } from '../create-game.types';
+import type { Language, Platforms } from './game-admin.types';
 interface SpecificationsProps {
   tags: number[];
   setTags: Dispatch<SetStateAction<number[]>>;
@@ -59,7 +59,7 @@ const Specifications: FC<SpecificationsProps> = ({
 
   useEffect(() => {
     const fetchTags = async (): Promise<void> => {
-      const publishers: FeatchedEntry[] = await getAllTags();
+      const publishers = await getAllTags();
       setFetchedTags(publishers);
     };
     fetchTags();
@@ -67,7 +67,7 @@ const Specifications: FC<SpecificationsProps> = ({
 
   useEffect(() => {
     const fetchFeatures = async (): Promise<void> => {
-      const features: FeatchedEntry[] = await getAllFeatures();
+      const features = await getAllFeatures();
       setFetchedFeatures(features);
     };
     fetchFeatures();
@@ -75,7 +75,7 @@ const Specifications: FC<SpecificationsProps> = ({
 
   useEffect(() => {
     const fetchLanguages = async (): Promise<void> => {
-      const languages: FeatchedEntry[] = await getAllLanguages();
+      const languages = await getAllLanguages();
       setFetchedLanguages(languages);
     };
     fetchLanguages();
@@ -199,38 +199,40 @@ const Specifications: FC<SpecificationsProps> = ({
               </tr>
             </thead>
             <tbody>
-              {languages.map((language) => (
-                <tr key={language.name}>
-                  <td>{language.name}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={language.interface}
-                      onChange={(e) =>
-                        handleLanguageCheckboxChange(language.name, 'interface', e.target.checked)
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={language.fullAudio}
-                      onChange={(e) =>
-                        handleLanguageCheckboxChange(language.name, 'fullAudio', e.target.checked)
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={language.subtitles}
-                      onChange={(e) =>
-                        handleLanguageCheckboxChange(language.name, 'subtitles', e.target.checked)
-                      }
-                    />
-                  </td>
-                </tr>
-              ))}
+              {languages
+                .sort((a, b) => (a.fullAudio === b.fullAudio ? 0 : a.fullAudio ? -1 : 1))
+                .map((language) => (
+                  <tr key={language.name}>
+                    <td>{language.name}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={language.interface}
+                        onChange={(e) =>
+                          handleLanguageCheckboxChange(language.name, 'interface', e.target.checked)
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={language.fullAudio}
+                        onChange={(e) =>
+                          handleLanguageCheckboxChange(language.name, 'fullAudio', e.target.checked)
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={language.subtitles}
+                        onChange={(e) =>
+                          handleLanguageCheckboxChange(language.name, 'subtitles', e.target.checked)
+                        }
+                      />
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         )}

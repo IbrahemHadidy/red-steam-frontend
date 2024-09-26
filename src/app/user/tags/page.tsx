@@ -4,7 +4,6 @@
 import { useContext, useEffect, useState } from 'react';
 
 // NextJS
-import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 
 // Toast notifications
@@ -38,13 +37,14 @@ const TagsPage: FC = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [initialTags, setInitialTags] = useState<Tag[]>([]);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   // Fetch tags from the backend when the component mounts
   useEffect(() => {
     if (userData) {
       const tagsData = async (): Promise<void> => {
-        const { tags }: { tags: Tag[] } = userData;
-        const initialTags: Tag[] = await getAllTags();
+        const { tags } = userData;
+        const initialTags = await getAllTags();
         setInitialTags(initialTags);
         setSelectedTags(tags);
       };
@@ -53,13 +53,17 @@ const TagsPage: FC = (): JSX.Element => {
   }, [userData]);
 
   // Filter and sort tags based on search query and selected status
+  const normalizedQuery = searchQuery.toLowerCase();
   const filteredSortedTags = initialTags
-    .filter((tag) => tag.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter((tag) => tag.name.toLowerCase().includes(normalizedQuery))
     .sort((a, b) => {
-      const aSelected: boolean = selectedTags.some((selectedTag) => selectedTag.name === a.name);
-      const bSelected: boolean = selectedTags.some((selectedTag) => selectedTag.name === b.name);
+      const aSelected = selectedTags.some((selectedTag) => selectedTag.name === a.name);
+      const bSelected = selectedTags.some((selectedTag) => selectedTag.name === b.name);
+
       if (aSelected && !bSelected) return -1;
       if (!aSelected && bSelected) return 1;
+
+      // Sort alphabetically if both are selected/unselected
       return a.name.localeCompare(b.name);
     });
 
@@ -86,7 +90,13 @@ const TagsPage: FC = (): JSX.Element => {
         .filter((tag) => tag !== undefined && tag !== null && tag.id)
         .map((tag) => tag.id);
 
-      await changeTags(selectedTagIds);
+      setIsDisabled(true);
+      await toast.promise(changeTags(selectedTagIds), {
+        pending: 'Changing tags...',
+        success: 'Tags changed successfully',
+        error: 'An error occurred. Please try again later.',
+      });
+      setIsDisabled(false);
       fetchData();
       setTimeout(() => {
         router.push('/');
@@ -102,9 +112,6 @@ const TagsPage: FC = (): JSX.Element => {
 
   return (
     <>
-      <Head>
-        <title>Tags Selection</title>
-      </Head>
       <div className="tag-select-container">
         <div className="user-tags-warning">
           <h2>Please select at least 3 tags to proceed.</h2>
@@ -123,14 +130,14 @@ const TagsPage: FC = (): JSX.Element => {
           {filteredSortedTags.map((tag) => (
             <div
               key={tag.id}
-              className={`tag-option ${selectedTags.includes(tag) ? 'selected' : ''}`}
+              className={`tag-option ${selectedTags.some((selectedTag) => selectedTag.id === tag.id) ? 'selected' : ''}`}
               onClick={() => handleTagSelect(tag)}
             >
               {tag.name}
             </div>
           ))}
         </div>
-        <button className="tags-submit" onClick={handleSubmit}>
+        <button className="tags-submit" onClick={handleSubmit} disabled={isDisabled}>
           Submit
         </button>
       </div>

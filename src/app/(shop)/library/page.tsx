@@ -48,7 +48,7 @@ const LibraryPage: FC = (): JSX.Element => {
   useEffect(() => {
     const fetchUserLibrary = async () => {
       if (userData) {
-        const response: Game[] = await getByIds(userData.library.map((item) => item.id));
+        const response = await getByIds(userData.library.map((item) => item.id));
         setUserLibrary(response);
       }
     };

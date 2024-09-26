@@ -97,7 +97,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
 
   // Fetch items
   const fetchItemsData = useCallback(async () => {
-    const data: { items: Item[]; totalPages: number } = await getPaginatedItems(
+    const data = await getPaginatedItems(
       currentPage,
       sortConfig.key,
       sortConfig.direction,

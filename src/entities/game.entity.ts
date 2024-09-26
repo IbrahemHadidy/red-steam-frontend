@@ -19,7 +19,7 @@ export interface Game {
   videoEntries: VideoEntry[];
   tags?: Tag[];
   pricing?: Pricing;
-  gamesFeatures?: Feature[];
+  features?: Feature[];
   languages?: Language[];
   languageSupport: LanguageSupportEntry[];
   platformEntries: PlatformEntry;
@@ -27,7 +27,7 @@ export interface Game {
   about: string;
   mature: boolean;
   matureDescription: string;
-  systemRequirements: SystemRequirementEntry;
+  systemRequirements: SystemRequirementsEntry;
   legal: string;
   reviews?: Review[];
   totalSales: number;
@@ -70,7 +70,7 @@ export interface PlatformEntry {
   mac: boolean;
 }
 
-export interface SystemRequirementEntry {
+export interface SystemRequirementsEntry {
   req64?: boolean;
   mini: SystemRequirementsDetails;
   recommended: SystemRequirementsDetails;

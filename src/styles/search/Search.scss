@@ -721,6 +721,17 @@
 				display: flex;
 				cursor: pointer;
 
+				&.disabled {
+					opacity: 0.5;
+					pointer-events: none;
+
+					&:hover {
+						color: #9fbbcb;
+						background: rgba(0, 0, 0, 0);
+					}
+				}
+
+
 				&:hover {
 					color: #ffffff;
 					background: rgba(255, 255, 255, 0.1);

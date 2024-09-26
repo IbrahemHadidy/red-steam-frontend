@@ -30,10 +30,7 @@ const DeleteAccountModal: FC<DeleteAccountModalProps> = ({ onClose }): JSX.Eleme
   const handleDelete = async (): Promise<void> => {
     deleteBtnRef.current?.setAttribute('disabled', 'true');
     if (userData?.id) {
-      const response: { status: number } | undefined = await deleteAccount(
-        password,
-        setErrorMessage
-      );
+      const response = await deleteAccount(password, setErrorMessage);
 
       if (response && response.status === 200) {
         onClose();

@@ -18,9 +18,6 @@ import ChangeModal from './_Modals/ChangeModal';
 import DeleteAccountModal from './_Modals/DeleteAccountModal';
 import DeletePhoneModal from './_Modals/DeletePhoneModal';
 
-// Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
-
 // Services
 import { countries } from '@services/countries/countries';
 import {
@@ -44,7 +41,6 @@ import type { ChangeEvent, FC, FormEvent, JSX, MouseEvent, SetStateAction } from
 const SettingsPage: FC = (): JSX.Element => {
   // Contexts
   const { userData, fetchData } = useContext(AuthContext);
-  useDynamicBackground('#1b2838');
 
   // States
   const [showId, setShowId] = useState<boolean>(false);
@@ -176,7 +172,7 @@ const SettingsPage: FC = (): JSX.Element => {
       } else {
         setNameAvailable(false);
         try {
-          const response: boolean = await checkUsernameExists(accountName);
+          const response = await checkUsernameExists(accountName);
 
           if (!response) {
             setNameAvailable(true);
@@ -318,6 +314,7 @@ const SettingsPage: FC = (): JSX.Element => {
                     type="file"
                     className="file-input"
                     accept="image/*"
+                    onClick={(e) => ((e.target as HTMLInputElement).value = '')}
                     onChange={handleFileChange}
                   />
                   <img

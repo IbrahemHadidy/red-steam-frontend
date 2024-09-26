@@ -55,8 +55,6 @@ export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Elem
       if (response?.status === 200) {
         fetchData();
         setIsAddedToWishlist(false);
-      } else {
-        toast.error('An error occurred. Please try again later.');
       }
       addedWislist.current.classList.remove('loading');
       addedWislist.current.style.pointerEvents = 'auto';
@@ -68,11 +66,9 @@ export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Elem
       addedWislist.current.classList.add('loading');
       addedWislist.current.style.pointerEvents = 'none';
       const response = await addToWishlist([itemId]);
-      if (response?.status === 200) {
+      if (response?.status === 201) {
         fetchData();
         setIsAddedToWishlist(true);
-      } else {
-        toast.error('An error occurred. Please try again later.');
       }
       addedWislist.current.classList.remove('loading');
       addedWislist.current.style.pointerEvents = 'auto';
@@ -113,12 +109,12 @@ export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Elem
       {isLoggedIn && (
         <div className="queue-actions">
           {!isViewport630 && (
-            <a className="view-queue-button" href="">
+            <div className="view-queue-button">
               <span>
                 View Your Queue&nbsp;&nbsp;&nbsp;
                 <i className="arrow-next" />
               </span>
-            </a>
+            </div>
           )}
 
           {!isAddedToWishlist ? (
@@ -126,8 +122,9 @@ export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Elem
               id="add-wishlist"
               className="queue-button-container"
               onClick={handleAddWishlistBtnClick}
+              ref={addedWislist}
             >
-              <a className="queue-button" href="">
+              <div className="queue-button">
                 <span>
                   {isInLibrary
                     ? 'You own this item '
@@ -135,20 +132,20 @@ export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Elem
                       ? 'Already in your cart'
                       : 'Add to your wishlist'}
                 </span>
-              </a>
+              </div>
             </div>
           ) : (
             <div
               id="added-wishlist"
-              ref={addedWislist}
               className="queue-button-container"
               onClick={handleAddedWishlistBtnClick}
+              ref={addedWislist}
             >
-              <a className="queue-button" href="">
+              <div className="queue-button">
                 <span>
                   <Image src={selectedIcon} alt="selected" /> On Wishlist
                 </span>
-              </a>
+              </div>
             </div>
           )}
           <div id="follow" className="queue-button-container">

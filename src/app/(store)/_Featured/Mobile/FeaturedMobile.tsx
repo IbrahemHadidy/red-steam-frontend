@@ -1,29 +1,16 @@
 'use client';
 
-// React
-import { useEffect, useState } from 'react';
-
 // NextJS
 import Link from 'next/link';
-
-// Services
-import { getFeatured } from '@services/game/data';
 
 // Types
 import type { Game } from '@entities/game.entity';
 import type { FC, JSX } from 'react';
+interface FeaturedMobileProps {
+  featuredGames: Game[];
+}
 
-const FeaturedMobile: FC = (): JSX.Element => {
-  const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
-
-  useEffect(() => {
-    const fetchFeatured = async (): Promise<void> => {
-      const data: Game[] = await getFeatured('12');
-      setFeaturedGames(data);
-    };
-    fetchFeatured();
-  }, []);
-
+const FeaturedMobile: FC<FeaturedMobileProps> = ({ featuredGames }): JSX.Element => {
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">

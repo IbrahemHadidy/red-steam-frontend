@@ -18,7 +18,7 @@ import categories from '@services/menus/categoryItems';
 // Types
 import type { FC, JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
-import type { Category } from '../Store.entity';
+import type { Category } from '../Store.types';
 
 const Categories: FC = (): JSX.Element => {
   // Init

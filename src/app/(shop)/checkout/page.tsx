@@ -8,13 +8,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+// Toast notifications
+import { toast } from 'react-toastify';
+
+// PayPal
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
-
-// Toast notifications
-import { toast } from 'react-toastify';
 
 // Services
 import { getByIds } from '@services/game/data';
@@ -41,17 +42,15 @@ const CheckoutPage: FC = (): JSX.Element => {
   const [checkboxSelected, setCheckboxSelected] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [userCart, setUserCart] = useState<Game[]>([]);
-  const [totalPrice, setTotalPrice] = useState('0.00');
-  const [finalPrice, setFinalPrice] = useState('0.00');
+  const [totalPrice, setTotalPrice] = useState(0.0);
+  const [finalPrice, setFinalPrice] = useState(0.0);
 
   useEffect(() => {
     const fetchCartData = async (): Promise<void> => {
       if (userData?.cart) {
-        const response: Game[] = await getByIds(userData.cart.map((item) => item.id));
+        const response = await getByIds(userData.cart.map((item) => item.id));
         setUserCart(response);
-        setTotalPrice(
-          response.reduce((acc, curr) => acc + (curr.pricing?.price ?? 0), 0).toFixed(2)
-        );
+        setTotalPrice(response.reduce((acc, curr) => acc + (curr.pricing?.price ?? 0), 0));
       }
     };
     fetchCartData();
@@ -76,12 +75,13 @@ const CheckoutPage: FC = (): JSX.Element => {
 
     try {
       if (!userData) {
-        throw new Error('User data not found');
+        toast.error('User data not found');
+        router.push('/login');
       }
 
-      const result: { orderId: string } = await createOrder(
+      const result = await createOrder(
         totalPrice,
-        userData.cart.map((item) => item.id)
+        (userData && userData.cart.map((item) => item.id)) || []
       );
 
       return result.orderId;
@@ -94,16 +94,17 @@ const CheckoutPage: FC = (): JSX.Element => {
   const onApproveOrder = async (data: OnApproveData): Promise<void> => {
     try {
       if (!userData) {
-        throw new Error('User data not found');
+        toast.error('User data not found');
+        router.push('/login');
       }
 
-      const response: { status: number; data: { orderId: string } } = await captureOrder(
+      const response = await captureOrder(
         data.orderID,
-        userData.cart.map((item) => item.id)
+        (userData && userData.cart.map((item) => item.id)) || []
       );
 
       if (response.status !== 200) {
-        throw new Error('Failed to capture PayPal order');
+        toast.error('Failed to capture PayPal order');
       }
 
       const orderInfo = response.data;
@@ -139,7 +140,7 @@ const CheckoutPage: FC = (): JSX.Element => {
         <div className="checkout-header-content">
           <div className="steam-logo">
             <Link href="/">
-              <Image src={steamLogo} alt="Steam Logo" />
+              <Image src={steamLogo} alt="Steam Logo" priority />
             </Link>
           </div>
           {!isPaymentConfirmed ? (

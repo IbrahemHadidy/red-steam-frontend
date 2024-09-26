@@ -66,6 +66,7 @@
 				right: -52px !important;
 			}
 		}
+
 		.mobile-carousel {
 			position: relative;
 			clear: both;
@@ -81,22 +82,22 @@
 			padding-bottom: 20px;
 			display: flex;
 			flex-wrap: nowrap;
-		
+
 			&::-webkit-scrollbar {
 				width: 1px;
 				scrollbar-width: 1px;
 			}
-		
+
 			&::-webkit-scrollbar-track {
 				background-color: transparent;
 			}
-		
+
 			&::-webkit-scrollbar-thumb {
 				border: 6px solid rgba(0, 0, 0, 0);
 				width: thin;
 				background-clip: content-box;
 				padding: 2px;
-		
+
 				&:hover {
 					border: 6px solid rgba(0, 0, 0, 0);
 					width: thin;
@@ -104,7 +105,7 @@
 					padding: 2px;
 				}
 			}
-		
+
 			.mobile-capsule {
 				cursor: pointer;
 				background-repeat: no-repeat;
@@ -127,7 +128,7 @@
 				box-shadow: 0 0 7px 0px #000;
 				text-decoration: none;
 				margin-right: 11px;
-			
+
 				.mobile-capsule-content {
 					cursor: pointer;
 					color: #fff;
@@ -149,7 +150,7 @@
 		.info-card {
 			flex-shrink: 1;
 			display: block;
-		
+
 			.app-name {
 				display: flex;
 				align-items: center;
@@ -159,7 +160,7 @@
 				height: 69px;
 				padding-left: 6px;
 				padding-right: 6px;
-		
+
 				>div {
 					max-height: 62px;
 					overflow: hidden;
@@ -170,20 +171,20 @@
 					text-decoration: none;
 				}
 			}
-		
+
 			.photos {
 				width: 344px;
 				display: inline-block;
 				margin-left: -30px;
 				max-height: 176px;
 				position: relative;
-		
+
 				>div {
 					width: 162px;
 					height: 69px;
 					display: inline-block;
 					margin: 5px 10px 0 0;
-		
+
 					>div {
 						width: 162px;
 						height: 69px;
@@ -193,11 +194,11 @@
 						position: absolute;
 						opacity: 0.6;
 						transition: opacity 0.3s;
-		
+
 						&:hover {
 							opacity: 1;
 						}
-		
+
 						&::before {
 							content: "";
 							position: absolute;
@@ -210,19 +211,19 @@
 					}
 				}
 			}
-		
+
 			.reason {
 				margin-top: 8px;
 				padding-left: 6px;
 				display: inline-block;
 				width: 298px;
-		
+
 				.available {
 					font-size: 21px;
 					font-weight: 200;
 					min-height: auto;
 				}
-		
+
 				.recommended {
 					min-height: 45px;
 					font-size: 17px;
@@ -231,21 +232,21 @@
 					font-family: "Motiva Sans", Sans-serif;
 					font-weight: 300;
 					line-height: 18px;
-		
+
 					strong {
 						font-weight: 300;
 						color: #a3cf06;
 					}
 				}
 			}
-		
+
 			.tags {
 				margin-top: 5px;
 				font-size: 14px;
 				display: block;
 				height: 27px;
 				overflow: hidden;
-				
+
 				>span {
 					margin: 3px 0;
 					display: inline-block;
@@ -265,29 +266,29 @@
 					font-size: 11px;
 				}
 			}
-		
+
 			.platform {
 				position: absolute;
 				bottom: 10px;
 				right: 10px;
 				opacity: 0.7;
-		
+
 				&:hover {
 					opacity: 1;
 					transition: opacity 0.3s;
 				}
 			}
-		
+
 			.platform-image {
 				display: inline-block;
 				width: 20px;
 				height: 20px;
 				background-repeat: no-repeat;
-		
+
 				&.win {
 					background-image: url("/images/icon_platform_win.png");
 				}
-		
+
 				&.mac {
 					background-image: url("/images/icon_platform_mac.png");
 				}
@@ -312,7 +313,9 @@
 		}
 	}
 
-	@media (min-width: 960px) {
+	@media screen and (min-width: 960px) {
+		height: 430px;
+
 		.discount {
 			display: flex;
 			line-height: 15px;
@@ -346,14 +349,14 @@
 	@media screen and (max-width: 960px) {
 		.main-carousel-content {
 			width: auto;
-	
+
 			.info-card {
 				background: linear-gradient(180deg, #0a141d 0%, rgba(10, 20, 29, 0.2) 100%);
 				min-height: 70px;
 				height: 90px;
 				font-size: 18px;
 				font-weight: 600;
-	
+
 				.app-name {
 					margin-top: 0;
 				}
@@ -361,16 +364,11 @@
 				.platform {
 					bottom: 0px !important;
 				}
-	
+
 				div {
 					line-height: unset;
 				}
 			}
-	
 		}
 	}
 }
-
-
-
-

@@ -14,9 +14,9 @@ import '@styles/components/HoverSummary.scss';
 
 // Types
 import type { FC, JSX } from 'react';
-import type { HoverSummary } from './HoverSummary.types';
+import type { HoverSummaryType } from './HoverSummary.types';
 
-const HoverSummary: FC<HoverSummary> = ({
+const HoverSummary: FC<HoverSummaryType> = ({
   title,
   date,
   screenshots,

@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { AuthContext } from '@contexts/AuthContext';
 
 // Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Toast notifications
@@ -34,7 +33,6 @@ import type { FC, JSX } from 'react';
 const WishlistPage: FC = (): JSX.Element => {
   // Init
   const isViewport960 = useResponsiveViewport(960);
-  useDynamicBackground('#1b2838');
 
   // Contexts
   const { userData, fetchData } = useContext(AuthContext);
@@ -66,7 +64,7 @@ const WishlistPage: FC = (): JSX.Element => {
     addToCartBtn2Ref.current?.classList.add('loading');
     addToCartBtn1Ref.current && (addToCartBtn1Ref.current.style.pointerEvents = 'none');
     addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'none');
-    const response: { status: number } = await addToCart([itemId]);
+    const response = await addToCart([itemId]);
     if (response?.status === 201) {
       fetchData();
     } else {
@@ -83,7 +81,7 @@ const WishlistPage: FC = (): JSX.Element => {
     addToCartBtn2Ref.current?.classList.add('loading');
     addToCartBtn1Ref.current && (addToCartBtn1Ref.current.style.pointerEvents = 'none');
     addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'none');
-    const response: { status: number } = await addToLibrary([itemId]);
+    const response = await addToLibrary([itemId]);
     if (response?.status === 201) {
       fetchData();
     } else {
@@ -98,7 +96,7 @@ const WishlistPage: FC = (): JSX.Element => {
   const handleRemove = async (itemId: number): Promise<void> => {
     removeBtnRef.current?.classList.add('loading');
     removeBtnRef.current && (removeBtnRef.current.style.pointerEvents = 'none');
-    const response: { status: number } = await removeFromWishlist([itemId]);
+    const response = await removeFromWishlist([itemId]);
     if (response?.status === 200) {
       fetchData();
       updateWishlist();

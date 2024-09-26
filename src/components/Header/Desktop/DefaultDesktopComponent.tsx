@@ -6,7 +6,6 @@ import { useContext } from 'react';
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 // Toast notifications
 import { toast } from 'react-toastify';
@@ -30,15 +29,8 @@ import steamLogo from '@images/logo_steam.svg';
 import type { FC, JSX } from 'react';
 
 const DefaultDesktopComponent: FC = (): JSX.Element => {
-  // Init
-  const router = useRouter();
-
   // Contexts
   const { isLoggedIn } = useContext(AuthContext);
-
-  const handleRootNavigation = (): void => {
-    router.push('/');
-  };
 
   const handleInstallSteamBtn = (): void => {
     toast.warning('This is not the real Steam website, It is just a clone for learning purposes.');
@@ -97,15 +89,16 @@ const DefaultDesktopComponent: FC = (): JSX.Element => {
           </Nav>
 
           {/* Brand/logo section */}
-          <Navbar.Brand href="" onClick={handleRootNavigation}>
+          <Link href="/">
             <Image
               alt="Steam"
               src={steamLogo}
               width="180"
               height="80"
               className="d-inline-block align-top"
+              priority
             />
-          </Navbar.Brand>
+          </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             {/* Left-side navigation links */}

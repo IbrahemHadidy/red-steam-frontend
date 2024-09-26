@@ -85,18 +85,22 @@ export const PriceFilterBlock: FC<PriceFilterBlockProps> = ({
               step={1}
               min={0}
               max={13}
-              defaultValue={rangeValue || 13}
+              defaultValue={rangeValue === 0 ? 0 : rangeValue || 13}
               onChange={handlePriceRangeChange}
               onMouseUp={handlePriceRangeMouseUp}
             />
           </div>
-          <div className="range-display">{getPriceRangeLabel(rangeValue || 13)}</div>
+          <div className="range-display">
+            {getPriceRangeLabel(rangeValue === 0 ? 0 : rangeValue || 13)}
+          </div>
         </div>
         <div className="block-rule" />
-        {filters.map((row: Filter) => (
+        {filters.map((row) => (
           <div
             key={row.name}
-            className={`filter-control-row ${row.check === 'included' ? 'checked' : ''}`}
+            className={`filter-control-row ${row.check === 'included' ? 'checked' : ''} ${
+              row.id === 2 && rangeValue === 0 ? 'disabled' : ''
+            }`}
             onClick={() => handlePriceIncludeClick(row)}
           >
             <span className="filter-tab">
