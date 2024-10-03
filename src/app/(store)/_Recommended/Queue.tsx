@@ -7,14 +7,14 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import { toast } from 'react-toastify';
 
 // Types
-import type { FC, JSX, MouseEvent } from 'react';
+import type { JSX, MouseEvent } from 'react';
 
 interface queueGame {
   imageNumber: string;
   imageLink: string;
 }
 
-const Queue: FC = (): JSX.Element => {
+export default function Queue(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
@@ -76,6 +76,4 @@ const Queue: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default Queue;
+}

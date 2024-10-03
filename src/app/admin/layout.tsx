@@ -10,12 +10,12 @@ import '@styles/admin/Create.scss';
 import '@styles/admin/ItemsList.scss';
 
 // Types
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface AdminLayoutProps {
   children: ReactNode;
 }
 
-const AdminLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function AdminLayout({ children }: AdminLayoutProps): JSX.Element {
   return (
     <>
       <RedirectIfNotLoggedIn />
@@ -25,6 +25,4 @@ const AdminLayout: FC<Props> = ({ children }): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default AdminLayout;
+}

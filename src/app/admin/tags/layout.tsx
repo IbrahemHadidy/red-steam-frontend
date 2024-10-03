@@ -1,7 +1,7 @@
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface TagsLayoutProps {
   children: ReactNode;
 }
 
@@ -10,6 +10,6 @@ export const metadata: Metadata = {
   description: 'Create and manage tags on Red Steam.',
 };
 
-const TagsLayout: FC<Props> = ({ children }): JSX.Element => <>{children}</>;
-
-export default TagsLayout;
+export default function TagsLayout({ children }: TagsLayoutProps): JSX.Element {
+  return <>{children}</>;
+}

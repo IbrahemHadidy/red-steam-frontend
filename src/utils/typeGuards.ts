@@ -7,34 +7,74 @@ import type { Review } from '@entities/review.entity';
 import type { Tag } from '@entities/tag.entity';
 import type { User } from '@entities/user.entity';
 
-export const isFeature = (obj: object): obj is Feature => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isFeature(obj: object): obj is Feature {
   return 'id' in obj && 'name' in obj && 'icon' in obj;
-};
+}
 
-export const isCompany = (obj: object): obj is Company => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isCompany(obj: object): obj is Company {
   return 'id' in obj && 'name' in obj && 'website' in obj;
-};
+}
 
-export const isTag = (obj: object): obj is Tag => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isTag(obj: object): obj is Tag {
   return 'id' in obj && 'name' in obj;
-};
+}
 
-export const isLanguage = (obj: object): obj is Language => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isLanguage(obj: object): obj is Language {
   return 'id' in obj && 'name' in obj;
-};
+}
 
-export const isReview = (obj: object): obj is Review => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isReview(obj: object): obj is Review {
   return 'id' in obj && 'positive' in obj && 'date' in obj && 'content' in obj;
-};
+}
 
-export const isUser = (obj: object): obj is User => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isUser(obj: object): obj is User {
   return 'id' in obj && 'username' in obj && 'email' in obj;
-};
+}
 
-export const isGame = (obj: object): obj is Game => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isGame(obj: object): obj is Game {
   return 'id' in obj && 'name' in obj && 'category' in obj && 'description' in obj;
-};
+}
 
-export const isPricing = (obj: object): obj is Pricing => {
+/**
+ * Type guard to check if an object is a game
+ * @param obj The object to check
+ * @returns True if the object is a game and false otherwise
+ */
+export function isPricing(obj: object): obj is Pricing {
   return 'id' in obj && 'free' in obj && 'basePrice' in obj;
-};
+}

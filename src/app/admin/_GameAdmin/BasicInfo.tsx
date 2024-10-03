@@ -1,5 +1,5 @@
 // Types
-import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
 interface BasicInfoProps {
   name: string;
   category: string;
@@ -17,7 +17,7 @@ interface BasicInfoProps {
   releaseDateRef: RefObject<HTMLInputElement>;
 }
 
-const BasicInfo: FC<BasicInfoProps> = ({
+export default function BasicInfo({
   name,
   category,
   description,
@@ -32,18 +32,18 @@ const BasicInfo: FC<BasicInfoProps> = ({
   categoryRef,
   descriptionRef,
   releaseDateRef,
-}): JSX.Element => {
+}: BasicInfoProps): JSX.Element {
   // Event Handlers
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value.trim());
+    setName(e.target.value);
   };
 
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setCategory(e.target.value.trim());
+    setCategory(e.target.value);
   };
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setDescription(e.target.value.trim());
+    setDescription(e.target.value);
   };
 
   const handleReleaseDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -123,6 +123,4 @@ const BasicInfo: FC<BasicInfoProps> = ({
       </div>
     </section>
   );
-};
-
-export default BasicInfo;
+}

@@ -14,14 +14,14 @@ import formatDate from '@utils/formatDate';
 import { getHoverInfo, getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { RightGameSummaryProps } from '../MediaAndSummary.types';
 
-export const RightGameSummary: FC<RightGameSummaryProps> = ({
+export default function RightGameSummary({
   game,
   isViewport630,
   isViewport960,
-}): JSX.Element => {
+}: RightGameSummaryProps): JSX.Element {
   // States
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -111,4 +111,4 @@ export const RightGameSummary: FC<RightGameSummaryProps> = ({
       </div>
     </div>
   );
-};
+}

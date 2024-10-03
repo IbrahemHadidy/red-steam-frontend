@@ -8,8 +8,8 @@ import '@styles/shop/Wishlist.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface WishlistLayoutProps {
   children: ReactNode;
 }
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: 'View your wishlist',
 };
 
-const WishlistLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function WishlistLayout({ children }: WishlistLayoutProps): JSX.Element {
   return (
     <>
       <Header />
@@ -27,6 +27,4 @@ const WishlistLayout: FC<Props> = ({ children }): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default WishlistLayout;
+}

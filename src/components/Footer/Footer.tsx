@@ -12,9 +12,9 @@ import steamFooterLogo from '@images/logo_steam_footer.png';
 import '@styles/components/Footer.scss';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const Footer: FC = (): JSX.Element => {
+export default function Footer(): JSX.Element {
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -102,6 +102,4 @@ const Footer: FC = (): JSX.Element => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

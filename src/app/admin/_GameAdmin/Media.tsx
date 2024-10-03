@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
 import type { Screenshot, Video } from './game-admin.types';
 interface MediaProps {
   type: 'create' | 'update';
@@ -19,7 +19,7 @@ interface MediaProps {
   setHasDuplicateError: Dispatch<SetStateAction<boolean>>;
 }
 
-const Media: FC<MediaProps> = ({
+export default function Media({
   type,
   game,
   screenshots,
@@ -28,7 +28,7 @@ const Media: FC<MediaProps> = ({
   setVideos,
   mediaRef,
   setHasDuplicateError,
-}): JSX.Element => {
+}: MediaProps): JSX.Element {
   // States
   const [changes, setChanges] = useState<(Screenshot | Video)[]>([]);
   const [duplicateOrders, setDuplicateOrders] = useState<Set<number>>(new Set());
@@ -341,7 +341,7 @@ const Media: FC<MediaProps> = ({
         </button>
         <input
           type="file"
-          accept="video/webm"
+          accept=".webm"
           ref={videoInputRef}
           onClick={(e) => ((e.target as HTMLInputElement).value = '')}
           onChange={handleVideoInputChange}
@@ -349,7 +349,7 @@ const Media: FC<MediaProps> = ({
         />
         <input
           type="file"
-          accept=" image/jpeg"
+          accept=".jpg"
           ref={posterInputRef}
           onClick={(e) => ((e.target as HTMLInputElement).value = '')}
           onChange={handlePosterInputChange}
@@ -413,6 +413,7 @@ const Media: FC<MediaProps> = ({
                       <label>Order:</label>
                       <input
                         type="number"
+                        style={{ colorScheme: 'dark' }}
                         value={item.order}
                         onChange={(e) => handleScreenshotOrderChange(e, getId(item))}
                         className={duplicateOrders.has(item.order) ? 'input-error' : ''}
@@ -456,6 +457,7 @@ const Media: FC<MediaProps> = ({
                       <label>Order:</label>
                       <input
                         type="number"
+                        style={{ colorScheme: 'dark' }}
                         value={item.order}
                         onChange={(e) => handleVideoOrderChange(e, getId(item))}
                         className={duplicateOrders.has(item.order) ? 'input-error' : ''}
@@ -488,6 +490,4 @@ const Media: FC<MediaProps> = ({
       )}
     </>
   );
-};
-
-export default Media;
+}

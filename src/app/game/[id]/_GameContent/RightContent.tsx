@@ -29,10 +29,10 @@ import { AuthContext } from '@contexts/AuthContext';
 import externalLinkIcon from '@images/ico_external_link.gif';
 
 // Types
-import type { FC, JSX, MouseEvent } from 'react';
+import type { JSX, MouseEvent } from 'react';
 import type { RightContentProps } from './GameContent.types';
 
-const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
+export default function RightContent({ game }: RightContentProps): JSX.Element {
   // Init
   const router = useRouter();
   const isViewport630 = useResponsiveViewport(630);
@@ -404,6 +404,4 @@ const RightContent: FC<RightContentProps> = ({ game }): JSX.Element => {
       )}
     </>
   );
-};
-
-export default RightContent;
+}

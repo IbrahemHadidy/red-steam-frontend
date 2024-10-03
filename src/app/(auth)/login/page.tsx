@@ -13,9 +13,9 @@ import { AuthContext } from '@contexts/AuthContext';
 import SignIn from '../_SignInAndRecovery/SignInAndRecovery';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const SignInPage: FC = (): JSX.Element => {
+export default function SignInPage(): JSX.Element {
   const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter();
 
@@ -26,6 +26,4 @@ const SignInPage: FC = (): JSX.Element => {
   }, [isLoggedIn, router]);
 
   return <SignIn />;
-};
-
-export default SignInPage;
+}

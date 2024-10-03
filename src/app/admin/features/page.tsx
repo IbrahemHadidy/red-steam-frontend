@@ -13,9 +13,9 @@ import Admin from '@app/admin/_Admin/Admin';
 import { createFeature } from '@services/common/features';
 
 // Types
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 
-const FeaturesAdmin: FC = (): JSX.Element => {
+export default function FeaturesAdmin(): JSX.Element {
   // States
   const [name, setName] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
@@ -57,6 +57,4 @@ const FeaturesAdmin: FC = (): JSX.Element => {
       submitted={submitted}
     />
   );
-};
-
-export default FeaturesAdmin;
+}

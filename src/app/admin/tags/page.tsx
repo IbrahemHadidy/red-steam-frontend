@@ -13,9 +13,9 @@ import Admin from '@app/admin/_Admin/Admin';
 import { createTag } from '@services/common/tags';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const TagsAdmin: FC = (): JSX.Element => {
+export default function TagsAdmin(): JSX.Element {
   // States
   const [name, setName] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
@@ -34,6 +34,4 @@ const TagsAdmin: FC = (): JSX.Element => {
   return (
     <Admin type="tag" name={name} setName={setName} onSubmit={onSubmit} submitted={submitted} />
   );
-};
-
-export default TagsAdmin;
+}

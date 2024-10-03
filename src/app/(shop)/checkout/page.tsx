@@ -17,6 +17,9 @@ import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
 
+// Utils
+import Decimal from 'decimal.js';
+
 // Services
 import { getByIds } from '@services/game/data';
 import { captureOrder, createOrder } from '@services/user/payment';
@@ -27,9 +30,9 @@ import steamLogo from '@images/logo_steam.svg';
 // Types
 import type { Game } from '@entities/game.entity';
 import type { OnApproveData } from '@paypal/paypal-js';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const CheckoutPage: FC = (): JSX.Element => {
+export default function CheckoutPage(): JSX.Element {
   // Init
   const router = useRouter();
 
@@ -37,20 +40,25 @@ const CheckoutPage: FC = (): JSX.Element => {
   const { userData, fetchData } = useContext(AuthContext);
 
   // States
-  const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(false);
-  const [isReviewSelected, setIsReviewSelected] = useState(false);
-  const [checkboxSelected, setCheckboxSelected] = useState(false);
-  const [orderId, setOrderId] = useState('');
+  const [isPaymentConfirmed, setIsPaymentConfirmed] = useState<boolean>(false);
+  const [isReviewSelected, setIsReviewSelected] = useState<boolean>(false);
+  const [checkboxSelected, setCheckboxSelected] = useState<boolean>(false);
+  const [orderId, setOrderId] = useState<string>('');
   const [userCart, setUserCart] = useState<Game[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0.0);
-  const [finalPrice, setFinalPrice] = useState(0.0);
+  const [totalPrice, setTotalPrice] = useState<Decimal>(new Decimal('0.00'));
+  const [finalPrice, setFinalPrice] = useState<Decimal>(new Decimal('0.00'));
 
   useEffect(() => {
     const fetchCartData = async (): Promise<void> => {
       if (userData?.cart) {
         const response = await getByIds(userData.cart.map((item) => item.id));
         setUserCart(response);
-        setTotalPrice(response.reduce((acc, curr) => acc + (curr.pricing?.price ?? 0), 0));
+        setTotalPrice(
+          response.reduce((acc: Decimal, curr: Game) => {
+            const price = new Decimal(curr.pricing?.price ?? '0.00');
+            return acc.plus(price);
+          }, new Decimal('0.00'))
+        );
       }
     };
     fetchCartData();
@@ -80,7 +88,7 @@ const CheckoutPage: FC = (): JSX.Element => {
       }
 
       const result = await createOrder(
-        totalPrice,
+        totalPrice.toString(),
         (userData && userData.cart.map((item) => item.id)) || []
       );
 
@@ -208,7 +216,7 @@ const CheckoutPage: FC = (): JSX.Element => {
                   </div>
                 ))}
                 <div className="review-checkout-total">
-                  Total Price: <span>${totalPrice} USD</span>
+                  Total Price: <span>${totalPrice.toString()} USD</span>
                 </div>
               </>
             )}
@@ -238,7 +246,7 @@ const CheckoutPage: FC = (): JSX.Element => {
                   </div>
                   <div className="reciept-confirmation-row">
                     <div className="receipt-confirmation-label">Total</div>
-                    <div className="receipt-confirmation-data">${finalPrice} USD</div>
+                    <div className="receipt-confirmation-data">${finalPrice.toString()} USD</div>
                   </div>
                   <div className="reciept-confirmation-row">
                     <div className="receipt-confirmation-label">Confirmation code</div>
@@ -340,6 +348,4 @@ const CheckoutPage: FC = (): JSX.Element => {
       </div>
     </PayPalScriptProvider>
   );
-};
-
-export default CheckoutPage;
+}

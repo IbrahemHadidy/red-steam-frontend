@@ -249,9 +249,34 @@ class UserInteraction extends Api {
 
     const response: AxiosResponse = await this.post(endpoint, data, config);
 
-    if (response.status === 201) {
-      toast.success(response.data.message);
-    }
+    return response.data;
+  };
+
+  public updateReview = async (
+    reviewId: number,
+    positive: boolean,
+    content: string
+  ): Promise<{ message: string }> => {
+    const endpoint: string = `/review`;
+    const data = { reviewId, positive, content };
+    const config: AxiosRequestConfig = {
+      withCredentials: true,
+    };
+
+    const response: AxiosResponse = await this.put(endpoint, data, config);
+
+    return response.data;
+  };
+
+  public hasReviewedGame = async (
+    gameId: number
+  ): Promise<{ reviewed: boolean; review: Review }> => {
+    const endpoint: string = `/check-review/${gameId}`;
+    const config: AxiosRequestConfig = {
+      withCredentials: true,
+    };
+
+    const response: AxiosResponse = await this.get(endpoint, config);
 
     return response.data;
   };
@@ -284,5 +309,7 @@ export const {
   getWishlist,
   getCart,
   reviewGame,
+  updateReview,
+  hasReviewedGame,
   getReviews,
 } = new UserInteraction();

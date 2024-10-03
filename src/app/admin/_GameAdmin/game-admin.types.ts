@@ -1,3 +1,5 @@
+import type Decimal from 'decimal.js';
+
 interface Thumbnail {
   file: File | string | null;
   changed: boolean;
@@ -37,7 +39,7 @@ export interface ChangedFeatured {
 }
 export interface Pricing {
   free: boolean;
-  price?: number;
+  price?: Decimal | '';
 }
 export interface Language {
   name: string;

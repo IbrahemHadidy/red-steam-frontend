@@ -20,10 +20,10 @@ import { menuData, navigationItems } from '@services/menus/menuData-mobile';
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { GroupedMenuItem, MenuItem, menuTitle } from '../SecondNavbar.types';
 
-const MobileSecondNav: FC = (): JSX.Element => {
+export default function MobileSecondNav(): JSX.Element {
   // Initializattions
   const path = usePathname();
 
@@ -160,6 +160,4 @@ const MobileSecondNav: FC = (): JSX.Element => {
       </nav>
     </div>
   );
-};
-
-export default MobileSecondNav;
+}

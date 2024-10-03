@@ -1,4 +1,8 @@
-const getPlatform = (): string => {
+/**
+ * Get the platform of the user
+ * @returns The platform of the user
+ */
+export default function getPlatform(): string {
   if (typeof navigator !== 'undefined') {
     const userAgent: string = navigator.userAgent.toLowerCase();
 
@@ -11,6 +15,4 @@ const getPlatform = (): string => {
     }
   }
   return 'unknown';
-};
-
-export default getPlatform;
+}

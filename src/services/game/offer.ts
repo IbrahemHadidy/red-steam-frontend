@@ -11,7 +11,7 @@ class OfferApi extends Api {
 
   public createOffer = async (
     gameId: number,
-    discountPrice: number,
+    discountPrice: string,
     offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL',
     discountStartDate: Date,
     discountEndDate: Date
@@ -51,7 +51,7 @@ class OfferApi extends Api {
   public updateOffer = async (
     id: number,
     discount: boolean,
-    discountPrice: number,
+    discountPrice: string,
     offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL',
     discountStartDate: Date,
     discountEndDate: Date

@@ -6,6 +6,7 @@ import type { Pricing } from '@entities/pricing.entity';
 import type { Review } from '@entities/review.entity';
 import type { Tag } from '@entities/tag.entity';
 import type { User } from '@entities/user.entity';
+import type Decimal from 'decimal.js';
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 
 export interface CreateProps {
@@ -17,8 +18,8 @@ export interface CreateProps {
   handleIconChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   gameId?: number;
   setGameId?: Dispatch<SetStateAction<number>>;
-  discountPrice?: number;
-  setDiscountPrice?: Dispatch<SetStateAction<number>>;
+  discountPrice?: Decimal;
+  setDiscountPrice?: Dispatch<SetStateAction<Decimal>>;
   discountStartDate?: Date;
   offerType?: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
   setOfferType?: Dispatch<SetStateAction<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>>;
@@ -58,4 +59,4 @@ export interface DeleteModalProps {
   itemId: number | string;
 }
 
-export interface Admin extends CreateProps, ItemsListProps {}
+export interface AdminProps extends CreateProps, ItemsListProps {}

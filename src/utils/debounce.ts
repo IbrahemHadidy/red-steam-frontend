@@ -1,4 +1,10 @@
-const debounce = <T extends (...args: unknown[]) => void>(func: T, delay: number) => {
+/**
+ * Debounces a function to prevent it from being called too often
+ * @param func The function to debounce
+ * @param delay The delay to wait before calling the function in ms
+ * @returns The debounced function
+ */
+export default function debounce<T extends (...args: unknown[]) => void>(func: T, delay: number) {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   // Default method to debounce the function
@@ -20,6 +26,4 @@ const debounce = <T extends (...args: unknown[]) => void>(func: T, delay: number
   };
 
   return debouncedFunction;
-};
-
-export default debounce;
+}

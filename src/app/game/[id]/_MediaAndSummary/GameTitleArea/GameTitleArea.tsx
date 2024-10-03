@@ -22,10 +22,10 @@ import deleteIcon from '@images/delete.png';
 import updateIcon from '@images/edit.png';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { GameTitleAreaProps } from '../MediaAndSummary.types';
 
-export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => {
+export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element {
   // Init
   const router = useRouter();
   const pathname = usePathname();
@@ -48,8 +48,6 @@ export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => 
   const onDelete = (itemId: number): void => {
     setDeleteItemId(itemId);
     setDeleteModalOpen(true);
-    toast.success('Game deleted successfully');
-    router.replace('/');
   };
 
   return (
@@ -59,12 +57,8 @@ export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => 
           <Link href={`/search/`}>
             <span className="genre-item">All Games</span>
           </Link>{' '}
-          &gt;{' '}
-          <Link href={`/genre/${game.category}/`}>
-            <span className="genre-item">{game.category}</span>
-          </Link>{' '}
-          &gt;{' '}
-          <Link href={`/game/${game.name}/`}>
+          &gt; <span className="genre-item">{game.category}</span> &gt;{' '}
+          <Link href={`/game/${game.id}/`}>
             <span className="genre-item">{game.name}</span>
           </Link>
         </div>
@@ -119,4 +113,4 @@ export const GameTitleArea: FC<GameTitleAreaProps> = ({ game }): JSX.Element => 
       )}
     </>
   );
-};
+}

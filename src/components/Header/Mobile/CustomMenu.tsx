@@ -33,7 +33,7 @@ interface MenuItem {
   link: string;
 }
 
-const SteamMenu: FC = (): JSX.Element => {
+export default function SteamMenu(): JSX.Element {
   // Init
   const router = useRouter();
 
@@ -273,7 +273,4 @@ const SteamMenu: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-// Export the SteamMenu component
-export default SteamMenu;
+}

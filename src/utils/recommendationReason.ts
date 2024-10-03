@@ -1,6 +1,12 @@
 import { Tag } from '@entities/tag.entity';
 
-const isTagInUserTags = (gametags: Tag[], userTags: Tag[]): boolean => {
+/**
+ * Check if a game has at least 3 common tags with the user
+ * @param gametags
+ * @param userTags
+ * @returns true if the game has at least 3 common tags with the user
+ */
+export default function isTagInUserTags(gametags: Tag[], userTags: Tag[]): boolean {
   if (gametags.length === 0 || userTags.length === 0) {
     return false;
   }
@@ -14,6 +20,4 @@ const isTagInUserTags = (gametags: Tag[], userTags: Tag[]): boolean => {
   }, 0);
 
   return commonTagsCount >= 3;
-};
-
-export default isTagInUserTags;
+}

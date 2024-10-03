@@ -7,12 +7,12 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 import { AuthContext } from '@contexts/AuthContext';
 
 // Components
-import { GameOwned } from './GameOwned/GameOwned';
-import { GameTitleArea } from './GameTitleArea/GameTitleArea';
-import { LeftGameSummary } from './LeftGameSummary/LeftGameSummary';
+import GameOwned from './GameOwned/GameOwned';
+import GameTitleArea from './GameTitleArea/GameTitleArea';
+import LeftGameSummary from './LeftGameSummary/LeftGameSummary';
 import { ScreenshotModal } from './LeftGameSummary/Screenshot/Screenshot';
-import { QueueArea } from './QueueArea/QueueArea';
-import { RightGameSummary } from './RightGameSummary/RightGameSummary';
+import QueueArea from './QueueArea/QueueArea';
+import RightGameSummary from './RightGameSummary/RightGameSummary';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';

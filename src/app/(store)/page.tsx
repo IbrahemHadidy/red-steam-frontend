@@ -26,9 +26,9 @@ const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const StorePage: FC = (): JSX.Element => {
+export default function StorePage(): JSX.Element {
   const { isLoggedIn } = useContext(AuthContext);
   useDynamicBackground("url('/images/colored_body_top.png') center top no-repeat #1b2838");
 
@@ -51,6 +51,4 @@ const StorePage: FC = (): JSX.Element => {
       <HomeTabs />
     </div>
   );
-};
-
-export default StorePage;
+}

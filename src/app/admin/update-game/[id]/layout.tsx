@@ -4,8 +4,8 @@ import '@styles/game/game.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface GameUpdateLayoutProps {
   children: ReactNode;
 }
 
@@ -14,8 +14,6 @@ export const metadata: Metadata = {
   description: 'Update a new game on Red Steam',
 };
 
-const GameUpdateLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function GameUpdateLayout({ children }: GameUpdateLayoutProps): JSX.Element {
   return <div className="game-update">{children}</div>;
-};
-
-export default GameUpdateLayout;
+}

@@ -10,9 +10,9 @@ import Link from 'next/link';
 import { AuthContext } from '@contexts/AuthContext';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const BrowseSteam: FC = (): JSX.Element => {
+export default function BrowseSteam(): JSX.Element {
   // Contexts
   const { userData } = useContext(AuthContext);
 
@@ -28,7 +28,7 @@ const BrowseSteam: FC = (): JSX.Element => {
             Browse Steam
           </div>
           <div className="browse-buttons">
-            <Link className="big-button" href="/search?sort=Release%20date&price=Any%20Price">
+            <Link className="big-button" href="/search?sort=Release%20Date&price=Any%20Price">
               {' '}
               New Releases{' '}
             </Link>
@@ -49,6 +49,4 @@ const BrowseSteam: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default BrowseSteam;
+}

@@ -12,10 +12,11 @@ class UserAuth extends Api {
     username: string,
     email: string,
     password: string,
-    country: string
+    country: string,
+    recaptchaToken: string
   ): Promise<{ data: { message: string }; status: number }> => {
     const endpoint: string = `/signup`;
-    const data = { username, email, password, country };
+    const data = { username, email, password, country, recaptchaToken };
 
     const response: AxiosResponse = await this.post(endpoint, data);
 
@@ -25,13 +26,14 @@ class UserAuth extends Api {
   public login = async (
     identifier: string,
     password: string,
-    rememberMe: boolean
+    rememberMe: boolean,
+    recaptchaToken?: string
   ): Promise<{
     data: { userData: User; isSessionLoggedIn: boolean; message: string };
     status: number;
   }> => {
     const endpoint: string = `/login`;
-    const data = { identifier, password, rememberMe };
+    const data = { identifier, password, rememberMe, recaptchaToken };
     const config: AxiosRequestConfig = {
       withCredentials: true,
     };

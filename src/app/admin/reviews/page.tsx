@@ -7,9 +7,9 @@ import { useState } from 'react';
 import Admin from '@app/admin/_Admin/Admin';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const ReviewsAdmin: FC = (): JSX.Element => {
+export default function ReviewsAdmin(): JSX.Element {
   // States
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
@@ -17,6 +17,4 @@ const ReviewsAdmin: FC = (): JSX.Element => {
   return (
     <Admin type="review" website={website} setWebsite={setWebsite} name={name} setName={setName} />
   );
-};
-
-export default ReviewsAdmin;
+}

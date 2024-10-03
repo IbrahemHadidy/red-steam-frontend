@@ -13,9 +13,9 @@ import { toast } from 'react-toastify';
 import { createDeveloper } from '@services/common/developers';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const DevelopersAdmin: FC = (): JSX.Element => {
+export default function DevelopersAdmin(): JSX.Element {
   // States
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
@@ -44,6 +44,4 @@ const DevelopersAdmin: FC = (): JSX.Element => {
       submitted={submitted}
     />
   );
-};
-
-export default DevelopersAdmin;
+}

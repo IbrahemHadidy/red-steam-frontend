@@ -9,7 +9,7 @@ class UserPayment extends Api {
   }
 
   public createOrder = async (
-    totalPrice: number,
+    totalPrice: string,
     cartItems: number[]
   ): Promise<{ orderId: string }> => {
     const endpoint: string = `/order/create`;

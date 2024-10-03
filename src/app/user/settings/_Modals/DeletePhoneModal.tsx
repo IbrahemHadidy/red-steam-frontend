@@ -10,10 +10,10 @@ import { AuthContext } from '@contexts/AuthContext';
 import { removePhoneNumber } from '@services/user/phone';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { DeletePhoneModalProps } from './Modals.types';
 
-const DeletePhoneModal: FC<DeletePhoneModalProps> = ({ onClose }): JSX.Element => {
+export default function DeletePhoneModal({ onClose }: DeletePhoneModalProps): JSX.Element {
   // Contexts
   const { userData, fetchData } = useContext(AuthContext);
 
@@ -47,6 +47,4 @@ const DeletePhoneModal: FC<DeletePhoneModalProps> = ({ onClose }): JSX.Element =
       </div>
     </div>
   );
-};
-
-export default DeletePhoneModal;
+}

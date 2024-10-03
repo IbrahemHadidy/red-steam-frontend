@@ -16,11 +16,11 @@ import Slider from 'react-slick';
 import categories from '@services/menus/categoryItems';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
 import type { Category } from '../Store.types';
 
-const Categories: FC = (): JSX.Element => {
+export default function Categories(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
@@ -89,6 +89,4 @@ const Categories: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default Categories;
+}

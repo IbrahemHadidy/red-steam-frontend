@@ -3,8 +3,8 @@ import '@styles/user/Settings.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, ReactNode } from 'react';
-interface Props {
+import type { ReactNode } from 'react';
+interface SettingsLayoutProps {
   children: ReactNode;
 }
 
@@ -13,5 +13,6 @@ export const metadata: Metadata = {
   description: 'Manage your account settings and preferences.',
 };
 
-const SettingsLayout: FC<Props> = ({ children }): JSX.Element => <>{children}</>;
-export default SettingsLayout;
+export default function SettingsLayout({ children }: SettingsLayoutProps): JSX.Element {
+  return <>{children}</>;
+}

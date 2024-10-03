@@ -13,9 +13,9 @@ import Admin from '@app/admin/_Admin/Admin';
 import { createLanguage } from '@services/common/languages';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const LanguagesAdmin: FC = (): JSX.Element => {
+export default function LanguagesAdmin(): JSX.Element {
   // States
   const [name, setName] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
@@ -41,5 +41,3 @@ const LanguagesAdmin: FC = (): JSX.Element => {
     />
   );
 };
-
-export default LanguagesAdmin;

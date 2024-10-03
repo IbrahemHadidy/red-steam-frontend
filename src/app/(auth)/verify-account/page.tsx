@@ -13,9 +13,9 @@ import LoadingPage from '@app/loading';
 import { verifyEmail } from '@services/user/auth';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const VerifyAccount: FC = (): JSX.Element => {
+export default function VerifyAccount(): JSX.Element {
   // Init
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,6 +41,4 @@ const VerifyAccount: FC = (): JSX.Element => {
   }, [router, token, username]);
 
   return <LoadingPage />;
-};
-
-export default VerifyAccount;
+}

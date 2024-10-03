@@ -36,9 +36,9 @@ import { checkEmailExists, checkUsernameExists } from '@services/user/management
 import checkIcon from '@images/icon_check.png';
 
 // Types
-import type { ChangeEvent, FC, FormEvent, JSX, KeyboardEvent } from 'react';
+import type { ChangeEvent, FormEvent, JSX, KeyboardEvent } from 'react';
 
-const SignUpPage: FC = (): JSX.Element => {
+export default function SignUpPage(): JSX.Element {
   // Initilizations
   const router = useRouter();
   useDynamicBackground(
@@ -327,12 +327,18 @@ const SignUpPage: FC = (): JSX.Element => {
     e.preventDefault();
 
     try {
-      const response = await registerUser(accountName, email, password, selectedCountry);
+      const response = await registerUser(
+        accountName,
+        email,
+        password,
+        selectedCountry,
+        recaptchaValue ?? ''
+      );
 
       if (response && response.status === 201) {
         toast.success('Account created successfully!');
 
-        await login(email, password, false, recaptchaValue?.toString() || '');
+        await login(email, password, false, recaptchaValue ?? '');
       }
     } catch (error) {
       console.error('Error creating account:', error);
@@ -615,6 +621,4 @@ const SignUpPage: FC = (): JSX.Element => {
       </div>
     </>
   );
-};
-
-export default SignUpPage;
+}

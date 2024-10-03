@@ -9,9 +9,9 @@ import RightSection from './RightSection';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const HomeTabs: FC = (): JSX.Element => {
+export default function HomeTabs(): JSX.Element {
   // States
   const [openedTab, setOpenedTab] = useState<string | number>('New & Trending');
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
@@ -39,6 +39,4 @@ const HomeTabs: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default HomeTabs;
+}

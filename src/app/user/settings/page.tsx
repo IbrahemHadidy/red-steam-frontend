@@ -36,9 +36,9 @@ import profileIcon from '@images/icon_profile.png';
 import guardIcon from '@images/icon_steamguard.png';
 
 // Types
-import type { ChangeEvent, FC, FormEvent, JSX, MouseEvent, SetStateAction } from 'react';
+import type { ChangeEvent, FormEvent, JSX, MouseEvent, SetStateAction } from 'react';
 
-const SettingsPage: FC = (): JSX.Element => {
+export default function SettingsPage(): JSX.Element {
   // Contexts
   const { userData, fetchData } = useContext(AuthContext);
 
@@ -428,6 +428,4 @@ const SettingsPage: FC = (): JSX.Element => {
       {isChangeModalOpen && <ChangeModal type={modalType} onClose={closeChangeModal} />}
     </>
   );
-};
-
-export default SettingsPage;
+}

@@ -17,12 +17,13 @@ import { updateUser } from '@services/user/admin';
 import formatDate from '@utils/formatDate';
 import get7DaysFromNow from '@utils/get7DaysFromNow';
 import { isCompany, isFeature, isPricing, isReview, isUser } from '@utils/typeGuards';
+import Decimal from 'decimal.js';
 
 // Types
-import type { ChangeEvent, FC, FormEvent, JSX } from 'react';
+import type { ChangeEvent, FormEvent, JSX } from 'react';
 import type { EditModalProps } from './admin.types';
 
-const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => {
+export default function EditModal({ type, setOpen, item }: EditModalProps): JSX.Element {
   // States
   const [name, setName] = useState<string>(
     !isUser(item) && !isPricing(item) && !isReview(item) ? item.name : ''
@@ -32,8 +33,8 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
   const [admin, setAdmin] = useState<boolean>(isUser(item) ? item.isAdmin : false);
   const [verified, setVerified] = useState<boolean>(isUser(item) ? item.isVerified : false);
   const [discount, setDiscount] = useState<boolean>(isPricing(item) ? !!item.discount : false);
-  const [discountPrice, setDiscountPrice] = useState<number>(
-    isPricing(item) ? item.discountPrice ?? 0 : 0
+  const [discountPrice, setDiscountPrice] = useState<Decimal>(
+    isPricing(item) ? new Decimal(item.discountPrice ?? '0.00') : new Decimal('0.00')
   );
   const [offerType, setOfferType] = useState<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>(
     isPricing(item) ? item.offerType ?? 'SPECIAL PROMOTION' : 'SPECIAL PROMOTION'
@@ -64,7 +65,7 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
           updateOffer(
             isPricing(item) && typeof item.game?.id === 'number' ? item.game.id : 0,
             discount,
-            discountPrice,
+            discountPrice.toString(),
             offerType,
             discountStartDate,
             discountEndDate
@@ -127,7 +128,7 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
   };
 
   const handleDiscountPriceChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setDiscountPrice(Number(e.target.value));
+    setDiscountPrice(new Decimal(e.target.value));
   };
 
   const handleOfferTypeChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -227,7 +228,7 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
                   id="discountPrice"
                   name="discountPrice"
                   type="number"
-                  value={discountPrice}
+                  value={discountPrice.toString()}
                   onChange={handleDiscountPriceChange}
                   disabled={!discount}
                 />
@@ -325,6 +326,4 @@ const EditModal: FC<EditModalProps> = ({ type, setOpen, item }): JSX.Element => 
       </div>
     </>
   );
-};
-
-export default EditModal;
+}

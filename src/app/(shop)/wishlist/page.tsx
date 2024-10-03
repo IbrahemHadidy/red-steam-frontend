@@ -28,9 +28,9 @@ import defaultPFP from '@images/default-pfp.png';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const WishlistPage: FC = (): JSX.Element => {
+export default function WishlistPage(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
@@ -288,6 +288,4 @@ const WishlistPage: FC = (): JSX.Element => {
       </div>
     </>
   );
-};
-
-export default WishlistPage;
+}

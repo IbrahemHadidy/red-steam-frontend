@@ -22,13 +22,13 @@ import isTagInUserTags from '@utils/recommendationReason';
 
 // Types
 import type { Game, ImageEntry } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
 interface FeaturedDesktopProps {
   featuredGames: Game[];
 }
 
-const FeaturedDesktop: FC<FeaturedDesktopProps> = ({ featuredGames }): JSX.Element => {
+export default function FeaturedDesktop({ featuredGames }: FeaturedDesktopProps): JSX.Element {
   // Init
   const { userData } = useContext(AuthContext);
 
@@ -128,9 +128,11 @@ const FeaturedDesktop: FC<FeaturedDesktopProps> = ({ featuredGames }): JSX.Eleme
                     <div className="tags">
                       {getRecommendationClass(slide) === 'recommended' && userData
                         ? slide.tags
-                            ?.filter((tag) => tag.id in userData.tags)
-                            .map((tag, idx) => <span key={idx}>{tag.name}</span>)
-                        : slide.tags?.map((tag, idx) => <span key={idx}>{tag.name}</span>)}
+                            ?.filter((tag) =>
+                              userData.tags.some((userTag) => userTag.id === tag.id)
+                            )
+                            .map((tag) => <span key={tag.id}>{tag.name}</span>)
+                        : slide.tags?.map((tag) => <span key={tag.id}>{tag.name}</span>)}
                     </div>
                   </div>
                   {!slide.pricing?.discount ? (
@@ -180,6 +182,4 @@ const FeaturedDesktop: FC<FeaturedDesktopProps> = ({ featuredGames }): JSX.Eleme
       </div>
     </div>
   );
-};
-
-export default FeaturedDesktop;
+}

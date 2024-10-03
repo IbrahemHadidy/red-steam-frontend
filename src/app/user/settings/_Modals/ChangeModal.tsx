@@ -14,10 +14,10 @@ import { changePhoneNumber } from '@services/user/phone';
 import { validateEmail, validatePassword, validatePhone } from '@utils/inputValidations';
 
 // Types
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 import type { ChangeModalProps } from './Modals.types';
 
-const ChangeModal: FC<ChangeModalProps> = ({ onClose, type }): JSX.Element => {
+export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.Element {
   // Contexts
   const { userData, fetchData } = useContext(AuthContext);
 
@@ -259,6 +259,4 @@ const ChangeModal: FC<ChangeModalProps> = ({ onClose, type }): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default ChangeModal;
+}

@@ -6,10 +6,10 @@ import ItemsList from './ItemsList';
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Types
-import type { FC, JSX } from 'react';
-import type { Admin } from './admin.types';
+import type { JSX } from 'react';
+import type { AdminProps } from './admin.types';
 
-const Admin: FC<Admin> = ({
+export default function Admin({
   type,
   name,
   setName,
@@ -29,7 +29,7 @@ const Admin: FC<Admin> = ({
   setDiscountEndDate,
   onSubmit,
   submitted,
-}): JSX.Element => {
+}: AdminProps): JSX.Element {
   // Init
   useDynamicBackground(`#181A21`);
 
@@ -60,6 +60,4 @@ const Admin: FC<Admin> = ({
       <ItemsList type={type} submitted={submitted} />
     </>
   );
-};
-
-export default Admin;
+}

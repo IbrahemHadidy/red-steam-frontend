@@ -25,11 +25,11 @@ import cart from '@images/cart.svg';
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { SpringValue } from 'react-spring';
 import type { GroupedMenuItem, MenuItem } from '../SecondNavbar.types';
 
-const DesktopSecondNav: FC = (): JSX.Element => {
+export default function DesktopSecondNav(): JSX.Element {
   // Init
   const pathname = usePathname();
 
@@ -200,6 +200,4 @@ const DesktopSecondNav: FC = (): JSX.Element => {
       </div>
     </>
   );
-};
-
-export default DesktopSecondNav;
+}

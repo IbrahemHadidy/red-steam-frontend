@@ -24,9 +24,9 @@ import { getFeatured } from '@services/game/data';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const Featured: FC = (): JSX.Element => {
+export default function Featured(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
@@ -59,6 +59,4 @@ const Featured: FC = (): JSX.Element => {
       )}
     </>
   );
-};
-
-export default Featured;
+}

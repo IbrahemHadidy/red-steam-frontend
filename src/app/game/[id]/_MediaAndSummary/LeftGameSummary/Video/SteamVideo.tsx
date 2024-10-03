@@ -13,10 +13,10 @@ import highlightSpacer from '@images/game_highlight_image_spacer.gif';
 import '@styles/game/SteamVideo.scss';
 
 // Types
-import type { ChangeEvent, EventHandler, FC, JSX, SyntheticEvent } from 'react';
+import type { ChangeEvent, EventHandler, JSX, SyntheticEvent } from 'react';
 import type { SteamVideoProps, VideoSettings } from '../../MediaAndSummary.types';
 
-export const SteamVideo: FC<SteamVideoProps> = ({
+export default function SteamVideo({
   videoRef,
   videoSrc,
   poster,
@@ -24,7 +24,7 @@ export const SteamVideo: FC<SteamVideoProps> = ({
   setAutoplay,
   autoplayInitialized,
   setAutoplayInitialized,
-}): JSX.Element => {
+}: SteamVideoProps): JSX.Element {
   // States
   const [overlayBottom, setOverlayBottom] = useState<string>('-37px');
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -456,4 +456,4 @@ export const SteamVideo: FC<SteamVideoProps> = ({
       </div>
     </div>
   );
-};
+}

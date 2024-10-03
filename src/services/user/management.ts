@@ -152,9 +152,9 @@ class UserManagement extends Api {
     }
   };
 
-  public forgotPassword = async (email: string): Promise<number> => {
+  public forgotPassword = async (email: string, recaptchaToken: string): Promise<number> => {
     const endpoint: string = `/password/forgot`;
-    const data = { email };
+    const data = { email, recaptchaToken };
 
     const response: AxiosResponse = await this.post(endpoint, data);
 

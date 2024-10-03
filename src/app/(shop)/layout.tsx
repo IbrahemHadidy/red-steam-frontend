@@ -2,18 +2,16 @@
 import RedirectIfNotLoggedIn from '@components/RedirectIfNotLoggedIn';
 
 // Types
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface ShopLayoutProps {
   children: ReactNode;
 }
 
-const ShopLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function ShopLayout({ children }: ShopLayoutProps): JSX.Element {
   return (
     <>
       <RedirectIfNotLoggedIn />
       {children}
     </>
   );
-};
-
-export default ShopLayout;
+}

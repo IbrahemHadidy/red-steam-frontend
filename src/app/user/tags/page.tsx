@@ -21,9 +21,9 @@ import { changeTags } from '@services/user/interaction';
 
 // Types
 import type { Tag } from '@entities/tag.entity';
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 
-const TagsPage: FC = (): JSX.Element => {
+export default function TagsPage(): JSX.Element {
   // Init
   const router = useRouter();
   useDynamicBackground(
@@ -143,6 +143,4 @@ const TagsPage: FC = (): JSX.Element => {
       </div>
     </>
   );
-};
-
-export default TagsPage;
+}

@@ -1,10 +1,13 @@
 'use client';
 
 // React
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
+
+// Toast notifications
+import { toast } from 'react-toastify';
 
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
@@ -13,11 +16,43 @@ import { AuthContext } from '@contexts/AuthContext';
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { FC, MouseEvent } from 'react';
+import { hasReviewedGame, reviewGame, updateReview } from '@services/user/interaction';
+import type { ChangeEvent, MouseEvent } from 'react';
 import type { GameOwnedProps } from '../MediaAndSummary.types';
 
-export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
+export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
   const { userData } = useContext(AuthContext);
+
+  // States
+  const [hasReviewed, setHasReviewed] = useState<boolean>(false);
+  const [reviewId, setReviewId] = useState<number | null>(null);
+  const [positive, setPositive] = useState<boolean | null>(null);
+  const [content, setContent] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkReview = async (): Promise<void> => {
+      const hasReviewed = await hasReviewedGame(game.id);
+      if (hasReviewed.reviewed) {
+        setHasReviewed(true);
+        setPositive(hasReviewed.review.positive);
+        setContent(hasReviewed.review.content);
+        setReviewId(hasReviewed.review.id);
+      } else {
+        setHasReviewed(false);
+      }
+    };
+
+    checkReview();
+  }, [userData, game.id]);
+
+  useEffect(() => {
+    if (content === '' || positive === null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [content, positive]);
 
   const handleFormattingHelpClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
@@ -26,6 +61,47 @@ export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
       'formattinghelp',
       'height=640,width=640,resize=yes,scrollbars=yes'
     );
+  };
+
+  const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+    setContent(e.target.value);
+  };
+
+  const handleThumbsUpClick = (): void => {
+    setPositive(true);
+  };
+
+  const handleThumbsDownClick = (): void => {
+    setPositive(false);
+  };
+
+  const handleReviewSubmit = async (): Promise<void> => {
+    if (content === '') {
+      toast.error('Please write a review before submitting');
+      return Promise.reject();
+    }
+    if (positive === null) {
+      toast.error('Please select a rating before submitting');
+      return Promise.reject();
+    }
+    if (!hasReviewed) {
+      await reviewGame(game.id, positive, content);
+    } else {
+      reviewId && (await updateReview(reviewId, positive, content));
+    }
+  };
+
+  const handleSubmit = async (e: MouseEvent<HTMLDivElement>): Promise<void> => {
+    e.preventDefault();
+    if (content !== '' && positive !== null) {
+      setLoading(true);
+      await toast.promise(handleReviewSubmit(), {
+        pending: 'Submitting review...',
+        success: 'Review submitted successfully',
+        error: 'Failed to submit review, please try again',
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,7 +138,6 @@ export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
                 <a onClick={handleFormattingHelpClick}>Formatting help</a>
               </div>
               <div className="avatar-block">
-                {/* TODO: logged in userId backend logic */}
                 <Link href={`/id/${game.id}`}>
                   <div className="avatar online">
                     <img src={userData?.profilePicture || defaultPFP.src} alt="pfp" />
@@ -70,22 +145,28 @@ export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
                 </Link>
               </div>
               <div className="content">
-                {/* TODO: error backend logic */}
-                {/* <div className="error-message">There seems to have been an error saving your review.  Please try again later. </div> */}
-                {/* TODO: content db logic */}
-                <textarea className="game-recommendation" name="" id="" maxLength={8000} />
+                <textarea
+                  className="game-recommendation"
+                  maxLength={8000}
+                  onChange={handleContentChange}
+                  value={content}
+                />
                 <div className="controls">
                   <div className="review-controls-left">
                     <div className="do-you-recommend"> Do you recommend this game? </div>
                     <div className="vote-up-down">
-                      {/* TODO: negative/positive db logic */}
-                      {/* TODO: onClick should decide the state of the review type */}
-                      <div className="vote-btn">
+                      <div
+                        className={`vote-btn ${positive === true ? 'checked' : ''}`}
+                        onClick={handleThumbsUpClick}
+                      >
                         <span>
                           <i className="thumb thumb-up" /> Yes
                         </span>
                       </div>
-                      <div className="vote-btn">
+                      <div
+                        className={`vote-btn ${positive === false ? 'checked' : ''}`}
+                        onClick={handleThumbsDownClick}
+                      >
                         <span>
                           <i className="thumb thumb-down" /> No
                         </span>
@@ -94,11 +175,12 @@ export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
                   </div>
                   <div className="review-controls-right">
                     <div className="review-submit">
-                      {/* TODO: submit backend logic */}
-                      {/* TODO: onClick should handle the submition */}
-                      <a href="">
-                        <span>Post Review</span>
-                      </a>
+                      <div
+                        className={`review-submit-btn ${loading ? 'loading' : ''}`}
+                        onClick={handleSubmit}
+                      >
+                        <span>{hasReviewed ? 'Edit Review' : 'Post Review'}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -109,4 +191,4 @@ export const GameOwned: FC<GameOwnedProps> = ({ game }): JSX.Element => {
       </div>
     </>
   );
-};
+}

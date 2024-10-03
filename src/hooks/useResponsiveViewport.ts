@@ -1,7 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const useResponsiveViewport = (width: number): boolean => {
+/**
+ * Custom hook to set responsive viewport
+ * @param width The viewport width in pixels
+ * @returns The viewport state as a boolean
+ */
+export default function useResponsiveViewport(width: number): boolean {
   const [isViewport, setIsViewport] = useState<boolean>(false);
 
   useEffect(() => {
@@ -18,6 +23,4 @@ const useResponsiveViewport = (width: number): boolean => {
   }, [width]);
 
   return isViewport;
-};
-
-export default useResponsiveViewport;
+}

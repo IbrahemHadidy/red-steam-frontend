@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 // Components
 import Loading from '@app/loading';
-import { VerifyModal } from '@components/SignUpVerifyModal/SignUpVerifyModal';
+import VerifyModal from '@components/SignUpVerifyModal/SignUpVerifyModal';
 
 // Services
 import {
@@ -32,11 +32,20 @@ import type { JSX, ReactNode } from 'react';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (identifier: string, password: string, rememberMe: boolean) => Promise<void>;
+  login: (
+    identifier: string,
+    password: string,
+    rememberMe: boolean,
+    token: string
+  ) => Promise<void>;
   logout: () => void;
   userData: User | null;
   fetchData: () => void;
   isReady: boolean;
+}
+
+interface AuthProviderProps {
+  children: ReactNode;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -48,7 +57,7 @@ export const AuthContext = createContext<AuthContextType>({
   isReady: false,
 });
 
-export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   // Init
   const router = useRouter();
   const pathname = usePathname();
@@ -56,7 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   // States
   const [showVerifyModal, setShowVerifyModal] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Global state
-  const [userData, setUser] = useState<User | null>(null); // Global state
+  const [userData, setUserData] = useState<User | null>(null); // Global state
   const [isReady, setIsReady] = useState<boolean>(false); // Global state
 
   // Broadcasts
@@ -67,11 +76,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     loginStatusChannel.onmessage = (event) => {
       if (event.data.isLoggedIn) {
         setIsLoggedIn(true);
-        setUser(event.data.userData);
+        setUserData(event.data.userData);
         setIsReady(true);
       } else {
         setIsLoggedIn(false);
-        setUser(null);
+        setUserData(null);
         setIsReady(true);
       }
     };
@@ -82,20 +91,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   }, [loginStatusChannel]);
 
   // Login (Global function)
-  const login = async (
+  async function login(
     identifier: string,
     password: string,
-    rememberMe: boolean
-  ): Promise<void> => {
+    rememberMe: boolean,
+    token: string
+  ): Promise<void> {
     try {
-      const response = await loginUser(identifier, password, rememberMe);
+      const response = await loginUser(identifier, password, rememberMe, token);
       const userData = response.data.userData;
       const isSessionLoggedIn = response.data.isSessionLoggedIn;
       if (response.status === 200) {
         loginStatusChannel.postMessage({ isLoggedIn: true, userData });
         router.push('/');
         setIsLoggedIn(true);
-        setUser(userData);
+        setUserData(userData);
         setIsReady(true);
         if (isSessionLoggedIn) {
           sessionStorage.setItem('isSessionLogin', 'true');
@@ -103,11 +113,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       }
     } catch (error) {
       setIsLoggedIn(false);
-      setUser(null);
+      setUserData(null);
       setIsReady(true);
       console.error('Error during login:', error);
     }
-  };
+  }
 
   // Logout (Global function)
   const logout = useCallback(async (): Promise<void> => {
@@ -115,7 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     setIsLoggedIn(false);
     router.push('/');
     await logoutUser();
-    setUser(null);
+    setUserData(null);
     sessionStorage.setItem('verificationInProgress', 'false');
     localStorage.removeItem('recentGames');
   }, [loginStatusChannel, router]);
@@ -125,7 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     if (isLoggedIn) {
       try {
         const userData = await getUserData();
-        setUser(userData);
+        setUserData(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
         logout();
@@ -176,7 +186,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
           setIsReady(true);
           return;
         }
-        setUser(userData);
+        setUserData(userData);
         setIsLoggedIn(true);
         fetchData();
       } catch (error) {
@@ -261,4 +271,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       )}
     </AuthContext.Provider>
   );
-};
+}

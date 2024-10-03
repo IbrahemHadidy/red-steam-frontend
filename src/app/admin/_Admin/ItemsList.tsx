@@ -85,7 +85,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
           itemsPerPage,
           sortBy as keyof Item,
           direction,
-          searchQuery
+          Object.fromEntries(Object.entries(searchQuery).map(([key, value]) => [key, value.trim()]))
         );
       }
 
@@ -506,11 +506,11 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
   const reviewRatingRow = (item: Item): JSX.Element => {
     if (isReview(item)) {
       return (
-        <td>
+        <td className="center">
           {item.positive ? (
-            <Image src={positiveIcon} alt="Positive" width={18} height={18} />
+            <Image src={positiveIcon} alt="Positive" width={30} height={30} />
           ) : (
-            <Image src={negativeIcon} alt="Negative" width={18} height={18} />
+            <Image src={negativeIcon} alt="Negative" width={30} height={30} />
           )}
         </td>
       );

@@ -30,6 +30,7 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 // Utils
 import fileToUrl from '@utils/fileToUrl';
 import { validateUrl } from '@utils/inputValidations';
+import Decimal from 'decimal.js';
 
 // Services
 import { getDevelopers } from '@services/common/developers';
@@ -41,7 +42,7 @@ import { createGame, updateGame } from '@services/game/admin';
 // Types
 import type { Game } from '@entities/game.entity';
 import type { Thumbnails as ServiceThumbnails } from '@services/game/admin';
-import type { FC, JSX, MouseEvent, RefObject } from 'react';
+import type { JSX, MouseEvent, RefObject } from 'react';
 import type {
   Language,
   Platforms,
@@ -57,7 +58,7 @@ interface GameAdminProps {
   game?: Game | null;
 }
 
-const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
+export default function GameAdmin({ type, game }: GameAdminProps): JSX.Element {
   // Init
   const router = useRouter();
 
@@ -84,6 +85,7 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
 
   const [pricing, setPricing] = useState<Pricing>({
     free: true,
+    price: new Decimal('0.00'),
   });
   const [tags, setTags] = useState<number[]>([]);
   const [features, setFeatures] = useState<number[]>([]);
@@ -153,12 +155,10 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
   const miniCpuRef = useRef<HTMLInputElement>(null);
   const miniRamRef = useRef<HTMLInputElement>(null);
   const miniGpuRef = useRef<HTMLInputElement>(null);
-  const miniStorageRef = useRef<HTMLInputElement>(null);
   const recommendedOsRef = useRef<HTMLInputElement>(null);
   const recommendedCpuRef = useRef<HTMLInputElement>(null);
   const recommendedRamRef = useRef<HTMLInputElement>(null);
   const recommendedGpuRef = useRef<HTMLInputElement>(null);
-  const recommendedStorageRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
   const aboutRef = useRef<HTMLTextAreaElement>(null);
   const matureDescriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -208,7 +208,7 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       );
       setPricing({
         free: game.pricing?.free || false,
-        price: game.pricing?.price || 0,
+        price: new Decimal(game.pricing?.price || '0.00'),
       });
       setTags(game.tags?.map((tag) => tag.id) || []);
       setFeatures(game.features?.map((feature) => feature.id) || []);
@@ -269,12 +269,10 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       miniCpuRef,
       miniRamRef,
       miniGpuRef,
-      miniStorageRef,
       recommendedOsRef,
       recommendedCpuRef,
       recommendedRamRef,
       recommendedGpuRef,
-      recommendedStorageRef,
       linkRef,
       aboutRef,
       matureDescriptionRef,
@@ -353,6 +351,10 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       firstInvalidRef = firstInvalidRef || mediaRef;
       toast.warn('Please mark 4 screenshots as featured');
     }
+    if (pricing.free && pricing.price === '' && priceRef.current) {
+      priceRef.current.style.cssText += errorStyle;
+      firstInvalidRef = firstInvalidRef || priceRef;
+    }
     if (tags.length < 4 && tagsRef.current) {
       tagsRef.current.style.cssText += errorStyle;
       firstInvalidRef = firstInvalidRef || tagsRef;
@@ -392,10 +394,6 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       recommendedGpuRef.current.style.cssText += errorStyle;
       firstInvalidRef = firstInvalidRef || recommendedGpuRef;
     }
-    if (!systemRequirements.recommended.storage && recommendedStorageRef.current) {
-      recommendedStorageRef.current.style.cssText += errorStyle;
-      firstInvalidRef = firstInvalidRef || recommendedStorageRef;
-    }
     if (!systemRequirements.mini.os && miniOsRef.current) {
       miniOsRef.current.style.cssText += errorStyle;
       firstInvalidRef = firstInvalidRef || miniOsRef;
@@ -411,10 +409,6 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
     if (!systemRequirements.mini.gpu && miniGpuRef.current) {
       miniGpuRef.current.style.cssText += errorStyle;
       firstInvalidRef = firstInvalidRef || miniGpuRef;
-    }
-    if (!systemRequirements.mini.storage && miniStorageRef.current) {
-      miniStorageRef.current.style.cssText += errorStyle;
-      firstInvalidRef = firstInvalidRef || miniStorageRef;
     }
     if (link !== '' && !validateUrl(link) && linkRef.current) {
       linkRef.current.style.cssText += errorStyle;
@@ -451,9 +445,9 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
   const getGameData = useCallback(async (): Promise<GameData> => {
     return {
       id: 0,
-      name,
-      category,
-      description,
+      name: name.trim(),
+      category: category.trim(),
+      description: description.trim(),
       releaseDate,
       featured,
       publishers: publishers.length > 0 ? await getPublishers(publishers) : [],
@@ -484,19 +478,19 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       pricing: {
         id: 1,
         free: pricing.free,
-        basePrice: pricing.price || 0.0,
-        price: pricing.price || 0.0,
+        basePrice: pricing.price?.toString() || new Decimal('0.00').toString(),
+        price: pricing.price?.toString() || new Decimal('0.00').toString(),
       },
       tags: tags.length > 0 ? await getTags(tags) : [],
       features: features.length > 0 ? await getFeatures(features) : [],
       languageSupport: languages,
       platformEntries: platforms,
-      link: link === '' ? null : link,
-      about,
+      link: link.trim() === '' ? null : link.trim(),
+      about: about.trim(),
       mature,
-      matureDescription,
+      matureDescription: matureDescription.trim(),
       systemRequirements,
-      legal,
+      legal: legal.trim(),
       reviews: [],
       averageRating: 0,
       reviewsCount: 0,
@@ -697,42 +691,56 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       },
       {
         id: game?.id,
-        name,
-        category: game?.category !== category ? category : undefined,
-        description: game?.description !== description ? description : undefined,
+        name: name.trim(),
+        category: game?.category !== category.trim() ? category.trim() : undefined,
+        description: game?.description !== description.trim() ? description.trim() : undefined,
         releaseDate: game?.releaseDate !== releaseDate ? releaseDate : undefined,
         featured: game?.featured !== featured ? featured : undefined,
         publishers:
-          game?.publishers?.map((publisher) => publisher.id) !== publishers
+          JSON.stringify(game?.publishers?.map((publisher) => publisher.id).sort()) !==
+          JSON.stringify(publishers.sort())
             ? publishers
             : undefined,
         developers:
-          game?.developers?.map((developer) => developer.id) !== developers
+          JSON.stringify(game?.developers?.map((developer) => developer.id).sort()) !==
+          JSON.stringify(developers.sort())
             ? developers
             : undefined,
-        pricing: {
-          free: game?.pricing?.free !== pricing.free ? pricing.free : undefined,
-          price: game?.pricing?.price !== pricing.price ? pricing.price : undefined,
-        },
-        tags: game?.tags?.map((tag) => tag.id) !== tags ? tags : undefined,
-        features: game?.features?.map((feature) => feature.id) !== features ? features : undefined,
-        languages:
-          game?.languageSupport?.map((language) => language.name) !==
-          languages.map((language) => language.name)
-            ? languages
+        pricing:
+          game?.pricing?.free !== pricing.free ||
+          game?.pricing?.basePrice !== pricing.price?.toString()
+            ? {
+                free: game?.pricing?.free !== pricing.free ? pricing.free : undefined,
+                price:
+                  game?.pricing?.basePrice !== pricing.price
+                    ? pricing.price?.toString()
+                    : undefined,
+              }
             : undefined,
+        tags:
+          JSON.stringify(game?.tags?.map((tag) => tag.id).sort()) !== JSON.stringify(tags.sort())
+            ? tags
+            : undefined,
+        features:
+          JSON.stringify(game?.features?.map((feature) => feature.id).sort()) !==
+          JSON.stringify(features.sort())
+            ? features
+            : undefined,
+        languages: game?.languageSupport !== languages ? languages : undefined,
         platforms: {
           win: platforms.win,
           mac: platforms.mac,
         },
-        link: game?.link !== link ? link : undefined,
-        about: game?.about !== about ? about : undefined,
+        link: game?.link !== link.trim() ? link.trim() : undefined,
+        about: game?.about !== about.trim() ? about.trim() : undefined,
         mature: game?.mature !== mature ? mature : undefined,
         matureDescription:
-          game?.matureDescription !== matureDescription ? matureDescription : undefined,
+          game?.matureDescription !== matureDescription.trim()
+            ? matureDescription.trim()
+            : undefined,
         systemRequirements:
           game?.systemRequirements !== systemRequirements ? systemRequirements : undefined,
-        legal: game?.legal !== legal ? legal : undefined,
+        legal: game?.legal !== legal.trim() ? legal.trim() : undefined,
       }
     );
     if (response.message === 'Game updated successfully') {
@@ -746,7 +754,15 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
   const handleSubmitClick = async (e: MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault();
     if (checkFormValidation()) {
+      const preventNavigation = (e: BeforeUnloadEvent): string => {
+        e.preventDefault();
+        const message = 'A process is in progress. Are you sure you want to leave?';
+        return message;
+      };
+
       setIsLoading(true);
+      window.addEventListener('beforeunload', preventNavigation);
+
       try {
         if (type === 'update') {
           await toast.promise(handleGameUpdate(), {
@@ -763,6 +779,7 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
         }
       } finally {
         setIsLoading(false);
+        window.removeEventListener('beforeunload', preventNavigation);
       }
     }
   };
@@ -859,12 +876,10 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
               miniCpuRef={miniCpuRef}
               miniRamRef={miniRamRef}
               miniGpuRef={miniGpuRef}
-              miniStorageRef={miniStorageRef}
               recommendedOsRef={recommendedOsRef}
               recommendedCpuRef={recommendedCpuRef}
               recommendedRamRef={recommendedRamRef}
               recommendedGpuRef={recommendedGpuRef}
-              recommendedStorageRef={recommendedStorageRef}
             />
             <hr />
             <AdditionalInfoSection
@@ -915,6 +930,4 @@ const GameAdmin: FC<GameAdminProps> = ({ type, game }): JSX.Element => {
       </div>
     </>
   );
-};
-
-export default GameAdmin;
+}

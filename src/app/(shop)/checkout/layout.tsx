@@ -3,8 +3,8 @@ import '@styles/shop/Checkout.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface CheckoutLayoutProps {
   children: ReactNode;
 }
 
@@ -13,5 +13,6 @@ export const metadata: Metadata = {
   description: 'Purchase games',
 };
 
-const CheckoutLayout: FC<Props> = ({ children }): JSX.Element => <> {children}</>;
-export default CheckoutLayout;
+export default function CheckoutLayout({ children }: CheckoutLayoutProps): JSX.Element {
+  return <>{children}</>;
+}

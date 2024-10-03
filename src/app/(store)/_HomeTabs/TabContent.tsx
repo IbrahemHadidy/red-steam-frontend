@@ -4,17 +4,17 @@ import { useEffect, useState } from 'react';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { TabContentProps } from './HomeTabs.types';
 
-const TabContent: FC<TabContentProps> = ({
+export default function TabContent({
   items,
   title,
   isOpened,
   seeMore,
   onTabHover,
   setHoveredGame,
-}): JSX.Element => {
+}: TabContentProps): JSX.Element {
   const [focusedTab, setFocusedTab] = useState<number | null>(null);
   const [hasHovered, setHasHovered] = useState(false);
 
@@ -103,6 +103,4 @@ const TabContent: FC<TabContentProps> = ({
       ))}
     </div>
   );
-};
-
-export default TabContent;
+}

@@ -7,6 +7,9 @@ import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+// Github button
+import GitHubButton from 'react-github-btn';
+
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
 
@@ -17,12 +20,14 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 // Services
 import { getByIds } from '@services/game/data';
 
-// Types
-import type { Game } from '@entities/game.entity';
-import { ImageEntry, VideoEntry } from '@entities/game.entity';
-import type { ChangeEvent, FC, JSX } from 'react';
+// Images
+import githubIcon from '@images/github.png';
 
-const LibraryPage: FC = (): JSX.Element => {
+// Types
+import type { Game, ImageEntry, VideoEntry } from '@entities/game.entity';
+import type { ChangeEvent, JSX } from 'react';
+
+export default function LibraryPage(): JSX.Element {
   // Init
   const router = useRouter();
   const isViewport1000 = useResponsiveViewport(1000);
@@ -38,6 +43,7 @@ const LibraryPage: FC = (): JSX.Element => {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [userLibrary, setUserLibrary] = useState<Game[]>([]);
+  const [completeModal, setCompleteModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (isViewport1000) {
@@ -64,8 +70,16 @@ const LibraryPage: FC = (): JSX.Element => {
     setIsShowModal((pervState) => !pervState);
   };
 
-  const handleCloseClick = (): void => {
+  const handleCloseShowClick = (): void => {
     setIsShowModal(false);
+  };
+
+  const handleCloseCompleteClick = (): void => {
+    setCompleteModal(false);
+  };
+
+  const handlePlayClick = (): void => {
+    setCompleteModal(true);
   };
 
   // find a game video if doesn't exist use game photo
@@ -141,7 +155,7 @@ const LibraryPage: FC = (): JSX.Element => {
                 <img src={gameMediaItem(selectedGame)?.link || ''} alt="Game" />
               )}
             </div>
-            <div className="close-btn" onClick={handleCloseClick}>
+            <div className="close-btn" onClick={handleCloseShowClick}>
               X
             </div>
             <div className="content-container">
@@ -153,7 +167,7 @@ const LibraryPage: FC = (): JSX.Element => {
                   <p>{selectedGame.description}</p>
                 </div>
                 <div style={{ float: 'right' }}>
-                  <a className="blue-btn">
+                  <a className="blue-btn" onClick={handlePlayClick}>
                     <span className="medium-btn">Play Game</span>
                   </a>
                 </div>
@@ -162,9 +176,76 @@ const LibraryPage: FC = (): JSX.Element => {
           </>
         )}
       </div>
-      {isShowModal && <div className="library-overlay" onClick={handleCloseClick}></div>}
+      {completeModal && (
+        <div className="complete-modal">
+          <div>
+            <h2>Thank You for Completing Your Journey!</h2>
+            <p>
+              I'm thrilled to have had you on this journey with me. Your time and effort are greatly
+              appreciated, and I hope you've enjoyed the experience.
+            </p>
+            <p>
+              If you found my project helpful or inspiring, I would be honored if you could show
+              your support by clicking the star button on my GitHub repository. It would mean the
+              world to me!
+            </p>
+
+            <div className="message">
+              <p>Your support will help me continue building and improving this project.</p>
+              <p>Click the star button below to endorse the project on GitHub:</p>
+            </div>
+
+            <div className="button-group">
+              <GitHubButton
+                href="https://github.com/IbrahemHadidy/red-steam-frontend"
+                data-color-scheme="no-preference: dark_dimmed; light: dark_dimmed; dark: dark_dimmed;"
+                data-icon="octicon-star"
+                data-size="large"
+                data-show-count="true"
+                aria-label="Star IbrahemHadidy/red-steam-frontend on GitHub"
+              >
+                Star Frontend Repo
+              </GitHubButton>
+              <GitHubButton
+                href="https://github.com/IbrahemHadidy/red-steam-backend"
+                data-color-scheme="no-preference: dark_dimmed; light: dark_dimmed; dark: dark_dimmed;"
+                data-icon="octicon-star"
+                data-size="large"
+                data-show-count="true"
+                aria-label="Star IbrahemHadidy/red-steam-backend on GitHub"
+              >
+                Star Backend Repo
+              </GitHubButton>
+            </div>
+
+            <div className="visit-repos">
+              <p>If you’d like to dive deeper, feel free to visit the full repositories:</p>
+              <div className="repo-links">
+                <a
+                  href="https://github.com/IbrahemHadidy/red-steam-frontend"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={githubIcon.src} alt="External Link" /> Visit Frontend Repo
+                </a>
+                <a
+                  href="https://github.com/IbrahemHadidy/red-steam-backend"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={githubIcon.src} alt="External Link" /> Visit Backend Repo
+                </a>
+              </div>
+            </div>
+
+            <div className="close-btn" onClick={handleCloseCompleteClick}>
+              Close
+            </div>
+          </div>
+        </div>
+      )}
+      {isShowModal && <div className="show-overlay" onClick={handleCloseShowClick}></div>}
+      {completeModal && <div className="complete-overlay" onClick={handleCloseCompleteClick}></div>}
     </>
   );
-};
-
-export default LibraryPage;
+}

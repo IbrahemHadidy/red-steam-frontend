@@ -8,10 +8,10 @@ import RightContent from './RightContent';
 import '@styles/game/GameContent.scss';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { GameContentProps } from './GameContent.types';
 
-const GameContent: FC<GameContentProps> = ({ game }): JSX.Element => {
+export default function GameContent({ game }: GameContentProps): JSX.Element {
   return (
     <div className="page-content game-content">
       <RightContent game={game} />
@@ -19,5 +19,3 @@ const GameContent: FC<GameContentProps> = ({ game }): JSX.Element => {
     </div>
   );
 };
-
-export default GameContent;

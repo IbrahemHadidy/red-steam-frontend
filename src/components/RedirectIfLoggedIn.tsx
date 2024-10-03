@@ -12,10 +12,7 @@ import { toast } from 'react-toastify';
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
 
-// Types
-import type { FC } from 'react';
-
-const RedirectIfLoggedIn: FC = (): null => {
+export default function RedirectIfLoggedIn(): null {
   const { isLoggedIn } = useContext(AuthContext);
   const router = useRouter();
 
@@ -27,6 +24,4 @@ const RedirectIfLoggedIn: FC = (): null => {
   }, [isLoggedIn, router]);
 
   return null;
-};
-
-export default RedirectIfLoggedIn;
+}

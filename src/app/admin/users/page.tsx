@@ -29,10 +29,10 @@ import editIcon from '@images/edit.png';
 
 // Types
 import type { User } from '@entities/user.entity';
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 type Sort = 'username' | 'email' | 'country' | 'isVerified' | 'isAdmin' | 'createdAt';
 
-const UsersAdmin: FC = (): JSX.Element => {
+export default function UsersAdmin(): JSX.Element {
   // Init
   useDynamicBackground(`#181A21`);
 
@@ -59,7 +59,7 @@ const UsersAdmin: FC = (): JSX.Element => {
       usersPerPage,
       sortConfig.key,
       sortConfig.direction,
-      searchQuery
+      Object.fromEntries(Object.entries(searchQuery).map(([key, value]) => [key, value.trim()]))
     );
     setUsers(data.items);
     setTotalPages(data.totalPages);
@@ -281,6 +281,4 @@ const UsersAdmin: FC = (): JSX.Element => {
       )}
     </>
   );
-};
-
-export default UsersAdmin;
+}

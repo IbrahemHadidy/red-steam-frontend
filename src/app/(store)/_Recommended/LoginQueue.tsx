@@ -4,9 +4,9 @@
 import Link from 'next/link';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const LoginQueue: FC = (): JSX.Element => {
+export default function LoginQueue(): JSX.Element {
   return (
     <div className="home-section">
       <div className="home-contents login-queue-content">
@@ -26,6 +26,4 @@ const LoginQueue: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default LoginQueue;
+}

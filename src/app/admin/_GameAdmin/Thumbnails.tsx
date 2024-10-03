@@ -2,7 +2,7 @@
 import { Fragment, useRef } from 'react';
 
 // Types
-import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
 import type { Thumbnails } from './game-admin.types';
 interface ThumbnailsProps {
   thumbnails: Thumbnails;
@@ -17,7 +17,7 @@ interface ThumbnailsProps {
   tabImageRef: RefObject<HTMLDivElement>;
 }
 
-const Thumbnails: FC<ThumbnailsProps> = ({
+export default function Thumbnails({
   thumbnails,
   setThumbnails,
   mainImageRef,
@@ -28,7 +28,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
   smallHeaderImageRef,
   searchImageRef,
   tabImageRef,
-}): JSX.Element => {
+}: ThumbnailsProps): JSX.Element {
   // Refs
   const fileInputRefs = useRef<{ [key in keyof Thumbnails]?: HTMLInputElement }>({});
 
@@ -55,8 +55,8 @@ const Thumbnails: FC<ThumbnailsProps> = ({
   // Utils
   const getDimensions = (key: keyof Thumbnails): string => {
     const dimensions: { [key in keyof Thumbnails]: string } = {
-      mainImage: '616 x 353',
       backgroundImage: '1438 x 810',
+      mainImage: '616 x 353',
       menuImg: '231 x 87',
       horizontalHeaderImage: '460 x 215',
       verticalHeaderImage: '374 x 448',
@@ -73,8 +73,8 @@ const Thumbnails: FC<ThumbnailsProps> = ({
       <div>
         {Object.entries(thumbnails).map(([key, { file }], idx) => {
           const ref = {
-            mainImage: mainImageRef,
             backgroundImage: backgroundImageRef,
+            mainImage: mainImageRef,
             menuImg: menuImageRef,
             horizontalHeaderImage: horizontalHeaderImageRef,
             verticalHeaderImage: verticalHeaderImageRef,
@@ -103,7 +103,7 @@ const Thumbnails: FC<ThumbnailsProps> = ({
                   </div>
                   <input
                     type="file"
-                    accept="image/jpeg"
+                    accept=".jpg"
                     className="field-input"
                     ref={(el) => {
                       el && (fileInputRefs.current[key as keyof Thumbnails] = el);
@@ -128,6 +128,4 @@ const Thumbnails: FC<ThumbnailsProps> = ({
       </div>
     </section>
   );
-};
-
-export default Thumbnails;
+}

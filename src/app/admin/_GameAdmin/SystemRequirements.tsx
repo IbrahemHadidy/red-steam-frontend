@@ -1,5 +1,5 @@
 // Types
-import type { ChangeEvent, FC, JSX, RefObject } from 'react';
+import type { ChangeEvent, JSX, RefObject } from 'react';
 import type { SystemRequirements } from './game-admin.types';
 interface SystemRequirementsProps {
   systemRequirements: SystemRequirements;
@@ -8,28 +8,24 @@ interface SystemRequirementsProps {
   miniCpuRef: RefObject<HTMLInputElement>;
   miniRamRef: RefObject<HTMLInputElement>;
   miniGpuRef: RefObject<HTMLInputElement>;
-  miniStorageRef: RefObject<HTMLInputElement>;
   recommendedOsRef: RefObject<HTMLInputElement>;
   recommendedCpuRef: RefObject<HTMLInputElement>;
   recommendedRamRef: RefObject<HTMLInputElement>;
   recommendedGpuRef: RefObject<HTMLInputElement>;
-  recommendedStorageRef: RefObject<HTMLInputElement>;
 }
 
-const SystemRequirements: FC<SystemRequirementsProps> = ({
+export default function SystemRequirements({
   systemRequirements,
   setSystemRequirements,
   miniOsRef,
   miniCpuRef,
   miniRamRef,
   miniGpuRef,
-  miniStorageRef,
   recommendedOsRef,
   recommendedCpuRef,
   recommendedRamRef,
   recommendedGpuRef,
-  recommendedStorageRef,
-}): JSX.Element => {
+}: SystemRequirementsProps): JSX.Element {
   // System requirements keys
   const requirementsKeys: string[] = [
     'os',
@@ -51,7 +47,7 @@ const SystemRequirements: FC<SystemRequirementsProps> = ({
         ...systemRequirements,
         [section]: {
           ...systemRequirements[section],
-          [key]: e.target.value.trim(),
+          [key]: e.target.value.trimStart(),
         },
       });
     };
@@ -92,8 +88,6 @@ const SystemRequirements: FC<SystemRequirementsProps> = ({
           return miniRamRef;
         case 'gpu':
           return miniGpuRef;
-        case 'storage':
-          return miniStorageRef;
         default:
           return undefined;
       }
@@ -107,8 +101,6 @@ const SystemRequirements: FC<SystemRequirementsProps> = ({
           return recommendedRamRef;
         case 'gpu':
           return recommendedGpuRef;
-        case 'storage':
-          return recommendedStorageRef;
         default:
           return undefined;
       }
@@ -192,6 +184,4 @@ const SystemRequirements: FC<SystemRequirementsProps> = ({
       </div>
     </section>
   );
-};
-
-export default SystemRequirements;
+}

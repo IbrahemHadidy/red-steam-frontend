@@ -17,12 +17,12 @@ import '@styles/admin/ActionsModals.scss';
 import '@styles/game/game.scss';
 
 // Types
-import type { FC, JSX, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 interface GameLayoutProps {
   children: ReactNode;
 }
 
-const GameLayout: FC<GameLayoutProps> = ({ children }): JSX.Element => {
+export default function GameLayout({ children }: GameLayoutProps): JSX.Element {
   return (
     <>
       <Header />
@@ -33,6 +33,4 @@ const GameLayout: FC<GameLayoutProps> = ({ children }): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default GameLayout;
+}

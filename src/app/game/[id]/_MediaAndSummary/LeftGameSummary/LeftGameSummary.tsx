@@ -6,16 +6,16 @@ import { animated, useTransition } from 'react-spring';
 // Components
 import { Screenshot } from './Screenshot/Screenshot';
 import { SliderButtons, SlidesArea } from './SlidesArea';
-import { SteamVideo } from './Video/SteamVideo';
+import SteamVideo from './Video/SteamVideo';
 
 // Utils
 import isVideoEntry from '@utils/checkMediaEntry';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { LeftGameSummaryProps } from '../MediaAndSummary.types';
 
-export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
+export default function LeftGameSummary({
   videoRef,
   selectedItem,
   selectedEntry,
@@ -30,7 +30,7 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
   autoplayInitialized,
   setAutoplayInitialized,
   slideAreaRef,
-}): JSX.Element => {
+}: LeftGameSummaryProps): JSX.Element {
   const transitions = useTransition(selectedEntry, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -79,4 +79,4 @@ export const LeftGameSummary: FC<LeftGameSummaryProps> = ({
       {orderedMedia.length >= 6 && <SliderButtons handleSliderClick={handleSliderClick} />}
     </div>
   );
-};
+}

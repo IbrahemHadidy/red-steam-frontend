@@ -4,12 +4,12 @@ import Header from '@components/Header/Header';
 import RedirectIfNotLoggedIn from '@components/RedirectIfNotLoggedIn';
 
 // Types
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface SettingsLayoutProps {
   children: ReactNode;
 }
 
-const SettingsLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function SettingsLayout({ children }: SettingsLayoutProps): JSX.Element {
   return (
     <>
       <RedirectIfNotLoggedIn />
@@ -18,6 +18,4 @@ const SettingsLayout: FC<Props> = ({ children }): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default SettingsLayout;
+}

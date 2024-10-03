@@ -13,15 +13,18 @@ import { AuthContext } from '@contexts/AuthContext';
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
+// Utils
+import Decimal from 'decimal.js';
+
 // Services
 import { getByIds } from '@services/game/data';
 import { clearCart, removeFromCart } from '@services/user/interaction';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const CartPage: FC = (): JSX.Element => {
+export default function CartPage(): JSX.Element {
   // Intializations
   const router = useRouter();
   const isViewport840 = useResponsiveViewport(840);
@@ -81,9 +84,10 @@ const CartPage: FC = (): JSX.Element => {
   };
 
   const totalPrice = userCart
-    .reduce((total: number, game: Game) => {
-      return total + Number(game.pricing?.price);
-    }, 0)
+    .reduce((total: Decimal, game: Game) => {
+      const gamePrice = new Decimal(game.pricing?.price || '0.00');
+      return total.plus(gamePrice);
+    }, new Decimal(0))
     .toFixed(2);
 
   const handleCartCheckoutClick = (): void => {
@@ -212,6 +216,4 @@ const CartPage: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default CartPage;
+}

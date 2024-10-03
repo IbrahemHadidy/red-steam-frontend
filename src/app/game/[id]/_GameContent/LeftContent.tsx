@@ -27,10 +27,10 @@ import getPlatform from '@utils/getPlatform';
 import { AuthContext } from '@contexts/AuthContext';
 
 // Types
-import type { Dispatch, FC, JSX, MouseEvent, SetStateAction } from 'react';
+import type { Dispatch, JSX, MouseEvent, SetStateAction } from 'react';
 import type { LeftContentProps } from './GameContent.types';
 
-const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
+export default function LeftContent({ game }: LeftContentProps): JSX.Element {
   // Init
   const router = useRouter();
   const platform = getPlatform();
@@ -103,7 +103,10 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
     } else if (addToCartBtnRef.current) {
       addToCartBtnRef.current.classList?.add('loading');
       addToCartBtnRef.current.style.pointerEvents = 'none';
-      await addToLibrary([itemId]);
+
+      const response = await addToLibrary([itemId]);
+      if (response?.status === 201) fetchData();
+
       addToCartBtnRef.current.classList?.remove('loading');
       addToCartBtnRef.current.style.pointerEvents = 'auto';
     }
@@ -382,7 +385,14 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                       {game.systemRequirements.mini.additionalNotes && (
                         <li>
                           <strong>Additional Notes:</strong>{' '}
-                          {game.systemRequirements.mini.additionalNotes}
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                typeof window !== 'undefined'
+                                  ? sanitize(game.systemRequirements.mini.additionalNotes)
+                                  : game.systemRequirements.mini.additionalNotes,
+                            }}
+                          />
                           <br />
                         </li>
                       )}
@@ -459,7 +469,14 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
                       {game.systemRequirements.recommended.additionalNotes && (
                         <li>
                           <strong>Additional Notes:</strong>{' '}
-                          {game.systemRequirements.recommended.additionalNotes}
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                typeof window !== 'undefined'
+                                  ? sanitize(game.systemRequirements.recommended.additionalNotes)
+                                  : game.systemRequirements.recommended.additionalNotes,
+                            }}
+                          />
                           <br />
                         </li>
                       )}
@@ -493,5 +510,3 @@ const LeftContent: FC<LeftContentProps> = ({ game }): JSX.Element => {
     </div>
   );
 };
-
-export default LeftContent;

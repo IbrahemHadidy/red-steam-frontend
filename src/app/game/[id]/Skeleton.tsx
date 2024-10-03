@@ -2,9 +2,9 @@ import { Skeleton } from '@mui/material';
 import Box from '@mui/material/Box';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const LoadingSkeleton: FC = (): JSX.Element => {
+export default function LoadingSkeleton(): JSX.Element {
   return (
     <>
       <Box
@@ -661,6 +661,4 @@ const LoadingSkeleton: FC = (): JSX.Element => {
       </Box>
     </>
   );
-};
-
-export default LoadingSkeleton;
+}

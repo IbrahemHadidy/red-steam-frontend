@@ -7,12 +7,15 @@ import { toast } from 'react-toastify';
 // Services
 import { getByParameters } from '@services/game/data';
 
+// Utils
+import Decimal from 'decimal.js';
+
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, FormEvent, JSX, RefObject } from 'react';
+import type { FormEvent, JSX, RefObject } from 'react';
 import type { CreateProps } from './admin.types';
 
-const Create: FC<CreateProps> = ({
+export default function Create({
   type,
   name,
   setName,
@@ -31,7 +34,7 @@ const Create: FC<CreateProps> = ({
   handleIconChange,
   icon,
   onSubmit,
-}): JSX.Element => {
+}: CreateProps): JSX.Element {
   // States
   const [gameList, setGameList] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -170,8 +173,8 @@ const Create: FC<CreateProps> = ({
                     <input
                       type="number"
                       className="form-input"
-                      value={discountPrice}
-                      onChange={(e) => setDiscountPrice(e.target.valueAsNumber)}
+                      value={discountPrice?.toString() || ''}
+                      onChange={(e) => setDiscountPrice(new Decimal(e.target.value))}
                       placeholder="Discount price"
                       ref={nameRef}
                     />
@@ -277,6 +280,4 @@ const Create: FC<CreateProps> = ({
       </div>
     </>
   );
-};
-
-export default Create;
+}

@@ -7,8 +7,8 @@ import '@styles/shop/Library.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface LibraryLayoutProps {
   children: ReactNode;
 }
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: 'Your library. All your favorite games. All in one place.',
 };
 
-const LibraryLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function LibraryLayout({ children }: LibraryLayoutProps): JSX.Element {
   return (
     <>
       <Header />
@@ -25,6 +25,4 @@ const LibraryLayout: FC<Props> = ({ children }): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default LibraryLayout;
+}

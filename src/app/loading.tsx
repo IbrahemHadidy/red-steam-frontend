@@ -8,9 +8,9 @@ import loadingLogo from '@images/loading-logo.png';
 import '@styles/loading.scss';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const Loading: FC = (): JSX.Element => {
+export default function Loading(): JSX.Element {
   return (
     <div className="page-loading-container">
       <div className="img-container">
@@ -20,5 +20,3 @@ const Loading: FC = (): JSX.Element => {
     </div>
   );
 };
-
-export default Loading;

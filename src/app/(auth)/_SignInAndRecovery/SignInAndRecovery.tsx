@@ -43,9 +43,9 @@ import {
 import check from '@images/check.svg';
 
 // Types
-import type { ChangeEvent, FC, FormEvent, JSX } from 'react';
+import type { ChangeEvent, FormEvent, JSX } from 'react';
 
-const SignInAndRecovery: FC = (): JSX.Element => {
+export default function SignInAndRecovery(): JSX.Element {
   // Initializtions
   const router = useRouter();
   const pathname = usePathname();
@@ -185,7 +185,7 @@ const SignInAndRecovery: FC = (): JSX.Element => {
       setIsLoading(true);
 
       // Authenticate the user
-      await login(accountName, password, rememberMeValue, token?.toString() || '');
+      await login(accountName, password, rememberMeValue, token ?? '');
     } catch (error) {
       console.error('Error during authentication:', error);
       setErrorMessage('Error during authentication, Please try again later');
@@ -263,7 +263,7 @@ const SignInAndRecovery: FC = (): JSX.Element => {
             );
             setNotFound(true);
           } else {
-            const status = await forgotPassword(formData.email);
+            const status = await forgotPassword(formData.email, formData.recaptchaToken ?? '');
 
             if (status === 200) {
               toast.success('Password reset email sent successfully. Please check your email.');
@@ -412,6 +412,12 @@ const SignInAndRecovery: FC = (): JSX.Element => {
                   </div>
                   <div className="check-label">Remember me</div>
                 </div>
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                  onChange={handleRecaptchaChange}
+                  theme="dark"
+                  ref={captchaRef}
+                />
                 <div className="login-dialog-field">
                   <button
                     className={`submit-button ${isLoading && 'loading'}`}
@@ -593,6 +599,4 @@ const SignInAndRecovery: FC = (): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default SignInAndRecovery;
+}

@@ -1,5 +1,8 @@
+// DecimalJS
+import Decimal from 'decimal.js';
+
 // Types
-import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
 import type { Pricing } from './game-admin.types';
 interface PricingProps {
   pricing: Pricing;
@@ -10,21 +13,21 @@ interface PricingProps {
   linkRef: RefObject<HTMLInputElement>;
 }
 
-const Pricing: FC<PricingProps> = ({
+export default function Pricing({
   pricing,
   setPricing,
   link,
   setLink,
   priceRef,
   linkRef,
-}): JSX.Element => {
+}: PricingProps): JSX.Element {
   // Event handlers
   const handleFreeChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setPricing({ ...pricing, free: e.target.checked });
   };
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPricing({ ...pricing, price: e.target.valueAsNumber });
+    setPricing({ ...pricing, price: e.target.value !== '' ? new Decimal(e.target.value) : '' });
   };
 
   const handleLinkChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -32,7 +35,7 @@ const Pricing: FC<PricingProps> = ({
   };
 
   return (
-    <section>
+    <section className="pricing-section">
       <h2>Pricing and Availability</h2>
       <div className="form-field form-field-checkbox">
         <label className="field-label-checkbox">Free:</label>
@@ -51,9 +54,8 @@ const Pricing: FC<PricingProps> = ({
           </div>
           <input
             type="number"
-            step="0.01"
             className="field-input"
-            value={pricing.price ?? ''}
+            value={pricing.price?.toString() ?? ''}
             onChange={handlePriceChange}
             ref={priceRef}
           />
@@ -72,5 +74,3 @@ const Pricing: FC<PricingProps> = ({
     </section>
   );
 };
-
-export default Pricing;

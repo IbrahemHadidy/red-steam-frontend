@@ -21,10 +21,10 @@ import { addToWishlist, removeFromWishlist } from '@services/user/interaction';
 import selectedIcon from '@images/ico_selected.png';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { QueueAreaProps } from '../MediaAndSummary.types';
 
-export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Element => {
+export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.Element {
   // Init
   const router = useRouter();
 
@@ -188,4 +188,4 @@ export const QueueArea: FC<QueueAreaProps> = ({ game, isViewport630 }): JSX.Elem
       )}
     </div>
   );
-};
+}

@@ -187,6 +187,7 @@
 
 							&.checkcol {
 								width: 62px;
+								text-wrap: nowrap;
 							}
 						}
 
@@ -318,6 +319,11 @@
 							background-repeat: no-repeat;
 							background-position: bottom left;
 						}
+					}
+
+					img {
+						max-width: -webkit-fill-available;
+						max-width: -moz-available;
 					}
 
 					div {
@@ -536,15 +542,6 @@
 			margin-top: 10px;
 			margin-bottom: -10px;
 			width: 100%;
-		}
-
-		.game-description {
-			>div {
-				img {
-					width: -webkit-fill-available;
-					width: -moz-available;
-				}
-			}
 		}
 	}
 }

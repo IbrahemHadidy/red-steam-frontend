@@ -12,7 +12,7 @@ import '@styles/not-found.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-const NotFound: FC = (): JSX.Element => {
+export default function NotFound(): JSX.Element {
   return (
     <>
       <Header />
@@ -60,6 +60,4 @@ const NotFound: FC = (): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default NotFound;
+}

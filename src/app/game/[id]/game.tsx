@@ -21,10 +21,10 @@ import { getById } from '@services/game/data';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { GameProps } from './Game.types';
 
-const Game: FC<GameProps> = ({ params }): JSX.Element | null => {
+export default function Game({ params }: GameProps): JSX.Element | null {
   const router = useRouter();
   const { id } = params;
   const [game, setGame] = useState<Game | undefined>();
@@ -76,6 +76,4 @@ const Game: FC<GameProps> = ({ params }): JSX.Element | null => {
     router.replace('/notfound');
     return null;
   }
-};
-
-export default Game;
+}

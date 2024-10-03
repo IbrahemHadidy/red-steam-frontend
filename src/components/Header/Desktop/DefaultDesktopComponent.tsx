@@ -26,9 +26,9 @@ import installSteamBtn from '@images/btn_header_installsteam_download.png';
 import steamLogo from '@images/logo_steam.svg';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const DefaultDesktopComponent: FC = (): JSX.Element => {
+export default function DefaultDesktopComponent(): JSX.Element {
   // Contexts
   const { isLoggedIn } = useContext(AuthContext);
 
@@ -108,6 +108,4 @@ const DefaultDesktopComponent: FC = (): JSX.Element => {
       </Navbar>
     </>
   );
-};
-
-export default DefaultDesktopComponent;
+}

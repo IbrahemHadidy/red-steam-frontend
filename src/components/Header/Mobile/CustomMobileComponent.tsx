@@ -8,9 +8,9 @@ import SteamMenu from './CustomMenu';
 import MiniHeader from './MiniHeader';
 
 // Types
-import { FC, JSX, MouseEvent } from 'react';
+import { JSX, MouseEvent } from 'react';
 
-const CustomMobileComponent: FC = (): JSX.Element => {
+export default function CustomMobileComponent(): JSX.Element {
   // States
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
@@ -64,6 +64,4 @@ const CustomMobileComponent: FC = (): JSX.Element => {
       </div>
     </>
   );
-};
-
-export default CustomMobileComponent;
+}

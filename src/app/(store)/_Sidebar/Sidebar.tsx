@@ -20,10 +20,10 @@ import steamPromoCard from '@images/steamcards_promo_03.png';
 
 // Types
 import type { Tag } from '@entities/tag.entity';
-import type { FC, JSX, MouseEvent } from 'react';
+import type { JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
-const Sidebar: FC = (): JSX.Element => {
+export default function Sidebar(): JSX.Element {
   // Contexts
   const { isLoggedIn, userData } = useContext(AuthContext);
   const [yourTags, setYourTags] = useState<Tag[]>([]);
@@ -133,6 +133,4 @@ const Sidebar: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default Sidebar;
+}

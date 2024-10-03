@@ -4,14 +4,14 @@
 import { useState } from 'react';
 
 // Components
-import { FilterBlock } from './FilterBlock';
-import { PriceFilterBlock } from './PriceFilterBlock';
+import FilterBlock from './FilterBlock';
+import PriceFilterBlock from './PriceFilterBlock';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { SearchRightProps } from '../Search.types';
 
-export const SearchRight: FC<SearchRightProps> = ({
+export default function SearchRight({
   rangeValue,
   setRangeValue,
   handlePriceChange,
@@ -27,7 +27,7 @@ export const SearchRight: FC<SearchRightProps> = ({
   getPriceRangeLabel,
   filters,
   isViewport960,
-}): JSX.Element => {
+}: SearchRightProps): JSX.Element {
   // States
   const [isShown, setIsShown] = useState<boolean>(false);
 
@@ -106,4 +106,4 @@ export const SearchRight: FC<SearchRightProps> = ({
       </div>
     </>
   );
-};
+}

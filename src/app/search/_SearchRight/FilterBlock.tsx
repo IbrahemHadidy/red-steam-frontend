@@ -9,16 +9,16 @@ import dropdown from '@images/dropdown.png';
 import excludedSearch from '@images/search_checkbox_not.svg';
 
 // Types
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 import type { FilterBlockProps } from '../Search.types';
 
-export const FilterBlock: FC<FilterBlockProps> = ({
+export default function FilterBlock({
   title,
   filters,
   handleIncludeClick,
   handleExcludeClick,
   hasSearch,
-}): JSX.Element => {
+}: FilterBlockProps): JSX.Element {
   // States
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
@@ -183,4 +183,4 @@ export const FilterBlock: FC<FilterBlockProps> = ({
       </div>
     </div>
   );
-};
+}

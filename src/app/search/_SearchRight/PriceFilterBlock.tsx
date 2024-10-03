@@ -8,17 +8,17 @@ import Image from 'next/image';
 import dropdown from '@images/dropdown.png';
 
 // Types
-import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';
+import type { ChangeEvent, JSX, MouseEvent } from 'react';
 import type { Filter, PriceFilterBlockProps } from '../Search.types';
 
-export const PriceFilterBlock: FC<PriceFilterBlockProps> = ({
+export default function PriceFilterBlock({
   filters,
   rangeValue,
   setRangeValue,
   handlePriceChange,
   handlePriceRowClick,
   getPriceRangeLabel,
-}): JSX.Element => {
+}: PriceFilterBlockProps): JSX.Element {
   // States
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
@@ -114,4 +114,4 @@ export const PriceFilterBlock: FC<PriceFilterBlockProps> = ({
       </div>
     </div>
   );
-};
+}

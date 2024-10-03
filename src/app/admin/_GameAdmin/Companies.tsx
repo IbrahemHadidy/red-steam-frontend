@@ -10,7 +10,7 @@ import { getAllDevelopers } from '@services/common/developers';
 import { getAllPublishers } from '@services/common/publishers';
 
 // Types
-import type { Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { Dispatch, JSX, RefObject, SetStateAction } from 'react';
 import type { MultiValue } from 'react-select';
 interface CompaniesProps {
   publishers: number[];
@@ -29,14 +29,14 @@ interface Option {
   value: number;
 }
 
-const Companies: FC<CompaniesProps> = ({
+export default function Companies({
   publishers,
   setPublishers,
   developers,
   setDevelopers,
   developersRef,
   publishersRef,
-}): JSX.Element => {
+}: CompaniesProps): JSX.Element {
   const [fetchedPublishers, setFetchedPublishers] = useState<FetchedCompany[]>([]);
   const [fetchedDevelopers, setFetchedDevelopers] = useState<FetchedCompany[]>([]);
 
@@ -109,15 +109,13 @@ const Companies: FC<CompaniesProps> = ({
               options={publisherOptions}
               onChange={handlePublisherChange}
               value={publisherOptions.filter((option) => publishers.includes(option.value))}
-              isOptionDisabled={() => publishers.length >= 2}
+              isOptionDisabled={() => publishers.length >= 4}
               styles={defaultDarkStyles}
-              placeholder="Select up to 2 publishers..."
+              placeholder="Select up to 4 publishers..."
             />
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Companies;
+}

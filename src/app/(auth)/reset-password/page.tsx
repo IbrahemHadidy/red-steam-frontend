@@ -5,15 +5,13 @@ import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 import ResetPassword from '../_SignInAndRecovery/SignInAndRecovery';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const ResetPasswordPage: FC = (): JSX.Element => {
+export default function ResetPasswordPage(): JSX.Element {
   return (
     <>
       <RedirectIfLoggedIn />
       <ResetPassword />
     </>
   );
-};
-
-export default ResetPasswordPage;
+}

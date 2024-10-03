@@ -25,7 +25,7 @@ class GameDataApi extends Api {
         | 'reviews'
         | 'totalSales';
       partialName?: string;
-      maxPrice?: number;
+      maxPrice?: string;
       tags?: number[];
       excludeTags?: number[];
       paid?: boolean;
@@ -156,8 +156,8 @@ class GameDataApi extends Api {
     gameId: number,
     filter: 'positive' | 'negative' | 'all',
     sort: 'newest' | 'oldest',
-    limit: number,
-    offset: number
+    offset: number,
+    limit: number
   ): Promise<Review[]> => {
     const { data } = await this.get(
       `${gameId}/reviews?filter=${filter}&sort=${sort}&limit=${limit}&offset=${offset}`

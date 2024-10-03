@@ -18,12 +18,10 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import '@styles/components/Header.scss';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const Header: FC = (): JSX.Element => {
+export default function Header(): JSX.Element {
   const isViewport960 = useResponsiveViewport(960);
 
   return <>{isViewport960 ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;
-};
-
-export default Header;
+}

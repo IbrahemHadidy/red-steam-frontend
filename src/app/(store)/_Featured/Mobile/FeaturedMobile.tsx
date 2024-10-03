@@ -5,12 +5,12 @@ import Link from 'next/link';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 interface FeaturedMobileProps {
   featuredGames: Game[];
 }
 
-const FeaturedMobile: FC<FeaturedMobileProps> = ({ featuredGames }): JSX.Element => {
+export default function FeaturedMobile({ featuredGames }: FeaturedMobileProps): JSX.Element {
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">
@@ -56,6 +56,4 @@ const FeaturedMobile: FC<FeaturedMobileProps> = ({ featuredGames }): JSX.Element
       </div>
     </div>
   );
-};
-
-export default FeaturedMobile;
+}

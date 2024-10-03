@@ -16,10 +16,15 @@ import { deleteOffer } from '@services/game/offer';
 import { deleteUser } from '@services/user/admin';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { DeleteModalProps } from './admin.types';
 
-const DeleteModal: FC<DeleteModalProps> = ({ type, gameName, setOpen, itemId }): JSX.Element => {
+export default function DeleteModal({
+  type,
+  gameName,
+  setOpen,
+  itemId,
+}: DeleteModalProps): JSX.Element {
   const deleteItem = useCallback(async (): Promise<void> => {
     // Create a mapping between the type and the corresponding delete function
     const deleteFunctions = {
@@ -72,6 +77,4 @@ const DeleteModal: FC<DeleteModalProps> = ({ type, gameName, setOpen, itemId }):
       </div>
     </>
   );
-};
-
-export default DeleteModal;
+}

@@ -15,15 +15,15 @@ import { getByNewest, getBySpecials, getByTopSales, getByUpcoming } from '@servi
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { LeftSectionProps } from '../Store.types';
 
-const LeftSection: FC<LeftSectionProps> = ({
+export default function LeftSection({
   openedTab,
   handleTabClick,
   onTabHover,
   setHoveredGame,
-}): JSX.Element => {
+}: LeftSectionProps): JSX.Element {
   // Contexts
   const { userData } = useContext(AuthContext);
 
@@ -39,9 +39,9 @@ const LeftSection: FC<LeftSectionProps> = ({
       try {
         setLoading(true);
         const [newAndTrending, specials, topSellers, popularUpcoming] = await Promise.all([
-          getByTopSales((userData && userData.library.map((game) => game.id)) || []),
-          getBySpecials((userData && userData.library.map((game) => game.id)) || []),
           getByNewest((userData && userData.library.map((game) => game.id)) || []),
+          getBySpecials((userData && userData.library.map((game) => game.id)) || []),
+          getByTopSales((userData && userData.library.map((game) => game.id)) || []),
           getByUpcoming((userData && userData.library.map((game) => game.id)) || []),
         ]);
         setNewAndTrending(newAndTrending);
@@ -66,13 +66,13 @@ const LeftSection: FC<LeftSectionProps> = ({
     {
       items: newAndTrending,
       title: 'New & Trending',
-      seeMore: '/search?sort=Release%20date',
+      seeMore: '/search?sort=Release%20Date',
     },
     { items: topSellers, title: 'Top Sellers', seeMore: '/search?sort=Relevance' },
     {
       items: popularUpcoming,
       title: 'Popular Upcoming',
-      seeMore: '/search?sort=Release%20date',
+      seeMore: '/search?sort=Release%20Date',
     },
     { items: specials, title: 'Specials', seeMore: '/search?sort=Relevance' },
   ];
@@ -117,6 +117,4 @@ const LeftSection: FC<LeftSectionProps> = ({
       </div>
     </div>
   );
-};
-
-export default LeftSection;
+}

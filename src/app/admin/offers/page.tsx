@@ -14,14 +14,15 @@ import { createOffer } from '@services/game/offer';
 
 // Utils
 import get7DaysFromNow from '@utils/get7DaysFromNow';
+import Decimal from 'decimal.js';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const OffersAdmin: FC = (): JSX.Element => {
+export default function OffersAdmin(): JSX.Element {
   // States
   const [gameId, setGameId] = useState<number>(0);
-  const [discountPrice, setDiscountPrice] = useState<number>(0);
+  const [discountPrice, setDiscountPrice] = useState<Decimal>(new Decimal('0.00'));
   const [offerType, setOfferType] = useState<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>(
     'SPECIAL PROMOTION'
   );
@@ -31,7 +32,7 @@ const OffersAdmin: FC = (): JSX.Element => {
 
   const onSubmit = async (): Promise<void> => {
     await toast.promise(
-      createOffer(gameId, discountPrice, offerType, discountStartDate, discountEndDate),
+      createOffer(gameId, discountPrice.toString(), offerType, discountStartDate, discountEndDate),
       {
         pending: 'Creating offer...',
         success: 'Offer created successfully',
@@ -41,7 +42,7 @@ const OffersAdmin: FC = (): JSX.Element => {
 
     setSubmitted((prevSubmitted) => prevSubmitted + 1);
     setGameId(0);
-    setDiscountPrice(0);
+    setDiscountPrice(new Decimal('0.00'));
     setOfferType('SPECIAL PROMOTION');
     setDiscountStartDate(new Date());
     setDiscountEndDate(get7DaysFromNow());
@@ -64,6 +65,4 @@ const OffersAdmin: FC = (): JSX.Element => {
       submitted={submitted}
     />
   );
-};
-
-export default OffersAdmin;
+}

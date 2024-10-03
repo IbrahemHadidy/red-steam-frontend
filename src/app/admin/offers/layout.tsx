@@ -1,7 +1,7 @@
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface OffersLayoutProps {
   children: ReactNode;
 }
 
@@ -10,6 +10,6 @@ export const metadata: Metadata = {
   description: 'Manage game offers on Red Steam',
 };
 
-const OffersLayout: FC<Props> = ({ children }): JSX.Element => <>{children}</>;
-
-export default OffersLayout;
+export default function OffersLayout({ children }: OffersLayoutProps): JSX.Element {
+  return <>{children}</>;
+}

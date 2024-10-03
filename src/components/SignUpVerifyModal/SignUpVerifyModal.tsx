@@ -10,18 +10,18 @@ import { animated, useSpring } from 'react-spring';
 import '@styles/components/SignUpVerifyModal.scss';
 
 // Types
-import type { Dispatch, FC, JSX, SetStateAction } from 'react';
-interface Props {
+import type { Dispatch, JSX, SetStateAction } from 'react';
+interface VerifyModalProps {
   storedEmailAddress: string;
   setShowVerificationModal: Dispatch<SetStateAction<boolean>>;
   setFirstStep: Dispatch<SetStateAction<boolean>>;
 }
 
-export const VerifyModal: FC<Props> = ({
+export default function VerifyModal({
   storedEmailAddress,
   setShowVerificationModal,
   setFirstStep,
-}): JSX.Element => {
+}: VerifyModalProps): JSX.Element {
   // States
   const [isExpanded, setIsExpanded] = useState(false);
   const [totalHeight, setTotalHeight] = useState(0);
@@ -136,4 +136,4 @@ export const VerifyModal: FC<Props> = ({
       </div>
     </>
   );
-};
+}

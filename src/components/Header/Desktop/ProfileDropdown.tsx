@@ -20,9 +20,9 @@ import defaultPFP from '@images/default-pfp.png';
 import Link from 'next/link';
 
 // Types
-import type { FC, JSX, MouseEvent } from 'react';
+import type { JSX, MouseEvent } from 'react';
 
-const ProfileDropdown: FC = (): JSX.Element => {
+export default function ProfileDropdown(): JSX.Element {
   // Init
   const router = useRouter();
 
@@ -87,6 +87,4 @@ const ProfileDropdown: FC = (): JSX.Element => {
       </Link>
     </>
   );
-};
-
-export default ProfileDropdown;
+}

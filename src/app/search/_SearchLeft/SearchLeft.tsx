@@ -20,10 +20,10 @@ import formatDate from '@utils/formatDate';
 import { getHoverInfo, getRatingClass } from '@utils/ratingUtils';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { SearchLeftProps } from '../Search.types';
 
-export const SearchLeft: FC<SearchLeftProps> = ({
+export default function SearchLeft({
   toggleDropdown,
   sortOption,
   hasMore,
@@ -40,7 +40,7 @@ export const SearchLeft: FC<SearchLeftProps> = ({
   fetchedGames,
   disabled,
   isViewport960,
-}): JSX.Element => {
+}: SearchLeftProps): JSX.Element {
   // Init
   const isViewport430 = useResponsiveViewport(430);
   const isViewport1070 = useResponsiveViewport(1070);
@@ -236,4 +236,4 @@ export const SearchLeft: FC<SearchLeftProps> = ({
       </div>
     </div>
   );
-};
+}

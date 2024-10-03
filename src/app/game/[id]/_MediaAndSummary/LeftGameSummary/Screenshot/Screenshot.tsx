@@ -9,17 +9,17 @@ import externalLinkIcon from '@images/ico_external_link.gif';
 
 // Types
 import type { ImageEntry } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { ScreenshotModalProps, ScreenshotProps } from '../../MediaAndSummary.types';
 
-export const ScreenshotModal: FC<ScreenshotModalProps> = ({
+export function ScreenshotModal({
   imgSrc,
   onClose,
   currentScreenshotIndex,
   game,
   selectedItem,
   setSelectedItem,
-}): JSX.Element => {
+}: ScreenshotModalProps): JSX.Element {
   const handleModalClick = (direction: 'left' | 'right'): void => {
     const currentIndex: number = game.imageEntries.findIndex(
       (entry) => entry.link === selectedItem
@@ -73,22 +73,19 @@ export const ScreenshotModal: FC<ScreenshotModalProps> = ({
       </div>
     </>
   );
-};
+}
 
-export const Screenshot: FC<ScreenshotProps> = ({
-  imgSrc,
-  onEnter,
-  onLeave,
-  openModal,
-}): JSX.Element => (
-  <div className="player-area">
-    <Image className="area-spacer" src={highlightSpacer} alt="" />
-    <div className="player-item">
-      <div className="screenshot-holder" onMouseEnter={onEnter} onMouseLeave={onLeave}>
-        <a className="screenshot-link" onClick={openModal}>
-          <img src={imgSrc} alt="Screenshot" />
-        </a>
+export function Screenshot({ imgSrc, onEnter, onLeave, openModal }: ScreenshotProps): JSX.Element {
+  return (
+    <div className="player-area">
+      <Image className="area-spacer" src={highlightSpacer} alt="" />
+      <div className="player-item">
+        <div className="screenshot-holder" onMouseEnter={onEnter} onMouseLeave={onLeave}>
+          <a className="screenshot-link" onClick={openModal}>
+            <img src={imgSrc} alt="Screenshot" />
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+}

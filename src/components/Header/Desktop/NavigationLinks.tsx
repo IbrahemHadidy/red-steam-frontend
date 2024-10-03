@@ -17,9 +17,9 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 import sharedData from '../sharedData';
 
 // Types
-import type { FC, JSX, MouseEvent } from 'react';
+import type { JSX, MouseEvent } from 'react';
 
-const NavigationLinks: FC = (): JSX.Element => {
+export default function NavigationLinks(): JSX.Element {
   // Init
   const router = useRouter();
   const pathname = usePathname();
@@ -28,17 +28,16 @@ const NavigationLinks: FC = (): JSX.Element => {
   const { isLoggedIn, userData } = useContext(AuthContext);
 
   // States
-  const [isOpen, setIsOpen] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState<number | null>(null);
 
-  const handleDropdownToggle = (e: MouseEvent, eventKey: string): void => {
+  const handleDropdownToggle = (e: MouseEvent, eventKey: number): void => {
     e.preventDefault();
     setIsOpen(eventKey === isOpen ? null : eventKey);
   };
 
   const renderNavDropdownWithHover = (
     title: string,
-    renderKey: string,
-    mainLink: string,
+    renderKey: number,
     items: { link: string; text: string }[]
   ): JSX.Element => {
     const isUserActive: boolean = pathname?.includes('/user') && !pathname?.includes('/admin');
@@ -55,7 +54,7 @@ const NavigationLinks: FC = (): JSX.Element => {
             {title}
           </span>
         }
-        id={renderKey}
+        id={renderKey.toString()}
         className="main-dropdowns"
         renderMenuOnMount
         onMouseEnter={(e) => handleDropdownToggle(e, renderKey)}
@@ -87,47 +86,23 @@ const NavigationLinks: FC = (): JSX.Element => {
     setIsOpen(null);
   }, [router]);
 
-  const handleStoreNavigation = (e: MouseEvent): void => {
-    e.preventDefault();
-    router.push('/');
-  };
-
-  const handleLibraryNavigation = (e: MouseEvent): void => {
-    e.preventDefault();
-    router.push('/library');
-  };
-
   return (
     <Nav>
-      <Nav.Link
-        onClick={handleStoreNavigation}
-        className={`main-dropdowns  ${dropdownStoreClassName}`}
-      >
+      <Nav.Link href="/" className={`main-dropdowns  ${dropdownStoreClassName}`}>
         Store
       </Nav.Link>
       {isLoggedIn && userData?.isAdmin && (
-        <>
-          {renderNavDropdownWithHover(
-            'Admin',
-            '1',
-            '/admin/create-game',
-            sharedData.subMenus[1].items
-          )}
-        </>
+        <>{renderNavDropdownWithHover('Admin', 1, sharedData.subMenus[1].items)}</>
       )}
       {isLoggedIn && (
-        <Nav.Link
-          onClick={handleLibraryNavigation}
-          className={`main-dropdowns  ${dropdownLibraryClassName}`}
-        >
+        <Nav.Link href="/library" className={`main-dropdowns  ${dropdownLibraryClassName}`}>
           Library
         </Nav.Link>
       )}
       {isLoggedIn &&
         renderNavDropdownWithHover(
           `${userData?.username ? userData.username : 'Profile'}`,
-          '2',
-          '/user',
+          2,
           sharedData.subMenus[0].items
         )}
       <Nav.Link
@@ -140,6 +115,4 @@ const NavigationLinks: FC = (): JSX.Element => {
       </Nav.Link>
     </Nav>
   );
-};
-
-export default NavigationLinks;
+}

@@ -1,7 +1,7 @@
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface FeaturesLayoutProps {
   children: ReactNode;
 }
 
@@ -10,6 +10,6 @@ export const metadata: Metadata = {
   description: 'Create and manage features on Red Steam.',
 };
 
-const FeaturesLayout: FC<Props> = ({ children }): JSX.Element => <>{children}</>;
-
-export default FeaturesLayout;
+export default function FeaturesLayout({ children }: FeaturesLayoutProps): JSX.Element {
+  return <>{children}</>;
+}

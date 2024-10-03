@@ -10,10 +10,10 @@ import { AuthContext } from '@contexts/AuthContext';
 import { deleteAccount } from '@services/user/management';
 
 // Types
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 import type { DeleteAccountModalProps } from './Modals.types';
 
-const DeleteAccountModal: FC<DeleteAccountModalProps> = ({ onClose }): JSX.Element => {
+export default function DeleteAccountModal({ onClose }: DeleteAccountModalProps): JSX.Element {
   // Contexts
   const { userData, logout } = useContext(AuthContext);
 
@@ -75,6 +75,4 @@ const DeleteAccountModal: FC<DeleteAccountModalProps> = ({ onClose }): JSX.Eleme
       </div>
     </div>
   );
-};
-
-export default DeleteAccountModal;
+}

@@ -170,7 +170,7 @@
   transition:
     left 0.5s,
     right 0.5s;
-  z-index: 1000;
+  z-index: 999;
   margin-left: 100vw;
   width: 865px;
 
@@ -229,6 +229,8 @@
   .content-container {
     position: absolute;
     height: 100vh;
+    width: -webkit-fill-available;
+    width: -moz-available;
     z-index: 2;
 
     .description {
@@ -294,7 +296,128 @@
   }
 }
 
-.library-overlay {
+.complete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #fff;
+  padding: 2rem;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  z-index: 1000;
+
+  h2 {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.5rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: #555;
+    font-size: 1rem;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .github-button {
+      margin-top: 1rem;
+      display: inline-block;
+
+      &:first-child {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .visit-repos {
+    margin-top: 20px;
+    text-align: center;
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    .repo-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      a {
+        color: #d1d7e0;
+        background-color: #232932;
+        background-image: linear-gradient(180deg, #2a313c, #232932 90%);
+        height: 16px;
+        padding: 5px;
+        font-size: 12px;
+        line-height: 16px;
+        border: 1px solid #3d444d;
+        border-radius: .25em 0 0 .25em;
+
+        img {
+          height: 16px;
+          margin-right: 2px;
+          margin-bottom: 2px;
+        }
+      }
+    }
+  }
+
+  .close-btn {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover {
+      background-color: #d32f2f;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  // Dark mode
+  @media (prefers-color-scheme: dark) {
+    background-color: #222;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+
+    h2 {
+      color: #fff;
+    }
+
+    p {
+      color: #ccc;
+    }
+  }
+}
+
+.show-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.complete-overlay {
   position: fixed;
   top: 0;
   left: 0;

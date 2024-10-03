@@ -11,7 +11,7 @@ import { getAllLanguages } from '@services/common/languages';
 import { getAllTags } from '@services/common/tags';
 
 // Types
-import type { Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { Dispatch, JSX, RefObject, SetStateAction } from 'react';
 import type { MultiValue } from 'react-select';
 import type { Language, Platforms } from './game-admin.types';
 interface SpecificationsProps {
@@ -38,7 +38,7 @@ interface Option {
   label: string;
 }
 
-const Specifications: FC<SpecificationsProps> = ({
+export default function Specifications({
   tags,
   setTags,
   features,
@@ -52,7 +52,7 @@ const Specifications: FC<SpecificationsProps> = ({
   languagesRef,
   languagesTableRef,
   platformsRef,
-}): JSX.Element => {
+}: SpecificationsProps): JSX.Element {
   const [fetchedTags, setFetchedTags] = useState<FeatchedEntry[]>([]);
   const [fetchedFeatures, setFetchedFeatures] = useState<FeatchedEntry[]>([]);
   const [fetchedLanguages, setFetchedLanguages] = useState<FeatchedEntry[]>([]);
@@ -263,6 +263,4 @@ const Specifications: FC<SpecificationsProps> = ({
       </div>
     </section>
   );
-};
-
-export default Specifications;
+}

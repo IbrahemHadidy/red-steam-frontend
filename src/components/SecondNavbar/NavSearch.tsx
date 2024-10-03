@@ -15,9 +15,9 @@ import blank from '@images/blank.gif';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { ChangeEvent, FC } from 'react';
+import type { ChangeEvent } from 'react';
 
-const NavSearch: FC = (): JSX.Element => {
+export default function NavSearch(): JSX.Element {
   // States
   const [searchInput, setSearchInput] = useState<string>('');
   const [gameData, setGameData] = useState<Game[]>([]);
@@ -81,6 +81,4 @@ const NavSearch: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default NavSearch;
+}

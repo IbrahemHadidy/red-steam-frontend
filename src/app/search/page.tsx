@@ -11,8 +11,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
 import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
-import { SearchLeft } from './_SearchLeft/SearchLeft';
-import { SearchRight } from './_SearchRight/SearchRight';
+import SearchLeft from './_SearchLeft/SearchLeft';
+import SearchRight from './_SearchRight/SearchRight';
 
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
@@ -30,6 +30,7 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
 import debounce from '@utils/debounce';
+import Decimal from 'decimal.js';
 
 // Images
 import searchCrouton from '@images/search_crouton_not.svg';
@@ -383,7 +384,7 @@ const SearchPage: FC = (): JSX.Element => {
 
     // Get price range
     if (ranges[rangeValue].value !== null) {
-      searchData.maxPrice = ranges[rangeValue].value;
+      searchData.maxPrice = new Decimal(ranges[rangeValue].value).toDecimalPlaces(2).toString();
     }
 
     // Get tags

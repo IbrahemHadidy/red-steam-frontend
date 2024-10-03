@@ -123,7 +123,7 @@ class GameAdminApi extends Api {
       developers?: number[];
       pricing?: {
         free?: boolean;
-        price?: number;
+        price?: string;
       };
       tags?: number[];
       features?: number[];

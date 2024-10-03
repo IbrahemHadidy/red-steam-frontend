@@ -6,10 +6,7 @@ import { useContext, useEffect } from 'react';
 // Contexts
 import { AuthContext } from '@contexts/AuthContext';
 
-// Types
-import type { FC } from 'react';
-
-const LogoutPage: FC = (): null => {
+export default function LogoutPage(): null {
   const { isLoggedIn, logout } = useContext(AuthContext);
 
   useEffect(() => {
@@ -19,6 +16,4 @@ const LogoutPage: FC = (): null => {
   }, [isLoggedIn, logout]);
 
   return null;
-};
-
-export default LogoutPage;
+}

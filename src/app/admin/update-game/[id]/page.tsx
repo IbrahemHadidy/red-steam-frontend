@@ -19,12 +19,12 @@ import { getById } from '@services/game/data';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 interface GameUpdateProps {
   params: { id: string };
 }
 
-const GameUpdate: FC<GameUpdateProps> = ({ params }): JSX.Element => {
+export default function GameUpdate({ params }: GameUpdateProps): JSX.Element {
   const router = useRouter();
 
   const [game, setGame] = useState<Game | null>(null);
@@ -51,6 +51,4 @@ const GameUpdate: FC<GameUpdateProps> = ({ params }): JSX.Element => {
   ) : (
     <GameAdmin type="update" game={game} />
   );
-};
-
-export default GameUpdate;
+}

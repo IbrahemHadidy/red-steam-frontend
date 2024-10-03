@@ -11,8 +11,8 @@ import '@styles/error.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX } from 'react';
-interface Props {
+import type { JSX } from 'react';
+interface ErrorBoundaryProps {
   error: Error;
   reset: () => void;
 }
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: 'Please refresh the page or try again later.',
 };
 
-const ErrorBoundary: FC<Props> = ({ error, reset }): JSX.Element => {
+export default function ErrorBoundary({ error, reset }: ErrorBoundaryProps): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
@@ -41,6 +41,4 @@ const ErrorBoundary: FC<Props> = ({ error, reset }): JSX.Element => {
       <button onClick={() => router.push('/')}>Back to store</button>
     </div>
   );
-};
-
-export default ErrorBoundary;
+}

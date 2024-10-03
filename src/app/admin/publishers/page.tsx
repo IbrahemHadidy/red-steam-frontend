@@ -13,9 +13,9 @@ import { toast } from 'react-toastify';
 import { createPublisher } from '@services/common/publishers';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 
-const PublishersAdmin: FC = (): JSX.Element => {
+export default function PublishersAdmin(): JSX.Element {
   // States
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
@@ -44,6 +44,4 @@ const PublishersAdmin: FC = (): JSX.Element => {
       submitted={submitted}
     />
   );
-};
-
-export default PublishersAdmin;
+}

@@ -161,6 +161,8 @@
         .summary-column {
           white-space: nowrap;
           text-overflow: ellipsis;
+          max-height: 25px;
+          text-wrap: wrap;
 
           a {
             color: #67c1f5;
@@ -223,6 +225,7 @@
         .dev-publish {
           display: flex;
           line-height: 16px;
+          padding-bottom: 10px;
 
           a {
             overflow: hidden;
@@ -838,7 +841,8 @@
                 }
               }
 
-              &:hover {
+              &:hover,
+              &.checked {
                 text-decoration: none !important;
                 color: #fff !important;
                 background: linear-gradient(-60deg, #417a9b 5%, #67c1f5 95%);
@@ -865,7 +869,7 @@
           padding-top: 14px;
           padding-right: 7px;
 
-          a {
+          .review-submit-btn {
             padding: 1px;
             cursor: pointer;
             text-decoration: none !important;
@@ -885,6 +889,24 @@
               padding: 0 15px;
               font-size: 15px;
               line-height: 30px;
+            }
+
+            &.loading {
+              background: linear-gradient(to bottom,
+                  rgba(193, 228, 249, 0.5) 5%,
+                  rgba(148, 183, 202, 0.5) 95%);
+              cursor: default;
+
+              &:hover {
+                background: linear-gradient(to bottom,
+                    rgba(193, 228, 249, 0.5) 5%,
+                    rgba(148, 183, 202, 0.5) 95%);
+
+                span {
+                  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+                  color: #2b5066 !important;
+                }
+              }
             }
 
             &:hover {

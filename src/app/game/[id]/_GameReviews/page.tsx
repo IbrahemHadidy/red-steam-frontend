@@ -23,6 +23,7 @@ import { getGameReviews } from '@services/game/data';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
+import formatDate from '@utils/formatDate';
 import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Images
@@ -36,10 +37,10 @@ import '@styles/game/GameReviews.scss';
 
 // Types
 import type { Review } from '@entities/review.entity';
-import type { FC, JSX, SyntheticEvent } from 'react';
+import type { JSX, SyntheticEvent } from 'react';
 import type { GameReviewsProps } from './GameReviews.types';
 
-const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
+export default function GameReviews({ game }: GameReviewsProps): JSX.Element {
   // Init
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
@@ -48,7 +49,7 @@ const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [filter, setFilter] = useState<'positive' | 'negative' | 'all'>('all');
   const [sort, setSort] = useState<'newest' | 'oldest'>('newest');
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [isPartial, setIsPartial] = useState<boolean>(false);
 
@@ -174,7 +175,7 @@ const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
                         <Link href={`/user/${review.user?.id}`}>{review.user?.username}</Link>
                       </div>
                       {isViewport630 && (
-                        <div className="post-date"> Posted: {review.date.toLocaleDateString()}</div>
+                        <div className="post-date"> Posted: {formatDate(review.date)}</div>
                       )}
                     </div>
                     <div className="rightcol">
@@ -191,7 +192,7 @@ const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
                         </div>
                       </div>
                       {!isViewport630 && (
-                        <div className="post-date"> Posted: {review.date.toLocaleDateString()}</div>
+                        <div className="post-date"> Posted: {formatDate(review.date)}</div>
                       )}
                       <div className="content">
                         <div
@@ -223,6 +224,4 @@ const GameReviews: FC<GameReviewsProps> = ({ game }): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default GameReviews;
+}

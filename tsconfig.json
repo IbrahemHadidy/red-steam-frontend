@@ -27,7 +27,8 @@
       "@contexts/*": ["src/contexts/*"],
       "@types/*": ["src/types/*"],
       "@entities/*": ["src/entities/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@store/*": ["src/store/*"]
     }
   },
   "include": [

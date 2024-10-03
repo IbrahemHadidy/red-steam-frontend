@@ -26,10 +26,10 @@ import { getByTags } from '@services/game/data';
 import responsiveChevron from '@images/ResponsiveChevron.svg';
 
 // Types
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
 
-const Recommended: FC = (): JSX.Element => {
+export default function Recommended(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
@@ -181,6 +181,4 @@ const Recommended: FC = (): JSX.Element => {
       </div>
     </div>
   );
-};
-
-export default Recommended;
+}

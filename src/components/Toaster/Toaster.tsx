@@ -6,9 +6,9 @@ import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Types
-import { FC, JSX } from 'react';
+import { JSX } from 'react';
 
-const Toaster: FC = (): JSX.Element => {
+export default function Toaster(): JSX.Element {
   return (
     <>
       <style jsx>
@@ -37,6 +37,4 @@ const Toaster: FC = (): JSX.Element => {
       />
     </>
   );
-};
-
-export default Toaster;
+}

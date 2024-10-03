@@ -1,5 +1,5 @@
 // Types
-import type { ChangeEvent, Dispatch, FC, JSX, RefObject, SetStateAction } from 'react';
+import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
 interface AdditionalInfoProps {
   about: string;
   setAbout: Dispatch<SetStateAction<string>>;
@@ -14,7 +14,7 @@ interface AdditionalInfoProps {
   legalRef: RefObject<HTMLTextAreaElement>;
 }
 
-const AdditionalInfo: FC<AdditionalInfoProps> = ({
+export default function AdditionalInfo({
   about,
   setAbout,
   mature,
@@ -26,14 +26,14 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
   aboutRef,
   matureDescriptionRef,
   legalRef,
-}): JSX.Element => {
+}: AdditionalInfoProps): JSX.Element {
   // Event Handlers
   const handleMatureChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setMature(e.target.checked);
   };
 
   const handleMatureDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setMatureDescription(e.target.value.trim());
+    setMatureDescription(e.target.value);
   };
 
   const handleLegalChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
@@ -98,5 +98,4 @@ const AdditionalInfo: FC<AdditionalInfoProps> = ({
       </div>
     </section>
   );
-};
-export default AdditionalInfo;
+}

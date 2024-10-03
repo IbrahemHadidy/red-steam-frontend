@@ -1,4 +1,9 @@
-const convertToBase64Image = (iconData: Buffer | number[]): string => {
+/**
+ * Converts icon data to base64 string
+ * @param iconData The icon data to convert to base64
+ * @returns The base64 string
+ */
+export default function convertToBase64Image(iconData: Buffer | number[]): string {
   let base64String: string;
 
   if (iconData instanceof Buffer) {
@@ -11,6 +16,4 @@ const convertToBase64Image = (iconData: Buffer | number[]): string => {
   }
 
   return `data:image/png;base64,${base64String}`;
-};
-
-export default convertToBase64Image;
+}

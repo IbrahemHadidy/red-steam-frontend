@@ -1,4 +1,5 @@
-// React
+// Redux store provider
+import StoreProvider from './StoreProvider';
 import { AuthProvider } from '@contexts/AuthContext';
 
 // Toast notifications
@@ -13,8 +14,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Types
 import type { Metadata } from 'next';
-import type { FC, JSX, ReactNode } from 'react';
-interface Props {
+import type { JSX, ReactNode } from 'react';
+interface RootLayoutProps {
   children: ReactNode;
 }
 
@@ -38,20 +39,20 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout: FC<Props> = ({ children }): JSX.Element => {
+export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="en">
       <body>
         <div id="root">
+          <StoreProvider>
           <AuthProvider>
             <Toaster />
             {children}
           </AuthProvider>
+          </StoreProvider>
         </div>
         <div id="loading-portal" />
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

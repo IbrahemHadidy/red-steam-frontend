@@ -8,16 +8,17 @@ import { getById } from '@services/game/data';
 import pwaIcon from '@images/pwa-icon.png';
 
 // Types
+import type { Game as GameType } from '@entities/game.entity';
 import type { Metadata } from 'next';
-import type { FC, JSX } from 'react';
+import type { JSX } from 'react';
 import type { GameProps } from './Game.types';
 
-export const generateMetadata = async ({ params }: GameProps): Promise<Metadata> => {
+export async function generateMetadata({ params }: GameProps): Promise<Metadata> {
   const { id } = params;
 
   try {
     const gameId = Number(id);
-    const game: Game | undefined = !isNaN(gameId) ? await getById(gameId) : undefined;
+    const game: GameType | undefined = !isNaN(gameId) ? await getById(gameId) : undefined;
 
     const discountPercentage: string = game?.pricing?.discountPercentage?.toString() || '';
 
@@ -51,8 +52,8 @@ export const generateMetadata = async ({ params }: GameProps): Promise<Metadata>
       description: 'Game not found',
     };
   }
-};
+}
 
-const GamePage: FC<GameProps> = ({ params }): JSX.Element | null => <Game params={params} />;
-
-export default GamePage;
+export default function GamePage({ params }: GameProps): JSX.Element | null {
+  return <Game params={params} />;
+}

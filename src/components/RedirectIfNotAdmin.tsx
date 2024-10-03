@@ -12,10 +12,7 @@ import { AuthContext } from '@contexts/AuthContext';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Types
-import type { FC } from 'react';
-
-const RedirectIfNotAdmin: FC = (): null => {
+export default function RedirectIfNotAdmin(): null {
   const { userData } = useContext(AuthContext);
   const router = useRouter();
 
@@ -27,6 +24,4 @@ const RedirectIfNotAdmin: FC = (): null => {
   }, [userData, router]);
 
   return null;
-};
-
-export default RedirectIfNotAdmin;
+}
