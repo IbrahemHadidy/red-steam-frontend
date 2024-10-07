@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -14,8 +14,8 @@ import { animated, useSpring } from 'react-spring';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Links Data
 import sharedData from '../sharedData';
@@ -37,10 +37,8 @@ export default function SteamMenu(): JSX.Element {
   // Init
   const router = useRouter();
 
-  // Contexts
-  const { userData, isLoggedIn } = useContext(AuthContext);
-
   // States
+  const { userData, isLoggedIn } = useAppSelector((state) => state.auth);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
   const [showNotificationDropdown, setShowNotificationDropdown] = useState<boolean>(false);

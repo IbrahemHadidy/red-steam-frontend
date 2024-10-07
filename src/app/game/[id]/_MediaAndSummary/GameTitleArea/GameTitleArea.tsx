@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -11,11 +11,11 @@ import { usePathname, useRouter } from 'next/navigation';
 // Toast notifications
 import { toast } from 'react-toastify';
 
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Components
 import DeleteModal from '@app/admin/_Admin/DeleteModal';
-
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
 
 // Images
 import deleteIcon from '@images/delete.png';
@@ -30,10 +30,8 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
   const router = useRouter();
   const pathname = usePathname();
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // State
+  const { userData } = useAppSelector((state) => state.auth);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
 

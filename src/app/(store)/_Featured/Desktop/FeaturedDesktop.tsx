@@ -1,10 +1,10 @@
 'use client';
 
 // React
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // NextJS
 import Link from 'next/link';
@@ -30,12 +30,10 @@ interface FeaturedDesktopProps {
 
 export default function FeaturedDesktop({ featuredGames }: FeaturedDesktopProps): JSX.Element {
   // Init
-  const { userData } = useContext(AuthContext);
-
-  // Contexts
   const isViewport1600 = useResponsiveViewport(1600);
 
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [summaryHoverStates, setSummaryHoverStates] = useState<{ [key: string]: boolean }>({});
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 

@@ -28,7 +28,8 @@
       "@types/*": ["src/types/*"],
       "@entities/*": ["src/entities/*"],
       "@styles/*": ["src/styles/*"],
-      "@store/*": ["src/store/*"]
+      "@store/*": ["src/store/*"],
+      "@providers/*": ["src/providers/*"]
     }
   },
   "include": [

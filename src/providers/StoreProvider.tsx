@@ -20,5 +20,5 @@ export default function StoreProvider({ children }: StoreProviderProps): JSX.Ele
     storeRef.current = makeStore();
   }
 
-  return <Provider store={storeRef.current}>{children}</Provider>;
+  return storeRef.current && <Provider store={storeRef.current}>{children}</Provider>;
 }

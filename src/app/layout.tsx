@@ -1,6 +1,6 @@
-// Redux store provider
-import StoreProvider from './StoreProvider';
-import { AuthProvider } from '@contexts/AuthContext';
+// Providers
+import AuthProvider from '@providers/AuthProvider';
+import StoreProvider from '@providers/StoreProvider';
 
 // Toast notifications
 import Toaster from '@components/Toaster/Toaster';
@@ -45,10 +45,10 @@ export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
       <body>
         <div id="root">
           <StoreProvider>
-          <AuthProvider>
-            <Toaster />
-            {children}
-          </AuthProvider>
+            <AuthProvider>
+              <Toaster />
+              {children}
+            </AuthProvider>
           </StoreProvider>
         </div>
         <div id="loading-portal" />

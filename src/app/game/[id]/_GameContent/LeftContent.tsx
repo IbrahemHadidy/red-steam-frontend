@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -13,6 +13,12 @@ import { sanitize } from 'dompurify';
 // Toast notifications
 import { toast } from 'react-toastify';
 
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
+
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
@@ -23,9 +29,6 @@ import { addToCart, addToLibrary } from '@services/user/interaction';
 import formatDate from '@utils/formatDate';
 import getPlatform from '@utils/getPlatform';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
-
 // Types
 import type { Dispatch, JSX, MouseEvent, SetStateAction } from 'react';
 import type { LeftContentProps } from './GameContent.types';
@@ -34,12 +37,11 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
   // Init
   const router = useRouter();
   const platform = getPlatform();
+  const dispatch = useAppDispatch();
   const isViewport630 = useResponsiveViewport(630);
 
-  // Contexts
-  const { userData, fetchData, isLoggedIn } = useContext(AuthContext);
-
   // States
+  const { userData, isLoggedIn } = useAppSelector((state) => state.auth);
   const [isAboutExpanded, setIsAboutExpanded] = useState<boolean>(true);
   const [isMatureExpanded, setIsMatureExpanded] = useState<boolean>(true);
   const [isSysReqExpanded, setIsSysReqExpanded] = useState<boolean>(true);
@@ -85,7 +87,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
       addToCartBtnRef.current.style.pointerEvents = 'none';
 
       const response = await addToCart([itemId]);
-      if (response?.status === 201) fetchData();
+      if (response?.status === 201) await dispatch(fetchUserData(router));
 
       addToCartBtnRef.current.classList.remove('loading');
       addToCartBtnRef.current.style.pointerEvents = 'auto';
@@ -105,7 +107,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
       addToCartBtnRef.current.style.pointerEvents = 'none';
 
       const response = await addToLibrary([itemId]);
-      if (response?.status === 201) fetchData();
+      if (response?.status === 201) await dispatch(fetchUserData(router));
 
       addToCartBtnRef.current.classList?.remove('loading');
       addToCartBtnRef.current.style.pointerEvents = 'auto';
@@ -509,4 +511,4 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
       )}
     </div>
   );
-};
+}

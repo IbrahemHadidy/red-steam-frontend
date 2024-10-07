@@ -1,14 +1,14 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Components
 import Tab from './Tab';
 import TabContent from './TabContent';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Services
 import { getByNewest, getBySpecials, getByTopSales, getByUpcoming } from '@services/game/data';
@@ -24,10 +24,8 @@ export default function LeftSection({
   onTabHover,
   setHoveredGame,
 }: LeftSectionProps): JSX.Element {
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [newAndTrending, setNewAndTrending] = useState<Game[]>([]);
   const [popularUpcoming, setPopularUpcoming] = useState<Game[]>([]);
   const [specials, setSpecials] = useState<Game[]>([]);

@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -14,8 +14,8 @@ import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 import SearchLeft from './_SearchLeft/SearchLeft';
 import SearchRight from './_SearchRight/SearchRight';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Services
 import { getAllDevelopers } from '@services/common/developers';
@@ -46,10 +46,8 @@ const SearchPage: FC = (): JSX.Element => {
   const searchParams = useSearchParams();
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { isLoggedIn, userData } = useContext(AuthContext);
-
   // States
+  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>('Relevance');
   const [searchValue, setSearchValue] = useState<string>('enter game name');

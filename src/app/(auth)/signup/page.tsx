@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -17,8 +17,11 @@ import { toast } from 'react-toastify';
 // Google ReCAPTCHA
 import ReCAPTCHA from 'react-google-recaptcha';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Thunks
+import { login } from '@store/features/auth/authThunks';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
@@ -41,12 +44,10 @@ import type { ChangeEvent, FormEvent, JSX, KeyboardEvent } from 'react';
 export default function SignUpPage(): JSX.Element {
   // Initilizations
   const router = useRouter();
+  const dispatch = useAppDispatch();
   useDynamicBackground(
     "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
   );
-
-  // Contexts
-  const { login } = useContext(AuthContext);
 
   // States
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
@@ -338,7 +339,16 @@ export default function SignUpPage(): JSX.Element {
       if (response && response.status === 201) {
         toast.success('Account created successfully!');
 
-        await login(email, password, false, recaptchaValue ?? '');
+        await dispatch(
+          login({
+            data: {
+              identifier: email,
+              password,
+              rememberMe: false,
+            },
+            router,
+          })
+        );
       }
     } catch (error) {
       console.error('Error creating account:', error);

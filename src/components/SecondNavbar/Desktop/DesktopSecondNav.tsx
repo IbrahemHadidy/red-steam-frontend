@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -11,8 +11,8 @@ import { usePathname } from 'next/navigation';
 // React spring
 import { animated, useSpring } from 'react-spring';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Services
 import { menuData, navigationItems } from '@services/menus/menuData';
@@ -33,10 +33,8 @@ export default function DesktopSecondNav(): JSX.Element {
   // Init
   const pathname = usePathname();
 
-  // Contexts
-  const { isLoggedIn, userData } = useContext(AuthContext);
-
   // States
+  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 

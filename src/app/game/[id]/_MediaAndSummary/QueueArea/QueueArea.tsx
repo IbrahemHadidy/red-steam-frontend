@@ -1,15 +1,18 @@
 'use client';
 
 // React
-import { useContext, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Toast notifications
 import { toast } from 'react-toastify';
@@ -27,11 +30,10 @@ import type { QueueAreaProps } from '../MediaAndSummary.types';
 export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.Element {
   // Init
   const router = useRouter();
-
-  // Contexts
-  const { isLoggedIn, userData, fetchData } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
 
   // States
+  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
   const [isAddedToWishlist, setIsAddedToWishlist] = useState<boolean>(
     !!userData?.wishlist?.some((item) => item.id === game.id)
   );
@@ -53,7 +55,7 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
       addedWislist.current.style.pointerEvents = 'none';
       const response = await removeFromWishlist([itemId]);
       if (response?.status === 200) {
-        fetchData();
+        await dispatch(fetchUserData(router));
         setIsAddedToWishlist(false);
       }
       addedWislist.current.classList.remove('loading');
@@ -67,7 +69,7 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
       addedWislist.current.style.pointerEvents = 'none';
       const response = await addToWishlist([itemId]);
       if (response?.status === 201) {
-        fetchData();
+        await dispatch(fetchUserData(router));
         setIsAddedToWishlist(true);
       }
       addedWislist.current.classList.remove('loading');

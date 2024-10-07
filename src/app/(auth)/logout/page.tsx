@@ -1,19 +1,34 @@
 'use client';
 
 // React
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// NextJS
+import { useRouter } from 'next/navigation';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { logout } from '@store/features/auth/authThunks';
 
 export default function LogoutPage(): null {
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  // Init
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  // States
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      logout();
-    }
-  }, [isLoggedIn, logout]);
+    const handleLogout = async () => {
+      if (isLoggedIn) {
+        await dispatch(logout(router));
+      }
+    };
+
+    handleLogout();
+  }, [dispatch, isLoggedIn, router]);
 
   return null;
 }

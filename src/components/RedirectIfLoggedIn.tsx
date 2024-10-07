@@ -1,20 +1,23 @@
 'use client';
 
 // React
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 // NextJS
 import { useRouter } from 'next/navigation';
 
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
-
 export default function RedirectIfLoggedIn(): null {
-  const { isLoggedIn } = useContext(AuthContext);
+  // Init
   const router = useRouter();
+
+  // States
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -1,10 +1,16 @@
 'use client';
 
 // React
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// NextJS
+import { useRouter } from 'next/navigation';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { logout } from '@store/features/auth/authThunks';
 
 // Services
 import { deleteAccount } from '@services/user/management';
@@ -14,10 +20,12 @@ import type { ChangeEvent, JSX } from 'react';
 import type { DeleteAccountModalProps } from './Modals.types';
 
 export default function DeleteAccountModal({ onClose }: DeleteAccountModalProps): JSX.Element {
-  // Contexts
-  const { userData, logout } = useContext(AuthContext);
+  // Init
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -34,7 +42,7 @@ export default function DeleteAccountModal({ onClose }: DeleteAccountModalProps)
 
       if (response && response.status === 200) {
         onClose();
-        logout();
+        await dispatch(logout(router));
       }
     } else {
       setErrorMessage('Something went wrong. Please try again.');

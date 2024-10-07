@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -10,8 +10,8 @@ import { useRouter } from 'next/navigation';
 // Github button
 import GitHubButton from 'react-github-btn';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
@@ -35,10 +35,8 @@ export default function LibraryPage(): JSX.Element {
     "radial-gradient(rgba(24, 26, 33, 0.9) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
   );
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [cardSize, setCardSize] = useState<number>(250);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);

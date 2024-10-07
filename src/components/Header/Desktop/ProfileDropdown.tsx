@@ -1,16 +1,16 @@
 'use client';
 
 // React
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 // NextJS
 import { useRouter } from 'next/navigation';
 
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Bootstrap Components
 import { NavDropdown } from 'react-bootstrap';
-
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
 
 // Links Data
 import sharedData from '../sharedData';
@@ -26,10 +26,8 @@ export default function ProfileDropdown(): JSX.Element {
   // Init
   const router = useRouter();
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<string | null>(null);
 
   const handleDropdownToggle = (e: MouseEvent<HTMLElement>, eventKey: string): void => {

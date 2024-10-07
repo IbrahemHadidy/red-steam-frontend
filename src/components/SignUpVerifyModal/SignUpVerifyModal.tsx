@@ -6,23 +6,18 @@ import { useEffect, useRef, useState } from 'react';
 // React Spring
 import { animated, useSpring } from 'react-spring';
 
+// Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Styles
 import '@styles/components/SignUpVerifyModal.scss';
 
 // Types
-import type { Dispatch, JSX, SetStateAction } from 'react';
-interface VerifyModalProps {
-  storedEmailAddress: string;
-  setShowVerificationModal: Dispatch<SetStateAction<boolean>>;
-  setFirstStep: Dispatch<SetStateAction<boolean>>;
-}
+import type { JSX } from 'react';
 
-export default function VerifyModal({
-  storedEmailAddress,
-  setShowVerificationModal,
-  setFirstStep,
-}: VerifyModalProps): JSX.Element {
+export default function VerifyModal(): JSX.Element {
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
   const [totalHeight, setTotalHeight] = useState(0);
 
@@ -56,11 +51,6 @@ export default function VerifyModal({
     setIsExpanded(!isExpanded);
   };
 
-  const handleChangeEmailClick = (): void => {
-    setFirstStep(false);
-    setShowVerificationModal(false);
-  };
-
   return (
     <>
       <div className="modal-overlay" />
@@ -75,7 +65,7 @@ export default function VerifyModal({
               <div className="verification-header">
                 <div className="verification-subheader">
                   Check&nbsp;
-                  <span className="verification-email">{storedEmailAddress}</span>
+                  <span className="verification-email">{userData?.email || ''}</span>
                   &nbsp;for an email from Red Steam to verify and access your account.
                 </div>
                 <div className="loadding-wrapper">
@@ -107,12 +97,11 @@ export default function VerifyModal({
                 <ul>
                   <li>
                     Double check that your email&nbsp;
-                    <span>{storedEmailAddress}</span>
+                    <span>{userData?.email || ''}</span>
                     &nbsp;is accurate and doesn't contain any typos.
                   </li>
                   <li>
                     Please check both your spam and trash folder for an email
-                    {/* TODO: add the used domain later */}
                     from "steam.redclone@gmail.com". Sometimes emails can be incorrectly identified
                     as spam by your email provider.
                   </li>
@@ -121,14 +110,6 @@ export default function VerifyModal({
                     to receive an email.
                   </li>
                 </ul>
-                <div>
-                  Some email providers just don't work with Red Steam. If you're still unable to
-                  find our email, we recommend using a different email address on Red Steam.&nbsp;
-                  <span className="change-email" onClick={handleChangeEmailClick}>
-                    Click here
-                  </span>
-                  &nbsp;to change your email address.
-                </div>
               </animated.div>
             </div>
           </div>

@@ -1,13 +1,13 @@
 'use client';
 
 // React
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 // NextJS
 import { useRouter } from 'next/navigation';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Components
 import SignIn from '../_SignInAndRecovery/SignInAndRecovery';
@@ -16,7 +16,7 @@ import SignIn from '../_SignInAndRecovery/SignInAndRecovery';
 import type { JSX } from 'react';
 
 export default function SignInPage(): JSX.Element {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
   const router = useRouter();
 
   useEffect(() => {

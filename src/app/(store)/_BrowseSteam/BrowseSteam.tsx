@@ -1,20 +1,17 @@
 'use client';
 
-// React
-import { useContext } from 'react';
-
 // NextJS
 import Link from 'next/link';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Types
 import type { JSX } from 'react';
 
 export default function BrowseSteam(): JSX.Element {
-  // Contexts
-  const { userData } = useContext(AuthContext);
+  // States
+  const { userData } = useAppSelector((state) => state.auth);
 
   const userTags: string =
     (userData?.tags && userData.tags.length > 0 && userData.tags.map((tag) => tag.id).join(',')) ||

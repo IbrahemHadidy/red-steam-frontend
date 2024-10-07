@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -10,8 +10,8 @@ import Link from 'next/link';
 import HoverSummary from '@components/HoverSummary/HoverSummary';
 import Slider from 'react-slick';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -34,10 +34,8 @@ export default function Offers(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [offerHoverStates, setOfferHoverStates] = useState<{ [key: string]: boolean }>({});
   const [weekendOffers, setWeekendOffers] = useState<Game[]>([]);
   const [specialOffers, setSpecialOffers] = useState<Game[]>([]);

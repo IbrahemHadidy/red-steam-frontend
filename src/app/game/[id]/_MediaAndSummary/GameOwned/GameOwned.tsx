@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -9,8 +9,8 @@ import Link from 'next/link';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
@@ -21,9 +21,8 @@ import type { ChangeEvent, MouseEvent } from 'react';
 import type { GameOwnedProps } from '../MediaAndSummary.types';
 
 export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [hasReviewed, setHasReviewed] = useState<boolean>(false);
   const [reviewId, setReviewId] = useState<number | null>(null);
   const [positive, setPositive] = useState<boolean | null>(null);

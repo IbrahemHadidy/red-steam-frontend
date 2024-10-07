@@ -1,13 +1,13 @@
 'use client';
 
 // React
-import { Suspense, useContext } from 'react';
+import { Suspense } from 'react';
 
 // NextJS
 import dynamic from 'next/dynamic';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Components
 const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
@@ -29,8 +29,11 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 import type { JSX } from 'react';
 
 export default function StorePage(): JSX.Element {
-  const { isLoggedIn } = useContext(AuthContext);
+  // Init
   useDynamicBackground("url('/images/colored_body_top.png') center top no-repeat #1b2838");
+
+  // States
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
   return (
     <div className="store">

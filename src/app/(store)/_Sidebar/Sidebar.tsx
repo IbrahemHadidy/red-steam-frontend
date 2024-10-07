@@ -1,13 +1,13 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Toast notifications
 import { toast } from 'react-toastify';
@@ -24,8 +24,8 @@ import type { JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
 export default function Sidebar(): JSX.Element {
-  // Contexts
-  const { isLoggedIn, userData } = useContext(AuthContext);
+  // States
+  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
   const [yourTags, setYourTags] = useState<Tag[]>([]);
 
   // Get user tags
@@ -41,9 +41,9 @@ export default function Sidebar(): JSX.Element {
   }, [isLoggedIn, userData?.tags]);
 
   // Get recently viewed games
-  const recentGames: { id: number; name: string; timestamp: number }[] = JSON.parse(
-    localStorage.getItem('recentGames') || '[]'
-  );
+  const recentGames: { id: number; name: string; timestamp: number }[] =
+    (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('recentGames') || '[]')) ||
+    [];
 
   // Helper function to generate links
   const generateLinks = (links: LinkItem[]): JSX.Element[] => {

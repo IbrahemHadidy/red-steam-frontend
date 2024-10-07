@@ -1,14 +1,14 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Bootstrap Components
 import { Nav, NavDropdown } from 'react-bootstrap';
@@ -24,10 +24,8 @@ export default function NavigationLinks(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Contexts
-  const { isLoggedIn, userData } = useContext(AuthContext);
-
   // States
+  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<number | null>(null);
 
   const handleDropdownToggle = (e: MouseEvent, eventKey: number): void => {

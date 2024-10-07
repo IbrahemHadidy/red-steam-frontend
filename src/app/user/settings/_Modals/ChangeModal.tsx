@@ -1,10 +1,16 @@
 'use client';
 
 // React
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// NextJS
+import { useRouter } from 'next/navigation';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Services
 import { changeEmail, changePassword } from '@services/user/management';
@@ -18,10 +24,12 @@ import type { ChangeEvent, JSX } from 'react';
 import type { ChangeModalProps } from './Modals.types';
 
 export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.Element {
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
+  // Init
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [currentEmail, setCurrentEmail] = useState<string>('');
@@ -62,7 +70,7 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
       // Second step: change email
       userData &&
         (await changeEmail(currentEmail, currentPassword, email, onClose, setErrorMessage));
-      fetchData();
+      await dispatch(fetchUserData(router));
     }
     nextBtn1Ref.current?.removeAttribute('disabled');
     nextBtn2Ref.current?.removeAttribute('disabled');
@@ -82,7 +90,7 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
     } else {
       // Second step: change phone
       userData && (await changePhoneNumber(userData.id, phone));
-      fetchData();
+      await dispatch(fetchUserData(router));
       onClose();
     }
     nextBtn1Ref.current?.removeAttribute('disabled');
@@ -92,7 +100,7 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
   const handlePasswordChange = async (): Promise<void> => {
     if (isNewPasswordValid && isNewPasswordConfirmed) {
       userData && (await changePassword(currentPassword, newPassword, onClose, setErrorMessage));
-      fetchData();
+      await dispatch(fetchUserData(router));
       setErrorMessage('');
     } else {
       setErrorMessage(

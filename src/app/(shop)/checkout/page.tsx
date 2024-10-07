@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -14,8 +14,11 @@ import { toast } from 'react-toastify';
 // PayPal
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Utils
 import Decimal from 'decimal.js';
@@ -34,12 +37,11 @@ import type { JSX } from 'react';
 
 export default function CheckoutPage(): JSX.Element {
   // Init
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [isPaymentConfirmed, setIsPaymentConfirmed] = useState<boolean>(false);
   const [isReviewSelected, setIsReviewSelected] = useState<boolean>(false);
   const [checkboxSelected, setCheckboxSelected] = useState<boolean>(false);
@@ -62,7 +64,7 @@ export default function CheckoutPage(): JSX.Element {
       }
     };
     fetchCartData();
-  }, [fetchData, userData]);
+  }, [userData]);
 
   useEffect(() => {
     if (userData?.cart?.length === 0 && !isPaymentConfirmed) {
@@ -119,7 +121,7 @@ export default function CheckoutPage(): JSX.Element {
 
       setOrderId(orderInfo.orderId);
       setIsPaymentConfirmed(true);
-      fetchData();
+      await dispatch(fetchUserData(router));
     } catch (error) {
       console.error('Error capturing PayPal order:', error);
       throw error;

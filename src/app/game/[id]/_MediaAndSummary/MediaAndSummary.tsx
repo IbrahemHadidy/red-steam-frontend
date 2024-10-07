@@ -1,10 +1,10 @@
 'use client';
 
 // React
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Components
 import GameOwned from './GameOwned/GameOwned';
@@ -33,10 +33,8 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
   const [autoplayInitialized, setAutoplayInitialized] = useState<boolean>(false);

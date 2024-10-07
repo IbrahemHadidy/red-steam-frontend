@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import { useRouter } from 'next/navigation';
@@ -9,8 +9,11 @@ import { useRouter } from 'next/navigation';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
@@ -26,14 +29,13 @@ import type { ChangeEvent, JSX } from 'react';
 export default function TagsPage(): JSX.Element {
   // Init
   const router = useRouter();
+  const dispatch = useAppDispatch()
   useDynamicBackground(
     "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
   );
 
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth)
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [initialTags, setInitialTags] = useState<Tag[]>([]);
@@ -97,7 +99,7 @@ export default function TagsPage(): JSX.Element {
         error: 'An error occurred. Please try again later.',
       });
       setIsDisabled(false);
-      fetchData();
+          await dispatch(fetchUserData(router))
       setTimeout(() => {
         router.push('/');
       }, 500);

@@ -1,15 +1,17 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Components
 import HoverSummary from '@components/HoverSummary/HoverSummary';
-import { AuthContext } from '@contexts/AuthContext';
 import Slider from 'react-slick';
 
 // Custom Hooks
@@ -33,10 +35,8 @@ export default function Recommended(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [gameHoverStates, setGameHoverStates] = useState<{
     [key: string]: boolean;
   }>({});

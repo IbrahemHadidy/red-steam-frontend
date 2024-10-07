@@ -1,17 +1,21 @@
 'use client';
 
 // React
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Components
 import ChangeModal from './_Modals/ChangeModal';
@@ -39,10 +43,12 @@ import guardIcon from '@images/icon_steamguard.png';
 import type { ChangeEvent, FormEvent, JSX, MouseEvent, SetStateAction } from 'react';
 
 export default function SettingsPage(): JSX.Element {
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
+  // Init
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [showId, setShowId] = useState<boolean>(false);
   const [accountName, setAccountName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -61,10 +67,6 @@ export default function SettingsPage(): JSX.Element {
   const submitAvatarRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const deleteAvatarRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   useEffect(() => {
     userData && setSelectedCountry(userData.country);
@@ -123,7 +125,7 @@ export default function SettingsPage(): JSX.Element {
             success: 'Avatar uploaded successfully',
             error: 'An error occurred while uploading avatar. Please try again.',
           });
-          fetchData();
+          await dispatch(fetchUserData(router));
         } else {
           toast.error('An error occurred while updating avatar. Please try again.');
         }
@@ -157,7 +159,7 @@ export default function SettingsPage(): JSX.Element {
         await deleteAvatar();
         setAvatarFile(null);
         setAvatarPreview(null);
-        fetchData();
+        await dispatch(fetchUserData(router));
       } catch (error) {
         console.error('Error deleting avatar:', error);
         deleteAvatarRef.current!.disabled = false;

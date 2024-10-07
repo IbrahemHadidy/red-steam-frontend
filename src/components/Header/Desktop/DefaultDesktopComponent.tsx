@@ -1,8 +1,5 @@
 'use client';
 
-// React
-import { useContext } from 'react';
-
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,8 +7,8 @@ import Link from 'next/link';
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Bootstrap Components
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
@@ -29,8 +26,8 @@ import steamLogo from '@images/logo_steam.svg';
 import type { JSX } from 'react';
 
 export default function DefaultDesktopComponent(): JSX.Element {
-  // Contexts
-  const { isLoggedIn } = useContext(AuthContext);
+  // States
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
   const handleInstallSteamBtn = (): void => {
     toast.warning('This is not the real Steam website, It is just a clone for learning purposes.');

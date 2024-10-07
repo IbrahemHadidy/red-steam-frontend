@@ -1,14 +1,17 @@
 'use client';
 
 // React
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -27,12 +30,11 @@ import type { JSX } from 'react';
 export default function CartPage(): JSX.Element {
   // Intializations
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const isViewport840 = useResponsiveViewport(840);
 
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [userCart, setUserCart] = useState<Game[]>([]);
 
   // Refs
@@ -61,8 +63,8 @@ export default function CartPage(): JSX.Element {
       removeBtnRef.current.style.pointerEvents = 'none';
       const response = await removeFromCart([itemId]);
       if (response?.status === 200) {
-        fetchData();
-        updateCart();
+        await dispatch(fetchUserData(router));
+        await updateCart();
       }
       removeBtnRef.current.classList.remove('loading');
       removeBtnRef.current.style.pointerEvents = 'auto';
@@ -75,8 +77,8 @@ export default function CartPage(): JSX.Element {
       removeAllBtnRef.current.style.pointerEvents = 'none';
       const response = await clearCart();
       if (response?.status === 200) {
-        fetchData();
-        updateCart();
+        await dispatch(fetchUserData(router));
+        await updateCart();
       }
       removeAllBtnRef.current.classList.remove('loading');
       removeAllBtnRef.current.style.pointerEvents = 'auto';

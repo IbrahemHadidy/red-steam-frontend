@@ -1,14 +1,14 @@
 'use client';
 
 // React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Components
 import NavSearch from '../NavSearch';
@@ -27,10 +27,8 @@ export default function MobileSecondNav(): JSX.Element {
   // Initializattions
   const path = usePathname();
 
-  // Contexts
-  const { isLoggedIn, userData } = useContext(AuthContext);
-
   // States
+  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 

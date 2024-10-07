@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -10,6 +10,12 @@ import { useRouter } from 'next/navigation';
 
 // Toast notifications
 import { toast } from 'react-toastify';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -22,9 +28,6 @@ import convertToBase64Image from '@utils/convertToBase64Image';
 import formatDate from '@utils/formatDate';
 import getPlatform from '@utils/getPlatform';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
-
 // Images
 import externalLinkIcon from '@images/ico_external_link.gif';
 
@@ -35,13 +38,12 @@ import type { RightContentProps } from './GameContent.types';
 export default function RightContent({ game }: RightContentProps): JSX.Element {
   // Init
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { userData, fetchData, isLoggedIn } = useContext(AuthContext);
-
   // States
+  const { userData, isLoggedIn } = useAppSelector((state) => state.auth);
   const [showAllLanguages, setShowAllLanguages] = useState<boolean>(false);
   const [platform, setPlatform] = useState<string>('unknown');
 
@@ -77,7 +79,7 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
       addToCartRef.current.style.pointerEvents = 'none';
       const response = await addToCart([itemId]);
       if (response?.status === 201) {
-        fetchData();
+        await dispatch(fetchUserData(router));
       } else {
         toast.error('An error occurred. Please try again later.');
       }

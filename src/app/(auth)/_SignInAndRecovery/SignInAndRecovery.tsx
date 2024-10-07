@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -17,8 +17,11 @@ import { toast } from 'react-toastify';
 // Google ReCAPTCHA
 import ReCAPTCHA from 'react-google-recaptcha';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux
+import { useAppDispatch } from '@store/hooks';
+
+// Thunks
+import { login } from '@store/features/auth/authThunks';
 
 // Components
 import Footer from '@components/Footer/Footer';
@@ -50,15 +53,13 @@ export default function SignInAndRecovery(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
   const isViewport740 = useResponsiveViewport(740);
+  const dispatch = useAppDispatch();
   useDynamicBackground(
     !isViewport740
       ? "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
       : "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21",
     [isViewport740]
   );
-
-  // Contexts
-  const { login } = useContext(AuthContext);
 
   // States
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
@@ -165,8 +166,6 @@ export default function SignInAndRecovery(): JSX.Element {
   const handleFormSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
 
-    const token: string | null | undefined = captchaRef.current?.getValue();
-
     if (
       (!validateName(accountName) && !validateEmail(accountName)) ||
       !validatePassword(loginPassword)
@@ -185,7 +184,16 @@ export default function SignInAndRecovery(): JSX.Element {
       setIsLoading(true);
 
       // Authenticate the user
-      await login(accountName, password, rememberMeValue, token ?? '');
+      await dispatch(
+        login({
+          data: {
+            identifier: accountName,
+            password,
+            rememberMe: rememberMeValue,
+          },
+          router,
+        })
+      );
     } catch (error) {
       console.error('Error during authentication:', error);
       setErrorMessage('Error during authentication, Please try again later');
@@ -412,12 +420,6 @@ export default function SignInAndRecovery(): JSX.Element {
                   </div>
                   <div className="check-label">Remember me</div>
                 </div>
-                <ReCAPTCHA
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                  onChange={handleRecaptchaChange}
-                  theme="dark"
-                  ref={captchaRef}
-                />
                 <div className="login-dialog-field">
                   <button
                     className={`submit-button ${isLoading && 'loading'}`}

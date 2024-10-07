@@ -26,14 +26,13 @@ class UserAuth extends Api {
   public login = async (
     identifier: string,
     password: string,
-    rememberMe: boolean,
-    recaptchaToken?: string
+    rememberMe: boolean
   ): Promise<{
     data: { userData: User; isSessionLoggedIn: boolean; message: string };
     status: number;
   }> => {
     const endpoint: string = `/login`;
-    const data = { identifier, password, rememberMe, recaptchaToken };
+    const data = { identifier, password, rememberMe };
     const config: AxiosRequestConfig = {
       withCredentials: true,
     };

@@ -1,10 +1,16 @@
 'use client';
 
 // React
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// NextJS
+import { useRouter } from 'next/navigation';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Services
 import { removePhoneNumber } from '@services/user/phone';
@@ -14,8 +20,12 @@ import type { JSX } from 'react';
 import type { DeletePhoneModalProps } from './Modals.types';
 
 export default function DeletePhoneModal({ onClose }: DeletePhoneModalProps): JSX.Element {
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
+  // Init
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  // States
+  const { userData } = useAppSelector((state) => state.auth);
 
   // Refs
   const deleteBtnRef = useRef<HTMLButtonElement>(null);
@@ -26,7 +36,7 @@ export default function DeletePhoneModal({ onClose }: DeletePhoneModalProps): JS
       const response = await removePhoneNumber(userData.id);
       if (response && response.status === 200) {
         onClose();
-        fetchData();
+        await dispatch(fetchUserData(router));
       }
     }
     deleteBtnRef.current?.removeAttribute('disabled');

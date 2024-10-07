@@ -1,13 +1,17 @@
 'use client';
 
 // React
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -32,12 +36,12 @@ import type { JSX } from 'react';
 
 export default function WishlistPage(): JSX.Element {
   // Init
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { userData, fetchData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [userWishlist, setUserWishlist] = useState<Game[]>([]);
 
@@ -66,7 +70,7 @@ export default function WishlistPage(): JSX.Element {
     addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'none');
     const response = await addToCart([itemId]);
     if (response?.status === 201) {
-      fetchData();
+      await dispatch(fetchUserData(router));
     } else {
       toast.error('An error occurred. Please try again later.');
     }
@@ -83,7 +87,7 @@ export default function WishlistPage(): JSX.Element {
     addToCartBtn2Ref.current && (addToCartBtn2Ref.current.style.pointerEvents = 'none');
     const response = await addToLibrary([itemId]);
     if (response?.status === 201) {
-      fetchData();
+      await dispatch(fetchUserData(router));
     } else {
       toast.error('An error occurred. Please try again later.');
     }
@@ -98,7 +102,7 @@ export default function WishlistPage(): JSX.Element {
     removeBtnRef.current && (removeBtnRef.current.style.pointerEvents = 'none');
     const response = await removeFromWishlist([itemId]);
     if (response?.status === 200) {
-      fetchData();
+      await dispatch(fetchUserData(router));
       updateWishlist();
     } else {
       toast.error('An error occurred. Please try again later.');

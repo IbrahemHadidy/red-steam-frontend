@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { Suspense, useContext, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 // NextJS
 import dynamic from 'next/dynamic';
@@ -13,8 +13,8 @@ const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'), { ssr: f
 // Skeletons
 const LoadingSkeleton = dynamic(() => import('./Desktop/Skeleton'), { ssr: false });
 
-// Contexts
-import { AuthContext } from '@contexts/AuthContext';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -30,10 +30,8 @@ export default function Featured(): JSX.Element {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
-  // Contexts
-  const { userData } = useContext(AuthContext);
-
   // States
+  const { userData } = useAppSelector((state) => state.auth);
   const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
 
   // Get featured games
