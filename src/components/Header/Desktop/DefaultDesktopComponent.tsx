@@ -27,7 +27,7 @@ import type { JSX } from 'react';
 
 export default function DefaultDesktopComponent(): JSX.Element {
   // States
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   const handleInstallSteamBtn = (): void => {
     toast.warning('This is not the real Steam website, It is just a clone for learning purposes.');
@@ -46,7 +46,7 @@ export default function DefaultDesktopComponent(): JSX.Element {
             {/* "Install Steam" button */}
             <Button
               variant="secondary"
-              className={`mr-2 compact-button ${!isLoggedIn && 'login'}`}
+              className={`mr-2 compact-button ${!isUserLoggedIn && 'login'}`}
               onClick={handleInstallSteamBtn}
             >
               <span className="button-content button-text">
@@ -61,7 +61,7 @@ export default function DefaultDesktopComponent(): JSX.Element {
             </Button>
 
             {/* "Notifications" button */}
-            {isLoggedIn && (
+            {isUserLoggedIn && (
               <Button
                 variant="secondary"
                 className="compact-button"
@@ -74,7 +74,7 @@ export default function DefaultDesktopComponent(): JSX.Element {
             )}
 
             {/* User profile dropdown menu */}
-            {isLoggedIn ? (
+            {isUserLoggedIn ? (
               <ProfileDropdown />
             ) : (
               <div className="logging">

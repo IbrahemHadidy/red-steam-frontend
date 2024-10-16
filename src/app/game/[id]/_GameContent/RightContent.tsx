@@ -43,7 +43,7 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
   const isViewport960 = useResponsiveViewport(960);
 
   // States
-  const { userData, isLoggedIn } = useAppSelector((state) => state.auth);
+  const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [showAllLanguages, setShowAllLanguages] = useState<boolean>(false);
   const [platform, setPlatform] = useState<string>('unknown');
 
@@ -52,10 +52,10 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
 
   const [isInLibrary, isInCart]: [boolean | undefined, boolean | undefined] = useMemo(
     () => [
-      userData?.library?.some((item) => item.id === game.id),
-      userData?.cart?.some((item) => item.id === game.id),
+      currentUserData?.library?.some((item) => item.id === game.id),
+      currentUserData?.cart?.some((item) => item.id === game.id),
     ],
-    [userData, game.id]
+    [currentUserData, game.id]
   );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
     itemId: number
   ): Promise<void> => {
     e.preventDefault();
-    if (!isLoggedIn) {
+    if (!isUserLoggedIn) {
       toast.warn('Please login to add items to your cart.');
       router.push('/login');
     } else if (addToCartRef.current) {
@@ -79,7 +79,7 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
       addToCartRef.current.style.pointerEvents = 'none';
       const response = await addToCart([itemId]);
       if (response?.status === 201) {
-        await dispatch(fetchUserData(router));
+        await dispatch(fetchUserData());
       } else {
         toast.error('An error occurred. Please try again later.');
       }
@@ -90,16 +90,17 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
 
   // Recommendation reasons
   const firstDetails: JSX.Element | null =
-    (userData?.tags &&
-      userData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id)).length >=
-        3) ||
+    (currentUserData?.tags &&
+      currentUserData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id))
+        .length >= 3) ||
     game.averageRating >= 80 ? (
       <>
         <div className="recommendation-reason">Is this game relevant to you?</div>
         <div className="recommendation-reasons">
-          {userData?.tags &&
-            userData.tags.filter((tag) => game.tags?.some((gameTag) => gameTag.id === tag.id))
-              .length >= 3 && (
+          {currentUserData?.tags &&
+            currentUserData.tags.filter((tag) =>
+              game.tags?.some((gameTag) => gameTag.id === tag.id)
+            ).length >= 3 && (
               <>
                 <p className="reason-for">Players like you love this game.</p>
                 <hr />

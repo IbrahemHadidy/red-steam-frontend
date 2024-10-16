@@ -1,8 +1,7 @@
 import type { User } from '@entities/user.entity';
 export interface AuthChannelState {
-  isLoggedIn: boolean;
-  userData: User | null;
-  isReady: boolean;
+  isUserLoggedIn: boolean;
+  currentUserData: User | null;
 }
 
 export const authChannel = new BroadcastChannel('auth-channel');

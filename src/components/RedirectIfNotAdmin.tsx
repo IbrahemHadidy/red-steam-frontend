@@ -17,14 +17,14 @@ export default function RedirectIfNotAdmin(): null {
   const router = useRouter();
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!userData?.isAdmin) {
+    if (!currentUserData?.isAdmin) {
       toast.warn('You are not authorized to access this page!');
       router.push('/');
     }
-  }, [userData, router]);
+  }, [currentUserData, router]);
 
   return null;
 }

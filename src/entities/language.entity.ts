@@ -1,7 +1,7 @@
 import type { Game } from '@entities/game.entity';
 
 export interface Language {
-  id: number;
-  name: string;
-  games?: Game[];
+  readonly id: number;
+  readonly name: string;
+  readonly games?: Game[];
 }

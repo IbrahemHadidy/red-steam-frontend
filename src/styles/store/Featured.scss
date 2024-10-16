@@ -27,33 +27,26 @@
 					width: 940px !important;
 					margin-right: 10px;
 
-					.slides-container {
-						display: flex;
-						flex-direction: column;
-						height: 50px;
-						width: 684px;
-
-						.slide {
-							.main-card {
-								display: block;
-								flex-shrink: 0;
-								background-color: #000;
-								position: relative;
-								z-index: 2;
-								margin-right: 10px;
-								width: 616px;
-								height: 353px;
-								background-size: 616px 353px;
-								background-position: center center;
-								box-shadow: 5px 1px 5px 0 #000;
-							}
+					.slide {
+						.main-card {
+							display: block;
+							flex-shrink: 0;
+							background-color: #000;
+							position: relative;
+							z-index: 2;
+							margin-right: 10px;
+							width: 616px;
+							height: 353px;
+							background-size: 616px 353px;
+							background-position: center center;
+							box-shadow: 5px 1px 5px 0 #000;
 						}
+					}
 
-						.game-hover {
-							left: 100%;
-							margin-top: -45px;
-							overflow: visible;
-						}
+					.game-hover {
+						left: 100%;
+						margin-top: -45px;
+						overflow: visible;
 					}
 				}
 			}

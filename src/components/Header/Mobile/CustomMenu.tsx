@@ -38,7 +38,7 @@ export default function SteamMenu(): JSX.Element {
   const router = useRouter();
 
   // States
-  const { userData, isLoggedIn } = useAppSelector((state) => state.auth);
+  const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
   const [showNotificationDropdown, setShowNotificationDropdown] = useState<boolean>(false);
@@ -87,7 +87,7 @@ export default function SteamMenu(): JSX.Element {
           from: { height: 0, opacity: 0 },
         });
 
-        if (!isLoggedIn && menuItem.text === 'You & Friends') {
+        if (!isUserLoggedIn && menuItem.text === 'You & Friends') {
           return null;
         }
 
@@ -189,16 +189,19 @@ export default function SteamMenu(): JSX.Element {
               <div className="responsive_menu_user_area">
                 <div className="responsive_menu_user_persona persona offline">
                   <div className="playerAvatar offline">
-                    <Link href={`/user/${userData?.id}/`}>
-                      <img src={userData?.profilePicture || defaultPFP.src} alt="User Avatar" />
+                    <Link href={`/user/${currentUserData?.id}/`}>
+                      <img
+                        src={currentUserData?.profilePicture || defaultPFP.src}
+                        alt="User Avatar"
+                      />
                     </Link>
                   </div>
-                  <Link href={`/user/${userData?.id}/`}>{userData?.username}</Link>
+                  <Link href={`/user/${currentUserData?.id}/`}>{currentUserData?.username}</Link>
                 </div>
                 <div className="responsive_menu_cartwallet_area persona offline">
                   <div className="responsive_menu_user_cart">
                     <Link href="/cart">
-                      Cart&nbsp;<b>({userData?.cart?.length || 0})</b>
+                      Cart&nbsp;<b>({currentUserData?.cart?.length || 0})</b>
                     </Link>
                   </div>
                 </div>
@@ -218,7 +221,7 @@ export default function SteamMenu(): JSX.Element {
                 </div>
                 {showNotificationDropdown && <NotificationDropdown />}
               </div>
-              {!isLoggedIn && (
+              {!isUserLoggedIn && (
                 <div className="menu-item supernav">
                   <div onClick={handleLogin} className="menu-item-content">
                     <span className="menu-item-text">login</span>

@@ -3,9 +3,6 @@
 // React
 import { useRef, useState } from 'react';
 
-// NextJS
-import { useRouter } from 'next/navigation';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -21,11 +18,10 @@ import type { DeleteAccountModalProps } from './Modals.types';
 
 export default function DeleteAccountModal({ onClose }: DeleteAccountModalProps): JSX.Element {
   // Init
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -37,12 +33,12 @@ export default function DeleteAccountModal({ onClose }: DeleteAccountModalProps)
 
   const handleDelete = async (): Promise<void> => {
     deleteBtnRef.current?.setAttribute('disabled', 'true');
-    if (userData?.id) {
+    if (currentUserData?.id) {
       const response = await deleteAccount(password, setErrorMessage);
 
       if (response && response.status === 200) {
         onClose();
-        await dispatch(logout(router));
+        await dispatch(logout());
       }
     } else {
       setErrorMessage('Something went wrong. Please try again.');

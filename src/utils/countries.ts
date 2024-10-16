@@ -250,6 +250,11 @@ export const countries: [string, string][] = [
   ['ZW', 'Zimbabwe'],
 ];
 
+/**
+ * Get country name by code
+ * @param code - country code
+ * @returns country name
+ */
 export const getCountryNameByCode = (code: string): string => {
   const country: [string, string] | undefined = countries.find(
     ([countryCode]) => countryCode === code

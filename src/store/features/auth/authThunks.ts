@@ -1,26 +1,20 @@
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Redux
-import { createAsyncThunk } from '@reduxjs/toolkit';
+// Redux Hooks
+import { createAppAsyncThunk } from '@store/hooks';
 
 // Channels
-import { authChannel } from '@services/channels';
+import { authChannel } from '@store/features/auth/authChannel';
 
 // Actions
-import { setShowVerifyModal } from './authSlice';
+import { setIsVerificationEmailSent, setIsVerifyModalVisible } from './authSlice';
 
-// Services
-import {
-  autoLogin,
-  getUserData,
-  getWaitingTime,
-  login as loginUser,
-  logout as logoutUser,
-  refreshToken,
-  resendVerificationToken,
-  verificationStatus,
-} from '@services/user/auth';
+// APIs
+import userAuthApi from '@store/apis/user/auth';
+
+// Utils
+import { validateEmail, validateName, validatePassword } from '@utils/inputValidations';
 
 // Types
 import type { User } from '@entities/user.entity';
@@ -33,60 +27,51 @@ interface LoginData {
   rememberMe: boolean;
 }
 
-export const login = createAsyncThunk<
-  User,
-  { data: LoginData; router: AppRouterInstance },
-  { rejectValue: string }
->(
+export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string }>(
   'auth/login',
-  async ({ data: { identifier, password, rememberMe }, router }, { rejectWithValue }) => {
+  async ({ identifier, password, rememberMe }, { fulfillWithValue, rejectWithValue, dispatch }) => {
+    // Validate input
+    if ((!validateName(identifier) && !validateEmail(identifier)) || !validatePassword(password)) {
+      return rejectWithValue('Please provide a valid name or email and password');
+    }
+
     try {
-      const response = await loginUser(identifier, password, rememberMe);
+      const loginResult = await dispatch(
+        userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })
+      ).unwrap();
+      const currentUserData = loginResult.userData;
 
-      if (response.status === 200) {
-        const userData = response.data.userData;
+      // Store session information
+      if (loginResult.isSessionLoggedIn) sessionStorage.setItem('isSessionLogin', 'true');
 
-        // Store session information
-        if (response.data.isSessionLoggedIn) sessionStorage.setItem('isSessionLogin', 'true');
+      // Notify other tabs about the login status
+      authChannel.postMessage({ isUserLoggedIn: true, currentUserData });
 
-        // Notify other tabs about the login status
-        authChannel.postMessage({ isLoggedIn: true, userData });
-
-        // Redirect the user after a successful login
-        router.push('/');
-
-        return userData;
-      }
-
-      // Notify other tabs about the failed login
-      authChannel.postMessage({ isLoggedIn: false, userData: null });
-      return rejectWithValue('Login failed');
+      // Fulfill the promise with the user data
+      return fulfillWithValue(currentUserData);
     } catch (error) {
       // Notify other tabs about the error
-      authChannel.postMessage({ isLoggedIn: false, userData: null });
+      authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
       console.error('Error during login:', error);
-      return rejectWithValue('Error during login');
+      return rejectWithValue('Invalid login credentials');
     }
   }
 );
 
-export const logout = createAsyncThunk<void, AppRouterInstance, { rejectValue: string }>(
+export const logout = createAppAsyncThunk<void, void, { rejectValue: string }>(
   'auth/logout',
-  async (router, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       // Notify other tabs about the logout status
-      authChannel.postMessage({ isLoggedIn: false, userData: null });
+      authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
 
       // Call the logout user service
-      await logoutUser();
+      await dispatch(userAuthApi.endpoints.logout.initiate()).unwrap();
 
       // Perform any additional local state cleanup
       sessionStorage.removeItem('verificationInProgress');
       localStorage.removeItem('recentGames');
       sessionStorage.removeItem('isSessionLogin');
-
-      // Redirect the user after logout
-      router.push('/');
     } catch (error) {
       console.error('Error during logout:', error);
       return rejectWithValue('Logout failed');
@@ -94,93 +79,103 @@ export const logout = createAsyncThunk<void, AppRouterInstance, { rejectValue: s
   }
 );
 
-export const fetchUserData = createAsyncThunk<
-  User | null,
-  AppRouterInstance,
-  { rejectValue: string }
->('auth/fetchUserData', async (router, { dispatch, rejectWithValue }) => {
-  try {
-    const userData = await getUserData();
+export const fetchUserData = createAppAsyncThunk<User | null, void, { rejectValue: string }>(
+  'auth/fetchUserData',
+  async (_, { dispatch, rejectWithValue, fulfillWithValue }) => {
+    try {
+      // Fetch fresh user data
+      const currentUserData = (
+        await dispatch(userAuthApi.endpoints.updateUserData.initiate()).unwrap()
+      ).userData;
 
-    // Notify other tabs about the login status
-    if (!userData) authChannel.postMessage({ isLoggedIn: false, userData: null });
-    return userData;
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    dispatch(logout(router));
-    return rejectWithValue('Failed to fetch user data');
+      console.log('Fetched user data:', currentUserData);
+
+      // Notify other tabs about the login status
+      if (!currentUserData)
+        authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
+      return fulfillWithValue(currentUserData);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      dispatch(logout());
+      return rejectWithValue('Failed to fetch user data');
+    }
   }
-});
+);
 
-export const autoLoginOnLoad = createAsyncThunk<
-  { isLoggedIn: boolean; userData: User | null },
+export const autoLoginOnLoad = createAppAsyncThunk<
+  { isUserLoggedIn: boolean; currentUserData: User | null },
   void,
   { rejectValue: string }
->('auth/autoLogin', async (_, { rejectWithValue }) => {
+>('auth/autoLogin', async (_, { fulfillWithValue, rejectWithValue, dispatch }) => {
   try {
-    const userData = await autoLogin();
-    if (userData === null) return { isLoggedIn: false, userData: null };
-    return { isLoggedIn: true, userData };
+    const data = await dispatch(userAuthApi.endpoints.autoLogin.initiate()).unwrap();
+    if (data?.userData === null) return { isUserLoggedIn: false, currentUserData: null };
+    return fulfillWithValue({ isUserLoggedIn: true, currentUserData: data?.userData ?? null });
   } catch (error) {
     console.error('Error auto-logging in:', error);
     return rejectWithValue('Auto-login failed');
   }
 });
 
-export const refreshAuthorizationToken = createAsyncThunk<
+export const refreshAuthorizationToken = createAppAsyncThunk<
   void,
-  AppRouterInstance,
+  void,
   { state: RootState; dispatch: AppDispatch }
->('auth/refreshTokenThunk', async (router, { dispatch, getState }) => {
-  const isLoggedIn = getState().auth.isLoggedIn;
+>('auth/refreshTokenThunk', async (_, { dispatch, getState }) => {
+  const isLoggedIn = getState().auth.isUserLoggedIn;
   const isSessionLogin = sessionStorage.getItem('isSessionLogin') === 'true';
 
   if (isLoggedIn && !isSessionLogin) {
     try {
-      // Refresh token logic
-      await refreshToken();
+      // Refresh token request
+      await dispatch(userAuthApi.endpoints.refreshToken.initiate()).unwrap();
 
       // Fetch data after token is refreshed
-      await dispatch(fetchUserData(router));
+      await dispatch(fetchUserData());
 
       // Schedule next token refresh (1 hour interval)
       setTimeout(
         () => {
-          dispatch(refreshAuthorizationToken(router));
+          dispatch(refreshAuthorizationToken());
         },
         60 * 60 * 1000
       );
     } catch (error) {
       console.error('Error refreshing access token:', error);
       toast.error('Your session has expired. Please login again.');
-      dispatch(logout(router));
+      dispatch(logout());
     }
   }
 });
 
-export const checkVerificationStatus = createAsyncThunk<
-  void,
-  { userData: User | null; router: AppRouterInstance }
->('auth/checkVerificationStatus', async ({ userData, router }, { dispatch }) => {
-  if (sessionStorage.getItem('verificationInProgress') !== 'true') {
-    sessionStorage.setItem('verificationInProgress', 'true');
+export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstance>(
+  'auth/checkVerificationStatus',
+  async (router, { dispatch, getState }) => {
+    const { currentUserData, isVerificationEmailSent } = getState().auth;
+    dispatch(setIsVerifyModalVisible(true));
 
     // Resend verification token
-    if (userData) {
-      await resendVerificationToken();
+    if (currentUserData && !isVerificationEmailSent) {
+      await dispatch(userAuthApi.endpoints.resendVerificationToken.initiate()).unwrap();
+      dispatch(setIsVerificationEmailSent(true));
+      toast.info('Verification email sent. Please check your inbox.');
     }
 
-    const waitingTime = await getWaitingTime();
+    const waitingTime = await dispatch(userAuthApi.endpoints.getWaitingTime.initiate()).unwrap();
 
     const intervalId = setInterval(async () => {
       try {
-        const verificationResult = userData && (await verificationStatus());
-        if (verificationResult) {
+        const verificationResult =
+          currentUserData &&
+          (await dispatch(userAuthApi.endpoints.verificationStatus.initiate()).unwrap());
+        if (verificationResult === true) {
+          await dispatch(fetchUserData());
           clearInterval(intervalId);
           toast.success('Email verified successfully!');
           setTimeout(() => {
             router.push('/user/tags');
           });
+          dispatch(setIsVerifyModalVisible(false));
           return;
         }
       } catch (error) {
@@ -190,30 +185,32 @@ export const checkVerificationStatus = createAsyncThunk<
 
     // Handle timeout for verification
     setTimeout(() => {
-      dispatch(setShowVerifyModal(false));
       clearInterval(intervalId);
       toast.error('Email verification took too long. Please try again later.');
-      dispatch(logout(router));
+      dispatch(setIsVerifyModalVisible(false));
+      dispatch(setIsVerificationEmailSent(false));
+      dispatch(logout());
     }, waitingTime);
   }
-});
+);
 
-export const checkVerificationAndTagsStatus = createAsyncThunk<
+export const checkVerificationAndTagsStatus = createAppAsyncThunk<
   void,
-  { userData: User | null; router: AppRouterInstance }
->('auth/checkUserStatus', async ({ userData, router }) => {
-  if (userData) {
+  { router: AppRouterInstance }
+>('auth/checkUserStatus', async ({ router }, { dispatch, getState }) => {
+  const { currentUserData } = getState().auth;
+
+  if (currentUserData) {
     // Check verification status
-    if (!userData.isVerified) {
-      await resendVerificationToken();
-      toast.info('Verification email sent. Please check your inbox.');
+    if (!currentUserData.isVerified) {
+      await dispatch(checkVerificationStatus(router));
     } else {
-      const tags = userData.tags;
+      const tags = currentUserData.tags;
 
       // Check if the user has at least 3 tags
       if (!tags || tags.length < 3) {
         router.push('/user/tags');
-        toast.warn('Please add at least 3 tags to continue!');
+        toast.info('Please add at least 3 tags to continue!');
       }
     }
   }

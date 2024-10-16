@@ -1,21 +1,8 @@
-'use client';
-
-// React
-import { useEffect, useState } from 'react';
-
 // Components
 import Tab from './Tab';
 import TabContent from './TabContent';
 
-// Redux Hooks
-import { useAppSelector } from '@store/hooks';
-
-// Services
-import { getByNewest, getBySpecials, getByTopSales, getByUpcoming } from '@services/game/data';
-
 // Types
-import type { Game } from '@entities/game.entity';
-import type { JSX } from 'react';
 import type { LeftSectionProps } from '../Store.types';
 
 export default function LeftSection({
@@ -23,36 +10,11 @@ export default function LeftSection({
   handleTabClick,
   onTabHover,
   setHoveredGame,
-}: LeftSectionProps): JSX.Element {
-  // States
-  const { userData } = useAppSelector((state) => state.auth);
-  const [newAndTrending, setNewAndTrending] = useState<Game[]>([]);
-  const [popularUpcoming, setPopularUpcoming] = useState<Game[]>([]);
-  const [specials, setSpecials] = useState<Game[]>([]);
-  const [topSellers, setTopSellers] = useState<Game[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [newAndTrending, specials, topSellers, popularUpcoming] = await Promise.all([
-          getByNewest((userData && userData.library.map((game) => game.id)) || []),
-          getBySpecials((userData && userData.library.map((game) => game.id)) || []),
-          getByTopSales((userData && userData.library.map((game) => game.id)) || []),
-          getByUpcoming((userData && userData.library.map((game) => game.id)) || []),
-        ]);
-        setNewAndTrending(newAndTrending);
-        setSpecials(specials);
-        setTopSellers(topSellers);
-        setPopularUpcoming(popularUpcoming);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [userData]);
-
+  newAndTrending,
+  specials,
+  topSellers,
+  popularUpcoming,
+}: LeftSectionProps) {
   const tabsRow = [
     { tabName: 'newreleases', tabTitle: 'New & Trending' },
     { tabName: 'topsellers', tabTitle: 'Top Sellers' },
@@ -75,10 +37,7 @@ export default function LeftSection({
     { items: specials, title: 'Specials', seeMore: '/search?sort=Relevance' },
   ];
 
-  return loading ? (
-    // TODO: add loading skeleton
-    <></>
-  ) : (
+  return (
     <div className="tab-left">
       <div className="tabs-row">
         <div className="tabs-mini-slider">
@@ -97,13 +56,15 @@ export default function LeftSection({
           </div>
         </div>
       </div>
+
       <div className="tabs-content">
         {tabsContent.map(
           (tab) =>
+            tab.items &&
             tab.items.length > 0 && (
               <TabContent
                 key={tab.title}
-                items={tab.items}
+                items={tab.items ?? []}
                 title={tab.title}
                 seeMore={tab.seeMore}
                 isOpened={openedTab === tab.title}

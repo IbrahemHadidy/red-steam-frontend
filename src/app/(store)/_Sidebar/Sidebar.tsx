@@ -1,44 +1,31 @@
 'use client';
 
-// React
-import { useEffect, useState } from 'react';
-
 // NextJS
 import Link from 'next/link';
-
-// Redux Hooks
-import { useAppSelector } from '@store/hooks';
 
 // Toast notifications
 import { toast } from 'react-toastify';
 
-// Services
-import { getTags } from '@services/common/tags';
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
+// Redux Queries
+import { useGetTagsQuery } from '@store/apis/user/interaction';
 
 // Images
 import steamPromoCard from '@images/steamcards_promo_03.png';
 
 // Types
-import type { Tag } from '@entities/tag.entity';
 import type { JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
 export default function Sidebar(): JSX.Element {
   // States
-  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
-  const [yourTags, setYourTags] = useState<Tag[]>([]);
+  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
-  // Get user tags
-  useEffect(() => {
-    if (isLoggedIn) {
-      const fetchUserTags = async (): Promise<void> => {
-        const fetchedTags = await getTags(userData?.tags.map((tag) => tag.id) || []);
-        setYourTags(fetchedTags);
-      };
-
-      fetchUserTags();
-    }
-  }, [isLoggedIn, userData?.tags]);
+  // Queries
+  const { data } = useGetTagsQuery();
+  const yourTags = (data && data.tags) ?? [];
 
   // Get recently viewed games
   const recentGames: { id: number; name: string; timestamp: number }[] =
@@ -107,20 +94,20 @@ export default function Sidebar(): JSX.Element {
           </a>
         </div>
 
-        {isLoggedIn && recentlyViewedLinks.length > 0 && (
+        {isUserLoggedIn && recentlyViewedLinks.length > 0 && (
           <div className="recents" id="hom-elj">
             <div className="header">Recently Viewed</div>
             <div>{generateLinks(recentlyViewedLinks)}</div>
           </div>
         )}
 
-        {isLoggedIn && (
+        {isUserLoggedIn && tagsLinks.length > 0 && (
           <div>
             <div className="header tag">Your Tags</div>
             <div>{generateLinks(tagsLinks)}</div>
           </div>
         )}
-        {/* Browse Categories section */}
+
         <div>
           <div className="header">Browse Categories</div>
           <div>{generateLinks(categoryLinks)}</div>

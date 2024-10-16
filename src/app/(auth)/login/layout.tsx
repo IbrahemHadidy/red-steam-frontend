@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 interface LoginLayoutProps {
   children: ReactNode;
 }
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
   description: 'Sign In to Red Steam',
 };
 
-export default function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
+export default function LoginLayout({ children }: LoginLayoutProps) {
   return <>{children}</>;
 }

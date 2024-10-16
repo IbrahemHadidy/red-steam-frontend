@@ -13,6 +13,10 @@ export interface LeftSectionProps {
   hoveredTabIndex: number | null;
   onTabHover: (index: number | null) => void;
   setHoveredGame: (game: Game | null) => void;
+  newAndTrending: Game[];
+  specials: Game[];
+  topSellers: Game[];
+  popularUpcoming: Game[];
 }
 
 export interface RightSectionProps {

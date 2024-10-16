@@ -17,14 +17,14 @@ export default function RedirectIfLoggedIn(): null {
   const router = useRouter();
 
   // States
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isUserLoggedIn) {
       toast.info('You are already logged in, redirecting to home page...');
       router.push('/');
     }
-  }, [isLoggedIn, router]);
+  }, [isUserLoggedIn, router]);
 
   return null;
 }

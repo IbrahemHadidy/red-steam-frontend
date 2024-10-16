@@ -14,8 +14,8 @@ import { animated, useSpring } from 'react-spring';
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
-// Services
-import { menuData, navigationItems } from '@services/menus/menuData';
+// Static Data
+import { menuData, navigationItems } from './menuData';
 
 // Components
 import NavSearch from '../NavSearch';
@@ -34,7 +34,7 @@ export default function DesktopSecondNav(): JSX.Element {
   const pathname = usePathname();
 
   // States
-  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 
@@ -77,15 +77,15 @@ export default function DesktopSecondNav(): JSX.Element {
     <>
       <div className="d-none d-md-block mx-auto myNavSec">
         <div className="wishlist-cart-container">
-          {isLoggedIn && userData && userData?.wishlist && (
+          {isUserLoggedIn && currentUserData && currentUserData?.wishlist && (
             <div className="wishlist-Link-div">
               <Link className="wishlist-link" href="/wishlist">
                 Wishlist&nbsp;
-                {userData.wishlist.length > 0 && `(${userData?.wishlist?.length})`}
+                {currentUserData.wishlist.length > 0 && `(${currentUserData?.wishlist?.length})`}
               </Link>
             </div>
           )}
-          {isLoggedIn && userData && userData?.cart && (
+          {isUserLoggedIn && currentUserData && currentUserData?.cart && (
             <div className="cart-Link-div">
               <Link className="cart-link" href="/cart">
                 <Image
@@ -98,17 +98,17 @@ export default function DesktopSecondNav(): JSX.Element {
                   }}
                 />
                 &nbsp;Cart&nbsp;
-                {userData.cart.length > 0 && `(${userData?.cart?.length})`}
+                {currentUserData.cart.length > 0 && `(${currentUserData?.cart?.length})`}
               </Link>
             </div>
           )}
         </div>
         <nav className="navbar navbar-expand-sm navbarBg">
           <ul className="navbar-nav">
-            {isLoggedIn && (
+            {isUserLoggedIn && (
               <img
                 className="profile-picture"
-                src={userData?.profilePicture || defaultPFP.src}
+                src={currentUserData?.profilePicture || defaultPFP.src}
                 alt="Avatar"
               />
             )}
@@ -121,16 +121,16 @@ export default function DesktopSecondNav(): JSX.Element {
               >
                 <a
                   className={`nav-link navBarItem ${
-                    menuTitle === 'Your Store' && isLoggedIn ? 'special-class' : ''
+                    menuTitle === 'Your Store' && isUserLoggedIn ? 'special-class' : ''
                   }`}
                 >
                   {menuTitle}
                 </a>
                 <animated.div
-                  className={`dropdown-menu ${menuTitle}-div ${isLoggedIn ? 'categoryfix' : ''}`}
+                  className={`dropdown-menu ${menuTitle}-div ${isUserLoggedIn ? 'categoryfix' : ''}`}
                   style={fadeAnimations[menuTitle]}
                 >
-                  {isLoggedIn && openMenu === 'Your Store' && (
+                  {isUserLoggedIn && openMenu === 'Your Store' && (
                     <>
                       {Object.entries(categoryGroups).map(
                         (
@@ -153,7 +153,7 @@ export default function DesktopSecondNav(): JSX.Element {
                     </>
                   )}
 
-                  {!isLoggedIn && openMenu === 'Your Store' && (
+                  {!isUserLoggedIn && openMenu === 'Your Store' && (
                     <div className="category-div store-div" style={{ marginTop: '-10px' }}>
                       <Link className="menuItem custom-label" href="/login">
                         Home

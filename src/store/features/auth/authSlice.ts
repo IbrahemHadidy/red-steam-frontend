@@ -1,88 +1,129 @@
 // Redux
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 
 // Thunks
+import { checkNameAndPassword } from '../user/signup/signupThunks';
 import { autoLoginOnLoad, fetchUserData, login, logout } from './authThunks';
 
 // Types
 import type { User } from '@entities/user.entity';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface AuthState {
-  showVerifyModal: boolean;
-  isLoggedIn: boolean;
-  userData: User | null;
-  isReady: boolean;
+interface AuthState {
+  readonly authOnLoadIntialized: boolean;
+  readonly isVerificationEmailSent: boolean;
+  readonly isVerifyModalVisible: boolean;
+  readonly isUserLoggedIn: boolean;
+  readonly currentUserData: User | null;
+  readonly isAuthInitialized: boolean;
 }
 
 // Initial state
 const authState: AuthState = {
-  showVerifyModal: false,
-  isLoggedIn: false,
-  userData: null,
-  isReady: false,
+  authOnLoadIntialized: false,
+  isVerificationEmailSent: false,
+  isVerifyModalVisible: false,
+  isUserLoggedIn: false,
+  currentUserData: null,
+  isAuthInitialized: false,
 };
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState: authState,
+
   reducers: {
-    setShowVerifyModal: (state, action: PayloadAction<boolean>) => {
-      state.showVerifyModal = action.payload;
+    setOnLoadInitialized: (state, action: PayloadAction<boolean>) => {
+      state.authOnLoadIntialized = action.payload;
     },
-    setIsLoggedIn: (state, action: PayloadAction<boolean>) => {
-      state.isLoggedIn = action.payload;
+    setIsVerificationEmailSent: (state, action: PayloadAction<boolean>) => {
+      state.isVerificationEmailSent = action.payload;
     },
-    setUserData: (state, action: PayloadAction<User | null>) => {
-      state.userData = action.payload;
+    setIsVerifyModalVisible: (state, action: PayloadAction<boolean>) => {
+      state.isVerifyModalVisible = action.payload;
     },
-    setIsReady: (state, action: PayloadAction<boolean>) => {
-      state.isReady = action.payload;
+    setIsUserLoggedIn: (state, action: PayloadAction<boolean>) => {
+      state.isUserLoggedIn = action.payload;
+    },
+    setCurrentUserData: (state, action: PayloadAction<User | null>) => {
+      state.currentUserData = action.payload;
+    },
+    setAuthInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isAuthInitialized = action.payload;
     },
   },
+
   extraReducers: (builder) => {
     builder
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoggedIn = true;
-        state.userData = action.payload;
-        state.isReady = true;
+      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+        state.currentUserData = action.payload;
+        state.isUserLoggedIn = true;
+        state.isAuthInitialized = true;
       })
       .addCase(login.rejected, (state) => {
-        state.isLoggedIn = false;
-        state.userData = null;
-        state.isReady = true;
+        state.currentUserData = null;
+        state.isUserLoggedIn = false;
+        state.isAuthInitialized = true;
       })
-      .addCase(autoLoginOnLoad.fulfilled, (state, action) => {
-        state.isLoggedIn = action.payload.isLoggedIn;
-        state.userData = action.payload.userData;
-        state.isReady = true;
+
+      .addCase(checkNameAndPassword.fulfilled, (state, action: PayloadAction<User>) => {
+        state.currentUserData = action.payload;
+        state.isUserLoggedIn = true;
+        state.isAuthInitialized = true;
       })
+
+      .addCase(
+        autoLoginOnLoad.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ isUserLoggedIn: boolean; currentUserData: User | null }>
+        ) => {
+          const { isUserLoggedIn, currentUserData } = action.payload;
+
+          state.currentUserData = currentUserData;
+          state.isUserLoggedIn = isUserLoggedIn;
+          state.isAuthInitialized = true;
+        }
+      )
       .addCase(autoLoginOnLoad.rejected, (state) => {
-        state.isLoggedIn = false;
-        state.userData = null;
-        state.isReady = true;
+        state.currentUserData = null;
+        state.isUserLoggedIn = false;
+        state.isAuthInitialized = true;
       })
+
       .addCase(logout.fulfilled, (state) => {
-        state.isLoggedIn = false;
-        state.userData = null;
-        state.isReady = true;
+        state.currentUserData = null;
+        state.isUserLoggedIn = false;
+        state.isAuthInitialized = true;
       })
       .addCase(logout.rejected, (state) => {
-        state.isLoggedIn = false;
-        state.userData = null;
-        state.isReady = true;
+        state.currentUserData = null;
+        state.isUserLoggedIn = false;
+        state.isAuthInitialized = true;
       })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
-        state.isLoggedIn = true;
-        state.userData = action.payload;
-        state.isReady = true;
+
+      .addCase(fetchUserData.fulfilled, (state, action: PayloadAction<User | null>) => {
+        state.currentUserData = action.payload;
+        state.isUserLoggedIn = true;
+        state.isAuthInitialized = true;
       })
       .addCase(fetchUserData.rejected, (state) => {
-        state.isLoggedIn = false;
-        state.userData = null;
-        state.isReady = true;
+        state.currentUserData = null;
+        state.isUserLoggedIn = false;
+        state.isAuthInitialized = true;
       });
   },
 });
 
-export const { setShowVerifyModal, setIsLoggedIn, setUserData, setIsReady } = authSlice.actions;
-export default authSlice.reducer;
+// Listeners actions
+export const onLoadIntialization = createAction('auth/onLoadIntialization');
+
+export const {
+  setOnLoadInitialized,
+  setIsVerificationEmailSent,
+  setIsVerifyModalVisible,
+  setIsUserLoggedIn,
+  setCurrentUserData,
+  setAuthInitialized,
+} = authSlice.actions;
+export default authSlice;

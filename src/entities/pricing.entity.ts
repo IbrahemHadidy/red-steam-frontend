@@ -1,15 +1,15 @@
 import type { Game } from '@entities/game.entity';
 
 export interface Pricing {
-  id: number;
-  free: boolean;
-  basePrice: string;
-  discount?: boolean;
-  discountPercentage?: number;
-  discountPrice?: string;
-  discountStartDate?: Date;
-  discountEndDate?: Date;
-  offerType?: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
-  price: string;
-  game?: Game;
+  readonly id: number;
+  readonly free: boolean;
+  readonly basePrice: string;
+  readonly discount?: boolean;
+  readonly discountPercentage?: number;
+  readonly discountPrice?: string;
+  readonly discountStartDate?: Date;
+  readonly discountEndDate?: Date;
+  readonly offerType?: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
+  readonly price: string;
+  readonly game?: Game;
 }

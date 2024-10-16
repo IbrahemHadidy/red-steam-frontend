@@ -27,7 +27,7 @@ export default function ProfileDropdown(): JSX.Element {
   const router = useRouter();
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<string | null>(null);
 
   const handleDropdownToggle = (e: MouseEvent<HTMLElement>, eventKey: string): void => {
@@ -69,18 +69,18 @@ export default function ProfileDropdown(): JSX.Element {
   return (
     <>
       {renderNavDropdownWithClick(
-        userData?.username || 'profile',
+        currentUserData?.username || 'profile',
         '4',
         sharedData.minorMenuItems.map((item) => item.link),
         sharedData.minorMenuItems.map((item) => item.text)
       )}
       <Link href="/user/settings" className="compact-profile-link">
         <img
-          src={userData?.profilePicture || defaultPFP.src}
+          src={currentUserData?.profilePicture || defaultPFP.src}
           alt="Profile"
           width="40"
           height="40"
-          className={`profile-pic ${userData?.profilePicture ? '' : 'no-pfp'}`}
+          className={`profile-pic ${currentUserData?.profilePicture ? '' : 'no-pfp'}`}
         />
       </Link>
     </>

@@ -113,6 +113,11 @@
         letter-spacing: 2px;
         margin-top: 30px;
         margin-bottom: 8px;
+
+        .transparent {
+          color: transparent;
+          user-select: none;
+        }
       }
 
       .review-checkout-item {
@@ -233,10 +238,15 @@
           font-size: 15px;
         }
 
-        .payment-options {
-          color: #e9a0a0;
-          font-weight: bold;
-          font-size: 25px;
+        .payment-options-container {
+          display: flex;
+          flex-direction: column;
+
+          .payment-options {
+            color: #e9a0a0;
+            font-weight: bold;
+            font-size: 25px;
+          }
         }
 
         .verify-country-notes {
@@ -414,6 +424,15 @@
             line-height: 30px;
             text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.1);
           }
+        }
+      }
+
+      .checkout-btn-container {
+        float: right;
+        display: block;
+
+        &.hidden {
+          display: none;
         }
       }
 

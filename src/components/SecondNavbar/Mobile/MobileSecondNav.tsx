@@ -13,8 +13,8 @@ import { useAppSelector } from '@store/hooks';
 // Components
 import NavSearch from '../NavSearch';
 
-// Services
-import { menuData, navigationItems } from '@services/menus/menuData-mobile';
+// Static Data
+import { menuData, navigationItems } from './menuData-mobile';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
@@ -28,7 +28,7 @@ export default function MobileSecondNav(): JSX.Element {
   const path = usePathname();
 
   // States
-  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 
@@ -70,10 +70,10 @@ export default function MobileSecondNav(): JSX.Element {
         <div>
           <ul className="navbar-nav navbar-nav-mobile">
             {/* TODO: render real profile image from server */}
-            {isLoggedIn && (
+            {isUserLoggedIn && (
               <img
                 className="profile_picture-mobile"
-                src={userData?.profilePicture || defaultPFP.src}
+                src={currentUserData?.profilePicture || defaultPFP.src}
                 alt="Avatar"
               />
             )}
@@ -81,7 +81,7 @@ export default function MobileSecondNav(): JSX.Element {
               <li key={idx} className="nav-item nav-item-mobile dropdown">
                 <a
                   className={`nav-link navBarItem navBarItem-mobile ${
-                    menuTitle === 'Your Store' && isLoggedIn ? 'special-class' : ''
+                    menuTitle === 'Your Store' && isUserLoggedIn ? 'special-class' : ''
                   }`}
                   href="#"
                   onClick={() => handleMenuClick(menuTitle)} // Handle click to open/close the menu
@@ -89,7 +89,7 @@ export default function MobileSecondNav(): JSX.Element {
                   {menuTitle}
                 </a>
                 {/* Conditionally render the dropdown menu based on the openMenu state */}
-                {isLoggedIn && openMenu === 'Your Store' && (
+                {isUserLoggedIn && openMenu === 'Your Store' && (
                   <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     {Object.entries(categoryGroups).map(
                       ([category, categoryItems], categoryIndex) => (
@@ -108,7 +108,7 @@ export default function MobileSecondNav(): JSX.Element {
                     )}
                   </div>
                 )}
-                {!isLoggedIn && openMenu === 'Your Store' && (
+                {!isUserLoggedIn && openMenu === 'Your Store' && (
                   <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     <div className="category-div store-div" style={{ marginTop: '-10px' }}>
                       <Link className="menuItem custom-label" href="/">

@@ -22,7 +22,7 @@ import type { GameOwnedProps } from '../MediaAndSummary.types';
 
 export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [hasReviewed, setHasReviewed] = useState<boolean>(false);
   const [reviewId, setReviewId] = useState<number | null>(null);
   const [positive, setPositive] = useState<boolean | null>(null);
@@ -43,7 +43,7 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
     };
 
     checkReview();
-  }, [userData, game.id]);
+  }, [currentUserData, game.id]);
 
   useEffect(() => {
     if (content === '' || positive === null) {
@@ -139,7 +139,7 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
               <div className="avatar-block">
                 <Link href={`/id/${game.id}`}>
                   <div className="avatar online">
-                    <img src={userData?.profilePicture || defaultPFP.src} alt="pfp" />
+                    <img src={currentUserData?.profilePicture || defaultPFP.src} alt="pfp" />
                   </div>
                 </Link>
               </div>

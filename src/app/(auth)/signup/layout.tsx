@@ -5,7 +5,7 @@ import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 interface SignUpLayoutProps {
   children: ReactNode;
 }
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: 'Create your Red Steam account',
 };
 
-export default function SignUpLayout({ children }: SignUpLayoutProps): JSX.Element {
+export default function SignUpLayout({ children }: SignUpLayoutProps) {
   return (
     <>
       <RedirectIfLoggedIn />

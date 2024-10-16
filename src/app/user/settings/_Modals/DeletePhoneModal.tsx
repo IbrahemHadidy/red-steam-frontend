@@ -3,9 +3,6 @@
 // React
 import { useRef } from 'react';
 
-// NextJS
-import { useRouter } from 'next/navigation';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -21,22 +18,21 @@ import type { DeletePhoneModalProps } from './Modals.types';
 
 export default function DeletePhoneModal({ onClose }: DeletePhoneModalProps): JSX.Element {
   // Init
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
 
   // Refs
   const deleteBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleDelete = async (): Promise<void> => {
     deleteBtnRef.current?.setAttribute('disabled', 'true');
-    if (userData) {
-      const response = await removePhoneNumber(userData.id);
+    if (currentUserData) {
+      const response = await removePhoneNumber(currentUserData.id);
       if (response && response.status === 200) {
         onClose();
-        await dispatch(fetchUserData(router));
+        await dispatch(fetchUserData());
       }
     }
     deleteBtnRef.current?.removeAttribute('disabled');

@@ -1,29 +1,25 @@
 'use client';
 
-// React
-import { Suspense, useEffect, useState } from 'react';
-
 // NextJS
 import dynamic from 'next/dynamic';
 
 // Components
-const FeaturedDesktop = dynamic(() => import('./Desktop/FeaturedDesktop'), { ssr: false });
-const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'), { ssr: false });
+const FeaturedDesktop = dynamic(() => import('./Desktop/FeaturedDesktop'), {
+  loading: () => <LoadingSkeleton />,
+});
+const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'));
 
 // Skeletons
-const LoadingSkeleton = dynamic(() => import('./Desktop/Skeleton'), { ssr: false });
+const LoadingSkeleton = dynamic(() => import('./Desktop/Skeleton'));
 
 // Redux Hooks
+import { useGetFeaturedQuery } from '@store/apis/game/data';
 import { useAppSelector } from '@store/hooks';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
-// Services
-import { getFeatured } from '@services/game/data';
-
 // Types
-import type { Game } from '@entities/game.entity';
 import type { JSX } from 'react';
 
 export default function Featured(): JSX.Element {
@@ -31,29 +27,24 @@ export default function Featured(): JSX.Element {
   const isViewport960 = useResponsiveViewport(960);
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
-  const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
+  const { currentUserData } = useAppSelector((state) => state.auth);
 
-  // Get featured games
-  useEffect(() => {
-    const fetchFeatured = async (): Promise<void> => {
-      const data = await getFeatured(
-        (userData && userData.library.map((game) => game.id)) || [],
-        12
-      );
-      setFeaturedGames(data);
-    };
-    fetchFeatured();
-  }, [userData]);
+  // Queries
+  const { data: featuredGames, isLoading } = useGetFeaturedQuery({
+    excludedGames: currentUserData?.library.map((game) => game.id) ?? [],
+    limit: 12,
+  });
 
   return (
     <>
       {isViewport960 ? (
-        <FeaturedMobile featuredGames={featuredGames} />
+        isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          <FeaturedMobile featuredGames={featuredGames ?? []} />
+        )
       ) : (
-        <Suspense fallback={<LoadingSkeleton />}>
-          <FeaturedDesktop featuredGames={featuredGames} />
-        </Suspense>
+        <FeaturedDesktop featuredGames={featuredGames ?? []} />
       )}
     </>
   );

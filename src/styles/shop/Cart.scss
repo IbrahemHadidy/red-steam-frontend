@@ -215,6 +215,7 @@
                   &.loading {
                     opacity: 0.5;
                     cursor: default;
+                    pointer-events: none;
                   }
                 }
               }
@@ -279,6 +280,7 @@
           &.loading {
             opacity: 0.5;
             cursor: default;
+            pointer-events: none;
           }
         }
       }

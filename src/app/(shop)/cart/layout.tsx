@@ -8,7 +8,7 @@ import '@styles/shop/Cart.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 interface CartLayoutProps {
   children: ReactNode;
 }
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: 'View your shopping cart',
 };
 
-export default function CartLayout({ children }: CartLayoutProps): JSX.Element {
+export default function CartLayout({ children }: CartLayoutProps) {
   return (
     <>
       <Header />

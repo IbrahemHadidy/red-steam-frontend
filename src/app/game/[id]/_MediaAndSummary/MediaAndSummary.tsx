@@ -34,7 +34,7 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
   const isViewport960 = useResponsiveViewport(960);
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
   const [autoplayInitialized, setAutoplayInitialized] = useState<boolean>(false);
@@ -48,8 +48,8 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
   const slideAreaRef = useRef<HTMLDivElement | null>(null);
 
   const isInLibrary: boolean | undefined = useMemo(
-    () => userData?.library?.some((item) => item.id === game.id),
-    [userData, game.id]
+    () => currentUserData?.library?.some((item) => item.id === game.id),
+    [currentUserData, game.id]
   );
 
   // filter screenshots only number from the media

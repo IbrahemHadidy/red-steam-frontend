@@ -17,7 +17,7 @@ import type { JSX } from 'react';
 
 export default function VerifyModal(): JSX.Element {
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
   const [totalHeight, setTotalHeight] = useState(0);
 
@@ -65,7 +65,7 @@ export default function VerifyModal(): JSX.Element {
               <div className="verification-header">
                 <div className="verification-subheader">
                   Check&nbsp;
-                  <span className="verification-email">{userData?.email || ''}</span>
+                  <span className="verification-email">{currentUserData?.email || ''}</span>
                   &nbsp;for an email from Red Steam to verify and access your account.
                 </div>
                 <div className="loadding-wrapper">
@@ -97,13 +97,13 @@ export default function VerifyModal(): JSX.Element {
                 <ul>
                   <li>
                     Double check that your email&nbsp;
-                    <span>{userData?.email || ''}</span>
+                    <span>{currentUserData?.email || ''}</span>
                     &nbsp;is accurate and doesn't contain any typos.
                   </li>
                   <li>
-                    Please check both your spam and trash folder for an email
-                    from "steam.redclone@gmail.com". Sometimes emails can be incorrectly identified
-                    as spam by your email provider.
+                    Please check both your spam and trash folder for an email from
+                    "steam.redclone@gmail.com". Sometimes emails can be incorrectly identified as
+                    spam by your email provider.
                   </li>
                   <li>
                     Wait a few minutes. Sometimes email servers are slow and can take a bit of time

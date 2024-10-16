@@ -47,7 +47,7 @@ const SearchPage: FC = (): JSX.Element => {
   const isViewport960 = useResponsiveViewport(960);
 
   // States
-  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>('Relevance');
   const [searchValue, setSearchValue] = useState<string>('enter game name');
@@ -132,7 +132,7 @@ const SearchPage: FC = (): JSX.Element => {
     const wishlistFilter = filters.preference.find((f) => f.name === 'Hide items in my wishlist');
     const cartFilter = filters.preference.find((f) => f.name === 'Hide items in my cart');
     const libraryFilter = filters.preference.find((f) => f.name === 'Hide items in my library');
-    if (isLoggedIn && !wishlistFilter && !cartFilter && !libraryFilter) {
+    if (isUserLoggedIn && !wishlistFilter && !cartFilter && !libraryFilter) {
       setFilters((prevFilters) => ({
         ...prevFilters,
         preference: [
@@ -143,7 +143,7 @@ const SearchPage: FC = (): JSX.Element => {
         ],
       }));
     }
-  }, [isLoggedIn, filters.preference]);
+  }, [isUserLoggedIn, filters.preference]);
 
   // Select options
   const selectOptions: string[] = [
@@ -479,7 +479,7 @@ const SearchPage: FC = (): JSX.Element => {
     }
 
     // Get excluded games ids
-    if (userData) {
+    if (currentUserData) {
       const newExcludedIds: Set<number> = new Set();
 
       const wishlistFilter = filters.preference.find((f) => f.name === 'Hide items in my wishlist');
@@ -487,13 +487,13 @@ const SearchPage: FC = (): JSX.Element => {
       const libraryFilter = filters.preference.find((f) => f.name === 'Hide items in my library');
 
       if (wishlistFilter && wishlistFilter.check === 'included') {
-        userData.wishlist.forEach((item) => newExcludedIds.add(item.id));
+        currentUserData.wishlist.forEach((item) => newExcludedIds.add(item.id));
       }
       if (cartFilter && cartFilter.check === 'included') {
-        userData.cart.forEach((item) => newExcludedIds.add(item.id));
+        currentUserData.cart.forEach((item) => newExcludedIds.add(item.id));
       }
       if (libraryFilter && libraryFilter.check === 'included') {
-        userData.library.forEach((item) => newExcludedIds.add(item.id));
+        currentUserData.library.forEach((item) => newExcludedIds.add(item.id));
       }
 
       // Update searchData with the newly computed excluded game IDs.
@@ -517,7 +517,7 @@ const SearchPage: FC = (): JSX.Element => {
     ranges,
     savedSearchValue,
     sortOption,
-    userData,
+    currentUserData,
   ]);
 
   // Handle filter updates

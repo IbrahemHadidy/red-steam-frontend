@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 interface ForgotPasswordLayoutProps {
   children: ReactNode;
 }
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
   description: 'Recover your account name and password',
 };
 
-export default function ForgotPasswordLayout({ children }: ForgotPasswordLayoutProps): JSX.Element {
+export default function ForgotPasswordLayout({ children }: ForgotPasswordLayoutProps) {
   return <>{children}</>;
 }

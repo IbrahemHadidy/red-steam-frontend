@@ -1,9 +1,9 @@
 import type { Game } from '@entities/game.entity';
 
 export interface Feature {
-  id: number;
-  name: string;
-  link: string;
-  icon: { type: string; data: number[] };
-  games?: Game[];
+  readonly id: number;
+  readonly name: string;
+  readonly link: string;
+  readonly icon: { type: string; data: number[] };
+  readonly games?: Game[];
 }

@@ -33,9 +33,9 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
   const dispatch = useAppDispatch();
 
   // States
-  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isAddedToWishlist, setIsAddedToWishlist] = useState<boolean>(
-    !!userData?.wishlist?.some((item) => item.id === game.id)
+    !!currentUserData?.wishlist?.some((item) => item.id === game.id)
   );
 
   // Refs
@@ -43,10 +43,10 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
 
   const [isInLibrary, isInCart]: [boolean | undefined, boolean | undefined] = useMemo(
     () => [
-      userData?.library?.some((item) => item.id === game.id),
-      userData?.cart?.some((item) => item.id === game.id),
+      currentUserData?.library?.some((item) => item.id === game.id),
+      currentUserData?.cart?.some((item) => item.id === game.id),
     ],
-    [userData, game.id]
+    [currentUserData, game.id]
   );
 
   const handleRemoveFromWishlist = async (itemId: number): Promise<void> => {
@@ -55,7 +55,7 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
       addedWislist.current.style.pointerEvents = 'none';
       const response = await removeFromWishlist([itemId]);
       if (response?.status === 200) {
-        await dispatch(fetchUserData(router));
+        await dispatch(fetchUserData());
         setIsAddedToWishlist(false);
       }
       addedWislist.current.classList.remove('loading');
@@ -69,7 +69,7 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
       addedWislist.current.style.pointerEvents = 'none';
       const response = await addToWishlist([itemId]);
       if (response?.status === 201) {
-        await dispatch(fetchUserData(router));
+        await dispatch(fetchUserData());
         setIsAddedToWishlist(true);
       }
       addedWislist.current.classList.remove('loading');
@@ -101,14 +101,14 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
 
   return (
     <div className="queue-area">
-      {!isLoggedIn && (
+      {!isUserLoggedIn && (
         <div className="queue-actions">
           <Link href="/login">Sign in</Link> to add this item to your wishlist, follow it, or mark
           it as ignored
         </div>
       )}
 
-      {isLoggedIn && (
+      {isUserLoggedIn && (
         <div className="queue-actions">
           {!isViewport630 && (
             <div className="view-queue-button">

@@ -35,6 +35,7 @@
   h2 {
     color: #e5e5e5;
   }
+
   p {
     font-size: 12px;
     color: #e5e5e5;
@@ -102,12 +103,15 @@
           &:nth-child(1) {
             animation-delay: 0s;
           }
+
           &:nth-child(2) {
             animation-delay: 1s;
           }
+
           &:nth-child(3) {
             animation-delay: 2s;
           }
+
           &:nth-child(4) {
             animation-delay: 3s;
           }
@@ -162,6 +166,7 @@
             background-color: rgba(0, 0, 0, 0.2);
             padding: 2px;
             display: flex;
+
             .game-purchase-action {
               position: static;
               overflow: hidden;
@@ -180,7 +185,7 @@
 
         .platform-icons {
           margin-bottom: 10px;
-          
+
           .platform-img {
             display: inline-block;
             width: 20px;
@@ -196,7 +201,7 @@
             }
           }
 
-          > * {
+          >* {
             vertical-align: top;
           }
         }
@@ -219,6 +224,10 @@
               border-radius: 3px;
               cursor: pointer;
               height: 13px;
+
+              p {
+                margin-top: -1px;
+              }
             }
           }
 
@@ -243,6 +252,7 @@
               &.loading {
                 opacity: 0.5;
                 cursor: default;
+                pointer-events: none;
               }
             }
           }
@@ -256,12 +266,15 @@
   0% {
     opacity: 0;
   }
+
   3% {
     opacity: 1;
   }
+
   28% {
     opacity: 1;
   }
+
   31% {
     opacity: 0;
   }

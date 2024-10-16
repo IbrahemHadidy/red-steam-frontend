@@ -6,85 +6,85 @@ import type { Review } from '@entities/review.entity';
 import type { Tag } from '@entities/tag.entity';
 
 export interface Game {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  releaseDate: Date;
-  featured: boolean;
-  publishers?: Publisher[];
-  developers?: Developer[];
-  thumbnailEntries: ThumbnailsEntry;
-  imageEntries: ImageEntry[];
-  videoEntries: VideoEntry[];
-  tags?: Tag[];
-  pricing?: Pricing;
-  features?: Feature[];
-  languages?: Language[];
-  languageSupport: LanguageSupportEntry[];
-  platformEntries: PlatformEntry;
-  link: string | null;
-  about: string;
-  mature: boolean;
-  matureDescription: string;
-  systemRequirements: SystemRequirementsEntry;
-  legal: string;
-  reviews?: Review[];
-  totalSales: number;
-  averageRating: number;
-  reviewsCount: number;
+  readonly id: number;
+  readonly name: string;
+  readonly category: string;
+  readonly description: string;
+  readonly releaseDate: Date;
+  readonly featured: boolean;
+  readonly publishers?: Publisher[];
+  readonly developers?: Developer[];
+  readonly thumbnailEntries: ThumbnailsEntry;
+  readonly imageEntries: ImageEntry[];
+  readonly videoEntries: VideoEntry[];
+  readonly tags?: Tag[];
+  readonly pricing?: Pricing;
+  readonly features?: Feature[];
+  readonly languages?: Language[];
+  readonly languageSupport: LanguageSupportEntry[];
+  readonly platformEntries: PlatformEntry;
+  readonly link: string | null;
+  readonly about: string;
+  readonly mature: boolean;
+  readonly matureDescription: string;
+  readonly systemRequirements: SystemRequirementsEntry;
+  readonly legal: string;
+  readonly reviews?: Review[];
+  readonly totalSales: number;
+  readonly averageRating: number;
+  readonly reviewsCount: number;
 }
 
 export interface ThumbnailsEntry {
-  mainImage: string;
-  backgroundImage: string;
-  menuImg: string;
-  horizontalHeaderImage: string;
-  verticalHeaderImage: string;
-  smallHeaderImage: string;
-  searchImage: string;
-  tabImage: string;
+  readonly mainImage: string;
+  readonly backgroundImage: string;
+  readonly menuImg: string;
+  readonly horizontalHeaderImage: string;
+  readonly verticalHeaderImage: string;
+  readonly smallHeaderImage: string;
+  readonly searchImage: string;
+  readonly tabImage: string;
 }
 
 export interface ImageEntry {
-  link: string;
-  featured?: boolean;
-  order: number;
+  readonly link: string;
+  readonly featured?: boolean;
+  readonly order: number;
 }
 
 export interface VideoEntry {
-  link: string;
-  posterLink: string;
-  order: number;
+  readonly link: string;
+  readonly posterLink: string;
+  readonly order: number;
 }
 
 export interface LanguageSupportEntry {
-  name: string;
-  interface: boolean;
-  fullAudio: boolean;
-  subtitles: boolean;
+  readonly name: string;
+  readonly interface: boolean;
+  readonly fullAudio: boolean;
+  readonly subtitles: boolean;
 }
 
 export interface PlatformEntry {
-  win: boolean;
-  mac: boolean;
+  readonly win: boolean;
+  readonly mac: boolean;
 }
 
 export interface SystemRequirementsEntry {
-  req64?: boolean;
-  mini: SystemRequirementsDetails;
-  recommended: SystemRequirementsDetails;
+  readonly req64?: boolean;
+  readonly mini: SystemRequirementsDetails;
+  readonly recommended: SystemRequirementsDetails;
 }
 
 export interface SystemRequirementsDetails {
-  os?: string;
-  cpu?: string;
-  ram?: string;
-  gpu?: string;
-  dx?: string;
-  network?: string;
-  storage?: string;
-  additionalNotes?: string;
-  soundCard?: string;
-  vrSupport?: string;
+  readonly os?: string;
+  readonly cpu?: string;
+  readonly ram?: string;
+  readonly gpu?: string;
+  readonly dx?: string;
+  readonly network?: string;
+  readonly storage?: string;
+  readonly additionalNotes?: string;
+  readonly soundCard?: string;
+  readonly vrSupport?: string;
 }

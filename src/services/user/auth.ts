@@ -48,12 +48,8 @@ class UserAuth extends Api {
       withCredentials: true,
     };
 
-    try {
-      const response: AxiosResponse = await this.post(endpoint, null, config, false);
-      return response.data.userData;
-    } catch (error) {
-      return null;
-    }
+    const response: AxiosResponse = await this.post(endpoint, null, config, false);
+    return response.data.userData;
   };
 
   public logout = async (): Promise<void> => {
@@ -75,7 +71,7 @@ class UserAuth extends Api {
 
   public getUserData = async (): Promise<User> => {
     const endpoint: string = `/user-data`;
-    const data = {
+    const data: AxiosRequestConfig = {
       withCredentials: true,
     };
 
@@ -106,7 +102,7 @@ class UserAuth extends Api {
     return response.data.verified;
   };
 
-  public verifyEmail = async (token: string, username: string): Promise<{ success: boolean }> => {
+  public verifyEmail = async (token: string, username: string): Promise<{ message: string }> => {
     const endpoint: string = `/verify-email`;
     const data = { token, username };
 

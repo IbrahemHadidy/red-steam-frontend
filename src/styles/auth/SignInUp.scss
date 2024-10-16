@@ -1,6 +1,10 @@
 .page-content-sign {
   margin: 0 auto;
 
+  .signup {
+    width: 940px;
+  }
+
   @media screen and (max-width: 630px) {
     width: auto !important;
   }
@@ -40,6 +44,10 @@
           color: #fff;
           font-size: 28px;
           font-weight: 800;
+
+          .password-page {
+            margin: auto;
+          }
         }
       }
 
@@ -50,6 +58,7 @@
         border-radius: 4px;
         padding: 24px 32px;
         padding-top: 34px;
+        transition: all 0.2s;
 
         @media screen and (max-width: 740px) {
           flex-direction: column;
@@ -57,6 +66,10 @@
           padding: 24px 42px;
           width: min-content;
           margin: auto;
+
+          &.password-page {
+            width: max-content;
+          }
         }
 
         .login-form {
@@ -179,9 +192,23 @@
             text-align: center;
             height: 34px;
             width: 290px;
+
+            &.error {
+              display: none;
+            }
+
+            &.password-page {
+              transform: translateY(-6px)
+            }
           }
 
-          .forgot-password {
+          .forgot-password,
+          .login-instead {
+            &.login-instead {
+              background-color: unset;
+              border: none;
+            }
+
             color: #afafaf;
             font-size: 12px;
             text-decoration: underline;
@@ -202,6 +229,10 @@
           width: 296px;
           min-width: 325px;
           overflow: hidden;
+
+          &.login-page {
+            min-width: unset;
+          }
 
           @media screen and (max-width: 740px) {
             padding-left: 0;
@@ -292,6 +323,15 @@
 
               &:hover {
                 background: linear-gradient(90deg, #06bfff 30%, #2d73ff 100%);
+              }
+
+              &:disabled {
+                background: linear-gradient(90deg, #06bfff 0%, #2d73ff 100%);
+                cursor: default;
+              }
+
+              &.loading {
+                color: transparent;
               }
             }
 
@@ -446,6 +486,10 @@
 
   .form-row {
     margin: 25px 0;
+
+    &.submit-btn-ctn {
+      clear: left;
+    }
   }
 
   .joinsteam-content {
@@ -565,6 +609,11 @@
         max-width: 350px;
         width: auto;
         float: none;
+        display: none;
+
+        &.show {
+          display: block;
+        }
 
         @media screen and (max-width: 630px) {
           padding-top: 0px;
@@ -583,6 +632,16 @@
           padding: 8px;
           border-radius: 4px;
           margin-left: 6px;
+          display: none;
+          background: rgb(160, 56, 43);
+
+          &.available {
+            background: rgb(92, 126, 16);
+          }
+
+          &.show {
+            display: inline-block;
+          }
 
           .green-check {
             width: 16px;
@@ -599,6 +658,17 @@
     }
 
     .section-title {
+      img {
+        margin: 0 5px 6px -2px;
+        cursor: pointer;
+        object-fit: cover;
+        width: 20px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+      }
+
       text-transform: uppercase;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       font-size: 34px;
@@ -716,7 +786,6 @@
 
 .password-tag {
   margin-top: 15px;
-  opacity: 1;
   transition: all 1s ease-in-out;
   max-width: 300px;
   position: relative;
@@ -725,6 +794,8 @@
   border-radius: 4px;
   padding: 8px;
   color: white;
+  opacity: 0;
+  display: none;
 
   @media screen and (max-width: 630px) {
     margin-top: 0px;
@@ -749,6 +820,10 @@
   }
 
   &.warning {
+    background-color: #b78124;
+    opacity: 1;
+    display: inline-block;
+
     &::before {
       color: #b78124;
       border-right: 11px solid #b78124;
@@ -756,6 +831,10 @@
   }
 
   &.error {
+    background-color: #a0382b;
+    opacity: 1;
+    display: inline-block;
+
     &::before {
       color: #a0382b;
       border-right: 11px solid #a0382b;

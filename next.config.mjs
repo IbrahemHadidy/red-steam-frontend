@@ -9,11 +9,6 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.resolve('src/styles')],
   },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
 };
 
 export default nextConfig;

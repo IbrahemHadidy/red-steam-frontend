@@ -41,7 +41,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
   const isViewport630 = useResponsiveViewport(630);
 
   // States
-  const { userData, isLoggedIn } = useAppSelector((state) => state.auth);
+  const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [isAboutExpanded, setIsAboutExpanded] = useState<boolean>(true);
   const [isMatureExpanded, setIsMatureExpanded] = useState<boolean>(true);
   const [isSysReqExpanded, setIsSysReqExpanded] = useState<boolean>(true);
@@ -54,10 +54,10 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
 
   const [isInLibrary, isInCart]: [boolean | undefined, boolean | undefined] = useMemo(
     () => [
-      userData?.library?.some((item) => item.id === game.id),
-      userData?.cart?.some((item) => item.id === game.id),
+      currentUserData?.library?.some((item) => item.id === game.id),
+      currentUserData?.cart?.some((item) => item.id === game.id),
     ],
-    [userData, game.id]
+    [currentUserData, game.id]
   );
 
   useLayoutEffect(() => {
@@ -79,7 +79,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
   };
 
   const handleAddToCartClick = async (itemId: number): Promise<void> => {
-    if (!isLoggedIn) {
+    if (!isUserLoggedIn) {
       toast.warn('Please login to add items to your cart.');
       router.push('/login');
     } else if (addToCartBtnRef.current) {
@@ -87,7 +87,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
       addToCartBtnRef.current.style.pointerEvents = 'none';
 
       const response = await addToCart([itemId]);
-      if (response?.status === 201) await dispatch(fetchUserData(router));
+      if (response?.status === 201) await dispatch(fetchUserData());
 
       addToCartBtnRef.current.classList.remove('loading');
       addToCartBtnRef.current.style.pointerEvents = 'auto';
@@ -99,7 +99,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
     itemId: number
   ): Promise<void> => {
     e.preventDefault();
-    if (!isLoggedIn) {
+    if (!isUserLoggedIn) {
       toast.warn('Please login to add items to your library.');
       router.push('/login');
     } else if (addToCartBtnRef.current) {
@@ -107,7 +107,7 @@ export default function LeftContent({ game }: LeftContentProps): JSX.Element {
       addToCartBtnRef.current.style.pointerEvents = 'none';
 
       const response = await addToLibrary([itemId]);
-      if (response?.status === 201) await dispatch(fetchUserData(router));
+      if (response?.status === 201) await dispatch(fetchUserData());
 
       addToCartBtnRef.current.classList?.remove('loading');
       addToCartBtnRef.current.style.pointerEvents = 'auto';

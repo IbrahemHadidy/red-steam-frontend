@@ -7,7 +7,7 @@ import '@styles/shop/Library.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 interface LibraryLayoutProps {
   children: ReactNode;
 }
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: 'Your library. All your favorite games. All in one place.',
 };
 
-export default function LibraryLayout({ children }: LibraryLayoutProps): JSX.Element {
+export default function LibraryLayout({ children }: LibraryLayoutProps) {
   return (
     <>
       <Header />

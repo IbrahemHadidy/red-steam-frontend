@@ -31,7 +31,7 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
   const pathname = usePathname();
 
   // State
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
 
@@ -68,7 +68,7 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
           </div>
           <div className="game-name-block">
             <div className="main-game-name">{game.name}</div>
-            {userData?.isAdmin && !pathname?.includes('/admin') && (
+            {currentUserData?.isAdmin && !pathname?.includes('/admin') && (
               <div
                 className="update-icon-container"
                 title="Update game"
@@ -83,7 +83,7 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
                 />
               </div>
             )}
-            {userData?.isAdmin && !pathname?.includes('/admin') && (
+            {currentUserData?.isAdmin && !pathname?.includes('/admin') && (
               <div
                 className="delete-icon-container"
                 title="Delete game"

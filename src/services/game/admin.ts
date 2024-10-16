@@ -201,9 +201,6 @@ class GameAdminApi extends Api {
 
   public deleteGame = async (id: number): Promise<{ message: string }> => {
     const config: AxiosRequestConfig = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
       withCredentials: true,
     };
     const { data } = await this.delete(`${id}`, config);

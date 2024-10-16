@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 // Toast notifications
 import { toast } from 'react-toastify';
@@ -22,8 +21,10 @@ import ChangeModal from './_Modals/ChangeModal';
 import DeleteAccountModal from './_Modals/DeleteAccountModal';
 import DeletePhoneModal from './_Modals/DeletePhoneModal';
 
+// Utils
+import { countries } from '@utils/countries';
+
 // Services
-import { countries } from '@services/countries/countries';
 import {
   changeCountry,
   changeUserName,
@@ -44,11 +45,10 @@ import type { ChangeEvent, FormEvent, JSX, MouseEvent, SetStateAction } from 're
 
 export default function SettingsPage(): JSX.Element {
   // Init
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [showId, setShowId] = useState<boolean>(false);
   const [accountName, setAccountName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -58,7 +58,7 @@ export default function SettingsPage(): JSX.Element {
   const [nameAvailable, setNameAvailable] = useState<boolean>(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
-    userData?.profilePicture || null
+    currentUserData?.profilePicture || null
   );
   const [selectedCountry, setSelectedCountry] = useState<string>('PS');
   const [modalType, setModalType] = useState<string>('');
@@ -69,9 +69,9 @@ export default function SettingsPage(): JSX.Element {
   const deleteAvatarRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    userData && setSelectedCountry(userData.country);
-    userData && (document.title = `${userData.username} Settings`);
-  }, [userData]);
+    currentUserData && setSelectedCountry(currentUserData.country);
+    currentUserData && (document.title = `${currentUserData.username} Settings`);
+  }, [currentUserData]);
 
   const openDeleteModal = (): void => {
     setIsDeleteAccountModalOpen(true);
@@ -108,7 +108,7 @@ export default function SettingsPage(): JSX.Element {
 
     if (formName === 'usernameForm') {
       try {
-        if (userData?.id) {
+        if (currentUserData?.id) {
           await changeUserName(accountName, password);
         }
         toast.success('Username updated successfully');
@@ -118,14 +118,14 @@ export default function SettingsPage(): JSX.Element {
       }
     } else if (formName === 'avatarForm') {
       if (avatarFile) {
-        if (userData?.id) {
+        if (currentUserData?.id) {
           submitAvatarRef.current!.disabled = true;
           await toast.promise(uploadAvatar(avatarFile), {
             pending: 'Uploading avatar...',
             success: 'Avatar uploaded successfully',
             error: 'An error occurred while uploading avatar. Please try again.',
           });
-          await dispatch(fetchUserData(router));
+          await dispatch(fetchUserData());
         } else {
           toast.error('An error occurred while updating avatar. Please try again.');
         }
@@ -153,13 +153,13 @@ export default function SettingsPage(): JSX.Element {
   };
 
   const handleAvatarDelete = async (): Promise<void> => {
-    if (userData?.id) {
+    if (currentUserData?.id) {
       try {
         deleteAvatarRef.current!.disabled = true;
         await deleteAvatar();
         setAvatarFile(null);
         setAvatarPreview(null);
-        await dispatch(fetchUserData(router));
+        await dispatch(fetchUserData());
       } catch (error) {
         console.error('Error deleting avatar:', error);
         deleteAvatarRef.current!.disabled = false;
@@ -193,7 +193,7 @@ export default function SettingsPage(): JSX.Element {
   const handleCountryChange = async (e: ChangeEvent<HTMLSelectElement>): Promise<void> => {
     const selectedValue: string = e.target.value;
     setSelectedCountry(selectedValue);
-    if (userData?.id) {
+    if (currentUserData?.id) {
       await changeCountry(selectedValue);
     }
   };
@@ -239,12 +239,12 @@ export default function SettingsPage(): JSX.Element {
       <div className="user-settings-container">
         <div className="user-settings-header">
           <div className="setting-content">
-            <h2 className="user-name-header">{userData?.username}'S ACCOUNT</h2>
+            <h2 className="user-name-header">{currentUserData?.username}'S ACCOUNT</h2>
             <p className="user-id-header">
               RED STEAM ID:{' '}
               {showId ? (
                 <>
-                  <span>{userData?.id}</span>
+                  <span>{currentUserData?.id}</span>
                   <a onClick={handleHideIdClick}>&nbsp;&nbsp;&nbsp;hide</a>
                 </>
               ) : (
@@ -271,7 +271,7 @@ export default function SettingsPage(): JSX.Element {
                     type="text"
                     name="username"
                     autoComplete="off"
-                    defaultValue={userData?.username}
+                    defaultValue={currentUserData?.username}
                     onChange={handleAccountNameChange}
                   />
                 </div>
@@ -344,7 +344,7 @@ export default function SettingsPage(): JSX.Element {
                     type="button"
                     ref={deleteAvatarRef}
                     onClick={handleAvatarDelete}
-                    disabled={userData?.profilePicture === undefined}
+                    disabled={!currentUserData?.profilePicture}
                   >
                     Delete Current Avatar
                   </button>
@@ -384,23 +384,25 @@ export default function SettingsPage(): JSX.Element {
             <div style={{ padding: '10px 0' }}>
               <span className="account-manage-label">Email address:</span>
               &nbsp;
-              <span className="account-data-field">{userData?.email}</span>
+              <span className="account-data-field">{currentUserData?.email}</span>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <a onClick={handleChangeEmailClick}>Change</a>
             </div>
             <div>
               <div className="phone-header-description">
                 <span className="account-manage-label">Phone:</span>&nbsp;
-                {userData?.phoneNumber && <Image src={mobileIcon} alt="" />}
+                {currentUserData?.phoneNumber && <Image src={mobileIcon} alt="" />}
                 &nbsp;
                 <span className="account-data-field">
-                  {userData?.phoneNumber
-                    ? `Ends in ${userData.phoneNumber.substring(userData.phoneNumber.length - 2)}`
+                  {currentUserData?.phoneNumber
+                    ? `Ends in ${currentUserData.phoneNumber.substring(currentUserData.phoneNumber.length - 2)}`
                     : ''}
                 </span>
-                &nbsp;{userData?.phoneNumber && <>&nbsp;&nbsp;&nbsp;</>}
-                <a onClick={handleChangePhoneClick}>{userData?.phoneNumber ? 'Change' : 'Add'}</a>
-                {userData?.phoneNumber && (
+                &nbsp;{currentUserData?.phoneNumber && <>&nbsp;&nbsp;&nbsp;</>}
+                <a onClick={handleChangePhoneClick}>
+                  {currentUserData?.phoneNumber ? 'Change' : 'Add'}
+                </a>
+                {currentUserData?.phoneNumber && (
                   <>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <a onClick={handleDeletePhoneClick}>Remove</a>

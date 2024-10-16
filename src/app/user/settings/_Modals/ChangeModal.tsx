@@ -3,9 +3,6 @@
 // React
 import { useRef, useState } from 'react';
 
-// NextJS
-import { useRouter } from 'next/navigation';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -25,11 +22,10 @@ import type { ChangeModalProps } from './Modals.types';
 
 export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.Element {
   // Init
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [currentEmail, setCurrentEmail] = useState<string>('');
@@ -68,9 +64,9 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
       }
     } else {
       // Second step: change email
-      userData &&
+      currentUserData &&
         (await changeEmail(currentEmail, currentPassword, email, onClose, setErrorMessage));
-      await dispatch(fetchUserData(router));
+      await dispatch(fetchUserData());
     }
     nextBtn1Ref.current?.removeAttribute('disabled');
     nextBtn2Ref.current?.removeAttribute('disabled');
@@ -89,8 +85,8 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
       }
     } else {
       // Second step: change phone
-      userData && (await changePhoneNumber(userData.id, phone));
-      await dispatch(fetchUserData(router));
+      currentUserData && (await changePhoneNumber(currentUserData.id, phone));
+      await dispatch(fetchUserData());
       onClose();
     }
     nextBtn1Ref.current?.removeAttribute('disabled');
@@ -99,8 +95,9 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
 
   const handlePasswordChange = async (): Promise<void> => {
     if (isNewPasswordValid && isNewPasswordConfirmed) {
-      userData && (await changePassword(currentPassword, newPassword, onClose, setErrorMessage));
-      await dispatch(fetchUserData(router));
+      currentUserData &&
+        (await changePassword(currentPassword, newPassword, onClose, setErrorMessage));
+      await dispatch(fetchUserData());
       setErrorMessage('');
     } else {
       setErrorMessage(

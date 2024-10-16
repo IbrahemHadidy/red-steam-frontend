@@ -1,8 +1,5 @@
 'use client';
 
-// React
-import { Suspense } from 'react';
-
 // NextJS
 import dynamic from 'next/dynamic';
 
@@ -17,7 +14,7 @@ const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'));
 const LoginQueue = dynamic(() => import('./_Recommended/LoginQueue'));
 const Queue = dynamic(() => import('./_Recommended/Queue'));
 const Recommended = dynamic(() => import('./_Recommended/Recommended'));
-const Offers = dynamic(() => import('./_Offers/Offers'));
+const Offers = dynamic(() => import('./_Offers/Offers'), { loading: () => <OffersSkeleton /> });
 
 // Skeletons
 const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
@@ -25,24 +22,19 @@ const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
-// Types
-import type { JSX } from 'react';
-
-export default function StorePage(): JSX.Element {
+export default function StorePage() {
   // Init
   useDynamicBackground("url('/images/colored_body_top.png') center top no-repeat #1b2838");
 
   // States
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   return (
     <div className="store">
       <Featured />
-      <Suspense fallback={<OffersSkeleton />}>
-        <Offers />
-      </Suspense>
+      <Offers />
       <Categories />
-      {isLoggedIn ? (
+      {isUserLoggedIn ? (
         <>
           <Queue />
           <Recommended />

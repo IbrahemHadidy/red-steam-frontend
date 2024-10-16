@@ -6,15 +6,14 @@ import Link from 'next/link';
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
-// Types
-import type { JSX } from 'react';
-
-export default function BrowseSteam(): JSX.Element {
+export default function BrowseSteam() {
   // States
-  const { userData } = useAppSelector((state) => state.auth);
+  const { currentUserData } = useAppSelector((state) => state.auth);
 
   const userTags: string =
-    (userData?.tags && userData.tags.length > 0 && userData.tags.map((tag) => tag.id).join(',')) ||
+    (currentUserData?.tags &&
+      currentUserData?.tags.length > 0 &&
+      currentUserData?.tags.map((tag) => tag.id).join(',')) ||
     '';
 
   return (

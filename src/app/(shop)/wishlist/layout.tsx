@@ -8,7 +8,7 @@ import '@styles/shop/Wishlist.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 interface WishlistLayoutProps {
   children: ReactNode;
 }
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: 'View your wishlist',
 };
 
-export default function WishlistLayout({ children }: WishlistLayoutProps): JSX.Element {
+export default function WishlistLayout({ children }: WishlistLayoutProps) {
   return (
     <>
       <Header />

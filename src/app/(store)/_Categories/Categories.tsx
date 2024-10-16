@@ -4,26 +4,28 @@
 import { Fragment } from 'react';
 
 // NextJS
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Components
 import Slider from 'react-slick';
+const Category = dynamic(() => import('./Category'));
 
-// Services
-import categories from '@services/menus/categoryItems';
+// Static Data
+import categories from './categoryItems';
 
 // Types
 import type { JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
 import type { Category } from '../Store.types';
 
-export default function Categories(): JSX.Element {
+export default function Categories() {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
+  // Slider Settings
   const categoriesSettings: SliderSettings = {
     dots: true,
     infinite: true,
@@ -32,29 +34,7 @@ export default function Categories(): JSX.Element {
     fade: true,
   };
 
-  const renderCategory = (category: Category, key: string): JSX.Element => (
-    <Link className="category-item" href={category.link} key={key}>
-      <img src={category.img} alt={category.title} />
-      <div
-        className="category-gradient"
-        style={{
-          background: `linear-gradient(rgba(0,0,0,0), rgb(${category.gradRGP}) 100%)`,
-        }}
-      />
-      <div className="category-label">
-        <span>{category.title}</span>
-      </div>
-    </Link>
-  );
-
-  const renderCategoryGroup = (categoryGroup: Category[], groupIndex: number): JSX.Element => (
-    <>
-      {categoryGroup.map((category, idx) =>
-        renderCategory(category, (groupIndex * 1000 + idx).toString())
-      )}
-    </>
-  );
-
+  // Category Groups (5 per row)
   const categoryGroups: Category[][] = [
     categories.slice(0, 4),
     categories.slice(4, 8),
@@ -62,6 +42,14 @@ export default function Categories(): JSX.Element {
     categories.slice(12, 16),
     categories.slice(16),
   ];
+
+  const renderCategoryGroup = (categoryGroup: Category[], groupIndex: number): JSX.Element => (
+    <>
+      {categoryGroup.map((category, idx) => (
+        <Category category={category} key={(groupIndex * 1000 + idx).toString()} />
+      ))}
+    </>
+  );
 
   return (
     <div className="home-section">

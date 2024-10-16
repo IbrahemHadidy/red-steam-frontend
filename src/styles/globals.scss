@@ -332,6 +332,7 @@ body {
 
 			&.loading {
 				opacity: .5;
+				pointer-events: none;
 
 				a:hover {
 					cursor: default;

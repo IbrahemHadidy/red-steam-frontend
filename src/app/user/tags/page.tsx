@@ -29,13 +29,13 @@ import type { ChangeEvent, JSX } from 'react';
 export default function TagsPage(): JSX.Element {
   // Init
   const router = useRouter();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   useDynamicBackground(
     "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
   );
 
   // States
-  const { userData } = useAppSelector((state) => state.auth)
+  const { currentUserData } = useAppSelector((state) => state.auth);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [initialTags, setInitialTags] = useState<Tag[]>([]);
@@ -43,16 +43,16 @@ export default function TagsPage(): JSX.Element {
 
   // Fetch tags from the backend when the component mounts
   useEffect(() => {
-    if (userData) {
+    if (currentUserData) {
       const tagsData = async (): Promise<void> => {
-        const { tags } = userData;
+        const { tags } = currentUserData;
         const initialTags = await getAllTags();
         setInitialTags(initialTags);
         setSelectedTags(tags);
       };
       tagsData();
     }
-  }, [userData]);
+  }, [currentUserData]);
 
   // Filter and sort tags based on search query and selected status
   const normalizedQuery = searchQuery.toLowerCase();
@@ -83,7 +83,7 @@ export default function TagsPage(): JSX.Element {
   // Function to handle submission of selected tags
   const handleSubmit = async (): Promise<void> => {
     if (selectedTags.length >= 3) {
-      if (!userData) {
+      if (!currentUserData) {
         toast.warn('User data not found.');
         return;
       }
@@ -99,7 +99,7 @@ export default function TagsPage(): JSX.Element {
         error: 'An error occurred. Please try again later.',
       });
       setIsDisabled(false);
-          await dispatch(fetchUserData(router))
+      await dispatch(fetchUserData());
       setTimeout(() => {
         router.push('/');
       }, 500);

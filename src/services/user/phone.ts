@@ -1,4 +1,4 @@
-import axios from '@configs/axiosConfig';
+import axios, { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-toastify';
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
@@ -54,12 +54,13 @@ export async function verifyVerificationCode(phoneNumber: string, verificationCo
   }
 }
 
-export async function changePhoneNumber(userId: string, phoneNumber: string) {
+export async function changePhoneNumber(phoneNumber: string) {
   const url = `${backendUrl}/api/user/phone/change-phone-number`;
-  const data = { userId, phoneNumber };
+  const data = { phoneNumber };
+  const config: AxiosRequestConfig = { withCredentials: true };
 
   try {
-    const response = await axios.post(url, data);
+    const response = await axios.patch(url, data, config);
     toast.success(response.data.message);
     return response.data;
   } catch (error) {
@@ -67,12 +68,12 @@ export async function changePhoneNumber(userId: string, phoneNumber: string) {
   }
 }
 
-export async function removePhoneNumber(userId: string) {
+export async function removePhoneNumber() {
   const url = `${backendUrl}/api/user/phone/remove-phone-number`;
-  const data = { userId };
+  const config: AxiosRequestConfig = { withCredentials: true };
 
   try {
-    const response = await axios.post(url, data);
+    const response = await axios.delete(url, config);
     toast.success(response.data.message);
     return response;
   } catch (error) {

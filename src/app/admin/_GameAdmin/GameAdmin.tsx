@@ -30,6 +30,7 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 // Utils
 import fileToUrl from '@utils/fileToUrl';
 import { validateUrl } from '@utils/inputValidations';
+import scrollToTop from '@utils/scrollToTop';
 import Decimal from 'decimal.js';
 
 // Services
@@ -536,7 +537,7 @@ export default function GameAdmin({ type, game }: GameAdminProps): JSX.Element {
   const handleBackClick = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     setPreview(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   };
 
   const handleResetClick = (e: MouseEvent<HTMLButtonElement>): void => {
@@ -589,14 +590,14 @@ export default function GameAdmin({ type, game }: GameAdminProps): JSX.Element {
     setPreview(false);
 
     resetAllWarnings();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   };
 
   const handlePreviewClick = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     if (checkFormValidation()) {
       setPreview(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       toast.info('Please preview before submitting.');
     }
   };
@@ -612,7 +613,7 @@ export default function GameAdmin({ type, game }: GameAdminProps): JSX.Element {
       router.push(`/game/${response.id}`);
     } else {
       resetAllWarnings();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
     }
   };
 
@@ -747,7 +748,7 @@ export default function GameAdmin({ type, game }: GameAdminProps): JSX.Element {
       router.push(`/game/${game?.id}`);
     } else {
       resetAllWarnings();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
     }
   };
 

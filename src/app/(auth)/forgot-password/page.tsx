@@ -4,14 +4,11 @@
 import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 import ForgotPassword from '../_SignInAndRecovery/SignInAndRecovery';
 
-// Types
-import type { JSX } from 'react';
-
-export default function ForgotPasswordPage(): JSX.Element {
+export default function ForgotPasswordPage() {
   return (
     <>
       <RedirectIfLoggedIn />
-      <ForgotPassword />
+      <ForgotPassword type="Name / Password Recovery" />
     </>
   );
 }

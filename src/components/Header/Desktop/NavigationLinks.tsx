@@ -25,7 +25,7 @@ export default function NavigationLinks(): JSX.Element {
   const pathname = usePathname();
 
   // States
-  const { isLoggedIn, userData } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<number | null>(null);
 
   const handleDropdownToggle = (e: MouseEvent, eventKey: number): void => {
@@ -47,7 +47,7 @@ export default function NavigationLinks(): JSX.Element {
       <NavDropdown
         title={
           <span
-            className={`main-dropdowns ${title.includes('Profile') || title.includes(userData?.username as string) ? dropdownUserClassName : ''} ${title.includes('Admin') ? dropdownAdminClassName : ''}`}
+            className={`main-dropdowns ${title.includes('Profile') || title.includes(currentUserData?.username as string) ? dropdownUserClassName : ''} ${title.includes('Admin') ? dropdownAdminClassName : ''}`}
           >
             {title}
           </span>
@@ -89,17 +89,17 @@ export default function NavigationLinks(): JSX.Element {
       <Nav.Link href="/" className={`main-dropdowns  ${dropdownStoreClassName}`}>
         Store
       </Nav.Link>
-      {isLoggedIn && userData?.isAdmin && (
+      {isUserLoggedIn && currentUserData?.isAdmin && (
         <>{renderNavDropdownWithHover('Admin', 1, sharedData.subMenus[1].items)}</>
       )}
-      {isLoggedIn && (
+      {isUserLoggedIn && (
         <Nav.Link href="/library" className={`main-dropdowns  ${dropdownLibraryClassName}`}>
           Library
         </Nav.Link>
       )}
-      {isLoggedIn &&
+      {isUserLoggedIn &&
         renderNavDropdownWithHover(
-          `${userData?.username ? userData.username : 'Profile'}`,
+          `${currentUserData?.username ? currentUserData.username : 'Profile'}`,
           2,
           sharedData.subMenus[0].items
         )}

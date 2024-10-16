@@ -13,7 +13,7 @@ export const urlRegex: RegExp =
 /**
  * Checks if an email is valid
  * @param email email to validate
- * @returns true if the email is valid
+ * @returns `true` if the email is valid
  */
 export function validateEmail(email: string): boolean {
   return emailRegex.test(email);
@@ -22,7 +22,7 @@ export function validateEmail(email: string): boolean {
 /**
  * Checks if a password is valid
  * @param password password to validate
- * @returns true if the password is valid
+ * @returns `true` if the password is valid
  */
 export function validatePassword(password: string): boolean {
   return passwordRegex.test(password);
@@ -31,7 +31,7 @@ export function validatePassword(password: string): boolean {
 /**
  * Checks if a name is valid
  * @param name name to validate
- * @returns true if the name is valid
+ * @returns `true` if the name is valid
  */
 export function validateName(name: string): boolean {
   return nameRegex.test(name);
@@ -40,7 +40,7 @@ export function validateName(name: string): boolean {
 /**
  * Checks if a phone is valid
  * @param phone phone to validate
- * @returns true if the phone is valid
+ * @returns `true` if the phone is valid
  */
 export function validatePhone(phone: string): boolean {
   return phoneRegex.test(phone);
@@ -49,7 +49,7 @@ export function validatePhone(phone: string): boolean {
 /**
  * Checks if a url is valid
  * @param url url to validate
- * @returns true if the url is valid
+ * @returns `true` if the url is valid
  */
 export function validateUrl(url: string): boolean {
   return urlRegex.test(url);

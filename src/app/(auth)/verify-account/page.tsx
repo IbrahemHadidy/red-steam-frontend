@@ -6,19 +6,26 @@ import { useEffect } from 'react';
 // NextJS
 import { useRouter, useSearchParams } from 'next/navigation';
 
+// Toast Notification
+import { toast } from 'react-toastify';
+
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
+
 // Components
 import LoadingPage from '@app/loading';
 
 // Services
 import { verifyEmail } from '@services/user/auth';
 
-// Types
-import type { JSX } from 'react';
-
-export default function VerifyAccount(): JSX.Element {
+export default function VerifyAccount() {
   // Init
   const router = useRouter();
   const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
 
   // Get params
   const username: string | null = searchParams?.get('username');
@@ -32,13 +39,15 @@ export default function VerifyAccount(): JSX.Element {
     if (username && token) {
       const verifyEmailAsync = async (): Promise<void> => {
         const response = await verifyEmail(token, username);
-        if (response.success) {
+        if (response.message) {
+          toast.success(response.message);
+          await dispatch(fetchUserData());
           router.push('/');
         }
       };
       verifyEmailAsync();
     }
-  }, [router, token, username]);
+  }, [dispatch, router, token, username]);
 
   return <LoadingPage />;
 }
