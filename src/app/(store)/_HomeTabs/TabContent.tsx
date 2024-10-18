@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 // Types
 import type { Game } from '@entities/game.entity';
-import type { JSX } from 'react';
 import type { TabContentProps } from './HomeTabs.types';
 
 export default function TabContent({
@@ -14,7 +13,7 @@ export default function TabContent({
   seeMore,
   onTabHover,
   setHoveredGame,
-}: TabContentProps): JSX.Element {
+}: TabContentProps) {
   const [focusedTab, setFocusedTab] = useState<number | null>(null);
   const [hasHovered, setHasHovered] = useState(false);
 

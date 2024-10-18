@@ -19,7 +19,7 @@ import steamPromoCard from '@images/steamcards_promo_03.png';
 import type { JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
-export default function Sidebar(): JSX.Element {
+export default function Sidebar() {
   // States
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
@@ -29,7 +29,7 @@ export default function Sidebar(): JSX.Element {
 
   // Get recently viewed games
   const recentGames: { id: number; name: string; timestamp: number }[] =
-    (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('recentGames') || '[]')) ||
+    (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('recentGames') || '[]')) ??
     [];
 
   // Helper function to generate links

@@ -19,10 +19,7 @@ import { useAppSelector } from '@store/hooks';
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
-// Types
-import type { JSX } from 'react';
-
-export default function Featured(): JSX.Element {
+export default function Featured() {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 

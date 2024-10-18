@@ -7,10 +7,9 @@ import Link from 'next/link';
 import { getHoverInfo, getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Types
-import type { JSX } from 'react';
 import type { RightSectionProps } from '../Store.types';
 
-export default function RightSection({ game }: RightSectionProps): JSX.Element {
+export default function RightSection({ game }: RightSectionProps) {
   return (
     <div className="tab-right">
       {game && (

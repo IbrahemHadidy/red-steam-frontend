@@ -1,15 +1,9 @@
 'use client';
 
 // Types
-import type { JSX } from 'react';
 import type { TabProps } from '../Store.types';
 
-export default function Tab({
-  tabName,
-  tabTitle,
-  handleTabClick,
-  openedTab,
-}: TabProps): JSX.Element {
+export default function Tab({ tabName, tabTitle, handleTabClick, openedTab }: TabProps) {
   return (
     <div
       className={`tab-${tabName} ${openedTab === tabTitle ? 'active-tab' : ''}`}

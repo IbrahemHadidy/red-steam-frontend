@@ -118,7 +118,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
                   </Link>
                 ))}
               </div>
-              {currentUserData?.wishlist[idx].addedOn ? (
+              {currentUserData?.wishlist[idx] && currentUserData?.wishlist[idx].addedOn ? (
                 <div className="added-on">
                   Added on&nbsp;
                   {formatDate(currentUserData?.wishlist[idx].addedOn)}
