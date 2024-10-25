@@ -59,6 +59,11 @@
         padding: 24px 32px;
         padding-top: 34px;
         transition: all 0.2s;
+        margin: 0 auto;
+
+        &.password-page {
+          width: 366px;
+        }
 
         @media screen and (max-width: 740px) {
           flex-direction: column;
@@ -139,8 +144,11 @@
             }
           }
 
-          .g-recaptcha {
-            width: 296px;
+          .recaptcha-container {
+            overflow: hidden;
+            height: 76px;
+            border-radius: 4px;
+            width: 302px;
           }
 
           .remember-me {
@@ -150,8 +158,8 @@
             cursor: pointer;
 
             .check {
-              width: 14px;
-              height: 14px;
+              width: 20px;
+              height: 20px;
               padding: 3px;
               border-radius: 2px;
               background-color: #32353c;
@@ -226,8 +234,7 @@
           padding-left: 14px;
           margin-left: 14px;
           border-left: 1px solid #32353c;
-          width: 296px;
-          min-width: 325px;
+          min-width: 302px;
           overflow: hidden;
 
           &.login-page {
@@ -250,15 +257,12 @@
             padding-left: 0 !important;
             margin-left: 0 !important;
             opacity: 1 !important;
-            width: -webkit-fill-available !important;
-            width: -moz-available !important;
 
             .login-form {
               width: -webkit-fill-available;
               width: -moz-available;
 
               .field-input {
-                height: 22.5px;
                 width: -webkit-fill-available;
                 width: -moz-available;
               }
@@ -280,7 +284,6 @@
 
           .login-form {
             place-self: center;
-            width: 296px;
 
             @media screen and (max-width: 740px) {
               width: auto;
@@ -295,13 +298,8 @@
               text-transform: none;
             }
 
-            .field-input {
-              height: 22.5px;
-              width: 273px;
-            }
-
             .recovery-submit {
-              width: 295px;
+              width: 100%;
               margin-top: -2px;
             }
 
@@ -344,7 +342,7 @@
   .new-user {
     display: flex;
     flex-direction: row;
-    padding-top: 48px;
+    padding-top: 20px;
     align-items: center;
     margin-right: auto;
     margin-left: auto;
@@ -385,7 +383,7 @@
         background: transparent;
         color: white;
         text-shadow: none;
-        margin: 10px 0 10px 0;
+        margin: 25px 0;
         display: block;
         text-align: center;
 

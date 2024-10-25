@@ -24,14 +24,10 @@ export default function LogoutPage() {
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    const handleLogout = async () => {
-      if (isUserLoggedIn) {
-        await dispatch(logout());
-      }
+    (async () => {
+      if (isUserLoggedIn) await dispatch(logout());
       router.push('/');
-    };
-
-    handleLogout();
+    })();
   }, [dispatch, isUserLoggedIn, router]);
 
   return <Loading />;

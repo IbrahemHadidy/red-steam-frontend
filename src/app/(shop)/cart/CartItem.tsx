@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { removeCartItem } from '@store/features/shop/cart/cartThunks';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface CartItemProps {
   game: Game;
@@ -36,17 +36,20 @@ export default function CartItem({ game }: CartItemProps) {
             <img src={game.thumbnailEntries.horizontalHeaderImage} alt={game.name} />
           </Link>
         </div>
+
         <div className="cart-info">
           <div className="cart-item-title">
             <Link href={`/game/${game.id}`}>
               <div>{game.name}</div>
             </Link>
           </div>
+
           <div className="cart-platform-price">
             <div className="cart-platform">
               {game.platformEntries.win && <span className="platform-img win" />}
               {game.platformEntries.mac && <span className="platform-img mac" />}
             </div>
+
             <div className="cart-price-container">
               <span className="cart-price">
                 {!game.pricing?.discount && (
@@ -66,8 +69,10 @@ export default function CartItem({ game }: CartItemProps) {
               </span>
             </div>
           </div>
+
           <div className="remove-item">
             <div className="gifting">GIFTING OPTIONS ARE NOT AVAILABLE</div>
+
             <div
               className={`remove-btn ${removeBtnLoading ? 'loading' : ''}`}
               onClick={() => handleRemoveClick(game.id)}

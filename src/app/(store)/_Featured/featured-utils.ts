@@ -1,7 +1,7 @@
 import isTagInUserTags from '@utils/recommendationReason';
 
-import type { Game } from '@entities/game.entity';
-import type { User } from '@entities/user.entity';
+import type { Game } from '@interfaces/game';
+import type { User } from '@interfaces/user';
 
 /**
  * Get recommendation class

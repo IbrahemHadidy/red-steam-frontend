@@ -46,6 +46,7 @@ export default function Queue(): JSX.Element {
     <div className="home-section">
       <div className="home-contents">
         <h2 className="main-btn-title">YOUR DISCOVERY QUEUE</h2>
+
         <div className="static-queue">
           <a className="static-queue-link" onClick={handleQueueLinkClick}>
             {isViewport960 ? (
@@ -56,6 +57,7 @@ export default function Queue(): JSX.Element {
               <div className="begin-explore">Click here to begin exploring your queue</div>
             )}
           </a>
+
           <div className="queue-items">
             {queueGames.map((queueItem, idx) => (
               <div className={`queue-item queue-item-${queueItem.imageNumber}`} key={idx}>

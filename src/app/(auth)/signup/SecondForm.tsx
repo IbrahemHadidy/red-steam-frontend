@@ -19,7 +19,6 @@ import {
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Utils
-import debounce from '@utils/debounce';
 import validatePasswordStrength from '@utils/passwordValidator';
 
 // Images
@@ -49,33 +48,17 @@ export default function SecondForm() {
     passwordsDoNotMatch,
   } = useAppSelector((state) => state.signup);
 
-  // Debounced inputs
-  const debouncedUpdateAccountName = debounce((value: string) => {
-    dispatch(updateAccountName(value));
-  }, 500);
-
-  const debouncedUpdatePassword = debounce((value: string) => {
-    dispatch(updatePassword(value));
-  }, 500);
-
-  const debouncedUpdateConfirmPassword = debounce((value: string) => {
-    dispatch(updateConfirmPassword(value));
-  }, 500);
-
   // Event Handlers
   const handleAccountNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-
-    debouncedUpdateAccountName.cancel();
-    debouncedUpdateAccountName(value);
+    dispatch(updateAccountName(value));
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
 
     // Update new password
-    debouncedUpdatePassword.cancel();
-    debouncedUpdatePassword(value);
+    dispatch(updatePassword(value));
 
     // Validate password strength and update error and warning states
     const { error, warning } = validatePasswordStrength(value);
@@ -85,9 +68,7 @@ export default function SecondForm() {
 
   const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-
-    debouncedUpdateConfirmPassword.cancel();
-    debouncedUpdateConfirmPassword(value);
+    dispatch(updateConfirmPassword(value));
   };
 
   return (
@@ -105,6 +86,7 @@ export default function SecondForm() {
             className={accountNameInputError ? 'error' : ''}
           />
         </div>
+
         <div className={`availability-container ${accountName !== '' ? 'show' : ''}`}>
           <div
             className={`availability ${isUsernameAvailable ? 'available' : ''} ${accountName !== '' ? 'show' : ''}`}
@@ -120,6 +102,7 @@ export default function SecondForm() {
           </div>
         </div>
       </div>
+
       <div className="form-row-flex">
         <div className="form-area">
           <label htmlFor="password">Choose Password</label>
@@ -133,6 +116,7 @@ export default function SecondForm() {
             className={passwordInputError ? 'error' : ''}
           />
         </div>
+
         <div className="form-notes">
           <div
             className={`password-tag ${
@@ -145,6 +129,7 @@ export default function SecondForm() {
           </div>
         </div>
       </div>
+
       <div className="form-row-flex row-flex-end" style={{ clear: 'left' }}>
         <div className="form-area">
           <label htmlFor="reenter-password">Confirm Password</label>
@@ -156,6 +141,7 @@ export default function SecondForm() {
             className={confirmPasswordInputError ? 'error' : ''}
           />
         </div>
+
         <div className="form-notes">
           <div className={`password-tag ${passwordsDoNotMatch ? 'error' : ''}`}>
             {passwordsDoNotMatch && 'Passwords do not match'}

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { TabContentProps } from './HomeTabs.types';
 
 export default function TabContent({
@@ -33,7 +33,7 @@ export default function TabContent({
   };
 
   return (
-    <div
+    (<div
       className={`content-list ${isOpened ? 'opened-tab' : ''}`}
       id={`tab-${title.toLowerCase().replace(/\s/g, '')}`}
     >
@@ -57,6 +57,7 @@ export default function TabContent({
               alt={tabItem.name}
             />
           </div>
+
           <div className="tab-item-discount">
             {!tabItem.pricing?.discount ? (
               <div className="tab-final-price">
@@ -68,27 +69,34 @@ export default function TabContent({
                   <div className="original-price">${tabItem.pricing.basePrice}</div>
                   <div className="final-price">${tabItem.pricing.discountPrice}</div>
                 </div>
+
                 <div className="discount-percentage">-{tabItem.pricing.discountPercentage}%</div>
               </>
             )}
           </div>
+
           <div className="tab-item-content">
             <div className="tab-item-name">{tabItem.name}</div>
+
             <div className="tab-item-details">
               <span className={tabItem.platformEntries.win ? 'win' : ''}></span>
               <span className={tabItem.platformEntries.mac ? 'mac' : ''}></span>
+
               <div className="tab-item-top-tags">
                 {tabItem.tags && (
                   <>
                     <span className="tab-top-tag">{tabItem.tags[0].name}</span>
+
                     <span className="tab-top-tag">
                       {tabItem.tags[1] && ', '}
                       {tabItem.tags[1].name}
                     </span>
+
                     <span className="tab-top-tag">
                       {tabItem.tags[2] && ', '}
                       {tabItem.tags[2].name}
                     </span>
+
                     <span className="tab-top-tag">
                       {tabItem.tags[3] && ', '}
                       {tabItem.tags[3].name}
@@ -100,6 +108,6 @@ export default function TabContent({
           </div>
         </Link>
       ))}
-    </div>
+    </div>)
   );
 }

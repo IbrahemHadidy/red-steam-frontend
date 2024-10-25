@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import { Language } from '@entities/language.entity';
+import { Language } from '@interfaces/language';
 
 const languageApi = createApi({
   reducerPath: 'api/language',

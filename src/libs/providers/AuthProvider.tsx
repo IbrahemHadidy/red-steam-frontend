@@ -20,13 +20,13 @@ import Loading from '@app/loading';
 import VerifyModal from '@components/SignUpVerifyModal/SignUpVerifyModal';
 
 // Types
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export default function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+export default function AuthProvider({ children }: AuthProviderProps) {
   // Init
   const router = useRouter();
   const pathname = usePathname();

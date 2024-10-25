@@ -15,9 +15,6 @@ import {
 // Redux Thunks
 import { login } from '@store/features/auth/authThunks';
 
-// Utils
-import debounce from '@utils/debounce';
-
 // Images
 import check from '@images/check.svg';
 
@@ -38,26 +35,15 @@ export default function LoginForm() {
     loginPassword,
   } = useAppSelector((state) => state.login);
 
-  // Debounced inputs
-  const debouncedUpdateAccountName = debounce((value: string) => {
-    dispatch(updateAccountName(value));
-  }, 500);
-
-  const debouncedUpdateLoginPassword = debounce((value: string) => {
-    dispatch(updateLoginPassword(value));
-  }, 500);
-
   // Event Handlers
   const handleAccountNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-    debouncedUpdateAccountName.cancel();
-    debouncedUpdateAccountName(value);
+    dispatch(updateAccountName(value));
   };
 
   const handleLoginPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-    debouncedUpdateLoginPassword.cancel();
-    debouncedUpdateLoginPassword(value);
+    dispatch(updateLoginPassword(value));
   };
 
   const handleRememberMeClick = (): void => {
@@ -92,6 +78,7 @@ export default function LoginForm() {
           onChange={handleAccountNameChange}
         />
       </div>
+
       <div className="login-dialog-field">
         <div className="field-label">Password</div>
         <input
@@ -102,10 +89,12 @@ export default function LoginForm() {
           onChange={handleLoginPasswordChange}
         />
       </div>
+
       <div className="remember-me" onClick={handleRememberMeClick}>
         <div className="check" tabIndex={0}>
           {rememberMePreference && <Image src={check} alt="Checkmark" />}
         </div>
+
         <div className="check-label">Remember me</div>
       </div>
       <div className="login-dialog-field">
@@ -122,9 +111,11 @@ export default function LoginForm() {
           )}
         </button>
       </div>
+
       <div className={`form-error ${loginErrorMessage !== '' ? 'error' : ''}`}>
         {loginErrorMessage}
       </div>
+
       <a className="forgot-password" onClick={handleForgotPasswordClick}>
         {isForgotPasswordVisible
           ? 'Hide Forgot Password / Username'

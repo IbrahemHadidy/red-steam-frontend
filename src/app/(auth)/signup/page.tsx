@@ -44,9 +44,7 @@ function useFetchAndSetCountry() {
   const { data: fetchedCountry } = useFetchUserCountryQuery();
 
   useEffect(() => {
-    if (fetchedCountry) {
-      dispatch(updateCountry(fetchedCountry));
-    }
+    if (fetchedCountry) dispatch(updateCountry(fetchedCountry));
   }, [fetchedCountry, dispatch]);
 }
 
@@ -79,13 +77,11 @@ export default function SignUpPage() {
   // Event Handlers
   const handleSubmitFirstForm = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-
     await dispatch(checkExistingEmail({ recaptchaRef }));
   };
 
   const handleSubmitSecondForm = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-
     await dispatch(checkNameAndPassword());
   };
 
@@ -102,6 +98,7 @@ export default function SignUpPage() {
               <div key={idx}>{message}</div>
             ))}
           </animated.div>
+
           {isEmailAvailable ? (
             <div className="create-account-container">
               <form
@@ -115,6 +112,7 @@ export default function SignUpPage() {
                     )}
                     Create Your Account
                   </div>
+
                   {!isSecondPage ? <FirstForm /> : <SecondForm />}
                 </div>
               </form>

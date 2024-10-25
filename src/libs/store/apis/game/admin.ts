@@ -2,20 +2,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Language, Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
-import type { Game, SystemRequirementsEntry } from '@entities/game.entity';
-
-type GameData = Omit<Game, 'languages' | 'totalSales'>;
+import type {
+  FileMetadata,
+  Language,
+  Screenshot,
+  Video,
+} from '@app/admin/_GameAdmin/game-admin.types';
+import type { Game, SystemRequirementsEntry } from '@interfaces/game';
+import { getFileFromLocalStorage } from '@utils/filesStorageUtils';
 
 export type Thumbnails = {
-  mainImage: { file: File; changed: boolean };
-  backgroundImage: { file: File; changed: boolean };
-  menuImg: { file: File; changed: boolean };
-  horizontalHeaderImage: { file: File; changed: boolean };
-  verticalHeaderImage: { file: File; changed: boolean };
-  smallHeaderImage: { file: File; changed: boolean };
-  searchImage: { file: File; changed: boolean };
-  tabImage: { file: File; changed: boolean };
+  mainImage: { file: FileMetadata; changed: boolean };
+  backgroundImage: { file: FileMetadata; changed: boolean };
+  menuImg: { file: FileMetadata; changed: boolean };
+  horizontalHeaderImage: { file: FileMetadata; changed: boolean };
+  verticalHeaderImage: { file: FileMetadata; changed: boolean };
+  smallHeaderImage: { file: FileMetadata; changed: boolean };
+  searchImage: { file: FileMetadata; changed: boolean };
+  tabImage: { file: FileMetadata; changed: boolean };
 };
 
 const gameAdminApi = createApi({
@@ -27,7 +31,7 @@ const gameAdminApi = createApi({
   endpoints: (builder) => ({
     createGame: builder.mutation<
       { message: string; id: number },
-      { gameData: GameData; thumbnails: Thumbnails; images: Screenshot[]; videos: Video[] }
+      { gameData: Game; thumbnails: Thumbnails; images: Screenshot[]; videos: Video[] }
     >({
       query: ({ gameData, thumbnails, images, videos }) => {
         const formData = new FormData();
@@ -68,15 +72,24 @@ const gameAdminApi = createApi({
         formData.append('body', JSON.stringify(body));
 
         Object.entries(thumbnails).forEach(([key, value]) => {
-          formData.append(key, value.file);
+          formData.append(key, getFileFromLocalStorage(value.file.id) as File);
         });
 
         images.forEach((entry) => {
-          formData.append(`${entry.order}`, entry.image);
+          formData.append(
+            `${entry.order}`,
+            getFileFromLocalStorage((entry.image as FileMetadata).id) as File
+          );
         });
         videos.forEach((entry) => {
-          formData.append(`${entry.order}`, entry.video);
-          formData.append(`${entry.order}-poster`, entry.poster);
+          formData.append(
+            `${entry.order}`,
+            getFileFromLocalStorage((entry.video as FileMetadata).id) as File
+          );
+          formData.append(
+            `${entry.order}-poster`,
+            getFileFromLocalStorage((entry.poster as FileMetadata).id) as File
+          );
         });
 
         return {
@@ -116,7 +129,7 @@ const gameAdminApi = createApi({
           name?: string;
           category?: string;
           description?: string;
-          releaseDate?: Date;
+          releaseDate?: string;
           featured?: boolean;
           publishers?: number[];
           developers?: number[];
@@ -170,17 +183,27 @@ const gameAdminApi = createApi({
         });
 
         media.addedScreenshots?.forEach((screenshot) => {
-          formData.append(`${screenshot.order}`, screenshot.image);
+          formData.append(
+            `${screenshot.order}`,
+            getFileFromLocalStorage((screenshot.image as FileMetadata).id) as File
+          );
         });
         media.addedVideos?.forEach((video) => {
-          formData.append(`${video.order}`, video.video);
-          formData.append(`${video.order}-poster`, video.poster);
+          formData.append(
+            `${video.order}`,
+            getFileFromLocalStorage((video.video as FileMetadata).id) as File
+          );
+          formData.append(
+            `${video.order}-poster`,
+            getFileFromLocalStorage((video.poster as FileMetadata).id) as File
+          );
         });
 
         return {
           url: `/${updateData.id}`,
           method: 'PATCH',
           body: formData,
+          credentials: 'include',
         };
       },
       invalidatesTags: ['Game'],

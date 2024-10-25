@@ -99,6 +99,7 @@
 				}
 
 				.tab-see-more {
+					color: #fff;
 					background: rgba(0, 0, 0, 0.2);
 					padding: 4px;
 					text-align: right;
@@ -107,6 +108,7 @@
 						border-radius: 2px;
 						border: none;
 						padding: 1px;
+						margin-left: 3px;
 						display: inline-block;
 						cursor: pointer;
 						text-decoration: none !important;
@@ -208,7 +210,6 @@
 						margin-right: 16px;
 						background: none;
 						margin-top: 22px;
-						width: 133px;
 						text-align: right;
 
 						@media (max-width: 630px) {
@@ -356,8 +357,10 @@
 			}
 
 			.tab-review-summary {
+				font-size: 12px;
 				padding: 5px 7px;
 				margin-bottom: 10px;
+				color: #c6d4df;
 				background-color: rgba(38, 54, 69, 0.6);
 				width: 258px;
 				border-radius: 2px;
@@ -405,7 +408,8 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 					font-size: 11px;
-					background-color: rgba(38, 54, 69, 0.6);
+					color: #c6d4df;
+					background-color: rgba(38, 54, 69, 0.4);
 				}
 			}
 

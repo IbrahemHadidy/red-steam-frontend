@@ -1,7 +1,7 @@
 import Api from '@services/api';
 
 // Types
-import type { Tag } from '@entities/tag.entity';
+import type { Tag } from '@interfaces/tag';
 import type { AxiosRequestConfig } from 'axios';
 
 class TagApi extends Api {

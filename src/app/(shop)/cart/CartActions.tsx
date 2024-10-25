@@ -31,6 +31,7 @@ export default function CartActions() {
           Continue shopping
         </button>
       </div>
+
       <div
         className={`cart-remove-all ${removeAllBtnLoading ? 'loading' : ''}`}
         onClick={handleRemoveAllClick}

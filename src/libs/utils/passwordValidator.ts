@@ -1,3 +1,6 @@
+// Constants
+import { MIN_PASSWORD_LENGTH } from '@constants/passwords';
+
 /**
  * Validate password strength and return error and warning status
  * @param password password to validate
@@ -12,7 +15,7 @@ export default function validatePasswordStrength(password: string): {
 
   if (0 === password.length) {
     error = false;
-  } else if (password.length < 8 && 0 < password.length) {
+  } else if (password.length < MIN_PASSWORD_LENGTH && 0 < password.length) {
     error = true;
   } else {
     if (

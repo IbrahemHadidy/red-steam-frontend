@@ -1,5 +1,5 @@
 // React
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 
 // Next
 import Image from 'next/image';
@@ -24,7 +24,7 @@ import { getOffersPaginated } from '@services/game/offer';
 import convertToBase64Image from '@utils/convertToBase64Image';
 import debounce from '@utils/debounce';
 import formatDate from '@utils/formatDate';
-import { isCompany, isFeature, isPricing, isReview } from '@utils/typeGuards';
+import { isCompany, isFeature, isGame, isReview } from '@utils/typeGuards';
 
 // Images
 import deleteIcon from '@images/delete.png';
@@ -33,10 +33,10 @@ import negativeIcon from '@images/negative.png';
 import positiveIcon from '@images/positive.png';
 
 // Types
-import type { ChangeEvent, FC, JSX } from 'react';
+import type { ChangeEvent } from 'react';
 import type { Item, ItemsListProps } from './admin.types';
 
-const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
+export default function ItemsList({ type, submitted }: ItemsListProps) {
   // States
   const [items, setItems] = useState<Item[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -73,6 +73,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
         language: getLanguagesPaginated,
         review: getReviewsPaginated,
         offer: getOffersPaginated,
+        'create-offer': getOffersPaginated,
       };
 
       // Check if the type exists in the mapping
@@ -195,12 +196,11 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
   };
 
   // List title
-  const listTitle: JSX.Element =
-    type === 'offer' ? (
-      <h1 className="list-title">Current Offers</h1>
-    ) : (
-      <h1 className="list-title">{type.charAt(0).toUpperCase() + type.slice(1)}s List</h1>
-    );
+  const listTitle: JSX.Element = ['offer', 'create-offer'].includes(type) ? (
+    <h1 className="list-title">Current Offers</h1>
+  ) : (
+    <h1 className="list-title">{type.charAt(0).toUpperCase() + type.slice(1)}s List</h1>
+  );
 
   // Pagination
   const pagination: JSX.Element = (
@@ -307,8 +307,8 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
   const filters: JSX.Element = (
     <div className="filters">
       <div className="search-box">
-        {type === 'offer' && searchByGame}
-        {!['review', 'offer'].includes(type) && searchByName}
+        {['offer', 'create-offer'].includes(type) && searchByGame}
+        {!['review', 'offer', 'create-offer'].includes(type) && searchByName}
         {['developer', 'publisher'].includes(type) && searchByWebsite}
         {type === 'review' && (
           <>
@@ -325,8 +325,11 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
 
   // Table head
   const idHeader: JSX.Element = (
-    <th className={`${type === 'offer' ? 'offer' : ''}`} onClick={() => sortItems('id')}>
-      {type === 'offer' ? 'Game ID' : 'ID'} {getSortArrow('id')}
+    <th
+      className={`${['offer', 'create-offer'].includes(type) ? 'offer' : ''}`}
+      onClick={() => sortItems('id')}
+    >
+      {['offer', 'create-offer'].includes(type) ? 'Game ID' : 'ID'} {getSortArrow('id')}
     </th>
   );
   const iconHeader: JSX.Element = <th className="icon">Icon</th>;
@@ -340,7 +343,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     <th onClick={() => sortItems('user')}>User {getSortArrow('user')}</th>
   );
   const gameHeader: JSX.Element = (
-    <th onClick={() => sortItems('game')}>Game {getSortArrow('game')}</th>
+    <th onClick={() => sortItems('name')}>Game {getSortArrow('name')}</th>
   );
   const reviewContentHeader: JSX.Element = (
     <th onClick={() => sortItems('content')}>Content {getSortArrow('content')}</th>
@@ -387,7 +390,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
       <tr>
         {idHeader}
         {type === 'feature' && iconHeader}
-        {type !== 'review' && type !== 'offer' && nameHeader}
+        {type !== 'review' && !['offer', 'create-offer'].includes(type) && nameHeader}
         {['developer', 'publisher'].includes(type) && websiteHeader}
         {type === 'review' && (
           <>
@@ -397,7 +400,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
             {reviewRatingHeader}
           </>
         )}
-        {type === 'offer' && (
+        {['offer', 'create-offer'].includes(type) && (
           <>
             {gameHeader}
             {basePriceHeader}
@@ -415,7 +418,9 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
 
   // Table body
   const idRow = (item: Item): JSX.Element => {
-    return <td>{type === 'offer' ? (isPricing(item) ? item.game?.id : '') : item.id}</td>;
+    return (
+      <td>{['offer', 'create-offer'].includes(type) ? (isGame(item) ? item?.id : '') : item.id}</td>
+    );
   };
   const iconRow = (item: Item): JSX.Element => {
     if (isFeature(item)) {
@@ -429,7 +434,7 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const nameRow = (item: Item): JSX.Element => {
-    if (!isPricing(item) && !isReview(item)) {
+    if (!isGame(item) && !isReview(item)) {
       return (
         <td
           className="copy-to-clipboard"
@@ -484,6 +489,16 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
           {item.game?.name && item.game.name}
         </td>
       );
+    } else if (isGame(item)) {
+      return (
+        <td
+          className="copy-to-clipboard"
+          title="Copy to clipboard"
+          onClick={() => copyToClipboard('Game name', item.name)}
+        >
+          {item.name}
+        </td>
+      );
     } else {
       return <></>;
     }
@@ -519,43 +534,43 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
     }
   };
   const basePriceRow = (item: Item): JSX.Element => {
-    if (isPricing(item)) {
-      return <td>${item.basePrice} USD</td>;
+    if (isGame(item)) {
+      return <td>${item.pricing?.basePrice} USD</td>;
     } else {
       return <></>;
     }
   };
   const discountPriceRow = (item: Item): JSX.Element => {
-    if (isPricing(item)) {
-      return <td>${item.discountPrice} USD</td>;
+    if (isGame(item)) {
+      return <td>${item.pricing?.discountPrice} USD</td>;
     } else {
       return <></>;
     }
   };
   const discountPercentageRow = (item: Item): JSX.Element => {
-    if (isPricing(item)) {
-      return <td>{item.discountPercentage}%</td>;
+    if (isGame(item)) {
+      return <td>{item.pricing?.discountPercentage}%</td>;
     } else {
       return <></>;
     }
   };
   const offerTypeRow = (item: Item): JSX.Element => {
-    if (isPricing(item)) {
-      return <td>{item.offerType}</td>;
+    if (isGame(item)) {
+      return <td>{item.pricing?.offerType}</td>;
     } else {
       return <></>;
     }
   };
   const discountStartDateRow = (item: Item): JSX.Element => {
-    if (isPricing(item)) {
-      return <td>{formatDate(item.discountStartDate)}</td>;
+    if (isGame(item)) {
+      return <td>{formatDate(item.pricing?.discountStartDate)}</td>;
     } else {
       return <></>;
     }
   };
   const discountEndDateRow = (item: Item): JSX.Element => {
-    if (isPricing(item)) {
-      return <td>{formatDate(item.discountEndDate)}</td>;
+    if (isGame(item)) {
+      return <td>{formatDate(item.pricing?.discountEndDate)}</td>;
     } else {
       return <></>;
     }
@@ -588,8 +603,9 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
               {reviewRatingRow(item)}
             </>
           )}
-          {type === 'offer' && (
+          {['offer', 'create-offer'].includes(type) && (
             <>
+              {gameRow(item)}
               {basePriceRow(item)}
               {discountPriceRow(item)}
               {discountPercentageRow(item)}
@@ -606,7 +622,9 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
 
   return (
     <>
-      <div className={`items-list-container ${type === 'offer' ? 'wide-list' : ''}`}>
+      <div
+        className={`items-list-container ${['offer', 'create-offer'].includes(type) ? 'wide-list' : ''}`}
+      >
         <hr />
         {listTitle}
         {filters}
@@ -625,6 +643,4 @@ const ItemsList: FC<ItemsListProps> = ({ type, submitted }): JSX.Element => {
       )}
     </>
   );
-};
-
-export default ItemsList;
+}

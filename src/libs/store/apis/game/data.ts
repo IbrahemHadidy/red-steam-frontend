@@ -2,8 +2,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Game } from '@entities/game.entity';
-import type { Review } from '@entities/review.entity';
+import type { Game } from '@interfaces/game';
+import type { Review } from '@interfaces/review';
 
 const gameDataApi = createApi({
   reducerPath: 'api/game/data',
@@ -51,9 +51,7 @@ const gameDataApi = createApi({
         const queryParams = new URLSearchParams();
 
         const appendArrayParam = (key: string, array?: unknown[]) => {
-          if (array && array.length > 0) {
-            queryParams.append(key, array.join(','));
-          }
+          if (array && array.length > 0) queryParams.append(key, array.join(','));
         };
 
         if (searchData.sort) queryParams.append('sort', searchData.sort);
@@ -81,6 +79,9 @@ const gameDataApi = createApi({
 
         return `search?${queryParams.toString()}`;
       },
+      providesTags: (_result, _error, arg) => [
+        { type: 'Game', id: `QUERY-${JSON.stringify(arg)}` },
+      ],
     }),
 
     getFeatured: builder.query<Game[], { excludedGames: number[]; limit: number }>({

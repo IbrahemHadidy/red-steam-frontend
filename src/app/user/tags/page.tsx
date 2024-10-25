@@ -23,7 +23,7 @@ import { getAllTags } from '@services/common/tags';
 import { changeTags } from '@services/user/interaction';
 
 // Types
-import type { Tag } from '@entities/tag.entity';
+import type { Tag } from '@interfaces/tag';
 import type { ChangeEvent, JSX } from 'react';
 
 export default function TagsPage(): JSX.Element {

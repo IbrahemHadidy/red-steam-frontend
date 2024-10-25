@@ -3,21 +3,29 @@ import { configureStore } from '@reduxjs/toolkit';
 
 // Slices
 import authSlice from './features/auth/authSlice';
+
 import cartSlice from './features/shop/cart/cartSlice';
 import checkoutSlice from './features/shop/checkout/checkoutSlice';
 import librarySlice from './features/shop/library/librarySlice';
 import wishlistSlice from './features/shop/wishlist/wishlistSlice';
+
 import loginSlice from './features/user/login/loginSlice';
 import recoverySlice from './features/user/recovery/recoverySlice';
 import signupSlice from './features/user/signup/signupSlice';
 
+import gameAdminSlice from './features/admin/game/gameAdminSlice';
+
 // Listeners
 import authListener from './features/auth/authListeners';
+
 import cartListener from './features/shop/cart/cartListeners';
 import libraryListener from './features/shop/library/libraryListeners';
 import wishlistListener from './features/shop/wishlist/wishlistListeners';
+
 import recoveryListener from './features/user/recovery/recoveryListeners';
 import signupListener from './features/user/signup/signupListeners';
+
+import gameAdminListener from './features/admin/game/gameAdminListeners';
 
 // APIs
 import ipBaseApi from './apis/countries/countryCode';
@@ -57,6 +65,8 @@ const store = configureStore({
     wishlist: wishlistSlice.reducer,
     library: librarySlice.reducer,
 
+    gameAdmin: gameAdminSlice.reducer,
+
     // APIs
     [ipBaseApi.reducerPath]: ipBaseApi.reducer,
 
@@ -82,11 +92,15 @@ const store = configureStore({
       .prepend(
         // Listener Middlewares
         authListener.middleware,
+
         recoveryListener.middleware,
         signupListener.middleware,
+
         cartListener.middleware,
         wishlistListener.middleware,
-        libraryListener.middleware
+        libraryListener.middleware,
+
+        gameAdminListener.middleware
       )
       .concat(
         // API Middlewares

@@ -1,23 +1,14 @@
 'use client';
 
-// React
-import { useEffect } from 'react';
-
 // NextJS
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-
-// Toast notifications
-import { toast } from 'react-toastify';
 
 // PayPal
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 // Redux Hooks
-import { useAppDispatch, useAppSelector } from '@store/hooks';
-
-// Redux Actions
-import { initializeCart } from '@store/features/shop/cart/cartSlice';
+import { useAppSelector } from '@store/hooks';
 
 // Components
 const CheckoutConfirmed = dynamic(() => import('./CheckoutConfirmed'));
@@ -31,27 +22,10 @@ import type { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 export default function CheckoutPage() {
   // Init
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   // States
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { userCart } = useAppSelector((state) => state.cart);
-  const { isPaymentConfirmed, isReviewSelected, isCartInitialized } = useAppSelector(
-    (state) => state.checkout
-  );
-
-  // Fetch cart data
-  useEffect(() => {
-    dispatch(initializeCart());
-  }, [dispatch]);
-
-  // Redirect if cart is empty
-  useEffect(() => {
-    if (userCart.length === 0 && !isPaymentConfirmed && isCartInitialized) {
-      toast.warning('Cart is empty, please add items to your cart to proceed');
-      router.push('/');
-    }
-  }, [isCartInitialized, isPaymentConfirmed, router, userCart]);
+  const { isPaymentConfirmed, isReviewSelected } = useAppSelector((state) => state.checkout);
 
   // PayPal options
   const initialOptions: ReactPayPalScriptOptions = {

@@ -64,6 +64,9 @@
 			background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
 
 			.details-block {
+				color: #fff;
+				font-size: 12px;
+
 				b {
 					font-family: Arial, Helvetica, sans-serif;
 					color: #556772;
@@ -143,6 +146,7 @@
 					}
 
 					.feature-label {
+						font-size: 12px;
 						display: flex;
 						justify-content: space-between;
 						padding: 6px 8px;
@@ -157,6 +161,7 @@
 
 			.DRM-notice {
 				color: #e1c48a;
+				font-size: 12px;
 				padding: 4px 8px;
 				line-height: 17px;
 				border-radius: 1px;
@@ -485,7 +490,8 @@
 	.game-content {
 		flex-direction: column;
 		max-width: 940px;
-		width: auto;
+		width: -webkit-fill-available;
+		width: -moz-available;
 		margin: 0 2%;
 	}
 
@@ -499,7 +505,9 @@
 		.game-content-right {
 			float: none !important;
 			width: 50% !important;
-			margin-left: 0;
+			margin-left: 0 !important;
+			width: -webkit-fill-available !important;
+			width: -moz-available !important;
 		}
 
 		.game-details-first {
@@ -525,7 +533,7 @@
 		.game-content-right {
 			float: none !important;
 			width: 100% !important;
-			margin-left: 0;
+			margin-left: 0 !important;
 		}
 
 		.recommeded-req {

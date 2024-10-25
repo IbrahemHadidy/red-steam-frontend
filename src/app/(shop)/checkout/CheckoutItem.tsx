@@ -1,4 +1,4 @@
-import { Game } from '@entities/game.entity';
+import { Game } from '@interfaces/game';
 
 interface CheckoutItemProps {
   game: Game;
@@ -10,9 +10,11 @@ export default function CheckoutItem({ game }: CheckoutItemProps) {
       <div className="checkout-item-img">
         <img src={game.thumbnailEntries.searchImage} alt={game.name} />
       </div>
+
       <div className="checkout-item-price">
         <div>${game.pricing?.price ?? 'unknown'} USD</div>
       </div>
+
       <div className="checkout-item-desc">
         <div className="checkout-item-platform">
           {game.platformEntries.win && <span className="platform-img win" />}

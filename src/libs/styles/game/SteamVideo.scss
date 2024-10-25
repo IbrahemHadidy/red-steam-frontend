@@ -29,7 +29,7 @@
 		position: absolute;
 		height: 35px;
 		background-color: rgba(0, 0, 0, 0.8);
-		width: 99.74%;
+		width: 100%;
 		text-align: left;
 		border: 0.4px solid black;
 		border-top: 0;
@@ -160,6 +160,7 @@
 			}
 
 			.autoplay-label {
+				color: #9d9d9d;
 				font-size: 10px;
 				line-height: 19px;
 				display: inline-block;

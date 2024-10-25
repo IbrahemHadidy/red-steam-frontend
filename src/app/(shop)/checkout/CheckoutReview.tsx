@@ -62,20 +62,25 @@ export default function CheckoutReview() {
       {userCart.map((game) => (
         <CheckoutItem game={game} key={game.id} />
       ))}
+
       <div className="review-checkout-total">
         Total Price: <span>${totalPrice.toString()} USD</span>
       </div>
+
       <div className="review-row">
         <div className="review-row-label">Payment method:</div>
         <div className="review-row-value">
           <div>PayPal</div>
         </div>
       </div>
+
       <div className="review-row">
         <div className="review-row-label">Red Steam account:</div>
         <div className="review-row-value">{currentUserData?.username ?? ''}</div>
       </div>
+
       <div className="rule" />
+
       <div className="checkout-checkbox">
         <input type="checkbox" onChange={handleCheckboxClick} />
         &nbsp;
@@ -84,6 +89,7 @@ export default function CheckoutReview() {
           billing information will be entered. (only paypal sandbox works)
         </span>
       </div>
+
       <div className={`checkout-btn-container ${!isCheckboxChecked ? 'hidden' : ''}`}>
         <PayPalButtons
           style={buttonStyles}
@@ -91,6 +97,7 @@ export default function CheckoutReview() {
           onApprove={onApproveOrder}
         />
       </div>
+
       <div className="back-button" onClick={handleBackClick}>
         <span>Back</span>
       </div>

@@ -36,7 +36,7 @@ import Decimal from 'decimal.js';
 import searchCrouton from '@images/search_crouton_not.svg';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';
 import type { Filter, FilterState, RequestParams } from './Search.types';
 

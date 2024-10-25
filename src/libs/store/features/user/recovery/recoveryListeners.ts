@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -8,18 +5,19 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setLoginFormVisibility } from '../login/loginSlice';
 import {
   checkPageType,
-  checkResetToken,
   setPasswordPageVisibility,
   setPasswordsDoNotMatch,
   setResetButtonDisabled,
-  setResetPasswordInterfaceVisibility,
-  updateResetToken,
 } from './recoverySlice';
+
+// Constants
+import { MIN_PASSWORD_LENGTH } from '@constants/passwords';
 
 // Utils
 import { validatePassword } from '@utils/inputValidations';
 
 // Types
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from '@store/store';
 
 // Create listener middleware
@@ -37,7 +35,6 @@ listen({
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { newPassword, confirmNewPassword } = listenerApi.getState().recovery;
-    const MIN_PASSWORD_LENGTH = 8;
 
     if (confirmNewPassword.length === 0) {
       dispatch(setPasswordsDoNotMatch(false));
@@ -58,7 +55,7 @@ listen({
 // Listen for page type changes and update the password page visibility based on the new type
 listen({
   actionCreator: checkPageType,
-  effect: async (action, listenerApi) => {
+  effect: async (action: PayloadAction<string>, listenerApi) => {
     const { dispatch } = listenerApi;
     const type = action.payload;
 
@@ -68,23 +65,6 @@ listen({
     } else {
       dispatch(setPasswordPageVisibility(false));
       dispatch(setLoginFormVisibility(true));
-    }
-  },
-});
-
-// Listen for reset token changes and update the reset interface state
-listen({
-  actionCreator: checkResetToken,
-  effect: async (action, listenerApi) => {
-    const { dispatch } = listenerApi;
-    const { token, router } = action.payload;
-
-    if (!token || token.length < 64) {
-      router.push('/');
-      toast.error('Invalid or missing reset token', { autoClose: 2000 });
-    } else {
-      dispatch(updateResetToken(token));
-      dispatch(setResetPasswordInterfaceVisibility(true));
     }
   },
 });

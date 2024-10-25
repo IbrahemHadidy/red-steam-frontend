@@ -1,8 +1,8 @@
 import Api from '@services/api';
 
 // Types
-import type { Game } from '@entities/game.entity';
-import type { Review } from '@entities/review.entity';
+import type { Game } from '@interfaces/game';
+import type { Review } from '@interfaces/review';
 
 class GameDataApi extends Api {
   constructor() {

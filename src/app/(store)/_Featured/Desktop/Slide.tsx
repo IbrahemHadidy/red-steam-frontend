@@ -18,7 +18,7 @@ import formatDate from '@utils/formatDate';
 import getRecommendationClass from '../featured-utils';
 
 // Types
-import type { Game, ImageEntry } from '@entities/game.entity';
+import type { Game, ImageEntry } from '@interfaces/game';
 
 interface FeaturedDesktopProps {
   slide: Game;
@@ -101,6 +101,7 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
                 <div>Now Available</div>
               )}
             </div>
+
             <div className="tags">
               {getRecommendationClass(slide) === 'recommended' && currentUserData
                 ? slide.tags

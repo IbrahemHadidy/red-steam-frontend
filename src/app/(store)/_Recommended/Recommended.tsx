@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,8 +23,10 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import responsiveChevron from '@images/ResponsiveChevron.svg';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { Settings as SliderSettings } from 'react-slick';
+
+import type { JSX } from "react";
 
 export default function Recommended() {
   // Init
@@ -92,6 +93,7 @@ export default function Recommended() {
             </Link>
           </span>
         </h2>
+
         {isViewport960 ? (
           <div className="mobile-mini mini">{renderAllCategories()}</div>
         ) : (

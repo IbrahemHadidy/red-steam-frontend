@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Review } from '@entities/review.entity';
+import type { Review } from '@interfaces/review';
 
 const reviewApi = createApi({
   reducerPath: 'api/review',

@@ -25,12 +25,13 @@ const RightSection = dynamic(() => import('./RightSection'));
 const Skeleton = dynamic(() => import('./Skeleton'));
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
+import type { OpenedTab } from '../Store.types';
 
 export default function HomeTabs() {
   // States
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const [openedTab, setOpenedTab] = useState<string | number>('New & Trending');
+  const [openedTab, setOpenedTab] = useState<OpenedTab>('New & Trending');
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
 
@@ -51,7 +52,7 @@ export default function HomeTabs() {
     currentUserData?.library.map((item) => item.id) ?? []
   );
 
-  const handleTabClick = (tab: string): void => {
+  const handleTabClick = (tab: OpenedTab): void => {
     setOpenedTab(tab);
   };
 

@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Tag } from '@entities/tag.entity';
+import type { Tag } from '@interfaces/tag';
 
 const tagApi = createApi({
   reducerPath: 'api/tag',

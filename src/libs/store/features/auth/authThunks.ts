@@ -17,7 +17,7 @@ import userAuthApi from '@store/apis/user/auth';
 import { validateEmail, validateName, validatePassword } from '@utils/inputValidations';
 
 // Types
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 import type { AppDispatch, RootState } from '@store/store';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 

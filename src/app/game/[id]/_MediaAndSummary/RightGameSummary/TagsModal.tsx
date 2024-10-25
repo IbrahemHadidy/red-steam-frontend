@@ -1,10 +1,11 @@
-'use client';
-
+'use client';;
 // NextJS
 import Link from 'next/link';
 
 // Types
 import type { TagsModalProps } from '../MediaAndSummary.types';
+
+import type { JSX } from "react";
 
 export default function TagsModal({ onClose, tags }: TagsModalProps): JSX.Element {
   return (

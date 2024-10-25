@@ -1,17 +1,11 @@
 'use client';
 
-// React
-import { useEffect } from 'react';
-
 // NextJS
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 // Redux Hooks
-import { useAppDispatch, useAppSelector } from '@store/hooks';
-
-// Redux Actions
-import { initializeCart } from '@store/features/shop/cart/cartSlice';
+import { useAppSelector } from '@store/hooks';
 
 // Components
 const CartSummary = dynamic(() => import('./CartSummary'));
@@ -23,16 +17,10 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function CartPage() {
   // Intializations
-  const dispatch = useAppDispatch();
   const isViewport840 = useResponsiveViewport(840);
 
   // States
   const { userCart } = useAppSelector((state) => state.cart);
-
-  // Fetch cart data
-  useEffect(() => {
-    dispatch(initializeCart());
-  }, [dispatch]);
 
   return (
     <div className="cart-content-container">

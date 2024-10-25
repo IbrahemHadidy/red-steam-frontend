@@ -14,12 +14,12 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import formatDate from '@utils/formatDate';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface ItemProps {
-  game: Game
+  game: Game;
 }
-export default function Item({game}: ItemProps) {
+export default function Item({ game }: ItemProps) {
   // Init
   const isViewport960 = useResponsiveViewport(960);
 
@@ -48,6 +48,7 @@ export default function Item({game}: ItemProps) {
         <div className="mini-capsule">
           <img src={game.thumbnailEntries.smallHeaderImage} alt={game.name} />
         </div>
+
         <div className="mini-price">
           <div className={game.pricing?.discount ? 'discount' : 'no-discount'}>
             <div className="price">
@@ -60,6 +61,7 @@ export default function Item({game}: ItemProps) {
               ) : (
                 <div className="mini-discount-block">
                   <div className="discount-percentage"> -{game.pricing.discountPercentage}%</div>
+
                   <div className="discount-prices">
                     <div className="original-price">${game.pricing.basePrice}</div>
                     <div className="final-price">${game.pricing.discountPrice}</div>
@@ -70,6 +72,7 @@ export default function Item({game}: ItemProps) {
           </div>
         </div>
       </Link>
+
       {!isViewport960 && gameHoverStates[game.id] && (
         <div>
           <HoverSummary

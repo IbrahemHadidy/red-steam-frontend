@@ -14,7 +14,7 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import formatDate from '@utils/formatDate';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface SpecialOfferProps {
   offer: Game;
@@ -46,11 +46,13 @@ export default function SpecialOffer({ offer }: SpecialOfferProps) {
           <div className="header-capsule">
             <img src={offer.thumbnailEntries.horizontalHeaderImage} alt={offer.name} />
           </div>
+
           <div>
             <div className="discount-block-offers">
               <div className="discount-Percentage-offers">
                 -{offer.pricing?.discountPercentage}%
               </div>
+
               <div className="discount-prices-offers">
                 <div className="original-price-offers">${offer.pricing?.basePrice}</div>
                 <div className="final-price-offers">${offer.pricing?.discountPrice}</div>

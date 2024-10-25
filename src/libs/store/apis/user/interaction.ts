@@ -2,9 +2,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Review } from '@entities/review.entity';
-import type { Tag } from '@entities/tag.entity';
-import type { LibraryItem, WishlistItem } from '@entities/user.entity';
+import type { Review } from '@interfaces/review';
+import type { Tag } from '@interfaces/tag';
+import type { LibraryItem, WishlistItem } from '@interfaces/user';
 
 const userInteractionApi = createApi({
   reducerPath: 'api/user/interaction',

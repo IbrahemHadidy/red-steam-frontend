@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Publisher } from '@entities/company.entity';
+import type { Publisher } from '@interfaces/company';
 
 const publisherApi = createApi({
   reducerPath: 'api/publisher',

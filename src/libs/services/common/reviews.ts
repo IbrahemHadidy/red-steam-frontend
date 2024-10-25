@@ -1,7 +1,7 @@
 import Api from '@services/api';
 
 // Types
-import type { Review } from '@entities/review.entity';
+import type { Review } from '@interfaces/review';
 import type { AxiosRequestConfig } from 'axios';
 
 class ReviewApi extends Api {

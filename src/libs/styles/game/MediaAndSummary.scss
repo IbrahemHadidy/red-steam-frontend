@@ -74,7 +74,7 @@
 
       .update-icon-container {
         transition: color 0.3s ease;
-        padding: 6px;
+        padding: 0px 4px 4px;
         margin-right: 2px;
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
@@ -84,9 +84,21 @@
         }
       }
 
+      .offer-icon-container {
+        transition: color 0.3s ease;
+        padding: 0px 4px 4px;
+        margin-right: 2px;
+        background-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+
+        &:hover {
+          background-color: #00ff103d;
+        }
+      }
+
       .delete-icon-container {
         transition: color 0.3s ease;
-        padding: 6px;
+        padding: 0px 4px 4px;
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
 
@@ -95,6 +107,13 @@
         }
       }
     }
+  }
+}
+
+.MediaAndSummary {
+  @media screen and (max-width: 960px) {
+    width: -webkit-fill-available;
+    width: -moz-available;
   }
 }
 
@@ -133,6 +152,7 @@
         max-height: 111px;
         overflow: hidden;
         font-size: 13px;
+        color: #c6d4df;
         line-height: 18px;
         padding-right: 16px;
         display: -webkit-box;
@@ -163,6 +183,7 @@
           text-overflow: ellipsis;
           max-height: 25px;
           text-wrap: wrap;
+          font-size: small;
 
           a {
             color: #67c1f5;
@@ -216,6 +237,7 @@
           line-height: 16px;
 
           .date {
+            font-size: small;
             max-height: 30px;
             overflow: hidden;
             color: #8f98a0;
@@ -225,7 +247,7 @@
         .dev-publish {
           display: flex;
           line-height: 16px;
-          padding-bottom: 10px;
+          padding-bottom: 7px;
 
           a {
             overflow: hidden;
@@ -236,7 +258,6 @@
       }
 
       .user-defined-tags {
-        margin: 10px 0px 0px 0px;
         font-size: 11px;
 
         .glance-tags-label {
@@ -301,7 +322,7 @@
           padding-top: 10px;
           position: relative;
           display: block;
-          height: 90px;
+          height: 100px;
           width: 612px;
           margin-bottom: 3px;
           overflow: auto;
@@ -446,7 +467,7 @@
             width: 9px;
             height: 7px;
             margin-left: 13px;
-            margin-top: 5px;
+            margin-bottom: 5px;
           }
         }
 
@@ -485,7 +506,7 @@
             width: 9px;
             height: 7px;
             margin-left: 15px;
-            margin-top: 5px;
+            margin-bottom: 5px;
           }
         }
       }
@@ -501,6 +522,7 @@
 
   .queue-actions {
     padding: 16px;
+    color: #c6d4df;
 
     .view-queue-button {
       border-radius: 2px;
@@ -633,7 +655,7 @@
   padding: 0px 16px 16px 16px;
   margin: 0px auto;
   margin-bottom: 40px;
-  max-width: 908px;
+  max-width: 925px;
 
   .already-owned-actions {
     padding-top: 16px;
@@ -715,6 +737,7 @@
     .formatting-help {
       float: right;
       padding-right: 10px;
+      color: #ececec;
     }
 
     .avatar-block {
@@ -761,6 +784,7 @@
 
     .content {
       overflow: hidden;
+      color: #fff;
 
       .error-message {
         color: #ff0000;
@@ -771,7 +795,7 @@
         border: 1px solid #233c51;
         border-radius: 3px;
         height: 132px;
-        width: 764px;
+        width: 774px;
         max-width: 800px;
         background-color: #222b35;
         color: #d6d7d8;
@@ -1085,7 +1109,9 @@
           font-weight: bold;
         }
 
-        .game-discription {
+        .game-description {
+          font-size: smaller;
+          color: #c6d4df;
           overflow: hidden;
           padding-right: 0;
         }
@@ -1148,11 +1174,11 @@
 
           @supports (-moz-appearance: none) {
             .slider-right {
+              transform: translate(16px, 0);
+
               @media screen and (max-width: 740px) {
                 transform: translate(16px, 1px);
               }
-
-              transform: translate(16px, 0);
             }
           }
 

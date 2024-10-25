@@ -11,12 +11,10 @@ export default function LoadingSkeleton(): JSX.Element {
         flexDirection: 'column',
         margin: '0 auto',
         transform: 'translateX(2px)',
-        width: '940px',
-        height: '470px',
-        paddingLeft: '2%',
-        paddingRight: '2%',
         paddingTop: '20px',
       }}
+      width={940}
+      height={470}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Skeleton

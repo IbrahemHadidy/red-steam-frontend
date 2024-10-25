@@ -2,7 +2,7 @@ import Api from '@services/api';
 
 // Types
 import type { Language, Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
-import type { Game, SystemRequirementsEntry } from '@entities/game.entity';
+import type { Game, SystemRequirementsEntry } from '@interfaces/game';
 import type { AxiosRequestConfig } from 'axios';
 type GameData = Omit<Game, 'languages' | 'totalSales'>;
 export type Thumbnails = {

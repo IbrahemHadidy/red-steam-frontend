@@ -24,7 +24,7 @@ import isVideoEntry from '@utils/checkMediaEntry';
 import '@styles/game/MediaAndSummary.scss';
 
 // Types
-import type { ImageEntry, VideoEntry } from '@entities/game.entity';
+import type { ImageEntry, VideoEntry } from '@interfaces/game';
 import type { FC, JSX, MouseEvent, MutableRefObject } from 'react';
 import type { MediaAndSummaryProps } from './MediaAndSummary.types';
 

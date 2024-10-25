@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 
 // NextJS
 import Link from 'next/link';

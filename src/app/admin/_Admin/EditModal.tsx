@@ -20,10 +20,10 @@ import { isCompany, isFeature, isPricing, isReview, isUser } from '@utils/typeGu
 import Decimal from 'decimal.js';
 
 // Types
-import type { ChangeEvent, FormEvent, JSX } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import type { EditModalProps } from './admin.types';
 
-export default function EditModal({ type, setOpen, item }: EditModalProps): JSX.Element {
+export default function EditModal({ type, setOpen, item }: EditModalProps) {
   // States
   const [name, setName] = useState<string>(
     !isUser(item) && !isPricing(item) && !isReview(item) ? item.name : ''
@@ -62,6 +62,15 @@ export default function EditModal({ type, setOpen, item }: EditModalProps): JSX.
         language: () => updateLanguage(typeof item.id === 'number' ? item.id : 0, name.trim()),
         user: () => updateUser(typeof item.id === 'string' ? item.id : '0', verified, admin),
         offer: () =>
+          updateOffer(
+            isPricing(item) && typeof item.game?.id === 'number' ? item.game.id : 0,
+            discount,
+            discountPrice.toString(),
+            offerType,
+            discountStartDate,
+            discountEndDate
+          ),
+        'create-offer': () =>
           updateOffer(
             isPricing(item) && typeof item.game?.id === 'number' ? item.game.id : 0,
             discount,

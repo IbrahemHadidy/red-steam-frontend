@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 
 // NextJS
 import Image from 'next/image';
@@ -14,7 +14,7 @@ import { search } from '@services/game/data';
 import blank from '@images/blank.gif';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { ChangeEvent } from 'react';
 
 export default function NavSearch(): JSX.Element {

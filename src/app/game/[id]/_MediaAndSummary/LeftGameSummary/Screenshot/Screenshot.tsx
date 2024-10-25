@@ -8,7 +8,7 @@ import highlightSpacer from '@images/game_highlight_image_spacer.gif';
 import externalLinkIcon from '@images/ico_external_link.gif';
 
 // Types
-import type { ImageEntry } from '@entities/game.entity';
+import type { ImageEntry } from '@interfaces/game';
 import type { JSX } from 'react';
 import type { ScreenshotModalProps, ScreenshotProps } from '../../MediaAndSummary.types';
 

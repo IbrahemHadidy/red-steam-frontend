@@ -18,7 +18,6 @@ import {
 import { resetPassword } from '@store/features/user/recovery/recoveryThunks';
 
 // Utils
-import debounce from '@utils/debounce';
 import validatePasswordStrength from '@utils/passwordValidator';
 
 // Types
@@ -40,19 +39,9 @@ export default function ResetPasswordForm() {
     passwordsDoNotMatch,
   } = useAppSelector((state) => state.recovery);
 
-  // Debounced inputs
-  const debouncedUpdateNewPassword = debounce((value: string) => {
-    dispatch(updateNewPassword(value));
-  }, 500);
-
-  const debouncedUpdateConfirmPassword = debounce((value: string) => {
-    dispatch(updateConfirmPassword(value));
-  }, 500);
-
   // Event Handlers
   const handleResetPasswordFormSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-
     await dispatch(resetPassword());
   };
 
@@ -60,8 +49,7 @@ export default function ResetPasswordForm() {
     const value = e.target.value;
 
     // Update new password
-    debouncedUpdateNewPassword.cancel();
-    debouncedUpdateNewPassword(value);
+    dispatch(updateNewPassword(value));
 
     // Validate password strength and update error and warning states
     const { error, warning } = validatePasswordStrength(value);
@@ -71,8 +59,7 @@ export default function ResetPasswordForm() {
 
   const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-    debouncedUpdateConfirmPassword.cancel();
-    debouncedUpdateConfirmPassword(value);
+    dispatch(updateConfirmPassword(value));
   };
 
   const handleLoginInsteadBtnClick = (): void => {
@@ -95,6 +82,7 @@ export default function ResetPasswordForm() {
           value={newPassword}
           onChange={handleResetPasswordChange}
         />
+
         <div className="form-notes">
           <div
             className={`password-tag ${
@@ -107,6 +95,7 @@ export default function ResetPasswordForm() {
           </div>
         </div>
       </div>
+
       <div className="login-dialog-field">
         <div className="field-label account">Confirm Password</div>
         <input
@@ -117,12 +106,14 @@ export default function ResetPasswordForm() {
           maxLength={64}
           onChange={handleConfirmPasswordChange}
         />
+
         <div className="form-notes">
           <div className={`password-tag ${passwordsDoNotMatch ? 'error' : ''}`}>
             {passwordsDoNotMatch && 'Passwords do not match'}
           </div>
         </div>
       </div>
+
       <button
         className={`submit-button change-password ${resetPasswordLoadingState ? 'loading' : ''}`}
         type="submit"
@@ -135,6 +126,7 @@ export default function ResetPasswordForm() {
           </div>
         )}
       </button>
+
       {isPasswordPage && (
         <button className="login-instead" onClick={handleLoginInsteadBtnClick}>
           Login instead

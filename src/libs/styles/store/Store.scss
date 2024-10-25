@@ -370,6 +370,7 @@
 
 
 .mini-price {
+	height: 20px;
 	margin: 0;
 	text-align: right;
 	padding: 5px;
@@ -459,16 +460,13 @@
 	display: flex;
 	line-height: 15px;
 	position: absolute;
-	bottom: 6px;
-	left: auto;
-	background-color: rgba(20, 31, 44, 0.4);
+	bottom: 2px;
+	left: 3px;
+	background-color: #141f2c66;
 }
 
 .price {
-	padding: 2px 6px;
 	color: white;
-	font-size: 11px;
-	line-height: 12px;
 	padding: 2px 6px;
 	font-size: 11px;
 	line-height: 12px;
@@ -509,17 +507,19 @@
 	display: flex;
 	line-height: 15px;
 	position: relative;
-	bottom: -71px;
+	bottom: -68.5px;
+	left: -8px;
 }
 
 .discount-percentage {
-	font-family: "Motiva Sans", Sans-serif;
+	font-size: 14px;
+	font-family: Motiva Sans, sans-serif;
 	font-weight: normal;
 	font-weight: 500;
 	color: #beee11;
 	background: #4c6b22;
 	display: inline-block;
-	padding: 0 3px;
+	padding: 1px 3px;
 	margin: 0;
 }
 

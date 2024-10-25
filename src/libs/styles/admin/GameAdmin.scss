@@ -46,7 +46,6 @@
         color: #ff5252;
         font-weight: 500;
         font-size: 14px;
-        margin-right: 10px;
         margin-bottom: 0;
       }
     }
@@ -101,6 +100,7 @@
           align-items: center;
 
           span {
+            color: #f0f8ff;
             margin-left: 5px;
             font-size: 15px;
           }
@@ -439,6 +439,7 @@
         }
 
         td {
+          color: #f0f8ff;
           background-color: #2f343c;
           text-align: center;
 
@@ -610,7 +611,7 @@
       }
 
       .field-input {
-        width: 97%;
+        width: 100%;
         padding: 10px;
         font-size: 14px;
         border-radius: 4px;

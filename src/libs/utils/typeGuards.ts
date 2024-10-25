@@ -1,11 +1,11 @@
-import type { Company } from '@entities/company.entity';
-import type { Feature } from '@entities/feature.entity';
-import type { Game } from '@entities/game.entity';
-import type { Language } from '@entities/language.entity';
-import type { Pricing } from '@entities/pricing.entity';
-import type { Review } from '@entities/review.entity';
-import type { Tag } from '@entities/tag.entity';
-import type { User } from '@entities/user.entity';
+import type { Company } from '@interfaces/company';
+import type { Feature } from '@interfaces/feature';
+import type { Game } from '@interfaces/game';
+import type { Language } from '@interfaces/language';
+import type { Pricing } from '@interfaces/pricing';
+import type { Review } from '@interfaces/review';
+import type { Tag } from '@interfaces/tag';
+import type { User } from '@interfaces/user';
 
 /**
  * Type guard to check if an object is a game

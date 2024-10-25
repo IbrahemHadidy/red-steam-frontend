@@ -6,7 +6,7 @@ import { checkNameAndPassword } from '../user/signup/signupThunks';
 import { autoLoginOnLoad, fetchUserData, login, logout } from './authThunks';
 
 // Types
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
@@ -115,7 +115,7 @@ const authSlice = createSlice({
   },
 });
 
-// Listeners actions
+// Listener actions
 export const onLoadIntialization = createAction('auth/onLoadIntialization');
 
 export const {

@@ -320,13 +320,17 @@
 			width: -moz-available;
 			transform: translateX(-2px);
 			pointer-events: none;
+
+			.discount-block {
+				bottom: 12px
+			}
 		}
 
 		.no-discount {
 			display: flex;
 			line-height: 15px;
 			left: auto;
-			bottom: 15px;
+			bottom: 18px;
 			position: absolute;
 			width: -webkit-fill-available;
 			width: -moz-available;

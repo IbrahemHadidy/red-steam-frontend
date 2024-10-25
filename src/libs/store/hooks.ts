@@ -12,10 +12,6 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector = <TSelected>(selector: (state: RootState) => TSelected) =>
   useSelector<RootState, TSelected>(selector, shallowEqual);
 
-// Memoized selector for optimized performance when selecting derived state
-export const useMemoizedSelector = <T>(selector: (state: RootState) => T) =>
-  useSelector(selector, shallowEqual);
-
 // Typed useStore hook for accessing the store with its types
 export const useAppStore = () => useStore<AppStore>();
 

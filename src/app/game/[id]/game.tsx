@@ -20,7 +20,7 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 import { getById } from '@services/game/data';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { JSX } from 'react';
 import type { GameProps } from './Game.types';
 

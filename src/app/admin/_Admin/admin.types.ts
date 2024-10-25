@@ -1,23 +1,29 @@
-import type { Company } from '@entities/company.entity';
-import type { Feature } from '@entities/feature.entity';
-import type { Game } from '@entities/game.entity';
-import type { Language } from '@entities/language.entity';
-import type { Pricing } from '@entities/pricing.entity';
-import type { Review } from '@entities/review.entity';
-import type { Tag } from '@entities/tag.entity';
-import type { User } from '@entities/user.entity';
+import type { Company } from '@interfaces/company';
+import type { Feature } from '@interfaces/feature';
+import type { Game } from '@interfaces/game';
+import type { Language } from '@interfaces/language';
+import type { Review } from '@interfaces/review';
+import type { Tag } from '@interfaces/tag';
+import type { User } from '@interfaces/user';
 import type Decimal from 'decimal.js';
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 
 export interface CreateProps {
-  type: 'developer' | 'publisher' | 'feature' | 'tag' | 'language' | 'review' | 'offer';
+  type:
+    | 'developer'
+    | 'publisher'
+    | 'feature'
+    | 'tag'
+    | 'language'
+    | 'review'
+    | 'offer'
+    | 'create-offer';
   name?: string;
   setName?: Dispatch<SetStateAction<string>>;
   website?: string;
   setWebsite?: Dispatch<SetStateAction<string>>;
   handleIconChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  gameId?: number;
-  setGameId?: Dispatch<SetStateAction<number>>;
+  game?: Game;
   discountPrice?: Decimal;
   setDiscountPrice?: Dispatch<SetStateAction<Decimal>>;
   discountStartDate?: Date;
@@ -31,14 +37,31 @@ export interface CreateProps {
 }
 
 export interface ItemsListProps {
-  type: 'developer' | 'publisher' | 'feature' | 'tag' | 'language' | 'review' | 'offer';
+  type:
+    | 'developer'
+    | 'publisher'
+    | 'feature'
+    | 'tag'
+    | 'language'
+    | 'review'
+    | 'offer'
+    | 'create-offer';
   submitted?: number;
 }
 
-export type Item = Feature | Company | Tag | Language | Review | Game | Pricing;
+export type Item = Feature | Company | Tag | Language | Review | Game;
 
 export interface EditModalProps {
-  type: 'developer' | 'publisher' | 'feature' | 'tag' | 'language' | 'review' | 'user' | 'offer';
+  type:
+    | 'developer'
+    | 'publisher'
+    | 'feature'
+    | 'tag'
+    | 'language'
+    | 'review'
+    | 'user'
+    | 'offer'
+    | 'create-offer';
   setOpen: Dispatch<SetStateAction<boolean>>;
   item: Item | User;
 }
@@ -53,7 +76,8 @@ export interface DeleteModalProps {
     | 'review'
     | 'game'
     | 'user'
-    | 'offer';
+    | 'offer'
+    | 'create-offer';
   gameName?: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
   itemId: number | string;

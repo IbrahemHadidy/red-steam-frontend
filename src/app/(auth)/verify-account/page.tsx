@@ -18,8 +18,8 @@ import { fetchUserData } from '@store/features/auth/authThunks';
 // Components
 import LoadingPage from '@app/loading';
 
-// Services
-import { verifyEmail } from '@services/user/auth';
+// APIs
+import userAuthApi from '@store/apis/user/auth';
 
 export default function VerifyAccount() {
   // Init
@@ -37,15 +37,17 @@ export default function VerifyAccount() {
 
   useEffect(() => {
     if (username && token) {
-      const verifyEmailAsync = async (): Promise<void> => {
-        const response = await verifyEmail(token, username);
+      (async (): Promise<void> => {
+        const response = await dispatch(
+          userAuthApi.endpoints.verifyEmail.initiate({ token, username })
+        ).unwrap();
+
         if (response.message) {
           toast.success(response.message);
           await dispatch(fetchUserData());
           router.push('/');
         }
-      };
-      verifyEmailAsync();
+      })();
     }
   }, [dispatch, router, token, username]);
 

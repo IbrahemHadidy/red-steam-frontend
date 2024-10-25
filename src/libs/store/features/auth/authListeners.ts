@@ -40,10 +40,10 @@ listen({
       dispatch(setOnLoadInitialized(true));
     }
 
-    authChannel.onmessage = (event: MessageEvent<AuthChannelState>) => {
-      if (event.data.isUserLoggedIn) {
+    authChannel.onmessage = (e: MessageEvent<AuthChannelState>) => {
+      if (e.data.isUserLoggedIn) {
         dispatch(setIsUserLoggedIn(true));
-        dispatch(setCurrentUserData(event.data.currentUserData));
+        dispatch(setCurrentUserData(e.data.currentUserData));
       } else {
         dispatch(setIsUserLoggedIn(false));
         dispatch(setCurrentUserData(null));

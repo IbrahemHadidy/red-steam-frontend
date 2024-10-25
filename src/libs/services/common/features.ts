@@ -1,7 +1,7 @@
 import Api from '@services/api';
 
 // Types
-import type { Feature } from '@entities/feature.entity';
+import type { Feature } from '@interfaces/feature';
 import type { AxiosRequestConfig } from 'axios';
 
 class FeatureApi extends Api {

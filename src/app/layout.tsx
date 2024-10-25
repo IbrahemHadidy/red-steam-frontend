@@ -1,9 +1,12 @@
-// Providers
-import AuthProvider from '@providers/AuthProvider';
-import StoreProvider from '@providers/StoreProvider';
+// NextJS
+import Head from 'next/head';
 
 // Toast notifications
 import Toaster from '@components/Toaster/Toaster';
+
+// Providers
+import AuthProvider from '@providers/AuthProvider';
+import StoreProvider from '@providers/StoreProvider';
 
 // Images
 import favIcon from '@images/favicon.ico';
@@ -15,6 +18,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Types
 import type { Metadata } from 'next';
 import type { JSX, ReactNode } from 'react';
+
 interface RootLayoutProps {
   children: ReactNode;
 }
@@ -42,6 +46,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="en">
+      <Head>
+        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/motiva-sans" />
+        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/arial" />
+        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/microsoft-sans-serif" />
+      </Head>
+
       <body>
         <div id="root">
           <StoreProvider>

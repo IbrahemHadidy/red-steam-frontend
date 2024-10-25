@@ -1,4 +1,4 @@
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { ChangeEvent, MouseEvent, RefObject, SetStateAction } from 'react';
 
 export interface Filter {
@@ -56,7 +56,7 @@ export interface SearchLeftProps {
   isOpen: boolean;
   selectOptions: string[];
   selectOption: (option: string) => void;
-  inputRef: RefObject<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement | null>;
   searchValue: string;
   handleSearch: () => void;
   handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;

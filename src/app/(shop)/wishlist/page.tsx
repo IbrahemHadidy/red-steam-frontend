@@ -38,6 +38,7 @@ export default function WishlistPage() {
           <img src={currentUserData?.profilePicture || defaultPFP.src} alt="user-pfp" />
           <h2>{currentUserData?.username}'s wishlist</h2>
         </div>
+
         {!userWishlist || userWishlist?.length === 0 ? (
           <div className="nothing-to-see">
             <h2>Oops, there's nothing to show here</h2>

@@ -36,7 +36,7 @@ import positive from '@images/positive.png';
 import '@styles/game/GameReviews.scss';
 
 // Types
-import type { Review } from '@entities/review.entity';
+import type { Review } from '@interfaces/review';
 import type { JSX, SyntheticEvent } from 'react';
 import type { GameReviewsProps } from './GameReviews.types';
 

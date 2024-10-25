@@ -12,6 +12,7 @@ export default function LoginQueue(): JSX.Element {
       <div className="home-contents login-queue-content">
         <div className="login-queue">
           <p>Sign in to view personalized recommendations</p>
+
           <div className="signin-btn-ctn">
             <Link className="signin-btn" href="/login">
               <span>Sign in</span>

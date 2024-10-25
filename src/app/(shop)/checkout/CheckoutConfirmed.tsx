@@ -27,6 +27,7 @@ export default function CheckoutConfirmed({ router }: CheckoutConfirmedProps) {
       <h2>Thank you for your purchase!</h2>
       <div className="summary-purchase-area">
         <p>An email confirmation has been sent to you.</p>
+
         <span>
           Any digital items in this order are now registered to your account on Steam. To access
           your items, simply visit your&nbsp;
@@ -35,32 +36,41 @@ export default function CheckoutConfirmed({ router }: CheckoutConfirmedProps) {
         </span>
         <br />
       </div>
+
       <div className="rule" />
+
       <h2>YOUR PURCHASE RECEIPT</h2>
+
       <div className="reciept-body">
         <p className="confirm-message">
           Confirmation of your purchase is provided below. This information will also be emailed to
           you shortly.
         </p>
+
         <div className="reciept-confirmation-row">
           <div className="receipt-confirmation-label">Account Name</div>
           <div className="receipt-confirmation-data">{currentUserData?.username}</div>
         </div>
+
         <div className="reciept-confirmation-row">
           <div className="receipt-confirmation-label">Total</div>
           <div className="receipt-confirmation-data">${totalPrice.toString()} USD</div>
         </div>
+
         <div className="reciept-confirmation-row">
           <div className="receipt-confirmation-label">Confirmation code</div>
           <div className="receipt-confirmation-data">{orderId}</div>
         </div>
+
         <div className="print-row">
           <a onClick={() => window.print()}>
             <div>Print</div>
           </a>
         </div>
       </div>
+
       <br />
+
       <div className="back-button" onClick={handleReturnToStoreClick}>
         <span>Return to the Store</span>
       </div>

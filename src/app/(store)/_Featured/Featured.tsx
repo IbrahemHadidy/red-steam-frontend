@@ -35,11 +35,9 @@ export default function Featured() {
   return (
     <>
       {isViewport960 ? (
-        isLoading ? (
-          <LoadingSkeleton />
-        ) : (
-          <FeaturedMobile featuredGames={featuredGames ?? []} />
-        )
+        <FeaturedMobile featuredGames={featuredGames ?? []} />
+      ) : isLoading ? (
+        <LoadingSkeleton />
       ) : (
         <FeaturedDesktop featuredGames={featuredGames ?? []} />
       )}

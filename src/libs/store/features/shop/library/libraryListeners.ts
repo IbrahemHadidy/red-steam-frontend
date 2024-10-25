@@ -8,7 +8,7 @@ import { initializeLibrary, updateLibrary } from './librarySlice';
 import gameDataApi from '@store/apis/game/data';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
 
 // Create listener middleware

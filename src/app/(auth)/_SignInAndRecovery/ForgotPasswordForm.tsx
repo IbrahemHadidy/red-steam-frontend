@@ -17,9 +17,6 @@ import { loginInstead, updateResetEmail } from '@store/features/user/recovery/re
 // Redux Thunks
 import { forgotPassword } from '@store/features/user/recovery/recoveryThunks';
 
-// Utils
-import debounce from '@utils/debounce';
-
 // Types
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -35,11 +32,6 @@ export default function ForgotPasswordForm() {
   // Refs
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  // Debounced inputs
-  const debouncedUpdateResetEmail = debounce((value: string) => {
-    dispatch(updateResetEmail(value));
-  }, 500);
-
   // Event Handlers
   const handleForgotPasswordFormSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -49,8 +41,7 @@ export default function ForgotPasswordForm() {
 
   const handleForgotEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-    debouncedUpdateResetEmail.cancel();
-    debouncedUpdateResetEmail(value);
+    dispatch(updateResetEmail(value));
   };
 
   const handleLoginInsteadBtnClick = (): void => {
@@ -62,6 +53,7 @@ export default function ForgotPasswordForm() {
   return (
     <form className="login-form" onSubmit={handleForgotPasswordFormSubmit}>
       <div className="help-title">I forgot my Steam Account name or password</div>
+
       <div className="login-dialog-field">
         <div className="field-label account">Enter your email address</div>
         <input
@@ -72,11 +64,16 @@ export default function ForgotPasswordForm() {
           onChange={handleForgotEmailChange}
         />
       </div>
-      <ReCAPTCHA
-        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-        theme="dark"
-        ref={recaptchaRef}
-      />
+
+      <div className="recaptcha-container">
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+          theme="dark"
+          style={{ backgroundColor: '#181a21;' }}
+          ref={recaptchaRef}
+        />
+      </div>
+
       <div className="recovery-submit">
         <div
           className={`form-error ${resetPasswordErrorMessage !== '' ? 'error' : ''} ${isPasswordPage ? 'password-page' : ''}`}
@@ -95,6 +92,7 @@ export default function ForgotPasswordForm() {
           )}
         </button>
       </div>
+
       {isPasswordPage && (
         <button className="login-instead" onClick={handleLoginInsteadBtnClick}>
           Login instead

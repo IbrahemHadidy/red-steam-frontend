@@ -17,16 +17,19 @@ export default function RightSection({ game }: RightSectionProps) {
           <div className="tab-preview">
             <>
               <h2>{game.name}</h2>
+
               <div className="tab-review-summary">
                 <div className="review-title">Overall user reviews:</div>
                 <span className={`game-review-summary ${getRatingClass(game.averageRating)}`}>
                   {getRatingText(game.averageRating, game.reviewsCount)}
                 </span>
+
                 <span>&nbsp;({game.reviewsCount})</span>
                 <span className="review-tooltip">
                   {getHoverInfo(game.averageRating, game.reviewsCount)}
                 </span>
               </div>
+
               <div className="tab-tags">
                 {game.tags?.map((tag, idx) => (
                   <Link className="tab-tag" key={idx} href={`/search?tags=${tag.id}`}>
@@ -34,6 +37,7 @@ export default function RightSection({ game }: RightSectionProps) {
                   </Link>
                 ))}
               </div>
+
               <div className="tabs-screenshots">
                 {game.imageEntries
                   .filter((screenshot) => screenshot.featured)

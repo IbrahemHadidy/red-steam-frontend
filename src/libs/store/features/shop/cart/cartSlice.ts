@@ -5,7 +5,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import { clearCart, removeCartItem } from './cartThunks';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface CartState {
@@ -66,7 +66,7 @@ const cartSlice = createSlice({
   },
 });
 
-// Listeners actions
+// Listener actions
 export const initializeCart = createAction('shop/cart/initializeCart');
 
 export const { updateCart, setRemoveBtnLoading, setRemoveAllBtnLoading, setTotalPrice } =

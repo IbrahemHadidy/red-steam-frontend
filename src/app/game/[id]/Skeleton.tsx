@@ -13,11 +13,9 @@ export default function LoadingSkeleton(): JSX.Element {
           flexDirection: 'column',
           margin: '0 auto',
           transform: 'translateX(2px)',
-          width: '940px',
-          paddingLeft: '2%',
-          paddingRight: '2%',
           paddingTop: '20px',
         }}
+        width={940}
       >
         <Box
           sx={{
@@ -349,21 +347,60 @@ export default function LoadingSkeleton(): JSX.Element {
         </Box>
       </Box>
       <Box
-        width={904}
-        height={18}
+        width={940}
+        height={58}
         sx={{
-          padding: '18px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           margin: '0 auto',
           backgroundColor: 'rgba(0, 0, 0, 0.1)',
           transform: 'translateX(2px)',
         }}
       >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Skeleton
+            variant="rounded"
+            width={155}
+            height={30}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              marginLeft: '18px',
+            }}
+          />
+          <Skeleton
+            variant="rounded"
+            width={90}
+            height={30}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              marginLeft: '4px',
+            }}
+          />
+          <Skeleton
+            variant="rounded"
+            width={90}
+            height={30}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              marginLeft: '4px',
+            }}
+          />
+        </Box>
         <Skeleton
-          variant="text"
-          width={400}
-          height={18}
+          variant="rounded"
+          width={155}
+          height={30}
           sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            marginRight: '18px',
           }}
         />
       </Box>
@@ -374,11 +411,11 @@ export default function LoadingSkeleton(): JSX.Element {
           marginTop: '16px',
           margin: '0 auto',
           transform: 'translateX(2px)',
-          width: '940px',
           gap: '14px',
         }}
+        width={940}
       >
-        <Box sx={{ marginTop: '16px', width: '616px' }}>
+        <Box sx={{ marginTop: '16px' }}>
           <Box
             width={616}
             height={93}
@@ -491,13 +528,11 @@ export default function LoadingSkeleton(): JSX.Element {
           />
         </Box>
         <Box
-          width={272}
+          width={308}
           sx={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}
         >
           <Box>
             <Box
-              width={272}
-              height={24}
               sx={{
                 padding: '10px 18px',
                 backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -506,15 +541,12 @@ export default function LoadingSkeleton(): JSX.Element {
               <Skeleton
                 variant="text"
                 width={200}
-                height={24}
                 sx={{
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 }}
               />
             </Box>
             <Box
-              width={272}
-              height={48}
               sx={{
                 padding: '10px 18px',
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -547,7 +579,6 @@ export default function LoadingSkeleton(): JSX.Element {
             </Box>
           </Box>
           <Box
-            width={276}
             height={212}
             sx={{
               display: 'flex',

@@ -1,4 +1,4 @@
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 export interface Pricing {
   readonly id: number;
@@ -7,8 +7,8 @@ export interface Pricing {
   readonly discount?: boolean;
   readonly discountPercentage?: number;
   readonly discountPrice?: string;
-  readonly discountStartDate?: Date;
-  readonly discountEndDate?: Date;
+  readonly discountStartDate?: string;
+  readonly discountEndDate?: string;
   readonly offerType?: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
   readonly price: string;
   readonly game?: Game;

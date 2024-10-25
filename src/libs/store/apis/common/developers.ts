@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Developer } from '@entities/company.entity';
+import type { Developer } from '@interfaces/company';
 
 const developerApi = createApi({
   reducerPath: 'api/developer',

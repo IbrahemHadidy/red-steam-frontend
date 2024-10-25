@@ -1,54 +1,42 @@
 'use client';
 
 // React
-import { useEffect, useState } from 'react';
+import { use, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-// NextJS
-import { useRouter } from 'next/navigation';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Toast notifications
-import { toast } from 'react-toastify';
+// Redux Actions
+import { initializeGameUpdate } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
 import GameAdmin from '@app/admin/_GameAdmin/GameAdmin';
 import Loading from '@app/loading';
 
-// Services
-import { getById } from '@services/game/data';
-
-// Types
-import type { Game } from '@entities/game.entity';
-import type { JSX } from 'react';
 interface GameUpdateProps {
-  params: { id: string };
+  params: Promise<{
+    id: string;
+  }>;
 }
 
-export default function GameUpdate({ params }: GameUpdateProps): JSX.Element {
-  const router = useRouter();
+export default function GameUpdate({ params }: GameUpdateProps) {
+  const { id } = use(params);
+  const dispatch = useAppDispatch();
 
-  const [game, setGame] = useState<Game | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isUpdateFetching, isGameUpdateInitialized } = useAppSelector((state) => state.gameAdmin);
 
   const loadingPortal = document.getElementById('loading-portal');
 
   useEffect(() => {
-    const fetchGame = async (): Promise<void> => {
-      const fetchedGame: Game | undefined = await getById(+params.id);
-      if (fetchedGame) {
-        setGame(fetchedGame);
-        setIsLoading(false);
-      } else {
-        toast.error('Game not found');
-        router.push('/not-found');
-      }
-    };
-    fetchGame();
-  }, [params.id, router]);
+    if (!isGameUpdateInitialized) {
+      dispatch(initializeGameUpdate(+id));
+    }
+  }, [dispatch, id, isGameUpdateInitialized]);
 
-  return isLoading && loadingPortal ? (
+  return isUpdateFetching && loadingPortal ? (
     createPortal(<Loading />, loadingPortal)
   ) : (
-    <GameAdmin type="update" game={game} />
+    <GameAdmin />
   );
 }

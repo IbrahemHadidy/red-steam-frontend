@@ -1,4 +1,4 @@
-import type { Game, ImageEntry, VideoEntry } from '@entities/game.entity';
+import type { Game, ImageEntry, VideoEntry } from '@interfaces/game';
 import type {
   Dispatch,
   MouseEventHandler,
@@ -33,7 +33,7 @@ export interface RightGameSummaryProps {
 }
 
 export interface LeftGameSummaryProps {
-  videoRef: RefObject<HTMLVideoElement>;
+  videoRef: RefObject<HTMLVideoElement | null>;
   selectedItem: string | null;
   selectedEntry: VideoEntry | ImageEntry | undefined;
   isAutoplay: boolean;
@@ -46,14 +46,14 @@ export interface LeftGameSummaryProps {
   openModal: MouseEventHandler<HTMLAnchorElement>;
   autoplayInitialized: boolean;
   setAutoplayInitialized: Dispatch<SetStateAction<boolean>>;
-  slideAreaRef: RefObject<HTMLDivElement>;
+  slideAreaRef: RefObject<HTMLDivElement | null>;
 }
 
 export interface SlidesProps {
   selectedItem: string | null;
   setSelectedItem: Dispatch<SetStateAction<string | null>>;
   orderedMedia: (VideoEntry | ImageEntry)[];
-  slideAreaRef: RefObject<HTMLDivElement>;
+  slideAreaRef: RefObject<HTMLDivElement | null>;
 }
 
 export interface SlideItemProps {
@@ -84,7 +84,7 @@ export interface ScreenshotProps {
 }
 
 export interface SteamVideoProps {
-  videoRef: RefObject<HTMLVideoElement>;
+  videoRef: RefObject<HTMLVideoElement | null>;
   videoSrc: string;
   poster: string;
   isAutoplay: boolean;

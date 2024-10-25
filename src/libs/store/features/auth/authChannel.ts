@@ -1,4 +1,4 @@
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 export interface AuthChannelState {
   isUserLoggedIn: boolean;
   currentUserData: User | null;

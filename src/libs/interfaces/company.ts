@@ -1,4 +1,4 @@
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 export interface Company {
   readonly id: number;

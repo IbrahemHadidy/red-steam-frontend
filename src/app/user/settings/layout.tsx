@@ -3,7 +3,7 @@ import '@styles/user/Settings.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import type { ReactNode, JSX } from 'react';
 interface SettingsLayoutProps {
   children: ReactNode;
 }

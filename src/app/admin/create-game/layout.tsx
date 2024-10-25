@@ -1,6 +1,6 @@
 // Styles
 import '@styles/admin/GameAdmin.scss';
-import '@styles/game/game.scss';
+import '@styles/game/Game.scss';
 
 // Types
 import type { Metadata } from 'next';

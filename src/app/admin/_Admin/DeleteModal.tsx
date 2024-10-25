@@ -37,6 +37,7 @@ export default function DeleteModal({
       review: () => deleteReview(itemId as number),
       user: () => deleteUser(itemId as string),
       offer: () => deleteOffer(itemId as number),
+      'create-offer': () => deleteOffer(itemId as number),
     };
 
     // Check if the type exists in the mapping

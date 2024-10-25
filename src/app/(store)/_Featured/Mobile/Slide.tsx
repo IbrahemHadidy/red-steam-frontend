@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface SlideProps {
   slide: Game;

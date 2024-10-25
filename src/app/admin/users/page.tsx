@@ -28,7 +28,7 @@ import deleteIcon from '@images/delete.png';
 import editIcon from '@images/edit.png';
 
 // Types
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 import type { ChangeEvent, JSX } from 'react';
 type Sort = 'username' | 'email' | 'country' | 'isVerified' | 'isAdmin' | 'createdAt';
 

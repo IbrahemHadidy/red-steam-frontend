@@ -1,16 +1,16 @@
-import type { Developer, Publisher } from '@entities/company.entity';
-import type { Feature } from '@entities/feature.entity';
-import type { Language } from '@entities/language.entity';
-import type { Pricing } from '@entities/pricing.entity';
-import type { Review } from '@entities/review.entity';
-import type { Tag } from '@entities/tag.entity';
+import type { Developer, Publisher } from '@interfaces/company';
+import type { Feature } from '@interfaces/feature';
+import type { Language } from '@interfaces/language';
+import type { Pricing } from '@interfaces/pricing';
+import type { Review } from '@interfaces/review';
+import type { Tag } from '@interfaces/tag';
 
 export interface Game {
   readonly id: number;
   readonly name: string;
   readonly category: string;
   readonly description: string;
-  readonly releaseDate: Date;
+  readonly releaseDate: string;
   readonly featured: boolean;
   readonly publishers?: Publisher[];
   readonly developers?: Developer[];
@@ -71,20 +71,20 @@ export interface PlatformEntry {
 }
 
 export interface SystemRequirementsEntry {
-  readonly req64?: boolean;
+  readonly req64: boolean;
   readonly mini: SystemRequirementsDetails;
   readonly recommended: SystemRequirementsDetails;
 }
 
 export interface SystemRequirementsDetails {
-  readonly os?: string;
-  readonly cpu?: string;
-  readonly ram?: string;
-  readonly gpu?: string;
-  readonly dx?: string;
-  readonly network?: string;
-  readonly storage?: string;
-  readonly additionalNotes?: string;
-  readonly soundCard?: string;
-  readonly vrSupport?: string;
+  readonly os: string;
+  readonly cpu: string;
+  readonly ram: string;
+  readonly gpu: string;
+  readonly dx: string;
+  readonly network: string;
+  readonly storage: string;
+  readonly additionalNotes: string;
+  readonly soundCard: string;
+  readonly vrSupport: string;
 }

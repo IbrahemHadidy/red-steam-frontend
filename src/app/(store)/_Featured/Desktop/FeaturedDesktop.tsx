@@ -8,7 +8,7 @@ import Slider from 'react-slick';
 const Slide = dynamic(() => import('./Slide'));
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { Settings as SliderSettings } from 'react-slick';
 
 interface FeaturedDesktopProps {

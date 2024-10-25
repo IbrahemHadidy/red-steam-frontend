@@ -9,14 +9,14 @@ export default function LoadingSkeleton(): JSX.Element {
       sx={{
         display: 'block',
         position: 'relative',
-        paddingLeft: '2%',
-        paddingRight: '2%',
         paddingTop: '20px',
         margin: '0 auto',
         width: '940px',
         height: '430px',
         transform: 'translateX(2px)',
       }}
+      width={940}
+      height={430}
     >
       <Skeleton
         animation="pulse"

@@ -26,7 +26,7 @@ import formatDate from '@utils/formatDate';
 import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface WishlistItemProps {
   game: Game;
@@ -88,6 +88,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
                   {getRatingText(game.averageRating, game.reviewsCount)}
                   &nbsp;
                 </div>
+
                 <div className="label">Release Date:</div>
                 <div className="value">{formatDate(game?.releaseDate)}</div>
               </div>
@@ -110,6 +111,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
               {game?.platformEntries.win && <span className="platform-img win" />}
               {game?.platformEntries.mac && <span className="platform-img mac" />}
             </div>
+
             <div className="lower-columns">
               <div className="tags">
                 {game?.tags?.map((tag) => (
@@ -118,6 +120,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
                   </Link>
                 ))}
               </div>
+
               {currentUserData?.wishlist[idx] && currentUserData?.wishlist[idx].addedOn ? (
                 <div className="added-on">
                   Added on&nbsp;

@@ -10,7 +10,7 @@ import { useAppSelector } from '@store/hooks';
 const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
 const Categories = dynamic(() => import('./_Categories/Categories'));
 const Featured = dynamic(() => import('./_Featured/Featured'));
-const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'));
+const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'), { loading: () => <TabsSkeleton /> });
 const LoginQueue = dynamic(() => import('./_Recommended/LoginQueue'));
 const Queue = dynamic(() => import('./_Recommended/Queue'));
 const Recommended = dynamic(() => import('./_Recommended/Recommended'));
@@ -18,6 +18,7 @@ const Offers = dynamic(() => import('./_Offers/Offers'), { loading: () => <Offer
 
 // Skeletons
 const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
+const TabsSkeleton = dynamic(() => import('./_HomeTabs/Skeleton'));
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';

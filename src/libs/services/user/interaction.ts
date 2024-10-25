@@ -2,9 +2,9 @@ import Api from '@services/api';
 import { toast } from 'react-toastify';
 
 // Types
-import type { Review } from '@entities/review.entity';
-import type { Tag } from '@entities/tag.entity';
-import type { LibraryItem, WishlistItem } from '@entities/user.entity';
+import type { Review } from '@interfaces/review';
+import type { Tag } from '@interfaces/tag';
+import type { LibraryItem, WishlistItem } from '@interfaces/user';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 class UserInteraction extends Api {

@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 const Slide = dynamic(() => import('./Slide'));
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface FeaturedMobileProps {
   featuredGames: Game[];

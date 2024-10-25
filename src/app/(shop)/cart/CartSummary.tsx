@@ -24,9 +24,11 @@ export default function CartSummary() {
           <div className="estimated-total">Estimated total</div>
           <div className="estimated-price">${totalPrice}</div>
         </div>
+
         <div className="taxes-info">
           <s>Sales tax will be calculated during checkout where applicable</s>
         </div>
+
         <button
           className="cart-checkout-btn"
           onClick={handleCartCheckoutClick}

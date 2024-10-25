@@ -22,47 +22,43 @@ export default function Footer(): JSX.Element {
         <Link href="/" className="footer-steam-logo">
           <Image src={steamFooterLogo} alt="Valve Software" />
         </Link>
-        <div className="footer-logo">
+        <p className="footer-logo">
           <a href="http://www.valvesoftware.com">
             <Image src={footerLogo} alt="Valve Software" />
           </a>
-        </div>
-        <div className="footer-text">
-          <div>
-            This website is an educational project replicating the Steam site for learning purposes
-            and is not affiliated with Valve Corporation.
-          </div>
-          <div>
-            <s>VAT included in all prices where applicable</s>.&nbsp;&nbsp;
-            <a className="disabled">
-              <s>Privacy Policy</s>
-            </a>
-            &nbsp; | &nbsp;
-            <a className="disabled">
-              <s>Legal</s>
-            </a>
-            &nbsp; | &nbsp;
-            <a className="disabled">
-              <s>Steam Subscriber Agreement</s>
-            </a>
-            &nbsp; | &nbsp;
-            <a className="disabled">
-              <s>Refunds</s>
-            </a>
-            &nbsp; | &nbsp;
-            <a className="disabled">
-              <s>Cookies</s>
-            </a>
-          </div>
-        </div>
+        </p>
+        <p className="footer-text">
+          This website is an educational project replicating the Steam site for learning purposes
+          and is not affiliated with Valve Corporation.
+          <br />
+          <s>VAT included in all prices where applicable</s>.&nbsp;&nbsp;
+          <a className="disabled">
+            <s>Privacy Policy</s>
+          </a>
+          &nbsp; | &nbsp;
+          <a className="disabled">
+            <s>Legal</s>
+          </a>
+          &nbsp; | &nbsp;
+          <a className="disabled">
+            <s>Steam Subscriber Agreement</s>
+          </a>
+          &nbsp; | &nbsp;
+          <a className="disabled">
+            <s>Refunds</s>
+          </a>
+          &nbsp; | &nbsp;
+          <a className="disabled">
+            <s>Cookies</s>
+          </a>
+        </p>
 
-        <div style={{ clear: 'left' }}></div>
+        <div style={{ clear: 'left' }} />
         <br />
-
-        <div className="footer-rule"></div>
+        <div className="footer-rule" />
 
         <div className="footer-links">
-          <div>
+          <p>
             <a href="http://www.valvesoftware.com/">Valve</a>
             &nbsp;&nbsp; | &nbsp;&nbsp;
             <a href="http://www.steampowered.com/">Steam</a>
@@ -92,12 +88,12 @@ export default function Footer(): JSX.Element {
               <Image src={twitterIcon} alt="Twitter" />
               &nbsp;<s>@steam</s>
             </a>
-          </div>
-          <div>
+          </p>
+          <p>
             <a href="https://github.com/IbrahemHadidy">My Github</a>
             &nbsp;&nbsp; | &nbsp;&nbsp;
             <a href="https://github.com/IbrahemHadidy/red-steam">Repository</a>
-          </div>
+          </p>
         </div>
       </div>
     </footer>

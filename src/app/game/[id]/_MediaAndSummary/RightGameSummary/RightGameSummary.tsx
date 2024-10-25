@@ -39,7 +39,7 @@ export default function RightGameSummary({
         />
       </div>
       {isViewport630 && <div className="game-name-mobile">{game.name}</div>}
-      <div className="game-discription">{game.description}</div>
+      <div className="game-description">{game.description}</div>
       <div className="game-glance-first">
         <div className="user-reviews">
           <div className="user-reviews-summary">

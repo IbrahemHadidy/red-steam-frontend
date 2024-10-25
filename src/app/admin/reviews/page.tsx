@@ -1,20 +1,8 @@
 'use client';
 
-// React
-import { useState } from 'react';
-
 // Components
-import Admin from '@app/admin/_Admin/Admin';
+import ItemsList from '@app/admin/_Admin/ItemsList';
 
-// Types
-import type { JSX } from 'react';
-
-export default function ReviewsAdmin(): JSX.Element {
-  // States
-  const [name, setName] = useState<string>('');
-  const [website, setWebsite] = useState<string>('');
-
-  return (
-    <Admin type="review" website={website} setWebsite={setWebsite} name={name} setName={setName} />
-  );
+export default function ReviewsAdmin() {
+  return <ItemsList type="review" />;
 }

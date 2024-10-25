@@ -19,7 +19,6 @@ import {
 
 // Utils
 import { countries } from '@utils/countries';
-import debounce from '@utils/debounce';
 
 // Types
 import type { ChangeEvent } from 'react';
@@ -43,28 +42,15 @@ export default function FirstForm() {
   // Refs
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  // Debounced inputs
-  const debouncedupdateEmail = debounce((value: string) => {
-    dispatch(updateEmail(value));
-  }, 500);
-
-  const debouncedupdateConfirmEmail = debounce((value: string) => {
-    dispatch(updateConfirmEmail(value));
-  }, 500);
-
   // Event Handlers
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-
-    debouncedupdateEmail.cancel();
-    debouncedupdateEmail(value);
+    dispatch(updateEmail(value));
   };
 
   const handleConfirmEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-
-    debouncedupdateConfirmEmail.cancel();
-    debouncedupdateConfirmEmail(value);
+    dispatch(updateConfirmEmail(value));
   };
 
   const handleCountryChange = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -92,6 +78,7 @@ export default function FirstForm() {
           />
         </div>
       </div>
+
       <div className="form-row-flex">
         <div className="form-area">
           <label className="reenter" htmlFor="reenter-email">
@@ -107,6 +94,7 @@ export default function FirstForm() {
           />
         </div>
       </div>
+
       <div className="form-row-flex">
         <div className="form-area">
           <label className="country-select" htmlFor="country">
@@ -127,6 +115,7 @@ export default function FirstForm() {
           </select>
         </div>
       </div>
+
       <div className="form-row">
         <ReCAPTCHA
           sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
@@ -134,6 +123,7 @@ export default function FirstForm() {
           ref={recaptchaRef}
         />
       </div>
+
       <div className="form-row">
         <label
           htmlFor="i-agree-check"
@@ -152,6 +142,7 @@ export default function FirstForm() {
           during registration and acknowledge that this site is not affiliated with the official
           Steam platform or its parent company, Valve Corporation.
         </label>
+
         <button
           id="submit-button"
           className="joinsteam-btn"

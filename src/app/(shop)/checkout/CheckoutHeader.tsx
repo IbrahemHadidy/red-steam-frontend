@@ -20,6 +20,7 @@ export default function CheckoutHeader() {
             <Image src={steamLogo} alt="Steam Logo" priority />
           </Link>
         </div>
+
         {!isPaymentConfirmed ? (
           <div id="checkout-pipeline" className="pipeline">
             <div id="payment-select" className={`cart-tab ${!isReviewSelected ? 'selected' : ''}`}>
@@ -28,7 +29,9 @@ export default function CheckoutHeader() {
                 Payment Info
               </div>
             </div>
+
             <div className="cart-tab-spacer" />
+
             <div id="review-select" className={`cart-tab ${isReviewSelected ? 'selected' : ''}`}>
               <div className="tab-indicator" />
               <div className="tab-select"> Review + Purchase</div>

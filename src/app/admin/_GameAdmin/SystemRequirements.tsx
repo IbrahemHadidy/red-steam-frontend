@@ -1,187 +1,230 @@
+// React
+import { useRef } from 'react';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Actions
+import {
+  toggleRequired64bit,
+  updateMiniAdditionalNotes,
+  updateMiniCPU,
+  updateMiniDX,
+  updateMiniGPU,
+  updateMiniNetwork,
+  updateMiniOS,
+  updateMiniRAM,
+  updateMiniSoundCard,
+  updateMiniStorage,
+  updateMiniVrSupport,
+  updateRecommendedAdditionalNotes,
+  updateRecommendedCPU,
+  updateRecommendedDX,
+  updateRecommendedGPU,
+  updateRecommendedNetwork,
+  updateRecommendedOS,
+  updateRecommendedRAM,
+  updateRecommendedSoundCard,
+  updateRecommendedStorage,
+  updateRecommendedVrSupport,
+} from '@store/features/admin/game/gameAdminSlice';
+
+// Components
+import FormButtons from './FormButtons';
+import SystemRequirementsInput from './SystemRequirementsInput';
+
+// Form Validation
+import { validateSystemRequirements } from './validations';
+
 // Types
-import type { ChangeEvent, JSX, RefObject } from 'react';
-import type { SystemRequirements } from './game-admin.types';
-interface SystemRequirementsProps {
-  systemRequirements: SystemRequirements;
-  setSystemRequirements: (systemRequirements: SystemRequirements) => void;
-  miniOsRef: RefObject<HTMLInputElement>;
-  miniCpuRef: RefObject<HTMLInputElement>;
-  miniRamRef: RefObject<HTMLInputElement>;
-  miniGpuRef: RefObject<HTMLInputElement>;
-  recommendedOsRef: RefObject<HTMLInputElement>;
-  recommendedCpuRef: RefObject<HTMLInputElement>;
-  recommendedRamRef: RefObject<HTMLInputElement>;
-  recommendedGpuRef: RefObject<HTMLInputElement>;
-}
+import type { UnknownAction } from '@reduxjs/toolkit';
+import type { ChangeEvent, RefObject } from 'react';
 
-export default function SystemRequirements({
-  systemRequirements,
-  setSystemRequirements,
-  miniOsRef,
-  miniCpuRef,
-  miniRamRef,
-  miniGpuRef,
-  recommendedOsRef,
-  recommendedCpuRef,
-  recommendedRamRef,
-  recommendedGpuRef,
-}: SystemRequirementsProps): JSX.Element {
-  // System requirements keys
-  const requirementsKeys: string[] = [
-    'os',
-    'cpu',
-    'ram',
-    'gpu',
-    'dx',
-    'network',
-    'storage',
-    'soundCard',
-    'vrSupport',
-  ];
+export default function SystemRequirements() {
+  // Init
+  const dispatch = useAppDispatch();
 
-  // Generic handler for input changes
-  const handleChange =
-    (section: 'mini' | 'recommended', key: string) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-      setSystemRequirements({
-        ...systemRequirements,
-        [section]: {
-          ...systemRequirements[section],
-          [key]: e.target.value.trimStart(),
-        },
-      });
-    };
+  // States
+  const { systemRequirements } = useAppSelector((state) => state.gameAdmin);
+
+  // Refs
+  const miniOsRef = useRef<HTMLInputElement>(null);
+  const miniCpuRef = useRef<HTMLInputElement>(null);
+  const miniRamRef = useRef<HTMLInputElement>(null);
+  const miniGpuRef = useRef<HTMLInputElement>(null);
+  const recommendedOsRef = useRef<HTMLInputElement>(null);
+  const recommendedCpuRef = useRef<HTMLInputElement>(null);
+  const recommendedRamRef = useRef<HTMLInputElement>(null);
+  const recommendedGpuRef = useRef<HTMLInputElement>(null);
+
+  // Generalized input change handler
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    actionCreator: (value: string) => UnknownAction
+  ): void => {
+    const value = e.target.value;
+    dispatch(actionCreator(value));
+  };
 
   // Event handlers
-  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setSystemRequirements({
-      ...systemRequirements,
-      req64: e.target.checked,
-    });
+  const handleRequired64bitChange = (): void => {
+    dispatch(toggleRequired64bit());
   };
 
-  // Utility functions
-  const handleCamelCase = (str: string): string => {
-    return str
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, (str) => str.toUpperCase())
-      .replace('Os', 'OS')
-      .replace('Cpu', 'CPU')
-      .replace('Ram', 'RAM')
-      .replace('Gpu', 'GPU')
-      .replace('Dx', 'DX')
-      .replace('Vr', 'VR');
-  };
-
-  // Function to get the ref for a specific input field
-  const getRef = (
-    section: 'mini' | 'recommended',
-    key: string
-  ): RefObject<HTMLInputElement> | undefined => {
-    if (section === 'mini') {
-      switch (key) {
-        case 'os':
-          return miniOsRef;
-        case 'cpu':
-          return miniCpuRef;
-        case 'ram':
-          return miniRamRef;
-        case 'gpu':
-          return miniGpuRef;
-        default:
-          return undefined;
-      }
-    } else if (section === 'recommended') {
-      switch (key) {
-        case 'os':
-          return recommendedOsRef;
-        case 'cpu':
-          return recommendedCpuRef;
-        case 'ram':
-          return recommendedRamRef;
-        case 'gpu':
-          return recommendedGpuRef;
-        default:
-          return undefined;
-      }
+  // Render function for system requirements input fields
+  const renderSystemRequirementInputs = (
+    prefix: 'mini' | 'recommended',
+    refs: {
+      osRef: RefObject<HTMLInputElement | null>;
+      cpuRef: RefObject<HTMLInputElement | null>;
+      ramRef: RefObject<HTMLInputElement | null>;
+      gpuRef: RefObject<HTMLInputElement | null>;
     }
-    return undefined;
-  };
-
-  return (
-    <section className="section-system-requirements">
-      <h2>System Requirements</h2>
-      <div className="form-field form-field-checkbox">
-        <label className="field-label-checkbox">64-bit Operating System Required:</label>
-        <input
-          type="checkbox"
-          className="field-checkbox"
-          checked={systemRequirements.req64}
-          onChange={handleCheckboxChange}
+  ) => (
+    <>
+      <SystemRequirementsInput
+        label="OS"
+        value={systemRequirements[prefix].os}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniOS : updateRecommendedOS)
+        }
+        inputRef={refs.osRef}
+      />
+      <SystemRequirementsInput
+        label="CPU"
+        value={systemRequirements[prefix].cpu}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniCPU : updateRecommendedCPU)
+        }
+        inputRef={refs.cpuRef}
+      />
+      <SystemRequirementsInput
+        label="RAM"
+        value={systemRequirements[prefix].ram}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniRAM : updateRecommendedRAM)
+        }
+        inputRef={refs.ramRef}
+      />
+      <SystemRequirementsInput
+        label="GPU"
+        value={systemRequirements[prefix].gpu}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniGPU : updateRecommendedGPU)
+        }
+        inputRef={refs.gpuRef}
+      />
+      <SystemRequirementsInput
+        label={'STORAGE'}
+        value={systemRequirements[prefix].storage}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniStorage : updateRecommendedStorage)
+        }
+      />
+      <SystemRequirementsInput
+        label={'DX'}
+        value={systemRequirements[prefix].dx}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniDX : updateRecommendedDX)
+        }
+      />
+      <SystemRequirementsInput
+        label={'NETWORK'}
+        value={systemRequirements[prefix].network}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniNetwork : updateRecommendedNetwork)
+        }
+      />
+      <SystemRequirementsInput
+        label={'SOUNDCARD'}
+        value={systemRequirements[prefix].soundCard}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniSoundCard : updateRecommendedSoundCard)
+        }
+      />
+      <SystemRequirementsInput
+        label={'VR SUPPORT'}
+        value={systemRequirements[prefix].vrSupport}
+        handleChange={(e) =>
+          handleInputChange(e, prefix === 'mini' ? updateMiniVrSupport : updateRecommendedVrSupport)
+        }
+      />
+      <div className="form-field">
+        <label className="field-label">Additional Notes:</label>
+        <textarea
+          className="field-input"
+          value={systemRequirements[prefix].additionalNotes}
+          onChange={(e) =>
+            handleInputChange(
+              e,
+              prefix === 'mini' ? updateMiniAdditionalNotes : updateRecommendedAdditionalNotes
+            )
+          }
         />
       </div>
+    </>
+  );
 
-      <div>
-        <div className="form-field">
-          <div className="form-row">
-            <label className="field-label">Minimum</label>
-            <p>OS, CPU, RAM, GPU, Storage are required</p>
-          </div>
-
-          {requirementsKeys.map((key) => (
-            <div className="form-field" key={key}>
-              <label className="field-label">{handleCamelCase(key)}:</label>
-              <input
-                type="text"
-                className="field-input"
-                value={systemRequirements.mini[key as keyof typeof systemRequirements.mini]}
-                onChange={handleChange('mini', key)}
-                ref={getRef('mini', key)}
-              />
-            </div>
-          ))}
-
-          <div className="form-field">
-            <label className="field-label">Additional Notes:</label>
-            <textarea
-              className="field-input"
-              value={systemRequirements.mini.additionalNotes}
-              onChange={handleChange('mini', 'additionalNotes')}
-            />
-          </div>
+  return (
+    <>
+      <section className="section-system-requirements">
+        <h2>System Requirements</h2>
+        <div className="form-field form-field-checkbox">
+          <label className="field-label-checkbox">64-bit Operating System Required:</label>
+          <input
+            type="checkbox"
+            className="field-checkbox"
+            checked={systemRequirements.req64}
+            onChange={handleRequired64bitChange}
+          />
         </div>
 
-        <div className="form-field">
-          <div className="form-row">
-            <label className="field-label">Recommended</label>
-            <p>OS, CPU, RAM, GPU, Storage are required</p>
-          </div>
-
-          {requirementsKeys.map((key) => (
-            <div className="form-field" key={key}>
-              <label className="field-label">{handleCamelCase(key)}:</label>
-              <input
-                type="text"
-                className="field-input"
-                value={
-                  systemRequirements.recommended[key as keyof typeof systemRequirements.recommended]
-                }
-                onChange={handleChange('recommended', key)}
-                ref={getRef('recommended', key)}
-              />
+        <div>
+          <div className="form-field">
+            <div className="form-row">
+              <label className="field-label">Minimum</label>
+              <p>OS, CPU, RAM, GPU, Storage are required</p>
             </div>
-          ))}
+
+            {renderSystemRequirementInputs('mini', {
+              osRef: miniOsRef,
+              cpuRef: miniCpuRef,
+              ramRef: miniRamRef,
+              gpuRef: miniGpuRef,
+            })}
+          </div>
 
           <div className="form-field">
-            <label className="field-label">Additional Notes:</label>
-            <textarea
-              className="field-input"
-              value={systemRequirements.recommended.additionalNotes}
-              onChange={handleChange('recommended', 'additionalNotes')}
-            />
+            <div className="form-row">
+              <label className="field-label">Recommended</label>
+              <p>OS, CPU, RAM, GPU, Storage are required</p>
+            </div>
+
+            {renderSystemRequirementInputs('recommended', {
+              osRef: recommendedOsRef,
+              cpuRef: recommendedCpuRef,
+              ramRef: recommendedRamRef,
+              gpuRef: recommendedGpuRef,
+            })}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <br />
+      <FormButtons
+        validation={() =>
+          validateSystemRequirements(systemRequirements, {
+            miniOsRef,
+            miniCpuRef,
+            miniRamRef,
+            miniGpuRef,
+            recommendedOsRef,
+            recommendedCpuRef,
+            recommendedRamRef,
+            recommendedGpuRef,
+          })
+        }
+      />
+    </>
   );
 }

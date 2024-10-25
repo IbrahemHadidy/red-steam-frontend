@@ -21,6 +21,7 @@
   position: relative;
   overflow: hidden;
   animation: glitch-animation 2s infinite;
+
   @media screen and (max-width: 960px) {
     animation: none;
   }
@@ -30,21 +31,27 @@
       transform: translate(0);
       filter: drop-shadow(0 0 0 rgba(0, 255, 0, 0.5));
     }
+
     25% {
       transform: translate(-1px, 1px);
     }
+
     33.33% {
       filter: drop-shadow(-4px 0px 0 rgba(255, 0, 0, 0.5));
     }
+
     50% {
       transform: translate(1px, -1px);
     }
+
     66.66% {
       filter: drop-shadow(4px 0px 0 rgba(0, 0, 255, 0.5));
     }
+
     75% {
       transform: translate(-1px, 1px);
     }
+
     100% {
       transform: translate(0);
       filter: drop-shadow(0 0 0 rgba(0, 255, 0, 0.5));
@@ -60,6 +67,7 @@
   color: #ffffff;
   letter-spacing: 3px;
   z-index: 1;
+
   @media screen and (max-width: 960px) {
     text-align: center;
   }
@@ -89,6 +97,7 @@
   left: 0;
   opacity: 0.8;
   animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+
   @media screen and (max-width: 960px) {
     animation: none;
   }
@@ -96,39 +105,46 @@
 
 .not-found-heading:before,
 .not-found-text:before {
+  color: blue;
+  z-index: -1;
+
   @media screen and (max-width: 960px) {
     color: transparent;
   }
-  color: blue;
-  z-index: -1;
 }
 
 .not-found-heading:after,
 .not-found-text:after {
-  @media screen and (max-width: 960px) {
-    color: transparent;
-  }
   animation-direction: reverse;
   color: red;
   z-index: -2;
+
+  @media screen and (max-width: 960px) {
+    color: transparent;
+  }
 }
 
 @keyframes glitch-it {
   0% {
     transform: translate(0);
   }
+
   20% {
     transform: translate(-2px, 2px);
   }
+
   40% {
     transform: translate(-2px, -2px);
   }
+
   60% {
     transform: translate(2px, 2px);
   }
+
   80% {
     transform: translate(2px, -2px);
   }
+
   to {
     transform: translate(0);
   }

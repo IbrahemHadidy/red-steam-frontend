@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { setIsGameModalOpen, setSelectedGame } from '@store/features/shop/library/librarySlice';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface GameCardProps {
   game: Game;

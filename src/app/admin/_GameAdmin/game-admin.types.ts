@@ -1,7 +1,11 @@
-import type Decimal from 'decimal.js';
-
+export interface FileMetadata {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+}
 interface Thumbnail {
-  file: File | string | null;
+  file: FileMetadata | string | null;
   changed: boolean;
 }
 export interface Thumbnails {
@@ -16,16 +20,18 @@ export interface Thumbnails {
 }
 export interface Screenshot {
   id: string;
-  image: File | string;
+  image: FileMetadata | string;
   change: 'added' | 'deleted' | 'unchanged';
   featured?: boolean;
+  baseOrder: number;
   order: number;
 }
 export interface Video {
   id: string;
-  video: File | string;
-  poster: File | string;
+  video: FileMetadata | string;
+  poster: FileMetadata | string;
   change: 'added' | 'deleted' | 'unchanged';
+  baseOrder: number;
   order: number;
 }
 export interface ChangedOrder {
@@ -39,7 +45,7 @@ export interface ChangedFeatured {
 }
 export interface Pricing {
   free: boolean;
-  price?: Decimal | '';
+  price?: string;
 }
 export interface Language {
   name: string;
@@ -52,19 +58,19 @@ export interface Platforms {
   mac: boolean;
 }
 export interface SystemRequirementsDetails {
-  os?: string;
-  cpu?: string;
-  ram?: string;
-  gpu?: string;
-  dx?: string;
-  network?: string;
-  storage?: string;
-  additionalNotes?: string;
-  soundCard?: string;
-  vrSupport?: string;
+  os: string;
+  cpu: string;
+  ram: string;
+  gpu: string;
+  dx: string;
+  network: string;
+  storage: string;
+  additionalNotes: string;
+  soundCard: string;
+  vrSupport: string;
 }
 export interface SystemRequirements {
-  req64?: boolean;
+  req64: boolean;
   mini: SystemRequirementsDetails;
   recommended: SystemRequirementsDetails;
 }

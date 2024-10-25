@@ -1,5 +1,5 @@
-import type { Review } from '@entities/review.entity';
-import type { Tag } from '@entities/tag.entity';
+import type { Review } from '@interfaces/review';
+import type { Tag } from '@interfaces/tag';
 
 export interface User {
   readonly id: string;

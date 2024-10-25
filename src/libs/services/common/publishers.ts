@@ -1,4 +1,4 @@
-import type { Publisher } from '@entities/company.entity';
+import type { Publisher } from '@interfaces/company';
 import Api from '@services/api';
 import type { AxiosRequestConfig } from 'axios';
 

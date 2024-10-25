@@ -1,4 +1,4 @@
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 type GameData = Omit<Game, 'languages' | 'totalSales'>;
 
 export interface GameContentProps {

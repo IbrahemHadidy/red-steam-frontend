@@ -168,7 +168,7 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
               <th className="checkcol">Full Audio</th>
               <th className="checkcol">Subtitles</th>
             </tr>
-            {game.languageSupport
+            {[...game.languageSupport]
               .sort((a, b) => {
                 if (a.fullAudio && !b.fullAudio) return -1;
                 if (!a.fullAudio && b.fullAudio) return 1;
@@ -244,7 +244,8 @@ export default function RightContent({ game }: RightContentProps): JSX.Element {
         {game.link && (
           <a className="linkbar" href={game.link} target="_blank" rel="noreferrer noopenner">
             {' '}
-            Visit the website <Image src={externalLinkIcon} alt="external link" />
+            Visit the website{' '}
+            <Image src={externalLinkIcon} width={12} height={9} alt="external link" />
           </a>
         )}
         <a className="linkbar" onClick={() => toast.info('Coming Soon!')}>

@@ -1,6 +1,6 @@
 import Api from '@services/api';
 
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 import type { AxiosRequestConfig } from 'axios';
 
 class UserAdmin extends Api {

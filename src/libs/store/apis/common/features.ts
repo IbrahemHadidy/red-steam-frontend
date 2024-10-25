@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Feature } from '@entities/feature.entity';
+import type { Feature } from '@interfaces/feature';
 
 const featureApi = createApi({
   reducerPath: 'api/feature',

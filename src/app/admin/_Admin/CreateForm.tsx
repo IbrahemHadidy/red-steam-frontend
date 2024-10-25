@@ -1,17 +1,13 @@
 // React
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 // Toast notifications
 import { toast } from 'react-toastify';
-
-// Services
-import { getByParameters } from '@services/game/data';
 
 // Utils
 import Decimal from 'decimal.js';
 
 // Types
-import type { Game } from '@entities/game.entity';
 import type { FormEvent, JSX, RefObject } from 'react';
 import type { CreateProps } from './admin.types';
 
@@ -21,8 +17,7 @@ export default function Create({
   setName,
   website,
   setWebsite,
-  gameId,
-  setGameId,
+  game,
   discountPrice,
   setDiscountPrice,
   offerType,
@@ -36,7 +31,6 @@ export default function Create({
   onSubmit,
 }: CreateProps): JSX.Element {
   // States
-  const [gameList, setGameList] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Refs
@@ -73,7 +67,7 @@ export default function Create({
         toast.warn('Please fill in all required fields');
         return false;
       }
-    } else if (type === 'offer' && discountPriceRef.current) {
+    } else if (type === 'create-offer' && discountPriceRef.current) {
       if (discountPrice === null && nameRef.current) {
         discountPriceRef.current.style.cssText += errorStyle;
       }
@@ -106,17 +100,8 @@ export default function Create({
     return true;
   };
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      const games = await getByParameters({ offers: true });
-      setGameList(games);
-    };
-
-    type === 'offer' && fetchGames();
-  }, [type]);
-
   const resetAllWarnings = (): void => {
-    const removeErrorStyle = (refs: RefObject<HTMLInputElement>[]) => {
+    const removeErrorStyle = (refs: RefObject<HTMLInputElement | null>[]) => {
       refs.forEach((ref) => {
         if (ref.current) {
           ref.current.style.cssText = ref.current.style.cssText.replace(errorStyle, '');
@@ -143,45 +128,33 @@ export default function Create({
   return (
     <>
       <div className="creation-form">
-        <h1 className="creation-form-title">Create {type}</h1>
+        <h1 className="creation-form-title">
+          Create {type === 'create-offer' ? `offer for: ${game?.name}` : type}
+        </h1>
+
         <section className="creation-section">
           <div className="form-row-flex">
-            {type === 'offer' &&
-              setGameId &&
+            {type === 'create-offer' &&
               setDiscountPrice &&
               setOfferType &&
               setDiscountStartDate &&
               setDiscountEndDate && (
                 <>
                   <div className="form-area">
-                    <label className="form-label">Game</label>
-                    <select
-                      className="form-input"
-                      value={gameId}
-                      onChange={(e) => setGameId(Number(e.target.value))}
-                    >
-                      {gameList.map((game) => (
-                        <option key={game.id} value={game.id}>
-                          {game.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-area">
                     <label className="form-label">Discount price</label>
                     <input
                       type="number"
                       className="form-input"
-                      value={discountPrice?.toString() || ''}
-                      onChange={(e) => setDiscountPrice(new Decimal(e.target.value))}
-                      placeholder="Discount price"
+                      value={discountPrice?.toString()}
+                      onChange={(e) => setDiscountPrice(new Decimal(e.target.value || '0.00'))}
+                      placeholder={`Discount price, Current price: ${game?.pricing?.basePrice}`}
                       ref={nameRef}
                     />
                   </div>
 
                   <div className="form-area radio" ref={offerTypeRef}>
                     <h3 className="form-label">Offer type</h3>
+
                     <label className="form-label" htmlFor="offerTypeSpecial">
                       <input
                         id="offerTypeSpecial"
@@ -193,6 +166,7 @@ export default function Create({
                       />
                       SPECIAL PROMOTION
                     </label>
+
                     <label className="form-label" htmlFor="offerTypeWeekend">
                       <input
                         id="offerTypeWeekend"
@@ -211,7 +185,6 @@ export default function Create({
                     <input
                       type="date"
                       className="form-input"
-                      style={{ colorScheme: 'dark' }}
                       value={discountStartDate && discountStartDate.toISOString().split('T')[0]}
                       onChange={(e) => setDiscountStartDate(new Date(e.target.value))}
                       placeholder="Discount start date"
@@ -224,7 +197,6 @@ export default function Create({
                     <input
                       type="date"
                       className="form-input"
-                      style={{ colorScheme: 'dark' }}
                       value={discountEndDate && discountEndDate.toISOString().split('T')[0]}
                       onChange={(e) => setDiscountEndDate(new Date(e.target.value))}
                       placeholder="Discount end date"
@@ -233,7 +205,8 @@ export default function Create({
                   </div>
                 </>
               )}
-            {type !== 'offer' && setName && (
+
+            {type !== 'create-offer' && setName && (
               <div className="form-area">
                 <label className="form-label">Name</label>
                 <input
@@ -246,6 +219,7 @@ export default function Create({
                 />
               </div>
             )}
+
             {['developer', 'publisher'].includes(type) && setWebsite && (
               <div className="form-area">
                 <label className="form-label">Website</label>
@@ -259,6 +233,7 @@ export default function Create({
                 />
               </div>
             )}
+
             {type === 'feature' && handleIconChange && (
               <div className="form-area">
                 <label className="form-label">Feature Icon</label>
@@ -273,6 +248,7 @@ export default function Create({
               </div>
             )}
           </div>
+
           <button className="submit-button" onClick={handleSubmit} disabled={isLoading}>
             Submit
           </button>

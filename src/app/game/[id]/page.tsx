@@ -8,12 +8,13 @@ import { getById } from '@services/game/data';
 import pwaIcon from '@images/pwa-icon.png';
 
 // Types
-import type { Game as GameType } from '@entities/game.entity';
+import type { Game as GameType } from '@interfaces/game';
 import type { Metadata } from 'next';
 import type { JSX } from 'react';
 import type { GameProps } from './Game.types';
 
-export async function generateMetadata({ params }: GameProps): Promise<Metadata> {
+export async function generateMetadata(props: GameProps): Promise<Metadata> {
+  const params = await props.params;
   const { id } = params;
 
   try {
@@ -54,6 +55,7 @@ export async function generateMetadata({ params }: GameProps): Promise<Metadata>
   }
 }
 
-export default function GamePage({ params }: GameProps): JSX.Element | null {
+export default async function GamePage(props: GameProps): Promise<JSX.Element | null> {
+  const params = await props.params;
   return <Game params={params} />;
 }

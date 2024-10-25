@@ -2,7 +2,7 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface LibraryState {
@@ -43,13 +43,9 @@ const librarySlice = createSlice({
       state.isCompleteModalOpen = action.payload;
     },
   },
-
-  extraReducers: (builder) => {
-    builder;
-  },
 });
 
-// Listeners actions
+// Listener actions
 export const initializeLibrary = createAction('shop/library/initializeWislist');
 
 export const {

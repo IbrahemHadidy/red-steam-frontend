@@ -12,7 +12,7 @@ import gameDataApi from '@store/apis/game/data';
 import Decimal from 'decimal.js';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
 
 // Create listener middleware

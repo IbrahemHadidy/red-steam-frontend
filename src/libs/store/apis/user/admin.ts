@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 
 const userAdminApi = createApi({
   reducerPath: 'api/user/admin',

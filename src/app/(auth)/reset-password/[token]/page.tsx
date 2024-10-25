@@ -3,39 +3,39 @@
 // React
 import { useEffect } from 'react';
 
-// NextJS
-import { useRouter } from 'next/navigation';
-
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Actions
-import { checkResetToken } from '@store/features/user/recovery/recoverySlice';
+import { setType } from '@store/features/user/login/loginSlice';
+
+// Providers
+import ResetPasswordProvider from '@providers/ResetPasswordProvider';
 
 // Components
 import ResetPassword from '@app/(auth)/_SignInAndRecovery/SignInAndRecovery';
 import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 
 interface ResetPasswordPageProps {
-  params: {
+  params: Promise<{
     token: string;
-  };
+  }>;
 }
 
-export default function ResetPasswordPage({ params }: ResetPasswordPageProps): JSX.Element {
+export default async function ResetPasswordPage(props: ResetPasswordPageProps) {
+  // Init
+  const params = await props.params;
   const { token } = params;
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // Handle reset token on password reset page
   useEffect(() => {
-    dispatch(checkResetToken({ token, router }));
-  }, [dispatch, router, token]);
+    dispatch(setType('Password Reset'));
+  }, [dispatch]);
 
   return (
-    <>
+    <ResetPasswordProvider token={token}>
       <RedirectIfLoggedIn />
-      <ResetPassword type="Password Reset" />
-    </>
+      <ResetPassword />
+    </ResetPasswordProvider>
   );
 }

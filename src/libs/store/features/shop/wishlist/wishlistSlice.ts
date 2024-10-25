@@ -5,7 +5,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import { addToCart, addToLibrary, removeFromWishlist } from './wishlistThunks';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface WishlistState {
@@ -76,7 +76,7 @@ const wishlistSlice = createSlice({
   },
 });
 
-// Listeners actions
+// Listener actions
 export const initializeWishlist = createAction('shop/wishlist/initializeWislist');
 
 export const { setHoveredItemIndex, updateWishlist, setCartBtnLoading, setRemoveBtnLoading } =

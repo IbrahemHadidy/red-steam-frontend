@@ -16,7 +16,7 @@ import userAuthApi from '@store/apis/user/auth';
 import userManagementApi from '@store/apis/user/management';
 
 // Types
-import type { User } from '@entities/user.entity';
+import type { User } from '@interfaces/user';
 import type { MutableRefObject } from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 

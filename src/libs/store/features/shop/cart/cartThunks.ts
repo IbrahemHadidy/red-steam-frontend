@@ -18,7 +18,7 @@ import gameDataApi from '@store/apis/game/data';
 import userInteractionApi from '@store/apis/user/interaction';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
 
 const refreshCart = async (dispatch: AppDispatch, getState: () => RootState) => {

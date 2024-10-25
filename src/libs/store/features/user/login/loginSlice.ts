@@ -9,6 +9,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface LoginState {
   // UI states
+  readonly type: 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
   readonly isLoginLoading: boolean;
   readonly isLoginFormVisible: boolean;
   readonly isForgotPasswordVisible: boolean;
@@ -24,6 +25,7 @@ interface LoginState {
 
 // Initial state
 const loginState: LoginState = {
+  type: 'Sign In',
   isLoginLoading: false,
   isLoginFormVisible: true,
   isForgotPasswordVisible: false,
@@ -38,6 +40,12 @@ const loginSlice = createSlice({
   initialState: loginState,
 
   reducers: {
+    setType: (
+      state,
+      action: PayloadAction<'Sign In' | 'Password Reset' | 'Name / Password Recovery'>
+    ) => {
+      state.type = action.payload;
+    },
     setLoginLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoginLoading = action.payload;
     },
@@ -82,6 +90,7 @@ const loginSlice = createSlice({
 });
 
 export const {
+  setType,
   setLoginLoading,
   setLoginFormVisibility,
   toggleForgotPasswordForm,

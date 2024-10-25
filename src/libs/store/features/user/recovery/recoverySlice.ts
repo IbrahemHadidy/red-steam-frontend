@@ -6,7 +6,6 @@ import { forgotPassword, resetPassword } from './recoveryThunks';
 
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface RecoveryState {
   // UI states
@@ -151,11 +150,8 @@ const recoverySlice = createSlice({
   },
 });
 
-// Listeners actions
+// Listener actions
 export const checkPageType = createAction<string>('user/recovery/checkPageType');
-export const checkResetToken = createAction<{ token: string; router: AppRouterInstance }>(
-  'user/recovery/checkResetToken'
-);
 
 export const {
   setResetLoadingState,

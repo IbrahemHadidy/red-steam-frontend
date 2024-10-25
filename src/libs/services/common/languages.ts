@@ -1,4 +1,4 @@
-import type { Language } from '@entities/language.entity';
+import type { Language } from '@interfaces/language';
 import Api from '@services/api';
 import type { AxiosRequestConfig } from 'axios';
 

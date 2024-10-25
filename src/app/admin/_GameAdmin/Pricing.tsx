@@ -1,76 +1,75 @@
-// DecimalJS
-import Decimal from 'decimal.js';
+// React
+import { useRef } from 'react';
+
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Actions
+import { toggleFree, updatePrice } from '@store/features/admin/game/gameAdminSlice';
+
+// Components
+import FormButtons from './FormButtons';
+
+// Form Validation
+import { validatePricing } from './validations';
 
 // Types
-import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
-import type { Pricing } from './game-admin.types';
-interface PricingProps {
-  pricing: Pricing;
-  setPricing: Dispatch<SetStateAction<Pricing>>;
-  link: string;
-  setLink: Dispatch<SetStateAction<string>>;
-  priceRef: RefObject<HTMLInputElement>;
-  linkRef: RefObject<HTMLInputElement>;
-}
+import type { ChangeEvent } from 'react';
 
-export default function Pricing({
-  pricing,
-  setPricing,
-  link,
-  setLink,
-  priceRef,
-  linkRef,
-}: PricingProps): JSX.Element {
+export default function Pricing() {
+  // Init
+  const dispatch = useAppDispatch();
+
+  // States
+  const { pricing } = useAppSelector((state) => state.gameAdmin);
+
+  // Refs
+  const priceRef = useRef<HTMLInputElement>(null);
+
   // Event handlers
-  const handleFreeChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPricing({ ...pricing, free: e.target.checked });
+  const handleFreeChange = (): void => {
+    dispatch(toggleFree());
   };
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPricing({ ...pricing, price: e.target.value !== '' ? new Decimal(e.target.value) : '' });
-  };
-
-  const handleLinkChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setLink(e.target.value);
+    const value = e.target.value;
+    dispatch(updatePrice(value));
   };
 
   return (
-    <section className="pricing-section">
-      <h2>Pricing and Availability</h2>
-      <div className="form-field form-field-checkbox">
-        <label className="field-label-checkbox">Free:</label>
-        <input
-          type="checkbox"
-          className="field-checkbox"
-          checked={pricing.free}
-          onChange={handleFreeChange}
-        />
-      </div>
-      {!pricing.free && (
-        <div className="form-field">
-          <div className="form-row">
-            <label className="field-label">Price</label>
-            <p>*Required</p>
-          </div>
+    <>
+      <section className="pricing-section">
+        <h2>Pricing</h2>
+
+        <div className="form-field form-field-checkbox">
+          <label className="field-label-checkbox">Free:</label>
           <input
-            type="number"
-            className="field-input"
-            value={pricing.price?.toString() ?? ''}
-            onChange={handlePriceChange}
-            ref={priceRef}
+            type="checkbox"
+            className="field-checkbox"
+            checked={pricing.free}
+            onChange={handleFreeChange}
           />
         </div>
-      )}
-      <div className="form-field">
-        <label className="field-label">Link (optional)</label>
-        <input
-          type="text"
-          className="field-input"
-          value={link}
-          onChange={handleLinkChange}
-          ref={linkRef}
-        />
-      </div>
-    </section>
+
+        {!pricing.free && (
+          <div className="form-field">
+            <div className="form-row">
+              <label className="field-label">Price</label>
+              <p>*Required</p>
+            </div>
+            <input
+              type="number"
+              className="field-input"
+              value={pricing.price?.toString() ?? ''}
+              onChange={handlePriceChange}
+              ref={priceRef}
+            />
+          </div>
+        )}
+      </section>
+
+      <br />
+      <FormButtons validation={() => validatePricing(pricing, priceRef)} />
+    </>
   );
-};
+}

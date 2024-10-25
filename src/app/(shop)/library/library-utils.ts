@@ -1,4 +1,4 @@
-import type { Game, ImageEntry, VideoEntry } from '@entities/game.entity';
+import type { Game, ImageEntry, VideoEntry } from '@interfaces/game';
 
 /**
  * The media display logic

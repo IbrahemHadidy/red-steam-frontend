@@ -21,6 +21,7 @@ export default function PaymentMethod() {
           <div className="payment-options">We only support Paypal at the moment</div>
         </div>
       </div>
+
       <p>You'll have the chance to review your order before it's placed.</p>
 
       <div className="continue-button" onClick={handleContinueClick}>

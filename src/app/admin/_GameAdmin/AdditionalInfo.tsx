@@ -1,101 +1,151 @@
-// Types
-import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
-interface AdditionalInfoProps {
-  about: string;
-  setAbout: Dispatch<SetStateAction<string>>;
-  mature: boolean;
-  setMature: Dispatch<SetStateAction<boolean>>;
-  matureDescription: string;
-  setMatureDescription: Dispatch<SetStateAction<string>>;
-  legal: string;
-  setLegal: Dispatch<SetStateAction<string>>;
-  aboutRef: RefObject<HTMLTextAreaElement>;
-  matureDescriptionRef: RefObject<HTMLTextAreaElement>;
-  legalRef: RefObject<HTMLTextAreaElement>;
-}
+// React
+import { useRef } from 'react';
 
-export default function AdditionalInfo({
-  about,
-  setAbout,
-  mature,
-  setMature,
-  matureDescription,
-  setMatureDescription,
-  legal,
-  setLegal,
-  aboutRef,
-  matureDescriptionRef,
-  legalRef,
-}: AdditionalInfoProps): JSX.Element {
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Actions
+import {
+  toggleMature,
+  updateAbout,
+  updateLegal,
+  updateLink,
+  updateMatureDescription,
+} from '@store/features/admin/game/gameAdminSlice';
+
+// Components
+import FormButtons from './FormButtons';
+
+// Form Validation
+import { validateAdditionalInfo } from './validations';
+
+// Types
+import type { ChangeEvent } from 'react';
+
+export default function AdditionalInfo() {
+  // Init
+  const dispatch = useAppDispatch();
+
+  // States
+  const { link, about, mature, matureDescription, legal } = useAppSelector(
+    (state) => state.gameAdmin
+  );
+
+  // Refs
+  const linkRef = useRef<HTMLInputElement>(null);
+  const aboutRef = useRef<HTMLTextAreaElement>(null);
+  const matureDescriptionRef = useRef<HTMLTextAreaElement>(null);
+  const legalRef = useRef<HTMLTextAreaElement>(null);
+
   // Event Handlers
-  const handleMatureChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setMature(e.target.checked);
+  const handleLinkChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    dispatch(updateLink(value));
+  };
+
+  const handleAboutChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+    const value = e.target.value;
+    dispatch(updateAbout(value));
+  };
+
+  const handleMatureChange = (): void => {
+    dispatch(toggleMature());
   };
 
   const handleMatureDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setMatureDescription(e.target.value);
+    const value = e.target.value;
+    dispatch(updateMatureDescription(value));
   };
 
   const handleLegalChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setLegal(e.target.value);
+    const value = e.target.value;
+    dispatch(updateLegal(value));
   };
 
   return (
-    <section className="section-additional-info">
-      <h2>About</h2>
-      <div className="form-field">
-        <div className="form-row">
-          <label className="field-label">
-            Write about the game (<span>required, &nbsp;HTML &nbsp;allowed</span>):
-          </label>
-          <p>*Required</p>
-        </div>
-        <textarea
-          className="field-input"
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-          ref={aboutRef}
-        />
-      </div>
-      <hr />
-      <h2>Additional Information</h2>
-      <div className="form-field form-field-checkbox">
-        <label className="field-label-checkbox">Mature Content:</label>
+    <>
+      <section className="section-additional-info">
+        <h2>About</h2>
 
-        <input
-          type="checkbox"
-          className="field-checkbox"
-          checked={mature}
-          onChange={handleMatureChange}
-        />
-      </div>
-      {mature && (
+        <div className="form-field">
+          <label className="field-label">Link (optional)</label>
+          <input
+            type="text"
+            className="field-input"
+            value={link}
+            onChange={handleLinkChange}
+            ref={linkRef}
+          />
+        </div>
+
         <div className="form-field">
           <div className="form-row">
             <label className="field-label">
-              Mature Description (<span>required, &nbsp;HTML &nbsp;allowed</span>):
+              Write about the game (<span>required, &nbsp;HTML &nbsp;allowed</span>):
             </label>
             <p>*Required</p>
           </div>
           <textarea
             className="field-input"
-            value={matureDescription}
-            onChange={handleMatureDescriptionChange}
-            ref={matureDescriptionRef}
+            value={about}
+            onChange={handleAboutChange}
+            ref={aboutRef}
           />
         </div>
-      )}
-      <div className="form-field">
-        <label className="field-label">
-          Legal (<span>optional, &nbsp;HTML &nbsp;allowed</span>):
-        </label>
-        <textarea
-          className="field-input"
-          value={legal}
-          onChange={handleLegalChange}
-          ref={legalRef}
-        />
-      </div>
-    </section>
+
+        <hr />
+
+        <h2>Additional Information</h2>
+
+        <div className="form-field form-field-checkbox">
+          <label className="field-label-checkbox">Mature Content:</label>
+          <input
+            type="checkbox"
+            className="field-checkbox"
+            checked={mature}
+            onChange={handleMatureChange}
+          />
+        </div>
+
+        {mature && (
+          <div className="form-field">
+            <div className="form-row">
+              <label className="field-label">
+                Mature Description (<span>required, &nbsp;HTML &nbsp;allowed</span>):
+              </label>
+              <p>*Required</p>
+            </div>
+            <textarea
+              className="field-input"
+              value={matureDescription}
+              onChange={handleMatureDescriptionChange}
+              ref={matureDescriptionRef}
+            />
+          </div>
+        )}
+
+        <div className="form-field">
+          <label className="field-label">
+            Legal (<span>optional, &nbsp;HTML &nbsp;allowed</span>):
+          </label>
+          <textarea
+            className="field-input"
+            value={legal}
+            onChange={handleLegalChange}
+            ref={legalRef}
+          />
+        </div>
+      </section>
+
+      <br />
+      <FormButtons
+        validation={() =>
+          validateAdditionalInfo(
+            { link, about, mature, matureDescription, legal },
+            { linkRef, aboutRef, matureDescriptionRef, legalRef }
+          )
+        }
+      />
+    </>
   );
 }

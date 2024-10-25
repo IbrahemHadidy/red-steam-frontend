@@ -26,11 +26,7 @@ import ResetPasswordForm from './ResetPasswordForm';
 import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
-interface SignInAndRecoveryProps {
-  type: 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
-}
-
-export default function SignInAndRecovery({ type }: SignInAndRecoveryProps) {
+export default function SignInAndRecovery() {
   // Init
   const dispatch = useAppDispatch();
   const isViewport740 = useResponsiveViewport(740);
@@ -42,20 +38,22 @@ export default function SignInAndRecovery({ type }: SignInAndRecoveryProps) {
   );
 
   // States
-  const { isLoginFormVisible, isForgotPasswordVisible } = useAppSelector((state) => state.login);
   const { showResetPasswordInterface, isPasswordPage } = useAppSelector((state) => state.recovery);
+  const { type, isLoginFormVisible, isForgotPasswordVisible } = useAppSelector(
+    (state) => state.login
+  );
 
   // Spring amimation of the "forgot-my-password" section
   const springProps = useSpring({
     opacity: isForgotPasswordVisible ? 1 : 0,
-    width: isForgotPasswordVisible ? '295px' : '0',
+    width: type === 'Name / Password Recovery' ? '366px' : isForgotPasswordVisible ? '317px' : '0',
     paddingLeft: isForgotPasswordVisible ? '14px' : '0px',
     marginLeft: isForgotPasswordVisible ? '14px' : '0px',
     overflow: 'hidden',
   });
   const springProps740 = useSpring({
     opacity: isForgotPasswordVisible ? 1 : 0,
-    height: isForgotPasswordVisible ? '280.5px' : '0',
+    height: isForgotPasswordVisible ? '296px' : '0',
     paddingTop: isForgotPasswordVisible ? '14px' : '0px',
     marginTop: isForgotPasswordVisible ? '14px' : '0px',
     overflow: 'hidden',
@@ -75,8 +73,10 @@ export default function SignInAndRecovery({ type }: SignInAndRecoveryProps) {
             <div className="signin-title">
               <div className={`title ${isPasswordPage ? 'password-page' : ''}`}>{type}</div>
             </div>
+
             <div className={`login-form-container ${isPasswordPage ? 'password-page' : ''}`}>
               {isLoginFormVisible && <LoginForm />}
+
               <animated.div
                 className={`forgot-my-password ${!isPasswordPage ? 'login-page' : 'active'}`}
                 style={!isViewport740 ? springProps : springProps740}
@@ -86,13 +86,16 @@ export default function SignInAndRecovery({ type }: SignInAndRecoveryProps) {
             </div>
           </div>
         </div>
+
         <div className="new-user">
           <div className="new-user-item create-acc">
             <div className="headline">New to Steam?</div>
+
             <Link className="signup-btn" target="_top" href="signup">
               <span>Create an account</span>
             </Link>
           </div>
+
           <div className="new-user-item">
             <div className="subtext">
               It's free and easy. Discover thousands of

@@ -150,9 +150,7 @@ const signupSlice = createSlice({
     cleanErrorMessages: (state) => {
       state.errorMessages = [];
     },
-    reset: () => {
-      return signupState;
-    },
+    reset: () => signupState,
   },
 
   extraReducers: (builder) => {
@@ -224,7 +222,7 @@ const signupSlice = createSlice({
   },
 });
 
-// Listeners actions
+// Listener actions
 export const fetchCountry = createAction('user/signup/fetchCountry');
 
 export const {

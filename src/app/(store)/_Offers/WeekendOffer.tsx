@@ -14,7 +14,7 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import formatDate from '@utils/formatDate';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface WeekendOfferProps {
   offer: Game;
@@ -52,22 +52,26 @@ export default function WeekendOffer({ offer }: WeekendOfferProps) {
         </div>
         <div className="spotlight-content">
           <h2>{offer.pricing?.offerType}</h2>
+
           <div className="spotlight-body">
             Offer ends {formatDate(offer.pricing?.discountEndDate)}
           </div>
+
           <div className="spotlight-body spotlight-price price">
             <div className="discount-block-offers">
               <div className="discount-Percentage-offers">
                 -{offer.pricing?.discountPercentage}%
               </div>
+
               <div className="discount-prices-offers">
-                <div className="original-price-offers">${offer.pricing?.price}</div>
+                <div className="original-price-offers">${offer.pricing?.basePrice}</div>
                 <div className="final-price-offers">${offer.pricing?.discountPrice}</div>
               </div>
             </div>
           </div>
         </div>
       </Link>
+
       {!isViewport960 && offerHoverStates[offer.id] && (
         <div>
           <HoverSummary

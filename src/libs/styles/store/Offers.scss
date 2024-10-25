@@ -63,12 +63,14 @@
 						}
 					}
 				}
+
 				@media screen and (max-width: 1600px) {
 					.hover-arrow-right {
 						display: none;
 					}
 				}
 			}
+
 			.offer-result-container.big:nth-child(3),
 			.offer-result-container.big:nth-child(2) {
 				@media screen and (min-width: 1600px) {
@@ -76,6 +78,7 @@
 						display: none;
 					}
 				}
+
 				@media screen and (max-width: 1600px) {
 					.game-hover {
 						margin-left: -470px;
@@ -86,7 +89,8 @@
 					}
 				}
 			}
-			.small-group:first-of-type{
+
+			.small-group:first-of-type {
 				.offer-result-container.small {
 					@media screen and (min-width: 1600px) {
 						.game-hover {
@@ -97,6 +101,7 @@
 							}
 						}
 					}
+
 					@media screen and (max-width: 1600px) {
 						.hover-arrow-right {
 							display: none;
@@ -104,6 +109,7 @@
 					}
 				}
 			}
+
 			.small-group:nth-child(3),
 			.small-group:nth-child(2) {
 				.offer-result-container.small {
@@ -112,10 +118,11 @@
 							display: none;
 						}
 					}
+
 					@media screen and (max-width: 1600px) {
 						.game-hover {
 							margin-left: -470px;
-	
+
 							.hover-arrow-left {
 								display: none;
 							}
@@ -139,8 +146,8 @@
 				.spotlight-img {
 					overflow: hidden;
 					padding-left: 0px;
-    			mask-image: linear-gradient(to bottom, rgba(0,0,0,1)70%, rgba(0,0,0,0));
-    			-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1)70%, rgba(0,0,0,0));
+					mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1)53%, rgba(0, 0, 0, 0));
+					-webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1)53%, rgba(0, 0, 0, 0));
 
 					img {
 						width: -webkit-fill-available;
@@ -262,7 +269,7 @@
 				width: thin;
 				background-clip: content-box;
 				padding: 2px;
-			
+
 				&:hover {
 					border: 6px solid rgba(0, 0, 0, 0);
 					width: thin;

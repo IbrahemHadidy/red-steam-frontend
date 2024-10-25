@@ -14,7 +14,7 @@ const LoadingSkeleton = dynamic(() => import('./Skeleton'));
 
 // Styles
 import '@styles/admin/ActionsModals.scss';
-import '@styles/game/game.scss';
+import '@styles/game/Game.scss';
 
 // Types
 import type { JSX, ReactNode } from 'react';

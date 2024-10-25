@@ -23,19 +23,23 @@ export default function BrowseSteam() {
           <div className="home-titles" style={{ marginBottom: '10px' }}>
             Browse Steam
           </div>
+
           <div className="browse-buttons">
             <Link className="big-button" href="/search?sort=Release%20Date&price=Any%20Price">
               {' '}
               New Releases{' '}
             </Link>
+
             <Link className="big-button" href="/search?priceOptions=Special%20Offers">
               {' '}
               Specials{' '}
             </Link>
+
             <Link className="big-button" href="/search?price=Free">
               {' '}
               Free Games{' '}
             </Link>
+
             <Link className="big-button" href={`/search?tags=${userTags}`}>
               {' '}
               By User Tags{' '}

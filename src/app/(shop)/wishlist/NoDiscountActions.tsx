@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { addToCart, addToLibrary } from '@store/features/shop/wishlist/wishlistThunks';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface NoDiscountActionsProps {
   game: Game;
@@ -33,6 +33,7 @@ export default function DiscountActions({ game }: NoDiscountActionsProps) {
         <div className="game-purchase-price">
           {game?.pricing?.free ? 'Free to Play' : `${game?.pricing?.price} USD`}
         </div>
+
         <div className={`addtocart-btn ${isCartBtnLoading ? 'loading' : ''}`}>
           <a className="green-btn" onClick={() => handleAddToCartBtn1Click(game)}>
             <span className="medium-btn">

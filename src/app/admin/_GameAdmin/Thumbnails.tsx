@@ -1,59 +1,46 @@
 // React
 import { Fragment, useRef } from 'react';
 
-// Types
-import type { ChangeEvent, Dispatch, JSX, RefObject, SetStateAction } from 'react';
-import type { Thumbnails } from './game-admin.types';
-interface ThumbnailsProps {
-  thumbnails: Thumbnails;
-  setThumbnails: Dispatch<SetStateAction<Thumbnails>>;
-  mainImageRef: RefObject<HTMLDivElement>;
-  backgroundImageRef: RefObject<HTMLDivElement>;
-  menuImageRef: RefObject<HTMLDivElement>;
-  horizontalHeaderImageRef: RefObject<HTMLDivElement>;
-  verticalHeaderImageRef: RefObject<HTMLDivElement>;
-  smallHeaderImageRef: RefObject<HTMLDivElement>;
-  searchImageRef: RefObject<HTMLDivElement>;
-  tabImageRef: RefObject<HTMLDivElement>;
-}
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-export default function Thumbnails({
-  thumbnails,
-  setThumbnails,
-  mainImageRef,
-  backgroundImageRef,
-  menuImageRef,
-  horizontalHeaderImageRef,
-  verticalHeaderImageRef,
-  smallHeaderImageRef,
-  searchImageRef,
-  tabImageRef,
-}: ThumbnailsProps): JSX.Element {
+// Redux Actions
+import { updateThumbnails } from '@store/features/admin/game/gameAdminSlice';
+
+// Components
+import FormButtons from './FormButtons';
+
+// Form Validation
+import { validateThumbnails } from './validations';
+
+// Utils
+import { saveFileToLocalStorage } from '@utils/filesStorageUtils';
+import getFileUrl from '@utils/getFileUrl';
+
+// Types
+import type { ChangeEvent } from 'react';
+import type { Thumbnails } from './game-admin.types';
+
+export default function Thumbnails() {
+  // Init
+  const dispatch = useAppDispatch();
+
+  // States
+  const { thumbnails } = useAppSelector((state) => state.gameAdmin);
+
   // Refs
   const fileInputRefs = useRef<{ [key in keyof Thumbnails]?: HTMLInputElement }>({});
-
-  // Event handlers
-  const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>, key: keyof Thumbnails): void => {
-    if (e.target.files?.length) {
-      const file: File = e.target.files[0];
-      if (
-        thumbnails[key].file &&
-        thumbnails[key].file instanceof File &&
-        (thumbnails[key].file.size !== file.size || thumbnails[key].file.type !== file.type)
-      ) {
-        setThumbnails((prev) => ({ ...prev, [key]: { file, changed: true } }));
-      } else {
-        setThumbnails((prev) => ({ ...prev, [key]: { file, changed: false } }));
-      }
-    }
-  };
-
-  const triggerFileInput = (key: keyof Thumbnails): void => {
-    fileInputRefs.current[key]?.click();
-  };
+  const mainImageRef = useRef<HTMLDivElement>(null);
+  const backgroundImageRef = useRef<HTMLDivElement>(null);
+  const menuImageRef = useRef<HTMLDivElement>(null);
+  const horizontalHeaderImageRef = useRef<HTMLDivElement>(null);
+  const verticalHeaderImageRef = useRef<HTMLDivElement>(null);
+  const smallHeaderImageRef = useRef<HTMLDivElement>(null);
+  const searchImageRef = useRef<HTMLDivElement>(null);
+  const tabImageRef = useRef<HTMLDivElement>(null);
 
   // Utils
-  const getDimensions = (key: keyof Thumbnails): string => {
+  const getThumbnailDimensions = (key: keyof Thumbnails): string => {
     const dimensions: { [key in keyof Thumbnails]: string } = {
       backgroundImage: '1438 x 810',
       mainImage: '616 x 353',
@@ -67,65 +54,104 @@ export default function Thumbnails({
     return dimensions[key];
   };
 
+  // Event handlers
+  const handleThumbnailChange = async (
+    e: ChangeEvent<HTMLInputElement>,
+    key: keyof Thumbnails
+  ): Promise<void> => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const fileId = await saveFileToLocalStorage(file);
+      const fileMetadata = { id: fileId, name: file.name, size: file.size, type: file.type };
+      if (
+        thumbnails[key].file &&
+        thumbnails[key].file instanceof File &&
+        (thumbnails[key].file.size !== file.size || thumbnails[key].file.type !== file.type)
+      ) {
+        dispatch(updateThumbnails({ key, file: fileMetadata, changed: true }));
+      } else {
+        dispatch(updateThumbnails({ key, file: fileMetadata, changed: false }));
+      }
+    }
+  };
+
+  const triggerFileInput = (key: keyof Thumbnails): void => {
+    fileInputRefs.current[key]?.click();
+  };
+
   return (
-    <section className="section-thumbnails">
-      <h2>Thumbnails</h2>
-      <div>
-        {Object.entries(thumbnails).map(([key, { file }], idx) => {
-          const ref = {
-            backgroundImage: backgroundImageRef,
-            mainImage: mainImageRef,
-            menuImg: menuImageRef,
-            horizontalHeaderImage: horizontalHeaderImageRef,
-            verticalHeaderImage: verticalHeaderImageRef,
-            smallHeaderImage: smallHeaderImageRef,
-            searchImage: searchImageRef,
-            tabImage: tabImageRef,
-          };
+    <>
+      <section className="section-thumbnails">
+        <h2>Thumbnails</h2>
+        <div>
+          {Object.entries(thumbnails).map(([key, { file }], idx) => {
+            const ref = {
+              backgroundImage: backgroundImageRef,
+              mainImage: mainImageRef,
+              menuImg: menuImageRef,
+              horizontalHeaderImage: horizontalHeaderImageRef,
+              verticalHeaderImage: verticalHeaderImageRef,
+              smallHeaderImage: smallHeaderImageRef,
+              searchImage: searchImageRef,
+              tabImage: tabImageRef,
+            };
 
-          const imageUrl =
-            file instanceof File
-              ? URL.createObjectURL(file)
-              : typeof file === 'string'
-                ? file
-                : undefined;
+            return (
+              <Fragment key={idx}>
+                <div className="form-field" ref={ref[key as keyof Thumbnails]}>
+                  <div className="btn-container">
+                    <div className="form-row">
+                      <label className="field-label">
+                        {`${key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')} `}
+                        <span>({getThumbnailDimensions(key as keyof Thumbnails)})</span>
+                      </label>
+                      <p>*Required</p>
+                    </div>
 
-          return (
-            <Fragment key={idx}>
-              <div className="form-field" ref={ref[key as keyof Thumbnails]}>
-                <div className="btn-container">
-                  <div className="form-row">
-                    <label className="field-label">
-                      {`${key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')} `}
-                      <span>({getDimensions(key as keyof Thumbnails)})</span>
-                    </label>
-                    <p>*Required</p>
+                    <input
+                      type="file"
+                      accept=".jpg"
+                      className="field-input"
+                      ref={(el) => {
+                        fileInputRefs.current[key as keyof Thumbnails] = el ?? undefined;
+                      }}
+                      onChange={(e) => handleThumbnailChange(e, key as keyof Thumbnails)}
+                      hidden
+                    />
+
+                    <button
+                      type="button"
+                      className="upload-button"
+                      onClick={() => triggerFileInput(key as keyof Thumbnails)}
+                    >
+                      {file ? 'Change Image' : 'Add Image'}
+                    </button>
                   </div>
-                  <input
-                    type="file"
-                    accept=".jpg"
-                    className="field-input"
-                    ref={(el) => {
-                      el && (fileInputRefs.current[key as keyof Thumbnails] = el);
-                    }}
-                    onChange={(e) => handleThumbnailChange(e, key as keyof Thumbnails)}
-                    hidden
-                  />
-                  <button
-                    type="button"
-                    className="upload-button"
-                    onClick={() => triggerFileInput(key as keyof Thumbnails)}
-                  >
-                    {file ? 'Change Image' : 'Add Image'}
-                  </button>
+
+                  {file && <img src={getFileUrl(file)} alt={key} className="thumbnail-image" />}
                 </div>
-                {file && <img src={imageUrl} alt={key} className="thumbnail-image" />}
-              </div>
-              {idx < Object.keys(thumbnails).length - 1 && <hr />}
-            </Fragment>
-          );
-        })}
-      </div>
-    </section>
+                {idx < Object.keys(thumbnails).length - 1 && <hr />}
+              </Fragment>
+            );
+          })}
+        </div>
+      </section>
+      <br />
+      <FormButtons
+        validation={() =>
+          validateThumbnails(thumbnails, {
+            mainImageRef,
+            backgroundImageRef,
+            menuImageRef,
+            horizontalHeaderImageRef,
+            verticalHeaderImageRef,
+            smallHeaderImageRef,
+            searchImageRef,
+            tabImageRef,
+          })
+        }
+      />
+    </>
   );
 }

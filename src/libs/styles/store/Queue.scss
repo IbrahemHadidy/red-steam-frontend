@@ -220,7 +220,7 @@
 }
 
 .login-queue {
-	background: rgba( 0, 0, 0, 0.2 );
+	background: rgba(0, 0, 0, 0.2);
 	width: auto;
 	padding: 16px;
 	text-align: center;
@@ -229,7 +229,6 @@
 	font-family: "Motiva Sans", Sans-serif;
 	font-weight: 300;
 	font-weight: normal;
-	height: 130px;
 
 	p {
 		margin-top: 5px;
@@ -246,24 +245,24 @@
 			cursor: pointer;
 			text-decoration: none !important;
 			color: #D2E885 !important;
-			background: linear-gradient( to bottom, #a4d007 5%, #536904 95%);
-	
+			background: linear-gradient(to bottom, #a4d007 5%, #536904 95%);
+
 			span {
 				display: block;
-				background: linear-gradient( to bottom, #799905 5%, #536904 95%);
+				background: linear-gradient(to bottom, #799905 5%, #536904 95%);
 				border-radius: 3px;
 				padding: 0 15px;
 				font-size: 15px;
 				line-height: 30px;
 			}
-	
+
 			&:hover {
 				text-decoration: none !important;
 				color: #fff !important;
-				background: linear-gradient( to bottom, #b6d908 5%, #80a006 95%);
-	
+				background: linear-gradient(to bottom, #b6d908 5%, #80a006 95%);
+
 				span {
-					background: linear-gradient( to bottom, #a1bf07 5%, #80a006 95%);
+					background: linear-gradient(to bottom, #a1bf07 5%, #80a006 95%);
 				}
 			}
 		}

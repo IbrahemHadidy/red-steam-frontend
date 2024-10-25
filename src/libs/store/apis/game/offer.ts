@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Pricing } from '@entities/pricing.entity';
+import type { Pricing } from '@interfaces/pricing';
 
 const gameOfferApi = createApi({
   reducerPath: 'api/game/offer',

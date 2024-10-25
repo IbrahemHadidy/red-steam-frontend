@@ -1,7 +1,7 @@
 import Api from '@services/api';
 
 // Types
-import type { Developer } from '@entities/company.entity';
+import type { Developer } from '@interfaces/company';
 import type { AxiosRequestConfig } from 'axios';
 
 class DeveloperApi extends Api {

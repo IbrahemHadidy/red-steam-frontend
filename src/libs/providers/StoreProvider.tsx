@@ -8,13 +8,14 @@ import { AppStore, makeStore } from '@store/store';
 import { Provider } from 'react-redux';
 
 // Types
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
 interface StoreProviderProps {
   children: ReactNode;
 }
 
-export default function StoreProvider({ children }: StoreProviderProps): JSX.Element {
-  const storeRef = useRef<AppStore>();
+export default function StoreProvider({ children }: StoreProviderProps) {
+  const storeRef = useRef<AppStore>(undefined);
   if (!storeRef.current) {
     // Create the store instance the first time this renders
     storeRef.current = makeStore();

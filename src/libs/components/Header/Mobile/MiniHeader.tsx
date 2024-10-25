@@ -9,7 +9,7 @@ import headerLogo from '@images/header_logo.png';
 import headerHumburger from '@images/header_menu_hamburger.png';
 
 // Types
-import type { MouseEvent } from 'react';
+import type { MouseEvent, JSX } from 'react';
 interface MiniHeaderProps {
   onMenuClick: (event: MouseEvent<HTMLDivElement>) => void;
 }

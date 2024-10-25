@@ -1,7 +1,7 @@
 import Api from '@services/api';
 
 // Types
-import type { Pricing } from '@entities/pricing.entity';
+import type { Game } from '@interfaces/game';
 import type { AxiosRequestConfig } from 'axios';
 
 class OfferApi extends Api {
@@ -36,7 +36,7 @@ class OfferApi extends Api {
     orderBy: 'id' | 'username' | 'email' | 'country' | 'isVerified' | 'isAdmin' | 'createdAt',
     order: 'ASC' | 'DESC',
     searchQuery?: { [key: string]: string }
-  ): Promise<{ items: Pricing[]; total: number; totalPages: number }> => {
+  ): Promise<{ items: Game[]; total: number; totalPages: number }> => {
     const endpoint: string = '/paginated';
     let queryString: string = `?page=${page}&limit=${limit}&orderBy=${orderBy}&order=${order}`;
     if (searchQuery) {
@@ -56,7 +56,7 @@ class OfferApi extends Api {
     discountStartDate: Date,
     discountEndDate: Date
   ): Promise<{ message: string }> => {
-    const endpoint: string = `/offer/${id}`;
+    const endpoint: string = `/${id}`;
     const config: AxiosRequestConfig = {
       withCredentials: true,
     };
@@ -74,7 +74,7 @@ class OfferApi extends Api {
   };
 
   public deleteOffer = async (id: number): Promise<{ message: string }> => {
-    const endpoint: string = `/offer/${id}`;
+    const endpoint: string = `/${id}`;
     const config: AxiosRequestConfig = {
       withCredentials: true,
     };

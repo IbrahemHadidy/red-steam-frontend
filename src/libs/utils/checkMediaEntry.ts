@@ -1,4 +1,4 @@
-import type { ImageEntry, VideoEntry } from '@entities/game.entity';
+import type { ImageEntry, VideoEntry } from '@interfaces/game';
 
 /**
  * Type guard function to check if an entry is of type VideoEntry

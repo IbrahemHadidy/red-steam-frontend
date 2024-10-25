@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { addToCart } from '@store/features/shop/wishlist/wishlistThunks';
 
 // Types
-import type { Game } from '@entities/game.entity';
+import type { Game } from '@interfaces/game';
 
 interface DiscountActionsProps {
   game: Game;
@@ -36,11 +36,13 @@ export default function DiscountActions({ game }: DiscountActionsProps) {
       <div className="game-purchase-action-background">
         <div className="game-purchase-discount">
           <div className="discount-precentage">-{game?.pricing?.discountPercentage}%</div>
+
           <div className="discount-prices">
             <div className="discount-original-price">${game?.pricing?.basePrice}</div>
             <div className="discount-final-price">${game?.pricing?.discountPrice} USD</div>
           </div>
         </div>
+
         <div className={`addtocart-btn ${isCartBtnLoading ? 'loading' : ''}`}>
           {!isInCart(game) ? (
             <a className="green-btn" onClick={() => handleAddToCartBtn2Click(game?.id)}>
