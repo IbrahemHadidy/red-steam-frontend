@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useEffect, useState, use } from 'react';
+import { use, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // NextJS
@@ -33,10 +33,10 @@ interface CreateOfferAdminProps {
 
 export default function CreateOfferAdmin(props: CreateOfferAdminProps) {
   const params = use(props.params);
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [game, setGame] = useState<Game>();
   const [discountPrice, setDiscountPrice] = useState<Decimal>(new Decimal('0.00'));
   const [offerType, setOfferType] = useState<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>(

@@ -36,13 +36,13 @@ import type { JSX, MouseEvent } from 'react';
 import type { RightContentProps } from './GameContent.types';
 
 export default function RightContent({ game }: RightContentProps): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [showAllLanguages, setShowAllLanguages] = useState<boolean>(false);
   const [platform, setPlatform] = useState<string>('unknown');

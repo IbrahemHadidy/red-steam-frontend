@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setLoginFormVisibility } from '@store/features/user/login/loginSlice';
 import {
   loginInstead,
@@ -24,11 +24,11 @@ import validatePasswordStrength from '@utils/passwordValidator';
 import type { ChangeEvent, FormEvent } from 'react';
 
 export default function ResetPasswordForm() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const {
     resetPasswordLoadingState,
     isResetButtonDisabled,
@@ -37,9 +37,9 @@ export default function ResetPasswordForm() {
     passwordStrengthError,
     passwordStrengthWarning,
     passwordsDoNotMatch,
-  } = useAppSelector((state) => state.recovery);
+  } = useAppSelector((state) => state.user.recovery);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleResetPasswordFormSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     await dispatch(resetPassword());
@@ -68,6 +68,7 @@ export default function ResetPasswordForm() {
     router.push('/login');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <form className="login-form" onSubmit={handleResetPasswordFormSubmit}>
       <div className="help-title">Password reset</div>

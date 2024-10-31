@@ -16,7 +16,7 @@ import { createLanguage } from '@services/common/languages';
 import type { JSX } from 'react';
 
 export default function LanguagesAdmin(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [name, setName] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
 
@@ -40,4 +40,4 @@ export default function LanguagesAdmin(): JSX.Element {
       submitted={submitted}
     />
   );
-};
+}

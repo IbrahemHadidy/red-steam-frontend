@@ -30,7 +30,7 @@ export default function Create({
   icon,
   onSubmit,
 }: CreateProps): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Refs

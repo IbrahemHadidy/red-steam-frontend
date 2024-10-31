@@ -28,7 +28,7 @@ export default function SearchRight({
   filters,
   isViewport960,
 }: SearchRightProps): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [isShown, setIsShown] = useState<boolean>(false);
 
   const handleShowClick = (): void => {

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   toggleRequired64bit,
   updateMiniAdditionalNotes,
@@ -41,13 +41,13 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import type { ChangeEvent, RefObject } from 'react';
 
 export default function SystemRequirements() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { systemRequirements } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { systemRequirements } = useAppSelector((state) => state.admin.game);
 
-  // Refs
+  //------------------------ Refs for File Inputs -------------------------//
   const miniOsRef = useRef<HTMLInputElement>(null);
   const miniCpuRef = useRef<HTMLInputElement>(null);
   const miniRamRef = useRef<HTMLInputElement>(null);
@@ -57,6 +57,7 @@ export default function SystemRequirements() {
   const recommendedRamRef = useRef<HTMLInputElement>(null);
   const recommendedGpuRef = useRef<HTMLInputElement>(null);
 
+  //-------------------------- Utility Functions --------------------------//
   // Generalized input change handler
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -71,6 +72,7 @@ export default function SystemRequirements() {
     dispatch(toggleRequired64bit());
   };
 
+  //-------------------------- Render UI Section --------------------------//
   // Render function for system requirements input fields
   const renderSystemRequirementInputs = (
     prefix: 'mini' | 'recommended',

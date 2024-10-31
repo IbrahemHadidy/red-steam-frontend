@@ -28,11 +28,11 @@ import type { JSX } from 'react';
 import type { QueueAreaProps } from '../MediaAndSummary.types';
 
 export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isAddedToWishlist, setIsAddedToWishlist] = useState<boolean>(
     !!currentUserData?.wishlist?.some((item) => item.id === game.id)

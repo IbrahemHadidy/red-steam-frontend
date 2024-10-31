@@ -17,17 +17,18 @@ interface CartItemProps {
 }
 
 export default function CartItem({ game }: CartItemProps) {
-  // Intializations
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { removeBtnLoading } = useAppSelector((state) => state.cart);
+  //--------------------------- State Selectors ---------------------------//
+  const { removeBtnLoading } = useAppSelector((state) => state.shop.cart);
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleRemoveClick = async (id: number): Promise<void> => {
     await dispatch(removeCartItem(id));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="cart-item" key={game.id}>
       <div className="cart-item-content">

@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { onLoadIntialization } from '@store/features/auth/authSlice';
 
 // Redux Thunks
@@ -27,12 +27,12 @@ interface AuthProviderProps {
 }
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const {
     authOnLoadIntialized,
     currentUserData,

@@ -16,7 +16,7 @@ import { createPublisher } from '@services/common/publishers';
 import type { JSX } from 'react';
 
 export default function PublishersAdmin(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);

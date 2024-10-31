@@ -1,12 +1,12 @@
 'use client';
 
 // React
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setType } from '@store/features/user/login/loginSlice';
 
 // NextJS
@@ -19,20 +19,34 @@ import { useAppSelector } from '@store/hooks';
 import SignIn from '../_SignInAndRecovery/SignInAndRecovery';
 
 export default function SignInPage() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
+  //-------------------------- Utility Functions --------------------------//
+  const handleLoginRedirect = useCallback(() => {
+    const previousPath = document.referrer; // Get the previous URL
+    const isInternalLink = previousPath.startsWith(window.location.origin);
+
+    if (isInternalLink) {
+      router.push(previousPath);
+    } else {
+      router.push('/');
+    }
+  }, [router]);
+
+  // Handle login redirect if user is already logged in
   useEffect(() => {
     if (isUserLoggedIn) {
-      router.back();
+      handleLoginRedirect();
     } else {
+      // Otherwise, set the state "type" to 'Sign In'
       dispatch(setType('Sign In'));
     }
-  }, [dispatch, isUserLoggedIn, router]);
+  }, [dispatch, handleLoginRedirect, isUserLoggedIn]);
 
   return <SignIn />;
 }

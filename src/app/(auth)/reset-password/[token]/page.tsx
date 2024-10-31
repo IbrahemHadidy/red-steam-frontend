@@ -1,12 +1,12 @@
 'use client';
 
 // React
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setType } from '@store/features/user/login/loginSlice';
 
 // Providers
@@ -22,12 +22,13 @@ interface ResetPasswordPageProps {
   }>;
 }
 
-export default async function ResetPasswordPage(props: ResetPasswordPageProps) {
-  // Init
-  const params = await props.params;
+export default function ResetPasswordPage(props: ResetPasswordPageProps) {
+  //--------------------------- Initializations ---------------------------//
+  const params = use(props.params);
   const { token } = params;
   const dispatch = useAppDispatch();
 
+  // Set the state "type" to 'Password Reset'
   useEffect(() => {
     dispatch(setType('Password Reset'));
   }, [dispatch]);

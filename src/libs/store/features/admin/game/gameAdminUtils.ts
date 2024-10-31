@@ -2,7 +2,8 @@
 import { toast } from 'react-toastify';
 
 // Types
-import type { FileMetadata, Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
+import type { Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
+import type FileMetadata from '@custom-types/file-metadata';
 
 /**
  * Check if the screenshot is already in the state

@@ -3,7 +3,7 @@
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   removeVideo,
   restoreVideo,
@@ -22,13 +22,13 @@ interface MediaVideoProps {
 }
 
 export default function MediaVideo({ item }: MediaVideoProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { duplicateOrders } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { duplicateOrders } = useAppSelector((state) => state.admin.game);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleRemoveVideo = (order: number): void => {
     dispatch(removeVideo(order));
   };
@@ -42,6 +42,7 @@ export default function MediaVideo({ item }: MediaVideoProps) {
     dispatch(updateVideoOrder({ from: id, to: newOrder }));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="media-video">
       <video controls poster={getFileUrl(item.poster)} className="media-preview">

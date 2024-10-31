@@ -1,7 +1,7 @@
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setIsGameModalOpen, setSelectedGame } from '@store/features/shop/library/librarySlice';
 
 // Types
@@ -12,18 +12,19 @@ interface GameCardProps {
 }
 
 export default function GameCard({ game }: GameCardProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { cardSize } = useAppSelector((state) => state.library);
+  //--------------------------- State Selectors ---------------------------//
+  const { cardSize } = useAppSelector((state) => state.shop.library);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleCardClick = (game: Game): void => {
     dispatch(setSelectedGame(game));
     dispatch(setIsGameModalOpen(true));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div
       className="game-card"

@@ -5,6 +5,9 @@ import ItemsList from './ItemsList';
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
+// Constants
+import { DEFAULT_BG } from '@config/constants/backgrounds';
+
 // Types
 import type { AdminProps } from './admin.types';
 
@@ -28,8 +31,8 @@ export default function Admin({
   onSubmit,
   submitted,
 }: AdminProps) {
-  // Init
-  useDynamicBackground(`#181A21`);
+  //--------------------------- Initializations ---------------------------//
+  useDynamicBackground(DEFAULT_BG);
 
   return (
     <>

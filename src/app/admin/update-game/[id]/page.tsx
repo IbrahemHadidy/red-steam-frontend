@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { initializeGameUpdate } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
@@ -21,19 +21,23 @@ interface GameUpdateProps {
 }
 
 export default function GameUpdate({ params }: GameUpdateProps) {
+  //--------------------------- Initializations ---------------------------//
   const { id } = use(params);
   const dispatch = useAppDispatch();
 
-  const { isUpdateFetching, isGameUpdateInitialized } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { isUpdateFetching, isGameUpdateInitialized } = useAppSelector((state) => state.admin.game);
 
+  //-------------------------- Portals Selection  -------------------------//
   const loadingPortal = document.getElementById('loading-portal');
 
+  //------------------------------- Effects -------------------------------//
+  // Initialize Game Update on id change
   useEffect(() => {
-    if (!isGameUpdateInitialized) {
-      dispatch(initializeGameUpdate(+id));
-    }
+    if (!isGameUpdateInitialized) dispatch(initializeGameUpdate(+id));
   }, [dispatch, id, isGameUpdateInitialized]);
 
+  //--------------------------- Render UI Section -------------------------//
   return isUpdateFetching && loadingPortal ? (
     createPortal(<Loading />, loadingPortal)
   ) : (

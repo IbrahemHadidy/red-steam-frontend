@@ -7,16 +7,17 @@ import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@store/hooks';
 
 export default function CartSummary() {
-  // Intializations
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  // States
-  const { userCart, totalPrice } = useAppSelector((state) => state.cart);
+  //--------------------------- State Selectors ---------------------------//
+  const { userCart, totalPrice } = useAppSelector((state) => state.shop.cart);
 
   const handleCartCheckoutClick = (): void => {
     router.push('/checkout');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="cart-summary-container">
       <div className="cart-summary">

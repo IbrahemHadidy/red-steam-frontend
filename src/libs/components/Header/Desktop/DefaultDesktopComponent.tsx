@@ -26,7 +26,7 @@ import steamLogo from '@images/logo_steam.svg';
 import type { JSX } from 'react';
 
 export default function DefaultDesktopComponent(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   const handleInstallSteamBtn = (): void => {

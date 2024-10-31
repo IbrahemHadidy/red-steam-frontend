@@ -4,7 +4,7 @@ import { useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { updateDevelopers, updatePublishers } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
@@ -30,21 +30,21 @@ interface ReactSelectOption {
 }
 
 export default function Companies() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { publishers, developers } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { publishers, developers } = useAppSelector((state) => state.admin.game);
 
-  // Queries
+  //---------------------------- Redux Queries ----------------------------//
   const { data: fetchedDevelopers } = useGetAllDevelopersQuery();
   const { data: fetchedPublishers } = useGetAllPublishersQuery();
 
-  // Refs
+  //---------------------- React-Select Container Refs --------------------//
   const publishersRef = useRef<HTMLDivElement>(null);
   const developersRef = useRef<HTMLDivElement>(null);
 
-  // React Select Options
+  //------------------------- React-Select Options ------------------------//
   const developerOptions: ReactSelectOption[] =
     fetchedDevelopers?.map((developer) => ({
       value: developer.id,
@@ -57,7 +57,7 @@ export default function Companies() {
       label: publisher.name,
     })) ?? [];
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleDeveloperChange = (selectedOptions: MultiValue<ReactSelectOption>): void => {
     const selectedIds: number[] = selectedOptions.map((option) => option.value);
     dispatch(updateDevelopers(selectedIds));
@@ -68,6 +68,7 @@ export default function Companies() {
     dispatch(updatePublishers(selectedIds));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section className="section-companies">

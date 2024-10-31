@@ -1,5 +1,5 @@
 // Redux
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 // Slices
 import authSlice from './features/auth/authSlice';
@@ -11,7 +11,9 @@ import wishlistSlice from './features/shop/wishlist/wishlistSlice';
 
 import loginSlice from './features/user/login/loginSlice';
 import recoverySlice from './features/user/recovery/recoverySlice';
+import userSettingsSlice from './features/user/settings/userSettingsSlice';
 import signupSlice from './features/user/signup/signupSlice';
+import userTagsSlice from './features/user/tags/userTagsSlice';
 
 import gameAdminSlice from './features/admin/game/gameAdminSlice';
 
@@ -21,6 +23,8 @@ import authListener from './features/auth/authListeners';
 import cartListener from './features/shop/cart/cartListeners';
 import libraryListener from './features/shop/library/libraryListeners';
 import wishlistListener from './features/shop/wishlist/wishlistListeners';
+import userSettingsListener from './features/user/settings/userSettingsListeners';
+import userTagsListener from './features/user/tags/userTagsListeners';
 
 import recoveryListener from './features/user/recovery/recoveryListeners';
 import signupListener from './features/user/signup/signupListeners';
@@ -46,26 +50,39 @@ import userAuthApi from './apis/user/auth';
 import userInteractionApi from './apis/user/interaction';
 import userManagementApi from './apis/user/management';
 import userPaymentApi from './apis/user/payment';
+import userPhoneApi from './apis/user/phone';
 
 // Types
 import type { Action, ThunkAction } from '@reduxjs/toolkit';
 
-// Configure Store
+//--------------------------- Combined Reducers ---------------------------//
+const userReducer = combineReducers({
+  login: loginSlice.reducer,
+  recovery: recoverySlice.reducer,
+  signup: signupSlice.reducer,
+  settings: userSettingsSlice.reducer,
+  tags: userTagsSlice.reducer,
+});
+
+const shopReducer = combineReducers({
+  cart: cartSlice.reducer,
+  checkout: checkoutSlice.reducer,
+  library: librarySlice.reducer,
+  wishlist: wishlistSlice.reducer,
+});
+
+const adminReducer = combineReducers({
+  game: gameAdminSlice.reducer,
+});
+
+//--------------------------- Store Configuration --------------------------//
 const store = configureStore({
   reducer: {
     // Slices
     auth: authSlice.reducer,
-
-    login: loginSlice.reducer,
-    recovery: recoverySlice.reducer,
-    signup: signupSlice.reducer,
-
-    cart: cartSlice.reducer,
-    checkout: checkoutSlice.reducer,
-    wishlist: wishlistSlice.reducer,
-    library: librarySlice.reducer,
-
-    gameAdmin: gameAdminSlice.reducer,
+    user: userReducer,
+    shop: shopReducer,
+    admin: adminReducer,
 
     // APIs
     [ipBaseApi.reducerPath]: ipBaseApi.reducer,
@@ -85,8 +102,10 @@ const store = configureStore({
     [userAuthApi.reducerPath]: userAuthApi.reducer,
     [userInteractionApi.reducerPath]: userInteractionApi.reducer,
     [userManagementApi.reducerPath]: userManagementApi.reducer,
+    [userPhoneApi.reducerPath]: userPhoneApi.reducer,
     [userPaymentApi.reducerPath]: userPaymentApi.reducer,
   },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .prepend(
@@ -95,6 +114,8 @@ const store = configureStore({
 
         recoveryListener.middleware,
         signupListener.middleware,
+        userSettingsListener.middleware,
+        userTagsListener.middleware,
 
         cartListener.middleware,
         wishlistListener.middleware,
@@ -121,13 +142,15 @@ const store = configureStore({
         userAuthApi.middleware,
         userInteractionApi.middleware,
         userManagementApi.middleware,
+        userPhoneApi.middleware,
         userPaymentApi.middleware
       ),
 });
 
-// Create Store and export it
+//--------------------------- Store Export ---------------------------------//
 export const makeStore = () => store;
 
+//--------------------------- Store Types ----------------------------------//
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];

@@ -18,7 +18,7 @@ export interface User {
   readonly isAdmin: boolean;
   readonly isActive: boolean;
   readonly isLoggedIn: boolean;
-  readonly createdAt: Date;
+  readonly createdAt: string;
   readonly wishlist: WishlistItem[];
   readonly cart: CartItem[];
   readonly library: LibraryItem[];
@@ -27,11 +27,9 @@ export interface User {
 
 export interface BaseItem {
   readonly id: number;
-  readonly addedOn: Date;
+  readonly addedOn: string;
 }
 
-export interface WishlistItem extends BaseItem {}
-
-export interface CartItem extends BaseItem {}
-
-export interface LibraryItem extends BaseItem {}
+export type WishlistItem = BaseItem;
+export type CartItem = BaseItem;
+export type LibraryItem = BaseItem;

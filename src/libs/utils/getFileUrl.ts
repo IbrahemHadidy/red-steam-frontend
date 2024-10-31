@@ -1,4 +1,4 @@
-import type { FileMetadata } from '@app/admin/_GameAdmin/game-admin.types';
+import type FileMetadata from '@custom-types/file-metadata';
 import { getFileFromLocalStorage } from './filesStorageUtils';
 
 function isFileMetadata(obj: FileMetadata | string): obj is FileMetadata {

@@ -4,7 +4,7 @@ import Image from 'next/image';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   toggleForgotPasswordForm,
   toggleRememberMePreference,
@@ -22,10 +22,10 @@ import check from '@images/check.svg';
 import type { ChangeEvent, FormEvent } from 'react';
 
 export default function LoginForm() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const {
     isLoginLoading,
     rememberMePreference,
@@ -33,9 +33,9 @@ export default function LoginForm() {
     loginErrorMessage,
     accountName,
     loginPassword,
-  } = useAppSelector((state) => state.login);
+  } = useAppSelector((state) => state.user.login);
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleAccountNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateAccountName(value));
@@ -66,6 +66,7 @@ export default function LoginForm() {
     );
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <form className="login-form signin-form" onSubmit={handleLoginFormSubmit}>
       <div className="login-dialog-field">

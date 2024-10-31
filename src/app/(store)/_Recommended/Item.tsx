@@ -20,15 +20,15 @@ interface ItemProps {
   game: Game;
 }
 export default function Item({ game }: ItemProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //----------------------------- State Hooks -----------------------------//
   const [gameHoverStates, setGameHoverStates] = useState<{
     [key: string]: boolean;
   }>({});
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleMiniItemPointerMove = (id: number): void => {
     setGameHoverStates((prevState) => ({ ...prevState, [id]: true }));
   };
@@ -37,6 +37,7 @@ export default function Item({ game }: ItemProps) {
     setGameHoverStates((prevState) => ({ ...prevState, [id]: false }));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="mini-item-container" key={game.id}>
       <Link

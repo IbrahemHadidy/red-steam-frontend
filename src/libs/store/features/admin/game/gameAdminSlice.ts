@@ -9,7 +9,6 @@ import { checkDuplicateScreenshot, checkDuplicateVideo, getNextOrder } from './g
 
 // Types
 import type {
-  FileMetadata,
   Language,
   Platforms,
   Pricing,
@@ -18,6 +17,7 @@ import type {
   Thumbnails,
   Video,
 } from '@app/admin/_GameAdmin/game-admin.types';
+import type FileMetadata from '@custom-types/file-metadata';
 import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -633,6 +633,7 @@ const gameAdminSlice = createSlice({
       .addCase(getPreviewData.rejected, (state) => {
         state.loading = false;
       })
+
       .addCase(submitForm.pending, (state) => {
         state.loading = true;
       })

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { nextPage, prevPage, reset, setPage } from '@store/features/admin/game/gameAdminSlice';
 
 // Redux Thunks
@@ -15,14 +15,14 @@ interface FormButtonsProps {
 }
 
 export default function FormButtons({ validation }: FormButtonsProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
-  const { type, currentPage, loading } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { type, currentPage, loading } = useAppSelector((state) => state.admin.game);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleNextClick = async () => {
     if (currentPage === 'preview') {
       await dispatch(submitForm(router));
@@ -43,6 +43,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
     dispatch(setPage('basic'));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="form-buttons">
       <button

@@ -12,13 +12,13 @@ interface NoDiscountActionsProps {
 }
 
 export default function DiscountActions({ game }: NoDiscountActionsProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { isCartBtnLoading } = useAppSelector((state) => state.wishlist);
+  //--------------------------- State Selectors ---------------------------//
+  const { isCartBtnLoading } = useAppSelector((state) => state.shop.wishlist);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleAddToCartBtn1Click = async (game: Game): Promise<void> => {
     if (game?.pricing?.free) {
       await dispatch(addToLibrary(game?.id));
@@ -27,6 +27,7 @@ export default function DiscountActions({ game }: NoDiscountActionsProps) {
     }
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="game-purchase-action">
       <div className="game-purchase-action-background">

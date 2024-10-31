@@ -4,21 +4,22 @@ import GitHubButton from 'react-github-btn';
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setIsCompleteModalOpen } from '@store/features/shop/library/librarySlice';
 
 // Images
 import githubIcon from '@images/github.png';
 
 export default function CompleteModal() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleCloseCompleteClick = (): void => {
     dispatch(setIsCompleteModalOpen(false));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="complete-modal">
       <div>

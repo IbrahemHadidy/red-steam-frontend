@@ -4,7 +4,7 @@ import { useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { toggleFree, updatePrice } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
@@ -17,16 +17,16 @@ import { validatePricing } from './validations';
 import type { ChangeEvent } from 'react';
 
 export default function Pricing() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { pricing } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { pricing } = useAppSelector((state) => state.admin.game);
 
-  // Refs
+  //------------------------ Refs for Input Fields ------------------------//
   const priceRef = useRef<HTMLInputElement>(null);
 
-  // Event handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleFreeChange = (): void => {
     dispatch(toggleFree());
   };
@@ -36,6 +36,7 @@ export default function Pricing() {
     dispatch(updatePrice(value));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section className="pricing-section">

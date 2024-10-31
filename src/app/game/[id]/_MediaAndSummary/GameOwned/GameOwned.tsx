@@ -21,7 +21,7 @@ import type { ChangeEvent, MouseEvent } from 'react';
 import type { GameOwnedProps } from '../MediaAndSummary.types';
 
 export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [hasReviewed, setHasReviewed] = useState<boolean>(false);
   const [reviewId, setReviewId] = useState<number | null>(null);

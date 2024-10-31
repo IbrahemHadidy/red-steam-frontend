@@ -19,7 +19,7 @@ export default function PriceFilterBlock({
   handlePriceRowClick,
   getPriceRangeLabel,
 }: PriceFilterBlockProps): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
 

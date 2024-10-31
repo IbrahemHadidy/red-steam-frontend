@@ -22,19 +22,22 @@ import LoadingPage from '@app/loading';
 import userAuthApi from '@store/apis/user/auth';
 
 export default function VerifyAccount() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
 
-  // Get params
+  //---------------------------- Search Params ----------------------------//
   const username: string | null = searchParams?.get('username');
   const token: string | null = searchParams?.get('token');
 
+  //------------------------------- Effects -------------------------------//
+  // Set Page Title
   useEffect(() => {
     document.title = 'Verifying...';
   }, []);
 
+  // Handle Email Verification
   useEffect(() => {
     if (username && token) {
       (async (): Promise<void> => {

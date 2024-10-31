@@ -6,6 +6,9 @@ import dynamic from 'next/dynamic';
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
+// Constants
+import { HOME_DESKTOP_BG } from '@config/constants/backgrounds';
+
 // Components
 const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
 const Categories = dynamic(() => import('./_Categories/Categories'));
@@ -24,12 +27,13 @@ const TabsSkeleton = dynamic(() => import('./_HomeTabs/Skeleton'));
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 export default function StorePage() {
-  // Init
-  useDynamicBackground("url('/images/colored_body_top.png') center top no-repeat #1b2838");
+  //--------------------------- Initializations ---------------------------//
+  useDynamicBackground(HOME_DESKTOP_BG);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="store">
       <Featured />

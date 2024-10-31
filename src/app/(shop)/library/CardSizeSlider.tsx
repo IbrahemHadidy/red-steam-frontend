@@ -1,24 +1,25 @@
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setCardSize } from '@store/features/shop/library/librarySlice';
 
 // Types
 import type { ChangeEvent } from 'react';
 
 export default function CardSizeSlider() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { cardSize } = useAppSelector((state) => state.library);
+  //--------------------------- State Selectors ---------------------------//
+  const { cardSize } = useAppSelector((state) => state.shop.library);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleSliderChange = (event: ChangeEvent<HTMLInputElement>): void => {
     dispatch(setCardSize(Number(event.target.value)));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="sizing">
       <h1>Card size:&nbsp;&nbsp;</h1>

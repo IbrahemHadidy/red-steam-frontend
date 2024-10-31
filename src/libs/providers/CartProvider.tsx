@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { initializeCart } from '@store/features/shop/cart/cartSlice';
 
 // Types
@@ -23,14 +23,14 @@ interface CartProviderProps {
 }
 
 export default function CartProvider({ children }: CartProviderProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  // States
-  const { userCart } = useAppSelector((state) => state.cart);
-  const { isPaymentConfirmed, isCartInitialized } = useAppSelector((state) => state.checkout);
+  //--------------------------- State Selectors ---------------------------//
+  const { userCart } = useAppSelector((state) => state.shop.cart);
+  const { isPaymentConfirmed, isCartInitialized } = useAppSelector((state) => state.shop.checkout);
 
   // Fetch cart data
   useEffect(() => {

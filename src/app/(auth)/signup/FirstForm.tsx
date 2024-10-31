@@ -9,7 +9,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   toggleAgreeCheck,
   updateConfirmEmail,
@@ -24,10 +24,10 @@ import { countries } from '@utils/countries';
 import type { ChangeEvent } from 'react';
 
 export default function FirstForm() {
-  // Initilizations
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const {
     emailInputError,
     confirmEmailInputError,
@@ -37,12 +37,12 @@ export default function FirstForm() {
     confirmEmail,
     country,
     isAgreeChecked,
-  } = useAppSelector((state) => state.signup);
+  } = useAppSelector((state) => state.user.signup);
 
-  // Refs
+  //-------------------------- Ref for ReCAPTCHA --------------------------//
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateEmail(value));
@@ -62,6 +62,7 @@ export default function FirstForm() {
     dispatch(toggleAgreeCheck());
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <div className="form-row-flex">

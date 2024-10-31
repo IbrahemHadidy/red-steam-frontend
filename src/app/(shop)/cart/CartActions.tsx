@@ -8,14 +8,14 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { clearCart } from '@store/features/shop/cart/cartThunks';
 
 export default function CartActions() {
-  // Intializations
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
-  const { removeAllBtnLoading } = useAppSelector((state) => state.cart);
+  //--------------------------- State Selectors ---------------------------//
+  const { removeAllBtnLoading } = useAppSelector((state) => state.shop.cart);
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleRemoveAllClick = async (): Promise<void> => {
     await dispatch(clearCart());
   };
@@ -24,6 +24,7 @@ export default function CartActions() {
     router.push('/');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="cart-actions">
       <div>

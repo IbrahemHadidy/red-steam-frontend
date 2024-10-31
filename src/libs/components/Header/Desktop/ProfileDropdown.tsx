@@ -23,10 +23,10 @@ import Link from 'next/link';
 import type { JSX, MouseEvent } from 'react';
 
 export default function ProfileDropdown(): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<string | null>(null);
 

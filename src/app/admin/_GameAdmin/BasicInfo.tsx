@@ -4,7 +4,7 @@ import { useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   toggleFeatured,
   updateCategory,
@@ -23,21 +23,21 @@ import { validateBasicInfo } from './validations';
 import type { ChangeEvent } from 'react';
 
 export default function BasicInfo() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { name, category, description, releaseDate, featured } = useAppSelector(
-    (state) => state.gameAdmin
+    (state) => state.admin.game
   );
 
-  // Refs
+  //--------------------------- Refs for Inputs ---------------------------//
   const nameRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const releaseDateRef = useRef<HTMLInputElement>(null);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateName(value));
@@ -64,6 +64,7 @@ export default function BasicInfo() {
     dispatch(toggleFeatured());
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section>

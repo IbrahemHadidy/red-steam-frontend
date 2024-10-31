@@ -25,7 +25,7 @@ export default function SteamVideo({
   autoplayInitialized,
   setAutoplayInitialized,
 }: SteamVideoProps): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [overlayBottom, setOverlayBottom] = useState<string>('-37px');
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);

@@ -7,9 +7,11 @@ import { login } from '@store/features/auth/authThunks';
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+type Type = 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
+
 interface LoginState {
   // UI states
-  readonly type: 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
+  readonly type: Type;
   readonly isLoginLoading: boolean;
   readonly isLoginFormVisible: boolean;
   readonly isForgotPasswordVisible: boolean;
@@ -40,10 +42,7 @@ const loginSlice = createSlice({
   initialState: loginState,
 
   reducers: {
-    setType: (
-      state,
-      action: PayloadAction<'Sign In' | 'Password Reset' | 'Name / Password Recovery'>
-    ) => {
+    setType: (state, action: PayloadAction<Type>) => {
       state.type = action.payload;
     },
     setLoginLoading: (state, action: PayloadAction<boolean>) => {

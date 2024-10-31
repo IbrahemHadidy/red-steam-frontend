@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   setResetPasswordInterfaceVisibility,
   updateResetToken,
@@ -30,7 +30,7 @@ interface ResetPasswordProviderProps {
 }
 
 export default function ResetPasswordProvider({ children, token }: ResetPasswordProviderProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 

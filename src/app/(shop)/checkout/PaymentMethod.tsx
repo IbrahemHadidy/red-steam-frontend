@@ -1,18 +1,19 @@
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setReviewSelected } from '@store/features/shop/checkout/checkoutSlice';
 
 export default function PaymentMethod() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleContinueClick = (): void => {
     dispatch(setReviewSelected(true));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <div className="form-row">

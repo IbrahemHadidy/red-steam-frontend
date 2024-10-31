@@ -1,8 +1,5 @@
 'use client';
 
-// React
-import { useEffect } from 'react';
-
 // NextJS
 import Link from 'next/link';
 
@@ -10,10 +7,10 @@ import Link from 'next/link';
 import { animated, useSpring } from 'react-spring';
 
 // Redux Hooks
-import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { useAppSelector } from '@store/hooks';
 
-// Redux Actions
-import { checkPageType } from '@store/features/user/recovery/recoverySlice';
+// Constants
+import { LOGIN_DESKTOP_BG, LOGIN_MOBILE_BG } from '@config/constants/backgrounds';
 
 // Components
 import Footer from '@components/Footer/Footer';
@@ -27,23 +24,20 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function SignInAndRecovery() {
-  // Init
-  const dispatch = useAppDispatch();
+  //--------------------------- Initializations ---------------------------//
   const isViewport740 = useResponsiveViewport(740);
-  useDynamicBackground(
-    !isViewport740
-      ? "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
-      : "radial-gradient(rgba(24, 26, 33, 0) 0%, #181A21 100%) fixed no-repeat, url( '/images/new_login_bg_strong_mask_mobile.jpg' ) center top no-repeat, #181A21",
-    [isViewport740]
-  );
+  useDynamicBackground(!isViewport740 ? LOGIN_DESKTOP_BG : LOGIN_MOBILE_BG, [isViewport740]);
 
-  // States
-  const { showResetPasswordInterface, isPasswordPage } = useAppSelector((state) => state.recovery);
+  //--------------------------- State Selectors ---------------------------//
+  const { showResetPasswordInterface, isPasswordPage } = useAppSelector(
+    (state) => state.user.recovery
+  );
   const { type, isLoginFormVisible, isForgotPasswordVisible } = useAppSelector(
-    (state) => state.login
+    (state) => state.user.login
   );
 
-  // Spring amimation of the "forgot-my-password" section
+  //-------------------------- Spring Animations --------------------------//
+  // Spring animation properties for the "Forgot My Password" section
   const springProps = useSpring({
     opacity: isForgotPasswordVisible ? 1 : 0,
     width: type === 'Name / Password Recovery' ? '366px' : isForgotPasswordVisible ? '317px' : '0',
@@ -59,11 +53,7 @@ export default function SignInAndRecovery() {
     overflow: 'hidden',
   });
 
-  // Handle password reset page and forgot password page UI
-  useEffect(() => {
-    dispatch(checkPageType(type));
-  }, [dispatch, type]);
-
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <Header />

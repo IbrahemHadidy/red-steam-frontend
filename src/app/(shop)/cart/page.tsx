@@ -16,12 +16,13 @@ const CartActions = dynamic(() => import('./CartActions'));
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function CartPage() {
-  // Intializations
+  //--------------------------- Initializations ---------------------------//
   const isViewport840 = useResponsiveViewport(840);
 
-  // States
-  const { userCart } = useAppSelector((state) => state.cart);
+  //--------------------------- State Selectors ---------------------------//
+  const { userCart } = useAppSelector((state) => state.shop.cart);
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="cart-content-container">
       <div className="cart-path">

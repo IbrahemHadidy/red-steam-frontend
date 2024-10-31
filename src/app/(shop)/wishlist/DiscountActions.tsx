@@ -15,22 +15,23 @@ interface DiscountActionsProps {
 }
 
 export default function DiscountActions({ game }: DiscountActionsProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { isCartBtnLoading } = useAppSelector((state) => state.wishlist);
+  const { isCartBtnLoading } = useAppSelector((state) => state.shop.wishlist);
 
-  // Utils
+  //-------------------------- Utility Functions --------------------------//
   const isInCart = (game: Game): boolean | undefined =>
     currentUserData?.cart?.some((item) => item.id === game.id);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleAddToCartBtn2Click = async (itemId: number): Promise<void> => {
     await dispatch(addToCart(itemId));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="game-purchase-action">
       <div className="game-purchase-action-background">

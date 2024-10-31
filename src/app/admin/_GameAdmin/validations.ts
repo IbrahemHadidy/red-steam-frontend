@@ -31,6 +31,7 @@ const removeErrorStyles = (
   });
 };
 
+// Validate basic info section
 export const validateBasicInfo = (
   data: { name: string; category: string; description: string; releaseDate: string },
   refs: {
@@ -58,6 +59,7 @@ export const validateBasicInfo = (
   }
 };
 
+// Validate companies section
 export const validateCompanies = (
   data: { publishers: number[]; developers: number[] },
   refs: {
@@ -81,6 +83,7 @@ export const validateCompanies = (
   }
 };
 
+// Validate thumbnails section
 export const validateThumbnails = (
   thumbnails: Thumbnails,
   refs: {
@@ -146,6 +149,7 @@ export const validateThumbnails = (
   }
 };
 
+// Validate screenshots section
 export const validateMedia = (screenshots: Screenshot[], duplicateError: boolean): boolean => {
   if (screenshots.length < 4 || duplicateError) {
     toast.warn('Please add at least 4 screenshots');
@@ -159,6 +163,7 @@ export const validateMedia = (screenshots: Screenshot[], duplicateError: boolean
   return true;
 };
 
+// Validate pricing section
 export const validatePricing = (
   pricing: Pricing,
   priceRef: RefObject<HTMLInputElement | null>
@@ -174,6 +179,7 @@ export const validatePricing = (
   }
 };
 
+// Validate specifications section
 export const validateSpecifications = (
   data: {
     tags: number[];
@@ -219,6 +225,7 @@ export const validateSpecifications = (
   }
 };
 
+// Validate system requirements section
 export const validateSystemRequirements = (
   systemRequirements: SystemRequirements,
   refs: {
@@ -284,6 +291,7 @@ export const validateSystemRequirements = (
   }
 };
 
+// Validate additional info section
 export const validateAdditionalInfo = (
   data: { link: string; about: string; mature: boolean; matureDescription: string; legal: string },
   refs: {

@@ -1,15 +1,13 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Types
-import type {
-  FileMetadata,
-  Language,
-  Screenshot,
-  Video,
-} from '@app/admin/_GameAdmin/game-admin.types';
-import type { Game, SystemRequirementsEntry } from '@interfaces/game';
+// Utils
 import { getFileFromLocalStorage } from '@utils/filesStorageUtils';
+
+// Types
+import type { Language, Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
+import type FileMetadata from '@custom-types/file-metadata';
+import type { Game, SystemRequirementsEntry } from '@interfaces/game';
 
 export type Thumbnails = {
   mainImage: { file: FileMetadata; changed: boolean };

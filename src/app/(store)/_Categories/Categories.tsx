@@ -22,9 +22,10 @@ import type { Settings as SliderSettings } from 'react-slick';
 import type { Category } from '../Store.types';
 
 export default function Categories() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
+  //---------------------------- Slider Config ----------------------------//
   // Slider Settings
   const categoriesSettings: SliderSettings = {
     dots: true,
@@ -43,6 +44,7 @@ export default function Categories() {
     categories.slice(16),
   ];
 
+  //-------------------------- Utility Functions --------------------------//
   const renderCategoryGroup = (categoryGroup: Category[], groupIndex: number): JSX.Element => (
     <>
       {categoryGroup.map((category, idx) => (
@@ -51,6 +53,7 @@ export default function Categories() {
     </>
   );
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="home-section">
       <div className="home-contents">

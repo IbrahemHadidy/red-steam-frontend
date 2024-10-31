@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   setIsCompleteModalOpen,
   setIsGameModalOpen,
@@ -14,14 +14,14 @@ import {
 import { gameMediaItem, isVideoEntry } from './library-utils';
 
 export default function GameInfo() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
-  const { selectedGame } = useAppSelector((state) => state.library);
+  //--------------------------- State Selectors ---------------------------//
+  const { selectedGame } = useAppSelector((state) => state.shop.library);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleCloseShowClick = (): void => {
     dispatch(setIsGameModalOpen(false));
   };
@@ -30,6 +30,7 @@ export default function GameInfo() {
     dispatch(setIsCompleteModalOpen(true));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     selectedGame && (
       <>

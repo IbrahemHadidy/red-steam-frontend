@@ -8,7 +8,7 @@ import Link from 'next/link';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { setHoveredItemIndex } from '@store/features/shop/wishlist/wishlistSlice';
 
 // Redux Thunks
@@ -34,15 +34,15 @@ interface WishlistItemProps {
 }
 
 export default function WishlistItem({ game, idx }: WishlistItemProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { hoveredItemIndex, isRemoveBtnLoading } = useAppSelector((state) => state.wishlist);
+  const { hoveredItemIndex, isRemoveBtnLoading } = useAppSelector((state) => state.shop.wishlist);
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleCapsuleMouseEnter = (idx: number): void => {
     dispatch(setHoveredItemIndex(idx));
   };
@@ -55,6 +55,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
     await dispatch(removeFromWishlist(itemId));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="wishlist-container">
       <div className="wishlist-row">

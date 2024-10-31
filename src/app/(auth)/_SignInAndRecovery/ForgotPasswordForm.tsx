@@ -10,8 +10,8 @@ import ReCAPTCHA from 'react-google-recaptcha';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
-import { setLoginFormVisibility } from '@store/features/user/login/loginSlice';
+// Redux Handlers
+import { setType } from '@store/features/user/login/loginSlice';
 import { loginInstead, updateResetEmail } from '@store/features/user/recovery/recoverySlice';
 
 // Redux Thunks
@@ -21,18 +21,18 @@ import { forgotPassword } from '@store/features/user/recovery/recoveryThunks';
 import type { ChangeEvent, FormEvent } from 'react';
 
 export default function ForgotPasswordForm() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { resetPasswordLoadingState, isPasswordPage, resetEmail, resetPasswordErrorMessage } =
-    useAppSelector((state) => state.recovery);
+    useAppSelector((state) => state.user.recovery);
 
-  // Refs
+  //-------------------------- Ref for ReCAPTCHA --------------------------//
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleForgotPasswordFormSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
@@ -45,11 +45,12 @@ export default function ForgotPasswordForm() {
   };
 
   const handleLoginInsteadBtnClick = (): void => {
-    dispatch(setLoginFormVisibility(true));
+    dispatch(setType('Sign In'));
     dispatch(loginInstead());
     router.push('/login');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <form className="login-form" onSubmit={handleForgotPasswordFormSubmit}>
       <div className="help-title">I forgot my Steam Account name or password</div>
@@ -69,7 +70,7 @@ export default function ForgotPasswordForm() {
         <ReCAPTCHA
           sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
           theme="dark"
-          style={{ backgroundColor: '#181a21;' }}
+          style={{ backgroundColor: '#181a21' }}
           ref={recaptchaRef}
         />
       </div>

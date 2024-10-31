@@ -21,12 +21,13 @@ interface SpecialOfferProps {
 }
 
 export default function SpecialOffer({ offer }: SpecialOfferProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //----------------------------- State Hooks -----------------------------//
   const [offerHoverStates, setOfferHoverStates] = useState<{ [key: string]: boolean }>({});
 
+  //--------------------------- Event Handlers ----------------------------//
   const handleOfferPointerMove = (offerId: number): void => {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: true }));
   };
@@ -35,6 +36,7 @@ export default function SpecialOffer({ offer }: SpecialOfferProps) {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: false }));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="offer-result-container small" key={`special-${offer.id}`}>
       <div

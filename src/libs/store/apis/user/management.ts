@@ -1,6 +1,12 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Utils
+import { getFileFromLocalStorage } from '@utils/filesStorageUtils';
+
+// Types
+import type FileMetadata from '@custom-types/file-metadata';
+
 const userManagementApi = createApi({
   reducerPath: 'api/user/management',
   baseQuery: fetchBaseQuery({
@@ -24,26 +30,26 @@ const userManagementApi = createApi({
       }),
     }),
 
-    changeUserName: builder.mutation<
+    changeUsername: builder.mutation<
       { message: string },
-      { newUsername: string; password: string }
+      { newUsername: string; currentPassword: string }
     >({
-      query: ({ newUsername, password }) => ({
+      query: ({ newUsername, currentPassword }) => ({
         url: '/username',
         method: 'PATCH',
-        body: { newUsername, password },
+        body: { newUsername, currentPassword },
       }),
       invalidatesTags: ['User'],
     }),
 
     changeEmail: builder.mutation<
       { message: string },
-      { currentEmail: string; password: string; newEmail: string }
+      { currentEmail: string; currentPassword: string; newEmail: string }
     >({
-      query: ({ currentEmail, password, newEmail }) => ({
+      query: ({ currentEmail, currentPassword, newEmail }) => ({
         url: '/change-email',
         method: 'PATCH',
-        body: { currentEmail, password, newEmail },
+        body: { currentEmail, currentPassword, newEmail },
       }),
       invalidatesTags: ['User'],
     }),
@@ -57,10 +63,10 @@ const userManagementApi = createApi({
       invalidatesTags: ['User'],
     }),
 
-    uploadAvatar: builder.mutation<{ message: string }, File>({
+    uploadAvatar: builder.mutation<{ message: string }, FileMetadata>({
       query: (avatarFile) => {
         const formData = new FormData();
-        formData.append('avatar', avatarFile);
+        formData.append('avatar', getFileFromLocalStorage(avatarFile.id) as File);
         return {
           url: '/avatar',
           method: 'PATCH',
@@ -83,12 +89,12 @@ const userManagementApi = createApi({
 
     changePassword: builder.mutation<
       { message: string },
-      { oldPassword: string; newPassword: string }
+      { currentPassword: string; newPassword: string }
     >({
-      query: ({ oldPassword, newPassword }) => ({
+      query: ({ currentPassword, newPassword }) => ({
         url: '/password/change',
         method: 'POST',
-        body: { oldPassword, newPassword },
+        body: { currentPassword, newPassword },
       }),
     }),
 
@@ -121,7 +127,7 @@ const userManagementApi = createApi({
 export const {
   useCheckEmailExistsQuery,
   useCheckUsernameExistsQuery,
-  useChangeUserNameMutation,
+  useChangeUsernameMutation,
   useChangeEmailMutation,
   useChangeCountryMutation,
   useUploadAvatarMutation,

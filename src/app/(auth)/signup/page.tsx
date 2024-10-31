@@ -18,19 +18,19 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 // Redux Thunks
 import { checkExistingEmail, checkNameAndPassword } from '@store/features/user/signup/signupThunks';
 
-// Redux Actions
-import { setSecondPage, updateCountry } from '@store/features/user/signup/signupSlice';
+// Redux Handlers
+import { fetchCountry, setSecondPage } from '@store/features/user/signup/signupSlice';
 
-// Redux Queries
-import { useFetchUserCountryQuery } from '@store/apis/countries/countryCode';
+// Contstants
+import { SIGNUP_BG } from '@config/constants/backgrounds';
+
+// Custom Hooks
+import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Components
 import ExistingAccount from './ExistingAccount';
 import FirstForm from './FirstForm';
 import SecondForm from './SecondForm';
-
-// Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Images
 import back from '@images/back.png';
@@ -38,33 +38,26 @@ import back from '@images/back.png';
 // Types
 import type { FormEvent } from 'react';
 
-// Custom hook for fetching and setting country
-function useFetchAndSetCountry() {
-  const dispatch = useAppDispatch();
-  const { data: fetchedCountry } = useFetchUserCountryQuery();
-
-  useEffect(() => {
-    if (fetchedCountry) dispatch(updateCountry(fetchedCountry));
-  }, [fetchedCountry, dispatch]);
-}
-
 export default function SignUpPage() {
-  // Initilizations
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
-  useDynamicBackground(
-    "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
+  useDynamicBackground(SIGNUP_BG);
+
+  //--------------------------- State Selectors ---------------------------//
+  const { isSecondPage, isEmailAvailable, errorMessages } = useAppSelector(
+    (state) => state.user.signup
   );
 
-  // States
-  const { isSecondPage, isEmailAvailable, errorMessages } = useAppSelector((state) => state.signup);
+  //--------------------------- On Mount Effects --------------------------//
+  useEffect(() => {
+    // Fetch User Country on mount
+    dispatch(fetchCountry());
+  }, [dispatch]);
 
-  // Fetch User Country
-  useFetchAndSetCountry();
-
-  // Refs
+  //--------------------------- Ref for ReCAPTCHA -------------------------//
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  // Spring Animations
+  //-------------------------- Spring Animations --------------------------//
   const springProps = useSpring({
     from: { backgroundColor: 'rgba(244, 183, 134, 1)' },
     to: {
@@ -74,7 +67,7 @@ export default function SignUpPage() {
     config: { duration: 1000 },
   });
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleSubmitFirstForm = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     await dispatch(checkExistingEmail({ recaptchaRef }));
@@ -89,6 +82,7 @@ export default function SignUpPage() {
     dispatch(setSecondPage(false));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <div className="page-content-sign signup">

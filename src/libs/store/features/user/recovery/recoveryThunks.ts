@@ -11,19 +11,19 @@ import { validateEmail } from '@utils/inputValidations';
 import userManagementApi from '@store/apis/user/management';
 
 // Types
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
 export const forgotPassword = createAppAsyncThunk<
   void,
   {
-    recaptchaRef: MutableRefObject<ReCAPTCHA | null>;
+    recaptchaRef: RefObject<ReCAPTCHA | null>;
   },
   { rejectValue: string }
 >(
   'user/recovery/forgotPassword',
   async ({ recaptchaRef }, { rejectWithValue, getState, dispatch }) => {
-    const { resetEmail } = getState().recovery;
+    const { resetEmail } = getState().user.recovery;
 
     const recaptchaValue = recaptchaRef.current?.getValue();
     const resetRecaptcha = () => recaptchaRef.current?.reset();
@@ -90,7 +90,7 @@ export const forgotPassword = createAppAsyncThunk<
 export const resetPassword = createAppAsyncThunk<void, void, { rejectValue: string }>(
   'user/recovery/resetPassword',
   async (_, { rejectWithValue, getState, dispatch }) => {
-    const { newPassword, confirmNewPassword, resetToken } = getState().recovery;
+    const { newPassword, confirmNewPassword, resetToken } = getState().user.recovery;
     // Check if passwords match
     if (newPassword !== confirmNewPassword) {
       return rejectWithValue('Passwords do not match. Please try again.');
@@ -103,6 +103,7 @@ export const resetPassword = createAppAsyncThunk<void, void, { rejectValue: stri
       ).unwrap();
     } catch (error) {
       // Return an error message if the request fails
+      console.error('Error during password reset:', error);
       return rejectWithValue('Internal server error, please try again later.');
     }
   }

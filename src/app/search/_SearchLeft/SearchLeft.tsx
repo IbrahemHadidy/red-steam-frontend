@@ -41,11 +41,11 @@ export default function SearchLeft({
   disabled,
   isViewport960,
 }: SearchLeftProps): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport430 = useResponsiveViewport(430);
   const isViewport1070 = useResponsiveViewport(1070);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [summaryHoverStates, setSummaryHoverStates] = useState<{
     [key: string]: boolean;
   }>({});

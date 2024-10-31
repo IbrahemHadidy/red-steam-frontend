@@ -14,7 +14,7 @@ import type { OnApproveData } from '@paypal/paypal-js';
 export const createOrder = createAppAsyncThunk<string, void, { rejectValue: string }>(
   'shop/checkout/createOrder',
   async (_, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    const { userCart, totalPrice } = getState().cart;
+    const { userCart, totalPrice } = getState().shop.cart;
 
     try {
       // Create order
@@ -37,7 +37,7 @@ export const createOrder = createAppAsyncThunk<string, void, { rejectValue: stri
 export const captureOrder = createAppAsyncThunk<string, OnApproveData, { rejectValue: string }>(
   'shop/checkout/captureOrder',
   async (data, { dispatch, getState, fulfillWithValue, rejectWithValue }) => {
-    const { userCart } = getState().cart;
+    const { userCart } = getState().shop.cart;
 
     try {
       // Capture order

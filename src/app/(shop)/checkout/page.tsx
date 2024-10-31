@@ -20,14 +20,14 @@ const PaymentMethod = dynamic(() => import('./PaymentMethod'));
 import type { ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 
 export default function CheckoutPage() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { isPaymentConfirmed, isReviewSelected } = useAppSelector((state) => state.checkout);
+  const { isPaymentConfirmed, isReviewSelected } = useAppSelector((state) => state.shop.checkout);
 
-  // PayPal options
+  //---------------------------- PayPal Config ----------------------------//
   const initialOptions: ReactPayPalScriptOptions = {
     disableFunding: 'card',
     clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? '',
@@ -35,6 +35,7 @@ export default function CheckoutPage() {
     intent: 'capture',
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <PayPalScriptProvider options={initialOptions}>
       <CheckoutHeader />

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   addScreenshot,
   addVideo,
@@ -29,10 +29,10 @@ import type { ChangeEvent } from 'react';
 import type { Screenshot, Video } from './game-admin.types';
 
 export default function Media() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const {
     type,
     videos,
@@ -41,40 +41,30 @@ export default function Media() {
     duplicateOrders,
     duplicateError,
     posterModalOpen,
-  } = useAppSelector((state) => state.gameAdmin);
+  } = useAppSelector((state) => state.admin.game);
 
-  // Refs
+  //------------------------ Refs for File Inputs -------------------------//
   const screenshotInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const posterInputRef = useRef<HTMLInputElement>(null);
 
-  // Utils
+  //-------------------------- Utility Functions --------------------------//
   const getChangeStyle = (media: Screenshot | Video): string => {
     if (type === 'update') {
-      if (media.change === 'added') {
-        return 'added';
-      } else if (media.change === 'deleted') {
-        return 'deleted';
-      } else if (media.order !== media.baseOrder && media.change === 'unchanged') {
-        return 'edited';
-      } else {
-        return '';
-      }
-    } else {
-      return '';
+      if (media.change === 'added') return 'added';
+      if (media.change === 'deleted') return 'deleted';
+      if (media.order !== media.baseOrder && media.change === 'unchanged') return 'edited';
     }
+    return '';
   };
 
   const sortedMedia = [...screenshots, ...videos].sort((a, b) => {
-    // Move 'deleted' items to the end
     if (a.change === 'deleted') return 1;
     if (b.change === 'deleted') return -1;
-
-    // Sort remaining items by 'order'
     return a.order - b.order;
   });
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleAddScreenshotClick = (): void => {
     screenshotInputRef.current?.click();
   };
@@ -100,19 +90,12 @@ export default function Media() {
     if (video && poster) {
       const videoId = await saveFileToLocalStorage(video);
       const posterId = await saveFileToLocalStorage(poster);
-      const videoFileMetadata = {
-        id: videoId,
-        name: video.name,
-        size: video.size,
-        type: video.type,
-      };
-      const posterFileMetadata = {
-        id: posterId,
-        name: poster.name,
-        size: poster.size,
-        type: poster.type,
-      };
-      dispatch(addVideo({ video: videoFileMetadata, poster: posterFileMetadata }));
+      dispatch(
+        addVideo({
+          video: { id: videoId, name: video.name, size: video.size, type: video.type },
+          poster: { id: posterId, name: poster.name, size: poster.size, type: poster.type },
+        })
+      );
     }
   };
 
@@ -138,11 +121,11 @@ export default function Media() {
     dispatch(resetMedia());
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section className="section-media">
         <h2>Media</h2>
-
         <button className="add-button" onClick={handleAddScreenshotClick}>
           Add Screenshot
         </button>
@@ -154,7 +137,6 @@ export default function Media() {
           onChange={handleAddScreenshot}
           hidden
         />
-
         <button className="add-button" onClick={handleAddVideoClick}>
           Add Video
         </button>
@@ -174,55 +156,48 @@ export default function Media() {
           onChange={handlePosterInputChange}
           hidden
         />
-
         <button className="reset-button" onClick={handleResetMedia}>
           Reset
         </button>
-
         {type === 'update' && (
           <div className="slides-color-info">
             <div>
               <div className="color-box unchanged" />
               <span>Unchanged</span>
             </div>
-
             <div>
               <div className="color-box added" />
               <span>Added</span>
             </div>
-
             <div>
               <div className="color-box edited" />
               <span>Edited</span>
             </div>
-
             <div>
               <div className="color-box deleted" />
               <span>Deleted</span>
             </div>
-
             <div>
               <div className="color-box duplicate" />
               <span>Duplicate order</span>
             </div>
           </div>
         )}
-
         <div className="media-container">
           {sortedMedia.map((item) => (
             <div
               key={item.id}
-              className={`media-item ${getChangeStyle(item)} ${duplicateOrders.includes(item.order) ? 'duplicate' : ''}`}
+              className={`media-item ${getChangeStyle(item)} ${
+                duplicateOrders.includes(item.order) ? 'duplicate' : ''
+              }`}
             >
               {'image' in item ? <MediaScreenshot item={item} /> : <MediaVideo item={item} />}
             </div>
           ))}
         </div>
       </section>
-
       <br />
       <FormButtons validation={() => validateMedia(screenshots, duplicateError)} />
-
       {posterModalOpen && (
         <>
           <div className="modal-overlay" onClick={handlePosterModalClose} />

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   toggleMature,
   updateAbout,
@@ -23,21 +23,21 @@ import { validateAdditionalInfo } from './validations';
 import type { ChangeEvent } from 'react';
 
 export default function AdditionalInfo() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { link, about, mature, matureDescription, legal } = useAppSelector(
-    (state) => state.gameAdmin
+    (state) => state.admin.game
   );
 
-  // Refs
+  //------------------------------ References -----------------------------//
   const linkRef = useRef<HTMLInputElement>(null);
   const aboutRef = useRef<HTMLTextAreaElement>(null);
   const matureDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const legalRef = useRef<HTMLTextAreaElement>(null);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleLinkChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateLink(value));
@@ -62,6 +62,7 @@ export default function AdditionalInfo() {
     dispatch(updateLegal(value));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section className="section-additional-info">

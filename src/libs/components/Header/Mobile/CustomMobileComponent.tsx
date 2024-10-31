@@ -11,7 +11,7 @@ import MiniHeader from './MiniHeader';
 import { JSX, MouseEvent } from 'react';
 
 export default function CustomMobileComponent(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   // Refs

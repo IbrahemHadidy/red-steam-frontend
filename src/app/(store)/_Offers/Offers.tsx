@@ -32,21 +32,32 @@ import type { Game } from '@interfaces/game';
 import type { Settings as SliderSettings } from 'react-slick';
 
 export default function Offers() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [weekendOffers, setWeekendOffers] = useState<Game[]>([]);
   const [specialOffers, setSpecialOffers] = useState<Game[]>([]);
   const [totalSlides, setTotalSlides] = useState(0);
 
-  // Queries
+  //----------------------------- Redux Queries ----------------------------//
   const { data: offersData, isLoading } = useGetByOffersQuery(
     (currentUserData && currentUserData.library.map((game) => game.id)) ?? []
   );
 
-  // Set offers after fetching
+  //----------------------------- Slider Config ----------------------------//
+  const offersSettings: SliderSettings = {
+    dots: totalSlides > 1,
+    infinite: true,
+    speed: 500,
+    autoplay: false,
+    fade: true,
+    arrows: totalSlides > 1,
+  };
+
+  //------------------------------- Effects -------------------------------//
+  // Set Special and Weekend Offers after fetching
   useEffect(() => {
     (async () => {
       offersData?.forEach((game) => {
@@ -60,17 +71,7 @@ export default function Offers() {
     })();
   }, [offersData]);
 
-  // Slider Settings
-  const offersSettings: SliderSettings = {
-    dots: totalSlides > 1,
-    infinite: true,
-    speed: 500,
-    autoplay: false,
-    fade: true,
-    arrows: totalSlides > 1,
-  };
-
-  // Render Offers
+  //-------------------------- Render UI Section --------------------------//
   const renderedSlides = renderSlides(weekendOffers, specialOffers, totalSlides, setTotalSlides);
 
   return isLoading ? (

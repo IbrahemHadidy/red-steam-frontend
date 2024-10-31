@@ -25,15 +25,15 @@ import '@styles/game/MediaAndSummary.scss';
 
 // Types
 import type { ImageEntry, VideoEntry } from '@interfaces/game';
-import type { FC, JSX, MouseEvent, MutableRefObject } from 'react';
+import type { FC, JSX, MouseEvent, RefObject } from 'react';
 import type { MediaAndSummaryProps } from './MediaAndSummary.types';
 
 const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isAutoplay, setAutoplay] = useState<boolean>(true);
@@ -214,7 +214,7 @@ const MediaAndSummary: FC<MediaAndSummaryProps> = ({ game }): JSX.Element => {
   };
 
   // check if the tab is visible
-  const isPageVisible: MutableRefObject<boolean> = useRef<boolean>(true);
+  const isPageVisible: RefObject<boolean> = useRef<boolean>(true);
   useEffect(() => {
     // Set up event listeners for visibility changes
     const handleVisibilityChange = (): void => {

@@ -1,52 +1,47 @@
 'use client';
 
-// React
-import { useRef } from 'react';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
+// Redux Handlers
+import { setDeletePhoneModalVisiblity } from '@store/features/user/settings/userSettingsSlice';
+
 // Redux Thunks
-import { fetchUserData } from '@store/features/auth/authThunks';
+import { deletePhone } from '@store/features/user/settings/userSettingsThunks';
 
-// Services
-import { removePhoneNumber } from '@services/user/phone';
-
-// Types
-import type { JSX } from 'react';
-import type { DeletePhoneModalProps } from './Modals.types';
-
-export default function DeletePhoneModal({ onClose }: DeletePhoneModalProps): JSX.Element {
-  // Init
+export default function DeletePhoneModal() {
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { currentUserData } = useAppSelector((state) => state.auth);
+  //--------------------------- State Selectors ---------------------------//
+  const { isDeletePhoneModalVisible } = useAppSelector((state) => state.user.settings);
 
-  // Refs
-  const deleteBtnRef = useRef<HTMLButtonElement>(null);
-
-  const handleDelete = async (): Promise<void> => {
-    deleteBtnRef.current?.setAttribute('disabled', 'true');
-    if (currentUserData) {
-      const response = await removePhoneNumber(currentUserData.id);
-      if (response && response.status === 200) {
-        onClose();
-        await dispatch(fetchUserData());
-      }
-    }
-    deleteBtnRef.current?.removeAttribute('disabled');
+  //---------------------------- Event Handlers ---------------------------//
+  const closeDeleteModal = (): void => {
+    dispatch(setDeletePhoneModalVisiblity(false));
+    document.body.style.overflow = 'unset';
   };
 
+  const handleDeleteClick = async (): Promise<void> => {
+    await dispatch(deletePhone());
+  };
+
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="delete-modal">
       <div className="modal-content">
         <h2>Are you sure you want to delete your phone number?</h2>
+
         <div className="modal-buttons">
-          <button className="delete-button" onClick={handleDelete} ref={deleteBtnRef}>
+          <button
+            className="delete-button"
+            onClick={handleDeleteClick}
+            disabled={isDeletePhoneModalVisible}
+          >
             Delete
           </button>
-          <button className="cancel-button" onClick={onClose}>
+
+          <button className="cancel-button" onClick={closeDeleteModal}>
             Cancel
           </button>
         </div>

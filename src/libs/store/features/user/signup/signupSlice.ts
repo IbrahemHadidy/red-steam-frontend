@@ -180,11 +180,11 @@ const signupSlice = createSlice({
 
           state.isCheckingAvailability = false;
           state.submitButtonDisabled = false;
-          emailInputError && (state.emailInputError = emailInputError);
-          confirmEmailInputError && (state.confirmEmailInputError = confirmEmailInputError);
-          isEmailAvailable && (state.isEmailAvailable = isEmailAvailable);
-          agreeCheckboxError && (state.agreeCheckboxError = agreeCheckboxError);
-          errors && (state.errorMessages = errors);
+          state.emailInputError = emailInputError ?? state.emailInputError;
+          state.confirmEmailInputError = confirmEmailInputError ?? state.confirmEmailInputError;
+          state.isEmailAvailable = isEmailAvailable ?? state.isEmailAvailable;
+          state.agreeCheckboxError = agreeCheckboxError ?? state.agreeCheckboxError;
+          state.errorMessages = errors ?? state.errorMessages;
         }
       )
 
@@ -211,12 +211,12 @@ const signupSlice = createSlice({
 
           state.isCheckingAvailability = false;
           state.submitButtonDisabled = false;
-          accountNameInputError && (state.accountNameInputError = accountNameInputError);
-          passwordInputError && (state.passwordInputError = passwordInputError);
-          confirmPasswordInputError &&
-            (state.confirmPasswordInputError = confirmPasswordInputError);
-          agreeCheckboxError && (state.agreeCheckboxError = agreeCheckboxError);
-          errors && (state.errorMessages = errors);
+          state.accountNameInputError = accountNameInputError ?? state.accountNameInputError;
+          state.passwordInputError = passwordInputError ?? state.passwordInputError;
+          state.confirmPasswordInputError =
+            confirmPasswordInputError ?? state.confirmPasswordInputError;
+          state.agreeCheckboxError = agreeCheckboxError ?? state.agreeCheckboxError;
+          state.errorMessages = errors ?? state.errorMessages;
         }
       );
   },

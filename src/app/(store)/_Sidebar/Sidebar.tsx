@@ -20,13 +20,14 @@ import type { JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
 export default function Sidebar() {
-  // States
+  //--------------------------- Initializations ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
-  // Queries
+  //--------------------------- Redux Selectors ---------------------------//
   const { data } = useGetTagsQuery();
   const yourTags = (data && data.tags) ?? [];
 
+  //-------------------------- Utility Functions --------------------------//
   // Get recently viewed games
   const recentGames: { id: number; name: string; timestamp: number }[] =
     (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('recentGames') || '[]')) ??
@@ -76,13 +77,15 @@ export default function Sidebar() {
     { to: '/search?tags=13', text: 'Strategy' },
   ];
 
+  //--------------------------- Event Handlers ----------------------------//
   const handleItemClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
     toast.info('Coming Soon!');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
-    <div className="fixed-sidebar">
+    <aside className="fixed-sidebar">
       <div className="sidebar">
         <div>
           <a className="item" onClick={handleItemClick}>
@@ -118,6 +121,6 @@ export default function Sidebar() {
           {generateLinks(genreLinks)}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

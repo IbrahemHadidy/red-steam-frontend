@@ -4,7 +4,7 @@ import { Fragment, useRef } from 'react';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { updateThumbnails } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
@@ -22,14 +22,16 @@ import type { ChangeEvent } from 'react';
 import type { Thumbnails } from './game-admin.types';
 
 export default function Thumbnails() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { thumbnails } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { thumbnails } = useAppSelector((state) => state.admin.game);
 
-  // Refs
+  //------------------------ Refs for File Inputs -------------------------//
   const fileInputRefs = useRef<{ [key in keyof Thumbnails]?: HTMLInputElement }>({});
+
+  //---------------------- Refs for Image Containers-----------------------//
   const mainImageRef = useRef<HTMLDivElement>(null);
   const backgroundImageRef = useRef<HTMLDivElement>(null);
   const menuImageRef = useRef<HTMLDivElement>(null);
@@ -39,7 +41,7 @@ export default function Thumbnails() {
   const searchImageRef = useRef<HTMLDivElement>(null);
   const tabImageRef = useRef<HTMLDivElement>(null);
 
-  // Utils
+  //-------------------------- Utility Functions --------------------------//
   const getThumbnailDimensions = (key: keyof Thumbnails): string => {
     const dimensions: { [key in keyof Thumbnails]: string } = {
       backgroundImage: '1438 x 810',
@@ -54,7 +56,7 @@ export default function Thumbnails() {
     return dimensions[key];
   };
 
-  // Event handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleThumbnailChange = async (
     e: ChangeEvent<HTMLInputElement>,
     key: keyof Thumbnails
@@ -80,6 +82,7 @@ export default function Thumbnails() {
     fileInputRefs.current[key]?.click();
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section className="section-thumbnails">

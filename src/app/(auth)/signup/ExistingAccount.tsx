@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation';
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { reset } from '@store/features/user/signup/signupSlice';
 
 export default function ExistingAccountPage() {
-  // Initilizations
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleCreateAccountClick = (): void => {
     dispatch(reset());
   };
@@ -22,6 +22,7 @@ export default function ExistingAccountPage() {
     router.push('/login');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="existing-account">
       <div className="section-title">Email in use</div>

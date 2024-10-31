@@ -1,107 +1,90 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+// RTK Query
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export async function sendOTP(phoneNumber: string) {
-  const url = `${backendUrl}/api/user/phone/send-otp`;
-  const data = { phoneNumber };
+const userPhoneApi = createApi({
+  reducerPath: 'api/user/phone',
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user/phone`,
+    credentials: 'include',
+  }),
+  endpoints: (builder) => ({
+    sendOTP: builder.mutation<{ message: string }, { phoneNumber: string }>({
+      query: ({ phoneNumber }) => ({
+        url: '/send-otp',
+        method: 'POST',
+        body: { phoneNumber },
+      }),
+    }),
 
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error sending OTP:', error);
-  }
-}
+    resendOTP: builder.mutation<{ message: string }, { phoneNumber: string }>({
+      query: ({ phoneNumber }) => ({
+        url: '/resend-otp',
+        method: 'POST',
+        body: { phoneNumber },
+      }),
+    }),
 
-export async function resendOTP(phoneNumber: string) {
-  const url = `${backendUrl}/api/user/phone/resend-otp`;
-  const data = { phoneNumber };
+    verifyOTP: builder.mutation<{ message: string }, { phoneNumber: string; otp: string }>({
+      query: ({ phoneNumber, otp }) => ({
+        url: '/verify-otp',
+        method: 'POST',
+        body: { phoneNumber, otp },
+      }),
+    }),
 
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error resending OTP:', error);
-  }
-}
+    verifyVerificationCode: builder.mutation<
+      { message: string },
+      { phoneNumber: string; verificationCode: string }
+    >({
+      query: ({ phoneNumber, verificationCode }) => ({
+        url: '/verify-verification-code',
+        method: 'POST',
+        body: { phoneNumber, verificationCode },
+      }),
+    }),
 
-export async function verifyOTP(phoneNumber: string, otp: string) {
-  const url = `${backendUrl}/api/user/phone/verify-otp`;
-  const data = { phoneNumber, otp };
+    changePhoneNumber: builder.mutation<{ message: string }, { newPhoneNumber: string }>({
+      query: ({ newPhoneNumber }) => ({
+        url: '/change-phone-number',
+        method: 'PATCH',
+        body: { newPhoneNumber },
+      }),
+    }),
 
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error verifying OTP:', error);
-  }
-}
+    removePhoneNumber: builder.mutation<{ message: string }, void>({
+      query: () => ({
+        url: '/remove-phone-number',
+        method: 'DELETE',
+      }),
+    }),
 
-export async function verifyVerificationCode(phoneNumber: string, verificationCode: string) {
-  const url = `${backendUrl}/api/user/phone/verify-verification-code`;
-  const data = { phoneNumber, verificationCode };
+    verifyPhoneNumber: builder.mutation<{ message: string }, { phoneNumber: string }>({
+      query: ({ phoneNumber }) => ({
+        url: '/verify-phone-number',
+        method: 'POST',
+        body: { phoneNumber },
+      }),
+    }),
 
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error verifying verification code:', error);
-  }
-}
+    sendVerificationCode: builder.mutation<{ message: string }, { phoneNumber: string }>({
+      query: ({ phoneNumber }) => ({
+        url: '/send-verification-code',
+        method: 'POST',
+        body: { phoneNumber },
+      }),
+    }),
+  }),
+});
 
-export async function changePhoneNumber(userId: string, phoneNumber: string) {
-  const url = `${backendUrl}/api/user/phone/change-phone-number`;
-  const data = { userId, phoneNumber };
+export const {
+  useSendOTPMutation,
+  useResendOTPMutation,
+  useVerifyOTPMutation,
+  useVerifyVerificationCodeMutation,
+  useChangePhoneNumberMutation,
+  useRemovePhoneNumberMutation,
+  useVerifyPhoneNumberMutation,
+  useSendVerificationCodeMutation,
+} = userPhoneApi;
 
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error changing phone number:', error);
-  }
-}
-
-export async function removePhoneNumber(userId: string) {
-  const url = `${backendUrl}/api/user/phone/remove-phone-number`;
-  const data = { userId };
-
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response;
-  } catch (error) {
-    console.error('Error removing phone number:', error);
-  }
-}
-
-export async function verifyPhoneNumber(phoneNumber: string) {
-  const url = `${backendUrl}/api/user/phone/verify-phone-number`;
-  const data = { phoneNumber };
-
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error verifying phone number:', error);
-  }
-}
-
-export async function sendVerificationCode(phoneNumber: string) {
-  const url = `${backendUrl}/api/user/phone/send-verification-code`;
-  const data = { phoneNumber };
-
-  try {
-    const response = await axios.post(url, data);
-    toast.success(response.data.message);
-    return response.data;
-  } catch (error) {
-    console.error('Error sending verification code:', error);
-  }
-}
+export default userPhoneApi;

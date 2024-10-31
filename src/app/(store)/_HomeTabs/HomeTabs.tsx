@@ -29,13 +29,15 @@ import type { Game } from '@interfaces/game';
 import type { OpenedTab } from '../Store.types';
 
 export default function HomeTabs() {
-  // States
-  const { currentUserData } = useAppSelector((state) => state.auth);
+  //----------------------------- State Hooks -----------------------------//
   const [openedTab, setOpenedTab] = useState<OpenedTab>('New & Trending');
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
 
-  // Queries
+  //--------------------------- State Selectors ---------------------------//
+  const { currentUserData } = useAppSelector((state) => state.auth);
+
+  //---------------------------- Redux Queries ----------------------------//
   const { isLoading: newAndTrendingLoading, data: newAndTrending } = useGetByNewestQuery(
     currentUserData?.library.map((item) => item.id) ?? []
   );
@@ -52,6 +54,7 @@ export default function HomeTabs() {
     currentUserData?.library.map((item) => item.id) ?? []
   );
 
+  //--------------------------- Event Handlers ----------------------------//
   const handleTabClick = (tab: OpenedTab): void => {
     setOpenedTab(tab);
   };
@@ -60,6 +63,7 @@ export default function HomeTabs() {
     setHoveredTabIndex(idx);
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="tab-container">
       {newAndTrendingLoading || specialsLoading || topSellersLoading || popularUpcomingLoading ? (

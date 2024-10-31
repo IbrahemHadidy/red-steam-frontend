@@ -25,15 +25,17 @@ interface FeaturedDesktopProps {
 }
 
 export default function Slide({ slide }: FeaturedDesktopProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport1600 = useResponsiveViewport(1600);
 
-  // States
-  const { currentUserData } = useAppSelector((state) => state.auth);
+  //----------------------------- State Hooks -----------------------------//
   const [summaryHoverStates, setSummaryHoverStates] = useState<{ [key: string]: boolean }>({});
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
-  // Event Handlers
+  //--------------------------- State Selectors ---------------------------//
+  const { currentUserData } = useAppSelector((state) => state.auth);
+
+  //--------------------------- Event Handlers ----------------------------//
   const handleMouseEnterImage = (img: ImageEntry): void => {
     setHoveredImage(img.link);
   };
@@ -56,6 +58,7 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
     }));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <Link

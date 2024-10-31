@@ -16,7 +16,7 @@ interface FeaturedDesktopProps {
 }
 
 export default function FeaturedDesktop({ featuredGames }: FeaturedDesktopProps) {
-  // Slider Settings
+  //-------------------------- Slider Config -----------------------------//
   const featuredSettings: SliderSettings = {
     dots: featuredGames.length > 1,
     lazyLoad: 'ondemand',
@@ -28,6 +28,7 @@ export default function FeaturedDesktop({ featuredGames }: FeaturedDesktopProps)
     arrows: featuredGames.length > 1,
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">

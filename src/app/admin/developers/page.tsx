@@ -16,12 +16,12 @@ import { createDeveloper } from '@services/common/developers';
 import type { JSX } from 'react';
 
 export default function DevelopersAdmin(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const onSubmit = async (): Promise<void> => {
     await toast.promise(createDeveloper(name.trim(), website.trim()), {
       pending: 'Creating developer...',

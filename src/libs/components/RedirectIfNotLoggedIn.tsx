@@ -13,10 +13,10 @@ import { useAppSelector } from '@store/hooks';
 import { toast } from 'react-toastify';
 
 export default function RedirectIfNotLoggedIn(): null {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   useEffect(() => {

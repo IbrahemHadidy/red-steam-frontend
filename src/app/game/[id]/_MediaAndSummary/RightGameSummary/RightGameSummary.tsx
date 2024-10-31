@@ -22,7 +22,7 @@ export default function RightGameSummary({
   isViewport630,
   isViewport960,
 }: RightGameSummaryProps): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const toggleModal = (): void => {

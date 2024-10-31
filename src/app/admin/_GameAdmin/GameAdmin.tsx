@@ -10,6 +10,12 @@ import dynamic from 'next/dynamic';
 import { useAppSelector } from '@store/hooks';
 import FormButtons from './FormButtons';
 
+// Custom Hooks
+import useDynamicBackground from '@hooks/useDynamicBackground';
+
+// Contants
+import { DEFAULT_BG } from '@config/constants/backgrounds';
+
 // Components
 const FormSkeleton = dynamic(() => import('./Skeleton'));
 const PreviewSkeleton = dynamic(() => import('@app/game/[id]/Skeleton'));
@@ -33,26 +39,26 @@ const AdditionalInfoSection = dynamic(() => import('./AdditionalInfo'), {
 const GameContent = dynamic(() => import('@app/game/[id]/_GameContent/layout'));
 const MediaAndSummary = dynamic(() => import('@app/game/[id]/_MediaAndSummary/MediaAndSummary'));
 
-// Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
-
 // Utils
 import getFileUrl from '@utils/getFileUrl';
 
 export default function GameAdmin() {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { type, name, currentPage, thumbnails, previewData } = useAppSelector(
-    (state) => state.gameAdmin
+    (state) => state.admin.game
   );
 
-  // Set game background if in preview mode
+  //--------------------------- Dynamic Background ---------------------------//
   useDynamicBackground(
+    // Set game background to selected background thumbnail if in preview mode
+    // else set game background to default
     currentPage === 'preview'
       ? `url(${getFileUrl(thumbnails.backgroundImage.file ?? '')}) center top no-repeat #1b2838`
-      : `#181A21`,
+      : DEFAULT_BG,
     [thumbnails.backgroundImage, currentPage]
   );
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       {currentPage === 'preview' && <SecondNavbar />}

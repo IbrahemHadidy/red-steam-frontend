@@ -143,7 +143,7 @@ class GameAdminApi extends Api {
     // Check if game id is provided
     if (!updateData.id) return Promise.reject('No game id provided');
 
-    // Init form
+    // Initialize form
     const formData: FormData = new FormData();
 
     // Append update data

@@ -6,16 +6,17 @@ import { useEffect } from 'react';
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { resetMedia } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
 import GameAdmin from '@app/admin/_GameAdmin/GameAdmin';
 
 export default function GameCreate() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
+  //------------------------------ On Mount -------------------------------//
   // Reset Media
   useEffect(() => {
     dispatch(resetMedia());

@@ -10,13 +10,16 @@ import Link from 'next/link';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   initializeLibrary,
   setCardSize,
   setIsCompleteModalOpen,
   setIsGameModalOpen,
 } from '@store/features/shop/library/librarySlice';
+
+// Constants
+import { LIBRARY_BG } from '@config/constants/backgrounds';
 
 // Components
 const GameCard = dynamic(() => import('./GameCard'));
@@ -29,19 +32,18 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function LibraryPage() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
   const isViewport1000 = useResponsiveViewport(1000);
-  useDynamicBackground(
-    "radial-gradient(rgba(24, 26, 33, 0.9) 0%, #181A21 100%) fixed no-repeat, url('/images/new_login_bg_strong_mask.jpg') center top no-repeat, #181A21"
-  );
+  useDynamicBackground(LIBRARY_BG);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { selectedGame, userLibrary, isGameModalOpen, isCompleteModalOpen } = useAppSelector(
-    (state) => state.library
+    (state) => state.shop.library
   );
 
-  // Fetch library data
+  //------------------------------ On Mount -------------------------------//
+  // Initialize library (fetch user library)
   useEffect(() => {
     dispatch(initializeLibrary());
   }, [dispatch]);
@@ -51,7 +53,7 @@ export default function LibraryPage() {
     if (isViewport1000) dispatch(setCardSize(320));
   }, [dispatch, isViewport1000]);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleCloseShowClick = (): void => {
     dispatch(setIsGameModalOpen(false));
   };
@@ -60,6 +62,7 @@ export default function LibraryPage() {
     dispatch(setIsCompleteModalOpen(false));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <div className="Library">

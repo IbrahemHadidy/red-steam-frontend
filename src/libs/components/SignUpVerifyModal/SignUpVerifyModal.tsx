@@ -16,7 +16,7 @@ import '@styles/components/SignUpVerifyModal.scss';
 import type { JSX } from 'react';
 
 export default function VerifyModal(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
   const [totalHeight, setTotalHeight] = useState(0);

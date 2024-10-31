@@ -1,12 +1,10 @@
-'use client';
-
 // NextJS
 import Image from 'next/image';
 
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   setPasswordStrengthError,
   setPasswordStrengthWarning,
@@ -14,9 +12,6 @@ import {
   updateConfirmPassword,
   updatePassword,
 } from '@store/features/user/signup/signupSlice';
-
-// Custom Hooks
-import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Utils
 import validatePasswordStrength from '@utils/passwordValidator';
@@ -28,13 +23,10 @@ import checkIcon from '@images/icon_check.png';
 import type { ChangeEvent } from 'react';
 
 export default function SecondForm() {
-  // Initilizations
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
-  useDynamicBackground(
-    "radial-gradient(30% 40% at 40% 30%, rgba(33, 36, 41, .5) 0%, rgba(33, 36, 41, 0) 100%) no-repeat, url( '/images/acct_creation_bg.jpg' ) -45vw 0 no-repeat, #212429"
-  );
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const {
     isCheckingAvailability,
     accountNameInputError,
@@ -46,9 +38,9 @@ export default function SecondForm() {
     passwordStrengthError,
     passwordStrengthWarning,
     passwordsDoNotMatch,
-  } = useAppSelector((state) => state.signup);
+  } = useAppSelector((state) => state.user.signup);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleAccountNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateAccountName(value));
@@ -71,6 +63,7 @@ export default function SecondForm() {
     dispatch(updateConfirmPassword(value));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <div className="form-row-flex">

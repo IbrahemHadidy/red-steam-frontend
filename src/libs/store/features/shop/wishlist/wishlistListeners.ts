@@ -24,14 +24,18 @@ listen({
     const userWishlist = getState().auth.currentUserData?.wishlist ?? [];
     let wishlistItems: Game[] = [];
 
-    if (userWishlist.length > 0) {
-      wishlistItems = await dispatch(
-        gameDataApi.endpoints.getByIds.initiate(userWishlist.map((item) => item.id))
-      ).unwrap();
-    }
+    try {
+      if (userWishlist.length > 0) {
+        wishlistItems = await dispatch(
+          gameDataApi.endpoints.getByIds.initiate(userWishlist.map((item) => item.id))
+        ).unwrap();
+      }
 
-    // Update wishlist
-    dispatch(updateWishlist(wishlistItems));
+      // Update wishlist
+      dispatch(updateWishlist(wishlistItems));
+    } catch (error) {
+      console.error('Error fetching wishlist:', error);
+    }
   },
 });
 

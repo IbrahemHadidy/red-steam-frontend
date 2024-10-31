@@ -24,10 +24,10 @@ import type { JSX } from 'react';
 import type { GroupedMenuItem, MenuItem, menuTitle } from '../SecondNavbar.types';
 
 export default function MobileSecondNav(): JSX.Element {
-  // Initializattions
+  //--------------------------- Initializations ---------------------------//ializattions
   const path = usePathname();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);

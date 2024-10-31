@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useAppSelector } from '@store/hooks';
 
 export default function BrowseSteam() {
-  // States
+  //--------------------------- Initializations ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
   const userTags: string =
@@ -16,6 +16,7 @@ export default function BrowseSteam() {
       currentUserData?.tags.map((tag) => tag.id).join(',')) ||
     '';
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="home-section">
       <div className="home-contents">

@@ -21,13 +21,13 @@ interface WeekendOfferProps {
 }
 
 export default function WeekendOffer({ offer }: WeekendOfferProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //----------------------------- State Hooks -----------------------------//
   const [offerHoverStates, setOfferHoverStates] = useState<{ [key: string]: boolean }>({});
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleOfferPointerMove = (offerId: number): void => {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: true }));
   };
@@ -36,6 +36,7 @@ export default function WeekendOffer({ offer }: WeekendOfferProps) {
     setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: false }));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div
       className="offer-result-container big"

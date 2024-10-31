@@ -1,189 +1,133 @@
 'use client';
 
-// React
-import { useRef, useState } from 'react';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Thunks
-import { fetchUserData } from '@store/features/auth/authThunks';
+// Redux Handlers
+import {
+  resetChangeModal,
+  setChangeModalVisiblity,
+  updateConfirmNewPassword,
+  updateCurrentEmail,
+  updateCurrentPassword,
+  updateEmail,
+  updateNewPassword,
+  updatePhone,
+} from '@store/features/user/settings/userSettingsSlice';
 
-// Services
-import { changeEmail, changePassword } from '@services/user/management';
-import { changePhoneNumber } from '@services/user/phone';
+// Redux Thunks
+import {
+  changeEmail,
+  changePassword,
+  changePhone,
+} from '@store/features/user/settings/userSettingsThunks';
 
 // Utils
-import { validateEmail, validatePassword, validatePhone } from '@utils/inputValidations';
+import {
+  getInputType,
+  getModalHeader,
+  getNewInputPlaceholder,
+  getNextBtnDisabled,
+} from './modals-utils';
 
 // Types
-import type { ChangeEvent, JSX } from 'react';
-import type { ChangeModalProps } from './Modals.types';
+import type { ChangeEvent } from 'react';
 
-export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.Element {
-  // Init
+export default function ChangeModal() {
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { currentUserData } = useAppSelector((state) => state.auth);
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [currentEmail, setCurrentEmail] = useState<string>('');
-  const [currentPassword, setCurrentPassword] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [step, setStep] = useState<number>(1);
+  //--------------------------- State Selectors ---------------------------//
+  const {
+    changeModalType,
+    currentChangeStep,
+    errorMessage,
+    email,
+    currentEmail,
+    phone,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
+    nextStepButtonDisabled,
+  } = useAppSelector((state) => state.user.settings);
 
-  // Refs
-  const nextBtn1Ref = useRef<HTMLButtonElement>(null);
-  const nextBtn2Ref = useRef<HTMLButtonElement>(null);
-
-  // Validations
-  const isPasswordValid: boolean = currentPassword.length >= 8;
-  const isNewPasswordValid: boolean = validatePassword(newPassword);
-  const isEmailValid: boolean = validateEmail(email);
-  const isCurrentEmailValid: boolean = validateEmail(currentEmail);
-  const isPhoneValid: boolean = validatePhone(phone);
-  const isNewPasswordConfirmed: boolean = newPassword === confirmNewPassword;
-
-  const handleEmailChange = async (): Promise<void> => {
-    nextBtn1Ref.current?.setAttribute('disabled', 'true');
-    nextBtn2Ref.current?.setAttribute('disabled', 'true');
-    if (step === 1) {
-      // First step: validate email format and move to next step
-      if (isEmailValid && isCurrentEmailValid) {
-        if (email !== currentEmail) {
-          setStep(2);
-          setErrorMessage('');
-        } else {
-          setErrorMessage('The new email is the same as the current one');
-        }
-      } else {
-        setErrorMessage('Invalid email format');
-      }
-    } else {
-      // Second step: change email
-      currentUserData &&
-        (await changeEmail(currentEmail, currentPassword, email, onClose, setErrorMessage));
-      await dispatch(fetchUserData());
-    }
-    nextBtn1Ref.current?.removeAttribute('disabled');
-    nextBtn2Ref.current?.removeAttribute('disabled');
-  };
-
-  const handlePhoneChange = async (): Promise<void> => {
-    nextBtn1Ref.current?.setAttribute('disabled', 'true');
-    nextBtn2Ref.current?.setAttribute('disabled', 'true');
-    if (step === 1) {
-      // First step: validate phone format and move to next step
-      if (isPhoneValid) {
-        setStep(2);
-        setErrorMessage('');
-      } else {
-        setErrorMessage('Invalid phone number');
-      }
-    } else {
-      // Second step: change phone
-      currentUserData && (await changePhoneNumber(currentUserData.id, phone));
-      await dispatch(fetchUserData());
-      onClose();
-    }
-    nextBtn1Ref.current?.removeAttribute('disabled');
-    nextBtn2Ref.current?.removeAttribute('disabled');
-  };
-
-  const handlePasswordChange = async (): Promise<void> => {
-    if (isNewPasswordValid && isNewPasswordConfirmed) {
-      currentUserData &&
-        (await changePassword(currentPassword, newPassword, onClose, setErrorMessage));
-      await dispatch(fetchUserData());
-      setErrorMessage('');
-    } else {
-      setErrorMessage(
-        'New password should be at least 8 characters long and contain at least one letter, one number, and one special character.'
-      );
-    }
+  //---------------------------- Event Handlers ---------------------------//
+  const closeChangeModal = (): void => {
+    dispatch(setChangeModalVisiblity(false));
+    dispatch(resetChangeModal());
+    document.body.style.overflow = 'unset';
   };
 
   const handleCurrentEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setCurrentEmail(e.target.value);
+    const value = e.target.value;
+    dispatch(updateCurrentEmail(value));
   };
 
   const handleEmailPhoneChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    if (type === 'email') {
-      setEmail(e.target.value);
+    const value = e.target.value;
+    if (changeModalType === 'email') {
+      dispatch(updateEmail(value));
     } else {
-      setPhone(e.target.value);
+      dispatch(updatePhone(value));
     }
   };
 
   const handleCurrentPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setCurrentPassword(e.target.value);
+    const value = e.target.value;
+    dispatch(updateCurrentPassword(value));
   };
 
   const handleNewPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setNewPassword(e.target.value);
+    const value = e.target.value;
+    dispatch(updateNewPassword(value));
   };
 
   const handleConfirmNewPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setConfirmNewPassword(e.target.value);
+    const value = e.target.value;
+    dispatch(updateConfirmNewPassword(value));
   };
 
-  const handleNextBtnClick = (): void => {
-    if (type !== 'password' && step === 1) {
-      if (type === 'email') {
-        handleEmailChange();
-      } else if (type === 'phone') {
-        handlePhoneChange();
-      } else {
-        handlePasswordChange();
-      }
-    } else {
-      if (type === 'password') {
-        handlePasswordChange();
-      } else if (type === 'email') {
-        handleEmailChange();
-      } else {
-        handlePhoneChange();
-      }
+  const handleNextBtnClick = async (): Promise<void> => {
+    if (changeModalType === 'email') {
+      await dispatch(changeEmail());
+    } else if (changeModalType === 'phone') {
+      await dispatch(changePhone());
+    } else if (changeModalType === 'password') {
+      await dispatch(changePassword());
     }
   };
 
-  const handleNextBtnDisabled = (): boolean => {
-    if (type !== 'password' && step === 1) {
-      if (type === 'email') {
-        return !isEmailValid || !isCurrentEmailValid;
-      } else if (type === 'phone') {
-        return !isPhoneValid;
-      } else {
-        return !(isNewPasswordValid && isNewPasswordConfirmed);
-      }
-    } else {
-      if (type === 'password') {
-        return !isPasswordValid || !newPassword;
-      } else {
-        return !isPasswordValid;
-      }
-    }
-  };
+  //---------------------------- UI Helpers --------------------------------//
+  const isNextButtonDisabled = getNextBtnDisabled({
+    nextStepButtonDisabled,
+    changeModalType,
+    currentChangeStep,
+    email,
+    currentEmail,
+    phone,
+    currentPassword,
+    newPassword,
+    confirmNewPassword,
+  });
 
+  const modalHeader = getModalHeader(changeModalType);
+
+  const inputType = getInputType(changeModalType);
+
+  const newInputPlaceholder = getNewInputPlaceholder(changeModalType);
+
+  //-------------------------- Render UI Section ---------------------------//
   return (
     <div className="change-modal">
       <div className="modal-content">
-        <h2>
-          {type === 'email'
-            ? 'Change Email'
-            : type === 'phone'
-              ? 'Change Phone Number'
-              : 'Change Password'}
-        </h2>
-        {type !== 'password' && step === 1 && (
+        <h2>{modalHeader}</h2>
+
+        {changeModalType !== 'password' && currentChangeStep === 1 && (
           <>
-            {type === 'email' && (
+            {changeModalType === 'email' && (
               <input
                 className="password-input"
-                type={type === 'email' ? 'email' : 'text'}
+                type={inputType}
                 placeholder="Enter your current email"
                 value={currentEmail}
                 onChange={handleCurrentEmailChange}
@@ -191,17 +135,15 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
             )}
             <input
               className="password-input"
-              type={type === 'email' ? 'email' : 'text'}
-              placeholder={
-                type === 'email' ? 'Enter your new email' : 'Enter your new phone number'
-              }
-              value={type === 'email' ? email : phone}
+              type={inputType}
+              placeholder={newInputPlaceholder}
+              value={changeModalType === 'email' ? email : phone}
               onChange={handleEmailPhoneChange}
             />
           </>
         )}
 
-        {step === 2 && (
+        {currentChangeStep === 2 && (
           <input
             className="password-input"
             type="password"
@@ -210,7 +152,8 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
             onChange={handleCurrentPasswordChange}
           />
         )}
-        {type === 'password' && (
+
+        {changeModalType === 'password' && (
           <>
             <input
               className="password-input"
@@ -219,6 +162,7 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
               value={currentPassword}
               onChange={handleCurrentPasswordChange}
             />
+
             <input
               className="password-input"
               type="password"
@@ -226,6 +170,7 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
               value={newPassword}
               onChange={handleNewPasswordChange}
             />
+
             <input
               className="password-input"
               type="password"
@@ -237,13 +182,13 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
         )}
 
         <div className="error-message">{errorMessage}</div>
+
         <div className="modal-buttons">
-          {step === 1 && type !== 'password' ? (
+          {currentChangeStep === 1 && changeModalType !== 'password' ? (
             <button
               className="next-button"
               onClick={handleNextBtnClick}
-              disabled={handleNextBtnDisabled()}
-              ref={nextBtn1Ref}
+              disabled={isNextButtonDisabled}
             >
               Next
             </button>
@@ -251,13 +196,13 @@ export default function ChangeModal({ onClose, type }: ChangeModalProps): JSX.El
             <button
               className="next-button"
               onClick={handleNextBtnClick}
-              disabled={handleNextBtnDisabled()}
-              ref={nextBtn2Ref}
+              disabled={isNextButtonDisabled}
             >
               Change
             </button>
           )}
-          <button className="cancel-button" onClick={onClose}>
+
+          <button className="cancel-button" onClick={closeChangeModal}>
             Cancel
           </button>
         </div>

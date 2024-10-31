@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,24 +24,24 @@ import responsiveChevron from '@images/ResponsiveChevron.svg';
 
 // Types
 import type { Game } from '@interfaces/game';
+import type { JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
 
-import type { JSX } from "react";
-
 export default function Recommended() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
-  // Queries
+  //---------------------------- Redux Queries ----------------------------//
   const { data: recommendedGames, isLoading } = useGetByTagsQuery({
     tags: currentUserData?.tags.map((tag) => tag.id) ?? [],
     excludedGames: currentUserData?.library.map((game) => game.id) ?? [],
     limit: 24,
   });
 
+  //---------------------------- Slider Config ----------------------------//
   const recommendedSettings: SliderSettings = {
     dots: recommendedGames && recommendedGames.length >= 8,
     infinite: true,
@@ -51,6 +51,7 @@ export default function Recommended() {
     arrows: recommendedGames && recommendedGames.length >= 8,
   };
 
+  //-------------------------- Utility Functions --------------------------//
   const renderCategorySlide = (start: number, end: number): JSX.Element[] => {
     const categoryGames: Game[] = recommendedGames?.slice(start, end) ?? [];
     return categoryGames.map((game) => <Item game={game} key={game.id} />);
@@ -68,6 +69,7 @@ export default function Recommended() {
     return categorySlides;
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return isLoading ? (
     <Skeleton />
   ) : (

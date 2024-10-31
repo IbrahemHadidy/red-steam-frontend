@@ -7,7 +7,11 @@ import Link from 'next/link';
 import { getHoverInfo, getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Types
-import type { RightSectionProps } from '../Store.types';
+import type { Game } from '@interfaces/game';
+
+interface RightSectionProps {
+  game: Game | null;
+}
 
 export default function RightSection({ game }: RightSectionProps) {
   return (

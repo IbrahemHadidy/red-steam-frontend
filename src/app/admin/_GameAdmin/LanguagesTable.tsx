@@ -1,7 +1,7 @@
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { toggleLanguageField } from '@store/features/admin/game/gameAdminSlice';
 
 // Types
@@ -13,13 +13,13 @@ interface LanguagesTableProps {
 }
 
 export default function LanguagesTable({ languagesTableRef }: LanguagesTableProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { languages } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { languages } = useAppSelector((state) => state.admin.game);
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleLanguageCheckboxChange = (
     name: string,
     field: keyof Language,
@@ -28,6 +28,7 @@ export default function LanguagesTable({ languagesTableRef }: LanguagesTableProp
     dispatch(toggleLanguageField({ name, field, value }));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <table ref={languagesTableRef}>
       <thead>

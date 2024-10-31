@@ -1,78 +1,76 @@
 'use client';
 
-// React
-import { useRef, useState } from 'react';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Thunks
-import { logout } from '@store/features/auth/authThunks';
+// Redux Handlers
+import {
+  resetAccountDeleteModal,
+  setDeleteAccountModalVisiblity,
+  updateCurrentPassword,
+} from '@store/features/user/settings/userSettingsSlice';
 
-// Services
-import { deleteAccount } from '@services/user/management';
+// Redux Thunks
+import { deleteAccount } from '@store/features/user/settings/userSettingsThunks';
 
 // Types
-import type { ChangeEvent, JSX } from 'react';
-import type { DeleteAccountModalProps } from './Modals.types';
+import type { ChangeEvent } from 'react';
 
-export default function DeleteAccountModal({ onClose }: DeleteAccountModalProps): JSX.Element {
-  // Init
+export default function DeleteAccountModal() {
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { currentUserData } = useAppSelector((state) => state.auth);
-  const [password, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  //--------------------------- State Selectors ---------------------------//
+  const { errorMessage, currentPassword, deleteAccountButtonDisabled } = useAppSelector(
+    (state) => state.user.settings
+  );
 
-  // Refs
-  const deleteBtnRef = useRef<HTMLButtonElement>(null);
+  //----------------------------- Validations -----------------------------//
+  const isPasswordValid: boolean = currentPassword.length >= 8;
 
-  // Validations
-  const isPasswordValid: boolean = password.length >= 8;
-
-  const handleDelete = async (): Promise<void> => {
-    deleteBtnRef.current?.setAttribute('disabled', 'true');
-    if (currentUserData?.id) {
-      const response = await deleteAccount(password, setErrorMessage);
-
-      if (response && response.status === 200) {
-        onClose();
-        await dispatch(logout());
-      }
-    } else {
-      setErrorMessage('Something went wrong. Please try again.');
-    }
-    deleteBtnRef.current?.removeAttribute('disabled');
+  //--------------------------- Event Handlers ----------------------------//
+  const closeDeleteModal = (): void => {
+    dispatch(resetAccountDeleteModal());
+    dispatch(setDeleteAccountModalVisiblity(false));
+    document.body.style.overflow = 'unset';
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
+    const value = e.target.value;
+    dispatch(updateCurrentPassword(value));
   };
 
+  const handleDelete = async (): Promise<void> => {
+    await dispatch(deleteAccount());
+  };
+
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="delete-modal">
       <div className="modal-content">
         <h2>Are you sure you want to delete your account?</h2>
         <p>This action cannot be undone.</p>
+
         <input
           className="password-input"
           type="password"
           placeholder="Enter your password"
-          value={password}
+          value={currentPassword}
           onChange={handlePasswordChange}
         />
+
         <div className="error-message">{errorMessage}</div>
+
         <div className="modal-buttons">
           <button
             className="delete-button"
             onClick={handleDelete}
-            disabled={!isPasswordValid}
-            ref={deleteBtnRef}
+            disabled={!isPasswordValid || deleteAccountButtonDisabled}
           >
             Delete
           </button>
-          <button className="cancel-button" onClick={onClose}>
+
+          <button className="cancel-button" onClick={closeDeleteModal}>
             Cancel
           </button>
         </div>

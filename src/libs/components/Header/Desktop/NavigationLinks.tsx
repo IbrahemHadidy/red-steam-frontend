@@ -20,11 +20,11 @@ import sharedData from '../sharedData';
 import type { JSX, MouseEvent } from 'react';
 
 export default function NavigationLinks(): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<number | null>(null);
 

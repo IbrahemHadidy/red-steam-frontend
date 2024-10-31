@@ -24,7 +24,7 @@ import type { ChangeEvent, FormEvent } from 'react';
 import type { EditModalProps } from './admin.types';
 
 export default function EditModal({ type, setOpen, item }: EditModalProps) {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [name, setName] = useState<string>(
     !isUser(item) && !isPricing(item) && !isReview(item) ? item.name : ''
   );
@@ -37,13 +37,13 @@ export default function EditModal({ type, setOpen, item }: EditModalProps) {
     isPricing(item) ? new Decimal(item.discountPrice ?? '0.00') : new Decimal('0.00')
   );
   const [offerType, setOfferType] = useState<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>(
-    isPricing(item) ? item.offerType ?? 'SPECIAL PROMOTION' : 'SPECIAL PROMOTION'
+    isPricing(item) ? (item.offerType ?? 'SPECIAL PROMOTION') : 'SPECIAL PROMOTION'
   );
   const [discountStartDate, setDiscountStartDate] = useState<Date>(
-    isPricing(item) ? item.discountStartDate ?? new Date() : new Date()
+    isPricing(item) ? (item.discountStartDate ?? new Date()) : new Date()
   );
   const [discountEndDate, setDiscountEndDate] = useState<Date>(
-    isPricing(item) ? item.discountEndDate ?? get7DaysFromNow() : get7DaysFromNow()
+    isPricing(item) ? (item.discountEndDate ?? get7DaysFromNow()) : get7DaysFromNow()
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

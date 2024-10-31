@@ -28,29 +28,33 @@ listen({
     const userCart = getState().auth.currentUserData?.cart ?? [];
     let cartItems: Game[] = [];
 
-    if (userCart.length > 0) {
-      cartItems = await dispatch(
-        gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
-      ).unwrap();
+    try {
+      if (userCart.length > 0) {
+        cartItems = await dispatch(
+          gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
+        ).unwrap();
+      }
+
+      // Update cart
+      dispatch(updateCart(cartItems));
+
+      // Update total price
+      dispatch(
+        setTotalPrice(
+          cartItems
+            .reduce((total: Decimal, game: Game) => {
+              const gamePrice = new Decimal(game.pricing?.price ?? '0.00');
+              return total.plus(gamePrice);
+            }, new Decimal('0.00'))
+            .toFixed(2)
+        )
+      );
+
+      // Set cart initialized
+      dispatch(setCartInitialized(true));
+    } catch (error) {
+      console.error('Error initializing cart:', error);
     }
-
-    // Update cart
-    dispatch(updateCart(cartItems));
-
-    // Update total price
-    dispatch(
-      setTotalPrice(
-        cartItems
-          .reduce((total: Decimal, game: Game) => {
-            const gamePrice = new Decimal(game.pricing?.price ?? '0.00');
-            return total.plus(gamePrice);
-          }, new Decimal('0.00'))
-          .toFixed(2)
-      )
-    );
-
-    // Set cart initialized
-    dispatch(setCartInitialized(true));
   },
 });
 

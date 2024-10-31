@@ -4,7 +4,6 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 // Actions
 import { setLoginFormVisibility } from '../login/loginSlice';
 import {
-  checkPageType,
   setPasswordPageVisibility,
   setPasswordsDoNotMatch,
   setResetButtonDisabled,
@@ -17,7 +16,6 @@ import { MIN_PASSWORD_LENGTH } from '@constants/passwords';
 import { validatePassword } from '@utils/inputValidations';
 
 // Types
-import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from '@store/store';
 
 // Create listener middleware
@@ -28,13 +26,14 @@ const listen = recoveryListener.startListening.withTypes<RootState, AppDispatch>
 listen({
   predicate: (_action, currentState, previousState) => {
     return (
-      currentState.recovery.newPassword !== previousState.recovery.newPassword ||
-      currentState.recovery.confirmNewPassword !== previousState.recovery.confirmNewPassword
+      currentState.user.recovery.newPassword !== previousState.user.recovery.newPassword ||
+      currentState.user.recovery.confirmNewPassword !==
+        previousState.user.recovery.confirmNewPassword
     );
   },
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
-    const { newPassword, confirmNewPassword } = listenerApi.getState().recovery;
+    const { newPassword, confirmNewPassword } = listenerApi.getState().user.recovery;
 
     if (confirmNewPassword.length === 0) {
       dispatch(setPasswordsDoNotMatch(false));
@@ -54,10 +53,12 @@ listen({
 
 // Listen for page type changes and update the password page visibility based on the new type
 listen({
-  actionCreator: checkPageType,
-  effect: async (action: PayloadAction<string>, listenerApi) => {
+  predicate: (_action, currentState, previousState) => {
+    return currentState.user.login.type !== previousState.user.login.type;
+  },
+  effect: async (_action, listenerApi) => {
     const { dispatch } = listenerApi;
-    const type = action.payload;
+    const type = listenerApi.getState().user.login.type;
 
     if (type !== 'Sign In') {
       dispatch(setPasswordPageVisibility(true));

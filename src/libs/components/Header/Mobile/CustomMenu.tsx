@@ -34,10 +34,10 @@ interface MenuItem {
 }
 
 export default function SteamMenu(): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});

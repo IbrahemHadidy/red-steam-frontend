@@ -8,7 +8,7 @@ import Select from 'react-select';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   togglePlatform,
   updateFeatures,
@@ -37,11 +37,11 @@ interface ReactSelectOption {
 }
 
 export default function Specifications() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { tags, features, languages, platforms } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { tags, features, languages, platforms } = useAppSelector((state) => state.admin.game);
 
   // Refs
   const tagsRef = useRef<HTMLDivElement>(null);
@@ -55,7 +55,7 @@ export default function Specifications() {
   const { data: fetchedFeatures } = useGetAllFeaturesQuery();
   const { data: fetchedLanguages } = useGetAllLanguagesQuery();
 
-  // React Select Options
+  //---------------------------- React-Select Options ---------------------//
   const tagOptions: ReactSelectOption[] =
     fetchedTags?.map((tag) => ({
       value: tag.id,
@@ -74,7 +74,7 @@ export default function Specifications() {
       label: language.name,
     })) ?? [];
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleTagChange = (selectedOptions: MultiValue<ReactSelectOption>): void => {
     const selectedIds: number[] = selectedOptions.map((option) => option.value);
     dispatch(updateTags(selectedIds));
@@ -94,6 +94,7 @@ export default function Specifications() {
     togglePlatform(changedPlatform);
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <section className="section-specifications">

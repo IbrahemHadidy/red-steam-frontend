@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import { initializeWishlist } from '@store/features/shop/wishlist/wishlistSlice';
 
 // Components
@@ -19,12 +19,12 @@ const WishlistItem = dynamic(() => import('./WishlistItem'));
 import defaultPFP from '@images/default-pfp.png';
 
 export default function WishlistPage() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { userWishlist } = useAppSelector((state) => state.wishlist);
+  const { userWishlist } = useAppSelector((state) => state.shop.wishlist);
 
   // Fetch wishlist data
   useEffect(() => {

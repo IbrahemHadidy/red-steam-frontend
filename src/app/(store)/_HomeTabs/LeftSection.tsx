@@ -3,7 +3,20 @@ import Tab from './Tab';
 import TabContent from './TabContent';
 
 // Types
-import type { LeftSectionProps } from '../Store.types';
+import type { Game } from '@interfaces/game';
+import type { OpenedTab } from '../Store.types';
+
+interface LeftSectionProps {
+  openedTab: OpenedTab;
+  handleTabClick: (tabTitle: OpenedTab) => void;
+  hoveredTabIndex: number | null;
+  onTabHover: (index: number | null) => void;
+  setHoveredGame: (game: Game | null) => void;
+  newAndTrending: Game[];
+  specials: Game[];
+  topSellers: Game[];
+  popularUpcoming: Game[];
+}
 
 export default function LeftSection({
   openedTab,
@@ -15,6 +28,7 @@ export default function LeftSection({
   topSellers,
   popularUpcoming,
 }: LeftSectionProps) {
+  //------------------------ Tabs Content Config --------------------------//
   const tabsRow = [
     { tabName: 'newreleases', tabTitle: 'New & Trending' },
     { tabName: 'topsellers', tabTitle: 'Top Sellers' },
@@ -37,6 +51,7 @@ export default function LeftSection({
     { items: specials, title: 'Specials', seeMore: '/search?sort=Relevance' },
   ];
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="tab-left">
       <div className="tabs-row">

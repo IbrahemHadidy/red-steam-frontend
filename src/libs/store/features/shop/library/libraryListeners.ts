@@ -24,14 +24,18 @@ listen({
     const userLibrary = getState().auth.currentUserData?.library ?? [];
     let libraryItems: Game[] = [];
 
-    if (userLibrary.length > 0) {
-      libraryItems = await dispatch(
-        gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
-      ).unwrap();
-    }
+    try {
+      if (userLibrary.length > 0) {
+        libraryItems = await dispatch(
+          gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
+        ).unwrap();
+      }
 
-    // Update library
-    dispatch(updateLibrary(libraryItems));
+      // Update library
+      dispatch(updateLibrary(libraryItems));
+    } catch (error) {
+      console.error('Error fetching library:', error);
+    }
   },
 });
 

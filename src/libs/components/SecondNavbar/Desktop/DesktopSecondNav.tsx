@@ -30,10 +30,10 @@ import type { SpringValue } from 'react-spring';
 import type { GroupedMenuItem, MenuItem } from '../SecondNavbar.types';
 
 export default function DesktopSecondNav(): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const pathname = usePathname();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);

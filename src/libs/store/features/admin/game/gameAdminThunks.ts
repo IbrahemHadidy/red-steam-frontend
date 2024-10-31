@@ -44,7 +44,7 @@ export const getPreviewData = createAppAsyncThunk<Game, void, { rejectValue: str
       matureDescription,
       systemRequirements,
       legal,
-    } = getState().gameAdmin;
+    } = getState().admin.game;
 
     try {
       const publishersData = await dispatch(
@@ -126,7 +126,7 @@ export const getPreviewData = createAppAsyncThunk<Game, void, { rejectValue: str
 );
 
 const createGame = async (dispatch: AppDispatch, state: RootState, router: AppRouterInstance) => {
-  const { previewData, thumbnails, screenshots, videos } = state.gameAdmin;
+  const { previewData, thumbnails, screenshots, videos } = state.admin.game;
 
   const response = await toast.promise(
     dispatch(
@@ -170,7 +170,7 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
     systemRequirements,
     legal,
     gameToUpdate,
-  } = state.gameAdmin;
+  } = state.admin.game;
 
   const response = await dispatch(
     gameAdminApi.endpoints.updateGame.initiate({
@@ -308,7 +308,7 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
 export const submitForm = createAppAsyncThunk<void, AppRouterInstance, { rejectValue: string }>(
   'admin/game/submitForm',
   async (router, { rejectWithValue, getState, dispatch }) => {
-    const { type } = getState().gameAdmin;
+    const { type } = getState().admin.game;
 
     // Prevent the user from leaving the page message
     const preventNavigation = (e: BeforeUnloadEvent): string => {

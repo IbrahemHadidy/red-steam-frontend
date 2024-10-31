@@ -1,7 +1,7 @@
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   removeScreenshot,
   restoreScreenshot,
@@ -21,13 +21,13 @@ interface MediaScreenshotProps {
 }
 
 export default function MediaScreenshot({ item }: MediaScreenshotProps) {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
-  const { screenshots, duplicateOrders } = useAppSelector((state) => state.gameAdmin);
+  //--------------------------- State Selectors ---------------------------//
+  const { screenshots, duplicateOrders } = useAppSelector((state) => state.admin.game);
 
-  // Utils
+  //-------------------------- Utility Functions --------------------------//
   const isFeaturedDisabled = (): boolean => {
     const featuredCount = screenshots.filter((s) => s.featured).length;
     if (featuredCount >= 4) {
@@ -37,7 +37,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
     }
   };
 
-  // Event Handlers
+  //---------------------------- Event Handlers ---------------------------//
   const handleRemoveScreenshot = (order: number): void => {
     dispatch(removeScreenshot(order));
   };
@@ -55,6 +55,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
     dispatch(toggleScreenshotFeatured(id));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="media-screenshot">
       <img

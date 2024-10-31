@@ -17,7 +17,7 @@ import userManagementApi from '@store/apis/user/management';
 
 // Types
 import type { User } from '@interfaces/user';
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
 export interface CheckExistingEmailRejectValue {
@@ -39,12 +39,12 @@ export interface CheckNameAndPasswordRejectValue {
 
 export const checkExistingEmail = createAppAsyncThunk<
   string,
-  { recaptchaRef: MutableRefObject<ReCAPTCHA | null> },
+  { recaptchaRef: RefObject<ReCAPTCHA | null> },
   { rejectValue: CheckExistingEmailRejectValue }
 >(
   'user/signup/checkExistingEmail',
   async ({ recaptchaRef }, { rejectWithValue, getState, dispatch }) => {
-    const { email, confirmEmail, isAgreeChecked } = getState().signup;
+    const { email, confirmEmail, isAgreeChecked } = getState().user.signup;
     const recaptchaValue = recaptchaRef.current?.getValue();
     const resetRecaptchaValue = () => recaptchaRef.current?.reset();
 
@@ -123,7 +123,7 @@ export const checkNameAndPassword = createAppAsyncThunk<
   'user/signup/checkNameAndPassword',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { email, accountName, country, password, confirmPassword, recaptchaToken } =
-      getState().signup;
+      getState().user.signup;
 
     const rejectValue: CheckNameAndPasswordRejectValue = { errors: [] };
 

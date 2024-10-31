@@ -41,11 +41,11 @@ import type { JSX, SyntheticEvent } from 'react';
 import type { GameReviewsProps } from './GameReviews.types';
 
 export default function GameReviews({ game }: GameReviewsProps): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport630 = useResponsiveViewport(630);
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [reviews, setReviews] = useState<Review[]>([]);
   const [filter, setFilter] = useState<'positive' | 'negative' | 'all'>('all');
   const [sort, setSort] = useState<'newest' | 'oldest'>('newest');

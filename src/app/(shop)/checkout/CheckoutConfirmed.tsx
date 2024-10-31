@@ -12,16 +12,17 @@ interface CheckoutConfirmedProps {
 }
 
 export default function CheckoutConfirmed({ router }: CheckoutConfirmedProps) {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { totalPrice } = useAppSelector((state) => state.cart);
-  const { orderId } = useAppSelector((state) => state.checkout);
+  const { totalPrice } = useAppSelector((state) => state.shop.cart);
+  const { orderId } = useAppSelector((state) => state.shop.checkout);
 
-  // Event Handlers
+  //--------------------------- Event Handlers ----------------------------//
   const handleReturnToStoreClick = (): void => {
     router.push('/');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       <h2>Thank you for your purchase!</h2>

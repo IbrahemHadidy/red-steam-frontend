@@ -15,14 +15,10 @@ interface queueGame {
 }
 
 export default function Queue(): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  const handleQueueLinkClick = (e: MouseEvent<HTMLAnchorElement>): void => {
-    e.preventDefault();
-    toast.info('Coming Soon!');
-  };
-
+  //----------------------------- Queue Config ----------------------------//
   const queueGames: queueGame[] = [
     {
       imageNumber: '1',
@@ -42,6 +38,13 @@ export default function Queue(): JSX.Element {
     },
   ];
 
+  //--------------------------- Event Handlers ----------------------------//
+  const handleQueueLinkClick = (e: MouseEvent<HTMLAnchorElement>): void => {
+    e.preventDefault();
+    toast.info('Coming Soon!');
+  };
+
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="home-section">
       <div className="home-contents">

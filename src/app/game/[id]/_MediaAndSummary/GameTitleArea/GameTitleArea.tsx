@@ -27,7 +27,7 @@ import type { JSX } from 'react';
 import type { GameTitleAreaProps } from '../MediaAndSummary.types';
 
 export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();
 

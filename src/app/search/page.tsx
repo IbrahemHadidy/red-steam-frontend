@@ -41,12 +41,12 @@ import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';
 import type { Filter, FilterState, RequestParams } from './Search.types';
 
 const SearchPage: FC = (): JSX.Element => {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const searchParams = useSearchParams();
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>('Relevance');

@@ -18,7 +18,7 @@ import type { Game } from '@interfaces/game';
 import type { ChangeEvent } from 'react';
 
 export default function NavSearch(): JSX.Element {
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [searchInput, setSearchInput] = useState<string>('');
   const [gameData, setGameData] = useState<Game[]>([]);
 

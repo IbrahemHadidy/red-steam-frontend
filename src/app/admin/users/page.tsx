@@ -19,6 +19,9 @@ import { getUsersPaginated } from '@services/user/admin';
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
+// Constants
+import { DEFAULT_BG } from '@config/constants/backgrounds';
+
 // Utils
 import debounce from '@utils/debounce';
 import formatDate from '@utils/formatDate';
@@ -33,10 +36,10 @@ import type { ChangeEvent, JSX } from 'react';
 type Sort = 'username' | 'email' | 'country' | 'isVerified' | 'isAdmin' | 'createdAt';
 
 export default function UsersAdmin(): JSX.Element {
-  // Init
-  useDynamicBackground(`#181A21`);
+  //--------------------------- Initializations ---------------------------//
+  useDynamicBackground(DEFAULT_BG);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const [users, setUsers] = useState<User[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [usersPerPage, setUsersPerPage] = useState<number>(10);

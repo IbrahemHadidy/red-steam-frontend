@@ -4,7 +4,7 @@ import { PayPalButtons } from '@paypal/react-paypal-js';
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
-// Redux Actions
+// Redux Handlers
 import {
   setReviewSelected,
   toggleCheckboxChecked,
@@ -20,15 +20,15 @@ import CheckoutItem from './CheckoutItem';
 import type { OnApproveData, PayPalButtonStyle } from '@paypal/paypal-js';
 
 export default function CheckoutReview() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { userCart, totalPrice } = useAppSelector((state) => state.cart);
-  const { isCheckboxChecked } = useAppSelector((state) => state.checkout);
+  const { userCart, totalPrice } = useAppSelector((state) => state.shop.cart);
+  const { isCheckboxChecked } = useAppSelector((state) => state.shop.checkout);
 
-  // PayPal button styles
+  //---------------------------- PayPal Config ----------------------------//
   const buttonStyles: PayPalButtonStyle = {
     color: 'silver',
     label: 'checkout',
@@ -38,7 +38,7 @@ export default function CheckoutReview() {
     height: 32,
   };
 
-  // PayPal Handlers
+  //---------------------------- PayPal Handlers ---------------------------//
   const onCreateOrder = async (): Promise<string> => {
     return await dispatch(createOrder()).unwrap();
   };
@@ -48,7 +48,7 @@ export default function CheckoutReview() {
     await dispatch(captureOrder(data));
   };
 
-  // Event Handlers
+  //---------------------------- Event Handlers ----------------------------//
   const handleCheckboxClick = (): void => {
     dispatch(toggleCheckboxChecked());
   };
@@ -57,6 +57,7 @@ export default function CheckoutReview() {
     dispatch(setReviewSelected(false));
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <>
       {userCart.map((game) => (

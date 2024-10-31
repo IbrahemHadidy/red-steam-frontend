@@ -34,13 +34,13 @@ import type { Dispatch, JSX, MouseEvent, SetStateAction } from 'react';
 import type { LeftContentProps } from './GameContent.types';
 
 export default function LeftContent({ game }: LeftContentProps): JSX.Element {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const platform = getPlatform();
   const dispatch = useAppDispatch();
   const isViewport630 = useResponsiveViewport(630);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [isAboutExpanded, setIsAboutExpanded] = useState<boolean>(true);
   const [isMatureExpanded, setIsMatureExpanded] = useState<boolean>(true);

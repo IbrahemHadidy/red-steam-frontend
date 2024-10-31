@@ -1,9 +1,5 @@
-export interface FileMetadata {
-  id: string;
-  name: string;
-  size: number;
-  type: string;
-}
+import type FileMetadata from '@custom-types/file-metadata';
+
 interface Thumbnail {
   file: FileMetadata | string | null;
   changed: boolean;

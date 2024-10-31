@@ -4,7 +4,15 @@ import { useEffect, useState } from 'react';
 
 // Types
 import type { Game } from '@interfaces/game';
-import type { TabContentProps } from './HomeTabs.types';
+
+interface TabContentProps {
+  items: Game[];
+  title: string;
+  isOpened: boolean;
+  seeMore: string;
+  onTabHover: (game: number | null) => void;
+  setHoveredGame: (game: Game | null) => void;
+}
 
 export default function TabContent({
   items,
@@ -14,9 +22,11 @@ export default function TabContent({
   onTabHover,
   setHoveredGame,
 }: TabContentProps) {
+  //----------------------------- State Hooks -----------------------------//
   const [focusedTab, setFocusedTab] = useState<number | null>(null);
   const [hasHovered, setHasHovered] = useState(false);
 
+  //------------------------------- Effects -------------------------------//
   useEffect(() => {
     if (!hasHovered && isOpened) {
       setFocusedTab(0);
@@ -26,14 +36,16 @@ export default function TabContent({
     }
   }, [title, isOpened, onTabHover, hasHovered, setHoveredGame, items]);
 
+  //--------------------------- Event Handlers ----------------------------//
   const handleMouseEnter = (game: Game, idx: number): void => {
     setFocusedTab(idx);
     onTabHover(idx);
     setHoveredGame(game);
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
-    (<div
+    <div
       className={`content-list ${isOpened ? 'opened-tab' : ''}`}
       id={`tab-${title.toLowerCase().replace(/\s/g, '')}`}
     >
@@ -108,6 +120,6 @@ export default function TabContent({
           </div>
         </Link>
       ))}
-    </div>)
+    </div>
   );
 }

@@ -1,3 +1,6 @@
+// Toast Notifications
+import { toast } from 'react-toastify';
+
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -28,13 +31,13 @@ const listen = gameAdminListener.startListening.withTypes<RootState, AppDispatch
 listen({
   predicate: (_action, currentState, previousState) => {
     return (
-      currentState.gameAdmin.screenshots !== previousState.gameAdmin.screenshots ||
-      currentState.gameAdmin.videos !== previousState.gameAdmin.videos
+      currentState.admin.game.screenshots !== previousState.admin.game.screenshots ||
+      currentState.admin.game.videos !== previousState.admin.game.videos
     );
   },
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
-    const { screenshots, videos } = listenerApi.getState().gameAdmin;
+    const { screenshots, videos } = listenerApi.getState().admin.game;
 
     const findDuplicateOrders = (items: (Screenshot | Video)[]): Set<number> => {
       const orders: number[] = items.map((item) => item.order);
@@ -58,15 +61,22 @@ listen({
     const { dispatch } = listenerApi;
     const gameId = action.payload;
 
-    const gameData = await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap();
+    try {
+      const gameData = await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap();
 
-    // Set initial values for game update form
-    dispatch(setGameToUpdate(gameData));
-    dispatch(setUpdateFormInitialValues(gameData));
+      // Set initial values for game update form
+      dispatch(setGameToUpdate(gameData));
+      dispatch(setUpdateFormInitialValues(gameData));
 
-    // Set cart initialized
-    dispatch(setIsUpdateFetching(false));
-    dispatch(setIsGameUpdateInitialized(true));
+      // Set cart initialized
+      dispatch(setIsUpdateFetching(false));
+      dispatch(setIsGameUpdateInitialized(true));
+    } catch (error) {
+      console.error('Error initializing game update:', error);
+      toast.error('An error occurred while initializing game update. Please try again.');
+      dispatch(setIsUpdateFetching(false));
+      dispatch(setIsGameUpdateInitialized(false));
+    }
   },
 });
 

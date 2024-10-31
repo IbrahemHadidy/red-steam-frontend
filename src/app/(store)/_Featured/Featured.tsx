@@ -20,10 +20,10 @@ import { useAppSelector } from '@store/hooks';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function Featured() {
-  // Init
+  //--------------------------- Initializations ---------------------------//
   const isViewport960 = useResponsiveViewport(960);
 
-  // States
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
   // Queries
