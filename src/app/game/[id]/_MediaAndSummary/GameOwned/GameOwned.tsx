@@ -1,58 +1,34 @@
 'use client';
 
-// React
-import { useEffect, useState, type JSX } from 'react';
-
 // NextJS
 import Link from 'next/link';
 
-// Toast notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
-import { useAppSelector } from '@store/hooks';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Handlers
+import { setContent, setPositive } from '@store/features/game/gameSlice';
+
+// Redux Thunks
+import { submitReview } from '@store/features/game/gameThunks';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import { hasReviewedGame, reviewGame, updateReview } from '@services/user/interaction';
 import type { ChangeEvent, MouseEvent } from 'react';
-import type { GameOwnedProps } from '../MediaAndSummary.types';
 
-export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
+export default function GameOwned() {
+  //--------------------------- Initializations ---------------------------//
+  const dispatch = useAppDispatch();
+
   //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const [hasReviewed, setHasReviewed] = useState<boolean>(false);
-  const [reviewId, setReviewId] = useState<number | null>(null);
-  const [positive, setPositive] = useState<boolean | null>(null);
-  const [content, setContent] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const { currentGame, hasReviewed, positive, content, isReviewBtnDisabled } = useAppSelector(
+    (state) => state.game
+  );
 
-  useEffect(() => {
-    const checkReview = async (): Promise<void> => {
-      const hasReviewed = await hasReviewedGame(game.id);
-      if (hasReviewed.reviewed) {
-        setHasReviewed(true);
-        setPositive(hasReviewed.review.positive);
-        setContent(hasReviewed.review.content);
-        setReviewId(hasReviewed.review.id);
-      } else {
-        setHasReviewed(false);
-      }
-    };
-
-    checkReview();
-  }, [currentUserData, game.id]);
-
-  useEffect(() => {
-    if (content === '' || positive === null) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [content, positive]);
-
+  //--------------------------- Event Handlers ----------------------------//
   const handleFormattingHelpClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
     window.open(
@@ -63,52 +39,35 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
   };
 
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setContent(e.target.value);
+    const value = e.target.value;
+    dispatch(setContent(value));
   };
 
   const handleThumbsUpClick = (): void => {
-    setPositive(true);
+    dispatch(setPositive(true));
   };
 
   const handleThumbsDownClick = (): void => {
-    setPositive(false);
-  };
-
-  const handleReviewSubmit = async (): Promise<void> => {
-    if (content === '') {
-      toast.error('Please write a review before submitting');
-      return Promise.reject();
-    }
-    if (positive === null) {
-      toast.error('Please select a rating before submitting');
-      return Promise.reject();
-    }
-    if (!hasReviewed) {
-      await reviewGame(game.id, positive, content);
-    } else {
-      reviewId && (await updateReview(reviewId, positive, content));
-    }
+    dispatch(setPositive(false));
   };
 
   const handleSubmit = async (e: MouseEvent<HTMLDivElement>): Promise<void> => {
     e.preventDefault();
-    if (content !== '' && positive !== null) {
-      setLoading(true);
-      await toast.promise(handleReviewSubmit(), {
-        pending: 'Submitting review...',
-        success: 'Review submitted successfully',
-        error: 'Failed to submit review, please try again',
-      });
-      setLoading(false);
-    }
+    await dispatch(submitReview());
   };
 
+  //-------------------------- Render UI Section --------------------------//
+  const isSubmitBtnDisabled = isReviewBtnDisabled || content === '' || positive === null;
   return (
     <>
       <div className="game-owned">
         <div className="owned-flag">IN LIBRARY &nbsp;&nbsp;</div>
-        <div className="already-in-library">{game.name} is already in your Steam library</div>
+
+        <div className="already-in-library">
+          {currentGame?.name} is already in your Steam library
+        </div>
       </div>
+
       <div className="already-owned">
         <div className="already-owned-actions">
           <div className="owned-actions-button">
@@ -116,14 +75,17 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
               <span> Install Steam </span>
             </a>
           </div>
+
           <div className="owned-actions-button">
             <a href="">
               <span> Play now </span>
             </a>
           </div>
+
           <div className="review-container">
             <div className="review-create">
-              <h1>Write a review for {game.name}</h1>
+              <h1>Write a review for {currentGame?.name}</h1>
+
               <p>
                 {' '}
                 Please describe what you liked or disliked about this game and whether you recommend
@@ -133,16 +95,19 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
                   Rules and Guidelines
                 </a>.{' '}
               </p>
+
               <div className="formatting-help">
                 <a onClick={handleFormattingHelpClick}>Formatting help</a>
               </div>
+
               <div className="avatar-block">
-                <Link href={`/id/${game.id}`}>
+                <Link href={`/id/${currentGame?.id}`}>
                   <div className="avatar online">
                     <img src={currentUserData?.profilePicture || defaultPFP.src} alt="pfp" />
                   </div>
                 </Link>
               </div>
+
               <div className="content">
                 <textarea
                   className="game-recommendation"
@@ -150,9 +115,11 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
                   onChange={handleContentChange}
                   value={content}
                 />
+
                 <div className="controls">
                   <div className="review-controls-left">
                     <div className="do-you-recommend"> Do you recommend this game? </div>
+
                     <div className="vote-up-down">
                       <div
                         className={`vote-btn ${positive === true ? 'checked' : ''}`}
@@ -162,6 +129,7 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
                           <i className="thumb thumb-up" /> Yes
                         </span>
                       </div>
+
                       <div
                         className={`vote-btn ${positive === false ? 'checked' : ''}`}
                         onClick={handleThumbsDownClick}
@@ -172,10 +140,11 @@ export default function GameOwned({ game }: GameOwnedProps): JSX.Element {
                       </div>
                     </div>
                   </div>
+
                   <div className="review-controls-right">
                     <div className="review-submit">
                       <div
-                        className={`review-submit-btn ${loading ? 'loading' : ''}`}
+                        className={`review-submit-btn ${isSubmitBtnDisabled ? 'loading' : ''}`}
                         onClick={handleSubmit}
                       >
                         <span>{hasReviewed ? 'Edit Review' : 'Post Review'}</span>

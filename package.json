@@ -7,7 +7,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -57,6 +57,7 @@
     "@types/react-slick": "^0.23.13",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@typescript-eslint/parser": "^8.11.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.13.0",
     "eslint-config-next": "15.0.1",
     "eslint-config-prettier": "^9.1.0",

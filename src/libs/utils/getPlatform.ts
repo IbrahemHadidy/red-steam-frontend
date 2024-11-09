@@ -4,7 +4,7 @@
  */
 export default function getPlatform(): string {
   if (typeof navigator !== 'undefined') {
-    const userAgent: string = navigator.userAgent.toLowerCase();
+    const userAgent = navigator.userAgent.toLowerCase();
 
     if (userAgent.includes('mac')) {
       return 'darwin';

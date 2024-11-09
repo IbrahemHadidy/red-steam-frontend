@@ -17,9 +17,9 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 import sharedData from '../sharedData';
 
 // Types
-import type { JSX, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 
-export default function NavigationLinks(): JSX.Element {
+export default function NavigationLinks() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();

@@ -21,71 +21,80 @@ import userInteractionApi from '@store/apis/user/interaction';
 import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
 
-const refreshCart = async (dispatch: AppDispatch, getState: () => RootState) => {
-  await dispatch(fetchUserData());
+const refreshCart = async (
+  dispatch: AppDispatch,
+  getState: () => RootState,
+  rejectWithValue: (value: string) => unknown
+) => {
+  try {
+    await dispatch(fetchUserData());
 
-  const userCart = getState().auth.currentUserData?.cart ?? [];
+    const userCart = getState().auth.currentUserData?.cart ?? [];
 
-  let cartItems: Game[] = [];
+    let cartItems: Game[] = [];
 
-  if (userCart.length > 0) {
-    cartItems = await dispatch(
-      gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
-    ).unwrap();
+    if (userCart.length > 0) {
+      cartItems = await dispatch(
+        gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
+      ).unwrap();
+    }
+
+    // Update cart
+    dispatch(updateCart(cartItems));
+
+    // Update total price
+    dispatch(
+      setTotalPrice(
+        cartItems
+          .reduce((total: Decimal, game: Game) => {
+            const gamePrice = new Decimal(game.pricing?.price ?? '0.00');
+            return total.plus(gamePrice);
+          }, new Decimal('0.00'))
+          .toFixed(2)
+      )
+    );
+  } catch (err: unknown) {
+    console.error('Error refreshing cart:', err);
+    return rejectWithValue('Error refreshing cart');
   }
-
-  // Update cart
-  dispatch(updateCart(cartItems));
-
-  // Update total price
-  dispatch(
-    setTotalPrice(
-      cartItems
-        .reduce((total: Decimal, game: Game) => {
-          const gamePrice = new Decimal(game.pricing?.price ?? '0.00');
-          return total.plus(gamePrice);
-        }, new Decimal('0.00'))
-        .toFixed(2)
-    )
-  );
 };
 
 export const removeCartItem = createAppAsyncThunk<void, number, { rejectValue: string }>(
   'shop/cart/removeCartItem',
-  async (id, { dispatch, getState }) => {
-    try {
-      const response = await dispatch(
-        userInteractionApi.endpoints.removeFromCart.initiate([id])
-      ).unwrap();
+  async (id, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
+    await toast
+      .promise(dispatch(userInteractionApi.endpoints.removeFromCart.initiate([id])).unwrap(), {
+        pending: 'Removing item from cart...',
+        success: 'Removed from cart',
+        error: 'Error removing from cart',
+      })
+      .catch((error) => {
+        console.error('Error removing item from cart:', error);
+        return rejectWithValue('Error removing item from cart');
+      });
 
-      toast.success(response.message);
-
-      // Refresh cart
-      await refreshCart(dispatch, getState);
-    } catch (err: unknown) {
-      const error = err as { data: { message: string } };
-      if (error.data && error.data.message) {
-        toast.error(error.data.message);
-      }
-    }
+    // Refresh cart
+    await refreshCart(dispatch, getState, rejectWithValue);
+    return fulfillWithValue(undefined);
   }
 );
 
 export const clearCart = createAppAsyncThunk<void, void, { rejectValue: string }>(
   'shop/cart/clearCart',
-  async (_, { dispatch, getState }) => {
-    try {
-      const response = await dispatch(userInteractionApi.endpoints.clearCart.initiate()).unwrap();
+  async (_, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
+    await toast
+      .promise(dispatch(userInteractionApi.endpoints.clearCart.initiate()).unwrap(), {
+        pending: 'Clearing cart...',
+        success: 'Cart cleared',
+        error: 'Error clearing cart',
+      })
+      .catch((error) => {
+        console.error('Error clearing cart:', error);
+        return rejectWithValue('Error clearing cart');
+      });
 
-      toast.success(response.message);
-
-      // Refresh cart
-      await refreshCart(dispatch, getState);
-    } catch (err: unknown) {
-      const error = err as { data: { message: string } };
-      if (error.data && error.data.message) {
-        toast.error(error.data.message);
-      }
-    }
+    // Refresh cart
+    await refreshCart(dispatch, getState, rejectWithValue);
+    return fulfillWithValue(undefined);
   }
 );

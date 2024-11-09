@@ -1,8 +1,5 @@
 'use client';
 
-// React
-import { Suspense } from 'react';
-
 // NextJS
 import dynamic from 'next/dynamic';
 
@@ -14,11 +11,12 @@ import FormButtons from './FormButtons';
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Contants
-import { DEFAULT_BG } from '@config/constants/backgrounds';
+import { ADMIN_BG } from '@config/constants/backgrounds';
 
 // Components
 const FormSkeleton = dynamic(() => import('./Skeleton'));
-const PreviewSkeleton = dynamic(() => import('@app/game/[id]/Skeleton'));
+const MediaAndSummarySkeleton = dynamic(() => import('@app/game/[id]/_MediaAndSummary/Skeleton'));
+const GameContentSkeleton = dynamic(() => import('@app/game/[id]/_GameContent/Skeleton'));
 const SecondNavbar = dynamic(() => import('@components/SecondNavbar/SecondNavbar'));
 const BasicInfoSection = dynamic(() => import('./BasicInfo'), { loading: () => <FormSkeleton /> });
 const CompaniesSection = dynamic(() => import('./Companies'), { loading: () => <FormSkeleton /> });
@@ -36,8 +34,12 @@ const SystemRequirementsSection = dynamic(() => import('./SystemRequirements'), 
 const AdditionalInfoSection = dynamic(() => import('./AdditionalInfo'), {
   loading: () => <FormSkeleton />,
 });
-const GameContent = dynamic(() => import('@app/game/[id]/_GameContent/layout'));
-const MediaAndSummary = dynamic(() => import('@app/game/[id]/_MediaAndSummary/MediaAndSummary'));
+const MediaAndSummary = dynamic(() => import('@app/game/[id]/_MediaAndSummary/MediaAndSummary'), {
+  loading: () => <MediaAndSummarySkeleton />,
+});
+const GameContent = dynamic(() => import('@app/game/[id]/_GameContent/GameContent'), {
+  loading: () => <GameContentSkeleton />,
+});
 
 // Utils
 import getFileUrl from '@utils/getFileUrl';
@@ -54,7 +56,7 @@ export default function GameAdmin() {
     // else set game background to default
     currentPage === 'preview'
       ? `url(${getFileUrl(thumbnails.backgroundImage.file ?? '')}) center top no-repeat #1b2838`
-      : DEFAULT_BG,
+      : ADMIN_BG,
     [thumbnails.backgroundImage, currentPage]
   );
 
@@ -66,7 +68,7 @@ export default function GameAdmin() {
         {currentPage !== 'preview' ? (
           <>
             <h1 className="form-title">
-              {type === 'update' ? `Update Game: ${name}` : 'Create a New Game'}
+              {type === 'update' ? `Update ${name}'s Details` : 'Create a New Game'}
             </h1>
             <hr />
 
@@ -81,10 +83,10 @@ export default function GameAdmin() {
           </>
         ) : (
           previewData && (
-            <Suspense fallback={<PreviewSkeleton />}>
-              <MediaAndSummary game={previewData} />
-              <GameContent game={previewData} />
-            </Suspense>
+            <>
+              <MediaAndSummary />
+              <GameContent />
+            </>
           )
         )}
 

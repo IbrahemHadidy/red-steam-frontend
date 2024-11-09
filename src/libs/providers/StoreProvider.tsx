@@ -4,7 +4,7 @@
 import { useRef } from 'react';
 
 // Redux
-import { AppStore, makeStore } from '@store/store';
+import makeStore, { AppStore } from '@store/store';
 import { Provider } from 'react-redux';
 
 // Types

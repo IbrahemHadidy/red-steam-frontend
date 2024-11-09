@@ -11,10 +11,7 @@ import steamFooterLogo from '@images/logo_steam_footer.png';
 // Styles
 import '@styles/components/Footer.scss';
 
-// Types
-import type { JSX } from 'react';
-
-export default function Footer(): JSX.Element {
+export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-content">

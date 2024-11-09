@@ -1,8 +1,6 @@
 import { Skeleton } from '@mui/material';
 import Box from '@mui/material/Box';
 
-import type { JSX } from 'react';
-
 const Item = () => {
   return (
     <Skeleton
@@ -16,17 +14,14 @@ const Item = () => {
   );
 };
 
-export default function LoadingSkeleton(): JSX.Element {
+export default function LoadingSkeleton() {
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         margin: '0 auto',
-        transform: 'translateX(2px)',
         width: '940px',
-        paddingLeft: '2%',
-        paddingRight: '2%',
         paddingTop: '20px',
       }}
     >

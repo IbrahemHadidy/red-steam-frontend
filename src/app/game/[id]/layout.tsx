@@ -1,35 +1,28 @@
-// React
-import { Suspense } from 'react';
-
-// NextJS
-import dynamic from 'next/dynamic';
-
 // Components
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
 import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 
-// Skeletons
-const LoadingSkeleton = dynamic(() => import('./Skeleton'));
-
 // Styles
 import '@styles/admin/ActionsModals.scss';
 import '@styles/game/Game.scss';
+import '@styles/game/GameContent.scss';
+import '@styles/game/GameReviews.scss';
+import '@styles/game/MediaAndSummary.scss';
 
 // Types
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
 interface GameLayoutProps {
   children: ReactNode;
 }
 
-export default function GameLayout({ children }: GameLayoutProps): JSX.Element {
+export default function GameLayout({ children }: GameLayoutProps) {
   return (
     <>
       <Header />
       <SecondNavbar />
-      <Suspense fallback={<LoadingSkeleton />}>
-        <main className="game">{children}</main>
-      </Suspense>
+      <main className="game">{children}</main>
       <Footer />
     </>
   );

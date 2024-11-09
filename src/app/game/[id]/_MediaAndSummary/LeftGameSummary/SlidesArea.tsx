@@ -1,53 +1,74 @@
 'use client';
 
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Handlers
+import { updateCurrentMediaLink } from '@store/features/game/gameSlice';
+
+// Custom Hooks
+import useMediaSwapHandlers from './hooks/useMediaSwapHandlers';
+
 // Utils
 import isVideoEntry from '@utils/checkMediaEntry';
 
 // Types
-import type { JSX } from 'react';
-import type { SlideItemProps, SliderButtonsProps, SlidesProps } from '../MediaAndSummary.types';
+import type { ImageEntry, VideoEntry } from '@interfaces/game';
+import type { RefObject } from 'react';
 
-export function SlidesArea({
-  selectedItem,
-  setSelectedItem,
-  orderedMedia,
-  slideAreaRef,
-}: SlidesProps): JSX.Element {
+interface SlidesProps {
+  slideAreaRef: RefObject<HTMLDivElement | null>;
+}
+
+interface SlideItemProps {
+  entry: VideoEntry | ImageEntry;
+}
+
+export function SlidesArea({ slideAreaRef }: SlidesProps) {
+  const { currentMediaLink, orderedMediaEntries } = useAppSelector((state) => state.game);
+
   return (
     <div
       className="slide-area"
-      style={orderedMedia.length < 6 ? { height: '80px' } : {}}
+      style={orderedMediaEntries.length < 6 ? { height: '80px' } : {}}
       ref={slideAreaRef}
     >
       <div
         className="slide-area-scroll"
         style={{
-          width: `${orderedMedia.length * 120}px`,
+          width: `${orderedMediaEntries.length * 120}px`,
           left: '0px',
         }}
       >
         <div
           className="highlight-selector"
           style={{
-            left: `${orderedMedia.findIndex((entry) => entry.link === selectedItem) * 120}px`,
+            left: `${orderedMediaEntries.findIndex((entry) => entry.link === currentMediaLink) * 120}px`,
           }}
-        ></div>
-        {orderedMedia.map((entry) => (
-          <SlideItem key={entry.link} entry={entry} setSelectedItem={setSelectedItem} />
+        />
+
+        {orderedMediaEntries.map((entry) => (
+          <SlideItem key={entry.link} entry={entry} />
         ))}
       </div>
     </div>
   );
 }
 
-function SlideItem({ entry, setSelectedItem }: SlideItemProps): JSX.Element {
+function SlideItem({ entry }: SlideItemProps) {
+  const dispatch = useAppDispatch();
+
+  const handleSlideClick = (link: string): void => {
+    dispatch(updateCurrentMediaLink(link));
+  };
+
   return (
     <div
       className={`higlight-slide-item ${
         isVideoEntry(entry) ? 'higlight-slide-movie' : 'highlight-slide-screenshot'
       }`}
       id={entry.link}
-      onClick={() => setSelectedItem(entry.link)}
+      onClick={() => handleSlideClick(entry.link)}
     >
       {isVideoEntry(entry) ? (
         <>
@@ -61,14 +82,16 @@ function SlideItem({ entry, setSelectedItem }: SlideItemProps): JSX.Element {
   );
 }
 
-export function SliderButtons({ handleSliderClick }: SliderButtonsProps): JSX.Element {
+export function SliderButtons({ slideAreaRef }: SlidesProps) {
+  const { handleSwap } = useMediaSwapHandlers({ slideAreaRef });
+
   return (
     <div className="slides-slider">
-      <div className="slider-left" onClick={() => handleSliderClick('left')}>
+      <div className="slider-left" onClick={() => handleSwap('left')}>
         <span />
       </div>
 
-      <div className="slider-right" onClick={() => handleSliderClick('right')}>
+      <div className="slider-right" onClick={() => handleSwap('right')}>
         <span />
       </div>
     </div>

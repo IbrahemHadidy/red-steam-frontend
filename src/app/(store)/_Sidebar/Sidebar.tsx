@@ -16,6 +16,7 @@ import { useGetTagsQuery } from '@store/apis/user/interaction';
 import steamPromoCard from '@images/steamcards_promo_03.png';
 
 // Types
+import type RecentGames from '@custom-types/recent-games';
 import type { JSX, MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
@@ -29,7 +30,7 @@ export default function Sidebar() {
 
   //-------------------------- Utility Functions --------------------------//
   // Get recently viewed games
-  const recentGames: { id: number; name: string; timestamp: number }[] =
+  const recentGames: RecentGames =
     (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('recentGames') || '[]')) ??
     [];
 

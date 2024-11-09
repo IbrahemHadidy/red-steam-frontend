@@ -15,21 +15,25 @@ import userSettingsSlice from './features/user/settings/userSettingsSlice';
 import signupSlice from './features/user/signup/signupSlice';
 import userTagsSlice from './features/user/tags/userTagsSlice';
 
+import gameSlice from './features/game/gameSlice';
+
 import gameAdminSlice from './features/admin/game/gameAdminSlice';
 
 // Listeners
-import authListener from './features/auth/authListeners';
+import authListener from './features/auth/authListener';
 
-import cartListener from './features/shop/cart/cartListeners';
-import libraryListener from './features/shop/library/libraryListeners';
-import wishlistListener from './features/shop/wishlist/wishlistListeners';
-import userSettingsListener from './features/user/settings/userSettingsListeners';
-import userTagsListener from './features/user/tags/userTagsListeners';
+import cartListener from './features/shop/cart/cartListener';
+import libraryListener from './features/shop/library/libraryListener';
+import wishlistListener from './features/shop/wishlist/wishlistListener';
+import userSettingsListener from './features/user/settings/userSettingsListener';
+import userTagsListener from './features/user/tags/userTagsListener';
 
-import recoveryListener from './features/user/recovery/recoveryListeners';
-import signupListener from './features/user/signup/signupListeners';
+import recoveryListener from './features/user/recovery/recoveryListener';
+import signupListener from './features/user/signup/signupListener';
 
-import gameAdminListener from './features/admin/game/gameAdminListeners';
+import gameListener from './features/game/gameListener';
+
+import gameAdminListener from './features/admin/game/gameAdminListener';
 
 // APIs
 import ipBaseApi from './apis/countries/countryCode';
@@ -82,6 +86,7 @@ const store = configureStore({
     auth: authSlice.reducer,
     user: userReducer,
     shop: shopReducer,
+    game: gameSlice.reducer,
     admin: adminReducer,
 
     // APIs
@@ -107,7 +112,9 @@ const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
+    getDefaultMiddleware({
+      // serializableCheck: false,
+    })
       .prepend(
         // Listener Middlewares
         authListener.middleware,
@@ -120,6 +127,8 @@ const store = configureStore({
         cartListener.middleware,
         wishlistListener.middleware,
         libraryListener.middleware,
+
+        gameListener.middleware,
 
         gameAdminListener.middleware
       )
@@ -148,7 +157,8 @@ const store = configureStore({
 });
 
 //--------------------------- Store Export ---------------------------------//
-export const makeStore = () => store;
+const makeStore = () => store;
+export default makeStore;
 
 //--------------------------- Store Types ----------------------------------//
 export type AppStore = ReturnType<typeof makeStore>;

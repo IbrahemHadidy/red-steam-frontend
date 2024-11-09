@@ -22,10 +22,7 @@ import bell from '@images/bell.svg';
 import installSteamBtn from '@images/btn_header_installsteam_download.png';
 import steamLogo from '@images/logo_steam.svg';
 
-// Types
-import type { JSX } from 'react';
-
-export default function DefaultDesktopComponent(): JSX.Element {
+export default function DefaultDesktopComponent() {
   //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
@@ -50,12 +47,7 @@ export default function DefaultDesktopComponent(): JSX.Element {
               onClick={handleInstallSteamBtn}
             >
               <span className="button-content button-text">
-                <Image
-                  className="fa-icon"
-                  alt="Install Steam"
-                  src={installSteamBtn}
-                  style={{ color: '#ffffff' }}
-                />{' '}
+                <Image className="fa-icon" alt="Install Steam" src={installSteamBtn} width={14} />{' '}
                 Install Steam
               </span>
             </Button>

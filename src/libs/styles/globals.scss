@@ -139,6 +139,12 @@ body {
 	height: 40px;
 	display: block;
 
+	&.loader {
+		width: 80px;
+		height: 90px;
+		margin: 120px auto;
+	}
+
 	div {
 		float: left;
 		width: 25%;

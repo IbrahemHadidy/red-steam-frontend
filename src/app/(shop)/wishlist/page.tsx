@@ -12,11 +12,23 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 // Redux Handlers
 import { initializeWishlist } from '@store/features/shop/wishlist/wishlistSlice';
 
+// Custom Hooks
+import useDynamicBackground from '@hooks/useDynamicBackground';
+
+// Utils
+import getRandomArrayItem from '@utils/getRandomArrayItem';
+
+// Constants
+import { DEFAULT_BG } from '@config/constants/backgrounds';
+
 // Components
 const WishlistItem = dynamic(() => import('./WishlistItem'));
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
+
+// Types
+import type { Game } from '@interfaces/game';
 
 export default function WishlistPage() {
   //--------------------------- Initializations ---------------------------//
@@ -26,10 +38,18 @@ export default function WishlistPage() {
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { userWishlist } = useAppSelector((state) => state.shop.wishlist);
 
-  // Fetch wishlist data
+  //------------------------------ On Mount -------------------------------//
   useEffect(() => {
     dispatch(initializeWishlist());
   }, [dispatch]);
+
+  //-------------------------- Render UI Section --------------------------//
+  useDynamicBackground(
+    userWishlist.length === 0
+      ? DEFAULT_BG
+      : getRandomArrayItem<Game>(userWishlist).thumbnailEntries.backgroundImage,
+    [userWishlist]
+  );
 
   return (
     <>

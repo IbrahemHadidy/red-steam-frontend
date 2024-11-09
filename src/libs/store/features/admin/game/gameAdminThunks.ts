@@ -4,6 +4,9 @@ import { toast } from 'react-toastify';
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
+// Redux Handlers
+import { initializeGamePreview } from '@store/features/game/gameSlice';
+
 // Utils
 import getFileUrl from '@utils/getFileUrl';
 
@@ -112,6 +115,7 @@ export const getPreviewData = createAppAsyncThunk<Game, void, { rejectValue: str
         totalSales: 0,
       };
 
+      dispatch(initializeGamePreview(game));
       return fulfillWithValue(game);
     } catch (error) {
       if (error instanceof Error) {

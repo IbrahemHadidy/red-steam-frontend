@@ -1,18 +1,20 @@
-'use client';;
+'use client';
+
 // NextJS
 import Link from 'next/link';
 
-// Types
-import type { TagsModalProps } from '../MediaAndSummary.types';
+interface TagsModalProps {
+  onClose: () => void;
+  tags: string[];
+}
 
-import type { JSX } from "react";
-
-export default function TagsModal({ onClose, tags }: TagsModalProps): JSX.Element {
+export default function TagsModal({ onClose, tags }: TagsModalProps) {
   return (
     <div className="tagsmodal">
       <span className="close" onClick={onClose}>
         &times;
       </span>
+
       <div className="modal-body">
         {tags.map((tag, idx) => (
           <Link key={idx} className="game-tag" href={`/search?tags=${tag}`}>

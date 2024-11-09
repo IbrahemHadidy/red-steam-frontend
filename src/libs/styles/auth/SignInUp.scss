@@ -105,6 +105,7 @@
             .field-input {
               border-radius: 2px;
               color: #fff;
+              width: calc(100% - 22px);
               padding: 10px;
               background-color: #32353c;
               outline: none;
@@ -142,13 +143,6 @@
 
               }
             }
-          }
-
-          .recaptcha-container {
-            overflow: hidden;
-            height: 76px;
-            border-radius: 4px;
-            width: 302px;
           }
 
           .remember-me {
@@ -490,12 +484,21 @@
     }
   }
 
+  .recaptcha-container {
+    overflow: hidden;
+    height: 76px;
+    border-radius: 4px;
+    width: 302px;
+  }
+
   .joinsteam-content {
-    padding: 50px;
+    padding: 50px 0;
     min-height: 600px;
-    max-width: 700px;
+    max-width: 940px;
+    margin: 0 auto;
 
     @media screen and (max-width: 630px) {
+      margin: 30px 0 0 0;
       margin-top: 30px;
       padding: 50px 30px !important;
     }

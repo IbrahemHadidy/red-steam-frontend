@@ -13,7 +13,6 @@ import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 import '@styles/components/HoverSummary.scss';
 
 // Types
-import type { JSX } from 'react';
 import type { HoverSummaryType } from './HoverSummary.types';
 
 export default function HoverSummary({
@@ -26,7 +25,7 @@ export default function HoverSummary({
   tags,
   leftArrow,
   rightArrow,
-}: HoverSummaryType): JSX.Element {
+}: HoverSummaryType) {
   const fadeEffect = useSpring({
     from: { opacity: 0 },
     to: { opacity: 1 },

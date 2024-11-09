@@ -7,10 +7,7 @@ import loadingLogo from '@images/loading-logo.png';
 // Styles
 import '@styles/loading.scss';
 
-// Types
-import type { JSX } from 'react';
-
-export default function Loading(): JSX.Element {
+export default function Loading() {
   return (
     <div className="page-loading-container">
       <div className="img-container">
@@ -19,4 +16,4 @@ export default function Loading(): JSX.Element {
       <div className="loading-spinner" />
     </div>
   );
-};
+}

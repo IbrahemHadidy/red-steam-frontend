@@ -6,7 +6,7 @@ import ItemsList from './ItemsList';
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Constants
-import { DEFAULT_BG } from '@config/constants/backgrounds';
+import { ADMIN_BG } from '@config/constants/backgrounds';
 
 // Types
 import type { AdminProps } from './admin.types';
@@ -32,7 +32,7 @@ export default function Admin({
   submitted,
 }: AdminProps) {
   //--------------------------- Initializations ---------------------------//
-  useDynamicBackground(DEFAULT_BG);
+  useDynamicBackground(ADMIN_BG);
 
   return (
     <>

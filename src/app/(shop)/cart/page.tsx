@@ -7,13 +7,23 @@ import Link from 'next/link';
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
+// Custom Hooks
+import useDynamicBackground from '@hooks/useDynamicBackground';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
+
+// Utils
+import getRandomArrayItem from '@utils/getRandomArrayItem';
+
+// Constants
+import { DEFAULT_BG } from '@config/constants/backgrounds';
+
 // Components
 const CartSummary = dynamic(() => import('./CartSummary'));
 const CartItem = dynamic(() => import('./CartItem'));
 const CartActions = dynamic(() => import('./CartActions'));
 
-// Custom Hooks
-import useResponsiveViewport from '@hooks/useResponsiveViewport';
+// Types
+import type { Game } from '@interfaces/game';
 
 export default function CartPage() {
   //--------------------------- Initializations ---------------------------//
@@ -23,6 +33,13 @@ export default function CartPage() {
   const { userCart } = useAppSelector((state) => state.shop.cart);
 
   //-------------------------- Render UI Section --------------------------//
+  useDynamicBackground(
+    userCart.length === 0
+      ? DEFAULT_BG
+      : `url(${getRandomArrayItem<Game>(userCart).thumbnailEntries.backgroundImage}) center top no-repeat #1b2838`,
+    [userCart]
+  );
+
   return (
     <div className="cart-content-container">
       <div className="cart-path">
@@ -35,7 +52,9 @@ export default function CartPage() {
       <div className="cart-main">
         <div className="cart-content">
           {userCart.length === 0 ? (
-            <div className="cart-empty">Your cart is empty.</div>
+            <div className="cart-empty">
+              <p>Your cart is empty.</p>
+            </div>
           ) : (
             <div className="cart-items">
               {userCart.map((game) => (

@@ -9,12 +9,13 @@ import headerLogo from '@images/header_logo.png';
 import headerHumburger from '@images/header_menu_hamburger.png';
 
 // Types
-import type { MouseEvent, JSX } from 'react';
+import type { MouseEvent } from 'react';
+
 interface MiniHeaderProps {
   onMenuClick: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-export default function MiniHeader({ onMenuClick }: MiniHeaderProps): JSX.Element {
+export default function MiniHeader({ onMenuClick }: MiniHeaderProps) {
   return (
     <div className="header-mobile">
       <div>

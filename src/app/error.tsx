@@ -11,7 +11,7 @@ import '@styles/error.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX } from 'react';
+
 interface ErrorBoundaryProps {
   error: Error;
   reset: () => void;
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: 'Please refresh the page or try again later.',
 };
 
-export default function ErrorBoundary({ error, reset }: ErrorBoundaryProps): JSX.Element {
+export default function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   const router = useRouter();
 
   useEffect(() => {

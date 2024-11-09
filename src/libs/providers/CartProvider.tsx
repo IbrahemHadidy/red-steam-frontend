@@ -48,7 +48,7 @@ export default function CartProvider({ children }: CartProviderProps) {
       toast.warning('Cart is empty, please add items to your cart to proceed');
       router.push('/');
     }
-  }, [isCartInitialized, isPaymentConfirmed, router, userCart]);
+  }, [isCartInitialized, isPaymentConfirmed, pathname, router, userCart]);
 
   return <>{children}</>;
 }

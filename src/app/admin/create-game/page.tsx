@@ -16,8 +16,7 @@ export default function GameCreate() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //------------------------------ On Mount -------------------------------//
-  // Reset Media
+  // Reset Media on Mount
   useEffect(() => {
     dispatch(resetMedia());
   }, [dispatch]);

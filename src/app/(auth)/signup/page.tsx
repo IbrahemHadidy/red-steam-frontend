@@ -70,7 +70,7 @@ export default function SignUpPage() {
   //---------------------------- Event Handlers ----------------------------//
   const handleSubmitFirstForm = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    await dispatch(checkExistingEmail({ recaptchaRef }));
+    await dispatch(checkExistingEmail(recaptchaRef));
   };
 
   const handleSubmitSecondForm = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -107,7 +107,7 @@ export default function SignUpPage() {
                     Create Your Account
                   </div>
 
-                  {!isSecondPage ? <FirstForm /> : <SecondForm />}
+                  {!isSecondPage ? <FirstForm recaptchaRef={recaptchaRef} /> : <SecondForm />}
                 </div>
               </form>
             </div>

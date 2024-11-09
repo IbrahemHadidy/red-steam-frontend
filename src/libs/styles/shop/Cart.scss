@@ -2,7 +2,6 @@
   max-width: 940px;
   min-height: 50vh;
   margin: 0 auto;
-  padding: 0 2%;
   padding-bottom: 20px;
 
   @media screen and (min-width: 960px) and (max-width: 1000px) {
@@ -40,6 +39,17 @@
 
       @media screen and (max-width: 840px) {
         margin: 0 auto;
+      }
+
+      .cart-empty {
+        color: #c6d4df;
+        background-color: rgba(0, 0, 0, .25);
+
+        p {
+          margin: unset;
+          font-size: 14px;
+          padding: 15px;
+        }
       }
 
       .cart-items {

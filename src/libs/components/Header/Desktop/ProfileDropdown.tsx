@@ -20,9 +20,9 @@ import defaultPFP from '@images/default-pfp.png';
 import Link from 'next/link';
 
 // Types
-import type { JSX, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 
-export default function ProfileDropdown(): JSX.Element {
+export default function ProfileDropdown() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 

@@ -15,7 +15,11 @@ import {
  * @param positivePercentage Percentage of positive reviews
  * @returns Rating class
  */
-export function getRatingClass(positivePercentage: number): 'positive' | 'negative' | 'mixed' | '' {
+export function getRatingClass(
+  positivePercentage?: number
+): 'positive' | 'negative' | 'mixed' | '' {
+  if (positivePercentage === undefined) return '';
+
   if (
     positivePercentage < MINIMUM_POSITIVE_PERCENTAGE &&
     positivePercentage > MINIMUM_MIXED_PERCENTAGE
@@ -36,8 +40,12 @@ export function getRatingClass(positivePercentage: number): 'positive' | 'negati
  * @param totalReviews Total number of reviews
  * @returns Rating text
  */
-export function getRatingText(positivePercentage: number, totalReviews: number): string {
+export function getRatingText(positivePercentage?: number, totalReviews?: number): string {
   let ratingText: string = '';
+
+  if (positivePercentage === undefined || totalReviews === undefined) {
+    return ratingText;
+  }
 
   if (totalReviews === 0) {
     ratingText = 'N/A';
@@ -77,7 +85,9 @@ export function getRatingText(positivePercentage: number, totalReviews: number):
  * @param totalReviews Total number of reviews
  * @returns Hover info
  */
-export function getHoverInfo(positivePercentage: number, totalReviews: number): string {
+export function getHoverInfo(positivePercentage?: number, totalReviews?: number): string {
+  if (positivePercentage === undefined || totalReviews === undefined) return '';
+
   return totalReviews === 0
     ? 'No reviews yet.'
     : `${Math.round(positivePercentage)}% of the ${totalReviews} user reviews for this game are positive.`;

@@ -1,13 +1,15 @@
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
-// Actions
+// Handlers
 import {
   onLoadIntialization,
   setCurrentUserData,
   setIsUserLoggedIn,
   setOnLoadInitialized,
 } from './authSlice';
+
+// Thunks
 import { autoLoginOnLoad, fetchUserData, refreshAuthorizationToken } from './authThunks';
 
 // Channels

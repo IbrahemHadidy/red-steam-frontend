@@ -8,9 +8,9 @@ import SteamMenu from './CustomMenu';
 import MiniHeader from './MiniHeader';
 
 // Types
-import { JSX, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 
-export default function CustomMobileComponent(): JSX.Element {
+export default function CustomMobileComponent() {
   //--------------------------- State Selectors ---------------------------//
   const [showMenu, setShowMenu] = useState<boolean>(false);
 

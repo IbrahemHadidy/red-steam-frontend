@@ -1,94 +1,53 @@
 'use client';
 
-// React
-import { useMemo, useRef, useState } from 'react';
-
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+// Toast notifications
+import { toast } from 'react-toastify';
+
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Thunks
-import { fetchUserData } from '@store/features/auth/authThunks';
+import { addToWishlist, removeFromWishlist } from '@store/features/game/gameThunks';
 
-// Toast notifications
-import { toast } from 'react-toastify';
-
-// Services
-import { addToWishlist, removeFromWishlist } from '@services/user/interaction';
+// Custom Hooks
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Images
 import selectedIcon from '@images/ico_selected.png';
 
-// Types
-import type { JSX } from 'react';
-import type { QueueAreaProps } from '../MediaAndSummary.types';
-
-export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.Element {
+export default function QueueArea() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const isViewport630 = useResponsiveViewport(630);
 
   //--------------------------- State Selectors ---------------------------//
-  const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
-  const [isAddedToWishlist, setIsAddedToWishlist] = useState<boolean>(
-    !!currentUserData?.wishlist?.some((item) => item.id === game.id)
-  );
+  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
+  const { currentGame, isGameInWishlist, isGameInLibrary, isGameInCart, isWishlistBtnLoading } =
+    useAppSelector((state) => state.game);
 
-  // Refs
-  const addedWislist = useRef<HTMLDivElement>(null);
-
-  const [isInLibrary, isInCart]: [boolean | undefined, boolean | undefined] = useMemo(
-    () => [
-      currentUserData?.library?.some((item) => item.id === game.id),
-      currentUserData?.cart?.some((item) => item.id === game.id),
-    ],
-    [currentUserData, game.id]
-  );
-
-  const handleRemoveFromWishlist = async (itemId: number): Promise<void> => {
-    if (addedWislist.current) {
-      addedWislist.current.classList.add('loading');
-      addedWislist.current.style.pointerEvents = 'none';
-      const response = await removeFromWishlist([itemId]);
-      if (response?.status === 200) {
-        await dispatch(fetchUserData());
-        setIsAddedToWishlist(false);
-      }
-      addedWislist.current.classList.remove('loading');
-      addedWislist.current.style.pointerEvents = 'auto';
-    }
+  //---------------------------- Event Handlers ---------------------------//
+  const handleRemoveFromWishlist = async (): Promise<void> => {
+    await dispatch(addToWishlist());
   };
 
-  const handleAddToWishlist = async (itemId: number): Promise<void> => {
-    if (addedWislist.current) {
-      addedWislist.current.classList.add('loading');
-      addedWislist.current.style.pointerEvents = 'none';
-      const response = await addToWishlist([itemId]);
-      if (response?.status === 201) {
-        await dispatch(fetchUserData());
-        setIsAddedToWishlist(true);
-      }
-      addedWislist.current.classList.remove('loading');
-      addedWislist.current.style.pointerEvents = 'auto';
-    }
+  const handleAddToWishlist = async (): Promise<void> => {
+    await dispatch(removeFromWishlist());
   };
 
   const handleAddWishlistBtnClick = (): void => {
-    if (isInLibrary) {
+    if (isGameInLibrary) {
       router.push('/library');
-    } else if (isInCart) {
+    } else if (isGameInCart) {
       router.push('/cart');
-    } else {
-      handleAddToWishlist(game.id);
+    } else if (currentGame) {
+      handleAddToWishlist();
     }
-  };
-
-  const handleAddedWishlistBtnClick = (): void => {
-    handleRemoveFromWishlist(game.id);
   };
 
   const handleFollowClick = (): void => {
@@ -99,6 +58,7 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
     toast.warn('Not implemented yet');
   };
 
+  //-------------------------- Render UI Section --------------------------//
   return (
     <div className="queue-area">
       {!isUserLoggedIn && (
@@ -119,18 +79,17 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
             </div>
           )}
 
-          {!isAddedToWishlist ? (
+          {!isGameInWishlist ? (
             <div
               id="add-wishlist"
-              className="queue-button-container"
+              className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
               onClick={handleAddWishlistBtnClick}
-              ref={addedWislist}
             >
               <div className="queue-button">
                 <span>
-                  {isInLibrary
+                  {isGameInLibrary
                     ? 'You own this item '
-                    : isInCart
+                    : isGameInCart
                       ? 'Already in your cart'
                       : 'Add to your wishlist'}
                 </span>
@@ -139,9 +98,8 @@ export default function QueueArea({ game, isViewport630 }: QueueAreaProps): JSX.
           ) : (
             <div
               id="added-wishlist"
-              className="queue-button-container"
-              onClick={handleAddedWishlistBtnClick}
-              ref={addedWislist}
+              className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
+              onClick={handleRemoveFromWishlist}
             >
               <div className="queue-button">
                 <span>

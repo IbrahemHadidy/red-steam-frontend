@@ -1,39 +1,32 @@
 'use client';
 
 // React
-import { useEffect, useState, type JSX } from 'react';
+import { useState } from 'react';
 
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Services
-import { search } from '@services/game/data';
+// APIs
+import { useSearchQuery } from '@store/apis/game/data';
 
 // Images
 import blank from '@images/blank.gif';
 
 // Types
-import type { Game } from '@interfaces/game';
 import type { ChangeEvent } from 'react';
 
-export default function NavSearch(): JSX.Element {
+export default function NavSearch() {
   //--------------------------- State Selectors ---------------------------//
   const [searchInput, setSearchInput] = useState<string>('');
-  const [gameData, setGameData] = useState<Game[]>([]);
 
+  //------------------------------ API Calls ------------------------------//
+  const { data: gameData } = useSearchQuery(searchInput);
+
+  //---------------------------- Event Handlers ---------------------------//
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchInput(e.target.value);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedGameData = await search(searchInput);
-      setGameData(fetchedGameData);
-    };
-
-    searchInput !== '' && fetchData();
-  }, [searchInput]);
 
   return (
     <div className="search-area">
@@ -49,17 +42,20 @@ export default function NavSearch(): JSX.Element {
               placeholder="search"
               onChange={handleSearchChange}
             />
+
             <Link href={`/search?term=${searchInput}`} className="search-button">
               <Image alt="Search" src={blank} />
             </Link>
           </div>
         </form>
       </div>
+
       <div className="nav-search" style={{ display: searchInput !== '' ? 'block' : 'none' }}>
         <div className="search-popup">
-          {gameData.slice(0, 11).map((game) => (
+          {gameData?.slice(0, 11).map((game) => (
             <Link key={game.id} className="search-match" href={`/game/${game.id}`}>
               <div className="match-name">{game.name}</div>
+
               <div className="match-img">
                 <Image
                   width={120}
@@ -68,6 +64,7 @@ export default function NavSearch(): JSX.Element {
                   alt={game.name}
                 />
               </div>
+
               <div className="match-price">
                 {game.pricing?.free
                   ? 'Free to Play'

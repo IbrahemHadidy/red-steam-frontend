@@ -74,7 +74,7 @@
 
       .update-icon-container {
         transition: color 0.3s ease;
-        padding: 0px 4px 4px;
+        padding: 4px;
         margin-right: 2px;
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
@@ -86,7 +86,7 @@
 
       .offer-icon-container {
         transition: color 0.3s ease;
-        padding: 0px 4px 4px;
+        padding: 4px;
         margin-right: 2px;
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
@@ -98,7 +98,7 @@
 
       .delete-icon-container {
         transition: color 0.3s ease;
-        padding: 0px 4px 4px;
+        padding: 4px;
         background-color: rgba(255, 255, 255, 0.1);
         cursor: pointer;
 
@@ -127,15 +127,14 @@
 
   .game-page-content {
     width: 940px;
+    padding-bottom: 6px;
     margin: 0 auto;
-    padding-bottom: 12px;
     background: linear-gradient(to right,
         rgba(0, 0, 0, 0) 50%,
         rgba(0, 0, 0, 0.4) 100%);
 
     .right-game-summary {
       width: 324px;
-      height: 429px;
       margin-left: 0px;
       float: right;
 
@@ -184,6 +183,7 @@
           max-height: 25px;
           text-wrap: wrap;
           font-size: small;
+          color: #8f98a0;
 
           a {
             color: #67c1f5;
@@ -322,7 +322,7 @@
           padding-top: 10px;
           position: relative;
           display: block;
-          height: 100px;
+          padding: 10px 0 3px;
           width: 612px;
           margin-bottom: 3px;
           overflow: auto;
@@ -436,6 +436,9 @@
         .slider-left {
           position: absolute;
           width: 38px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           top: 0;
           bottom: 0;
           background-color: rgba(35, 60, 81, 0.4);
@@ -460,20 +463,20 @@
           }
 
           span {
-            display: inline-block;
             background-position: -18px 0px;
             background-repeat: no-repeat;
             background-image: url('/images/icon_cluster_controls.png');
             width: 9px;
             height: 7px;
-            margin-left: 13px;
-            margin-bottom: 5px;
           }
         }
 
         .slider-right {
           position: absolute;
           width: 38px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           top: 0;
           bottom: 0;
           background-color: rgba(35, 60, 81, 0.4);
@@ -499,14 +502,11 @@
           }
 
           span {
-            display: inline-block;
             background-position: -9px 0px;
             background-repeat: no-repeat;
             background-image: url('/images/icon_cluster_controls.png');
             width: 9px;
             height: 7px;
-            margin-left: 15px;
-            margin-bottom: 5px;
           }
         }
       }
@@ -977,11 +977,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  .modal--content {
+  .ss-modal-content {
     padding: 10px;
 
     .screenshot-title {
-      height: 20px;
+      margin-bottom: 10px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1001,15 +1001,19 @@
       }
     }
 
-    .modal--footer {
+    .ss-modal-footer {
       position: relative;
-      height: 28px;
-      line-height: 28px;
+      height: 30px;
+      line-height: 30px;
       margin-top: 10px;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      .count {
+        color: #fff;
+      }
 
       .prev-next-btn {
         border-radius: 2px;

@@ -1,10 +1,16 @@
-export const DEFAULT_BG = '#181A21';
+export const DEFAULT_BG = '#1b2838';
 
 /**
  * Background image for the home page (store)
  * @constant string
  */
 export const HOME_DESKTOP_BG = "url('/images/colored_body_top.png') center top no-repeat #1b2838";
+
+/**
+ * Background image for the Admin pages
+ * @constant string
+ */
+export const ADMIN_BG = '#171a21';
 
 /**
  * Background image for the account creation page and tags selection page

@@ -33,7 +33,7 @@ interface MenuItem {
   link: string;
 }
 
-export default function SteamMenu(): JSX.Element {
+export default function SteamMenu() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 

@@ -140,7 +140,7 @@ const gameDataApi = createApi({
       providesTags: [{ type: 'Game', id: 'UPCOMING' }],
     }),
 
-    getGameReviews: builder.query<
+    getReviews: builder.query<
       Review[],
       {
         gameId: number;
@@ -172,7 +172,7 @@ export const {
   useGetByTopSalesQuery,
   useGetBySpecialsQuery,
   useGetByUpcomingQuery,
-  useGetGameReviewsQuery,
+  useGetReviewsQuery,
 } = gameDataApi;
 
 export default gameDataApi;

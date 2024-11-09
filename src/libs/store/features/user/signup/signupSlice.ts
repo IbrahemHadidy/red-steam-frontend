@@ -150,7 +150,9 @@ const signupSlice = createSlice({
     cleanErrorMessages: (state) => {
       state.errorMessages = [];
     },
-    reset: () => signupState,
+    reset: (state) => {
+      return { ...signupState, country: state.country };
+    },
   },
 
   extraReducers: (builder) => {
@@ -176,7 +178,7 @@ const signupSlice = createSlice({
             confirmEmailInputError,
             agreeCheckboxError,
             errors,
-          } = action.payload || {};
+          } = action.payload ?? {};
 
           state.isCheckingAvailability = false;
           state.submitButtonDisabled = false;

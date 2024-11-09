@@ -22,37 +22,41 @@ import deleteIcon from '@images/delete.png';
 import updateIcon from '@images/edit.png';
 import offerIcon from '@images/offer.png';
 
-// Types
-import type { JSX } from 'react';
-import type { GameTitleAreaProps } from '../MediaAndSummary.types';
-
-export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element {
+export default function GameTitleArea() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();
 
-  // State
+  //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
+  const { currentGame } = useAppSelector((state) => state.game);
+
+  //----------------------------- State Hooks -----------------------------//
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
 
+  //--------------------------- Event Handlers ----------------------------//
   const handleCommunityBtnClick = (): void => {
     toast.warn('Community Hub is not available yet');
   };
 
-  const onUpdate = (itemId: number): void => {
+  const onUpdate = (itemId?: number): void => {
+    if (!itemId) return;
     router.push(`/admin/update-game/${itemId}`);
   };
 
-  const onOffer = (itemId: number): void => {
+  const onOffer = (itemId?: number): void => {
+    if (!itemId) return;
     router.push(`/admin/create-offer/${itemId}`);
   };
 
-  const onDelete = (itemId: number): void => {
+  const onDelete = (itemId?: number): void => {
+    if (!itemId) return;
     setDeleteItemId(itemId);
     setDeleteModalOpen(true);
   };
 
+  //------------------------- Render UI Section ---------------------------//
   return (
     <>
       <div className="game-title-area">
@@ -60,9 +64,9 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
           <Link href={`/search/`}>
             <span className="genre-item">All Games</span>
           </Link>{' '}
-          &gt; <span className="genre-item">{game.category}</span> &gt;{' '}
-          <Link href={`/game/${game.id}/`}>
-            <span className="genre-item">{game.name}</span>
+          &gt; <span className="genre-item">{currentGame?.category}</span> &gt;{' '}
+          <Link href={`/game/${currentGame?.id}/`}>
+            <span className="genre-item">{currentGame?.name}</span>
           </Link>
         </div>
         <div className="game-header-content">
@@ -73,14 +77,14 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
           </div>
 
           <div className="game-name-block">
-            <div className="main-game-name">{game.name}</div>
+            <div className="main-game-name">{currentGame?.name}</div>
 
             {currentUserData?.isAdmin && !pathname?.includes('/admin') && (
               <>
                 <div
                   className="update-icon-container"
-                  title="Update game"
-                  onClick={() => onUpdate(game.id)}
+                  title="Update game details"
+                  onClick={() => onUpdate(currentGame?.id)}
                 >
                   <Image
                     src={updateIcon}
@@ -94,7 +98,7 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
                 <div
                   className="offer-icon-container"
                   title="Add offer"
-                  onClick={() => onOffer(game.id)}
+                  onClick={() => onOffer(currentGame?.id)}
                 >
                   <Image
                     src={offerIcon}
@@ -108,7 +112,7 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
                 <div
                   className="delete-icon-container"
                   title="Delete game"
-                  onClick={() => onDelete(game.id)}
+                  onClick={() => onDelete(currentGame?.id)}
                 >
                   <Image
                     src={deleteIcon}
@@ -123,10 +127,11 @@ export default function GameTitleArea({ game }: GameTitleAreaProps): JSX.Element
           </div>
         </div>
       </div>
+
       {deleteModalOpen && deleteItemId && (
         <DeleteModal
           type="game"
-          gameName={game.name}
+          gameName={currentGame?.name}
           setOpen={setDeleteModalOpen}
           itemId={deleteItemId}
         />

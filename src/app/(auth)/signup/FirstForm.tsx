@@ -1,8 +1,5 @@
 'use client';
 
-// React
-import { useRef } from 'react';
-
 // Google ReCAPTCHA
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -21,9 +18,13 @@ import {
 import { countries } from '@utils/countries';
 
 // Types
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, RefObject } from 'react';
 
-export default function FirstForm() {
+interface FirstFormProps {
+  recaptchaRef: RefObject<ReCAPTCHA | null>;
+}
+
+export default function FirstForm({ recaptchaRef }: FirstFormProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
@@ -38,9 +39,6 @@ export default function FirstForm() {
     country,
     isAgreeChecked,
   } = useAppSelector((state) => state.user.signup);
-
-  //-------------------------- Ref for ReCAPTCHA --------------------------//
-  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   //---------------------------- Event Handlers ----------------------------//
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -118,11 +116,13 @@ export default function FirstForm() {
       </div>
 
       <div className="form-row">
-        <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-          theme="dark"
-          ref={recaptchaRef}
-        />
+        <div className="recaptcha-container">
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+            theme="dark"
+            ref={recaptchaRef}
+          />
+        </div>
       </div>
 
       <div className="form-row">

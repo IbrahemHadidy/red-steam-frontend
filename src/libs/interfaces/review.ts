@@ -6,6 +6,6 @@ export interface Review {
   readonly user?: User;
   readonly game?: Game;
   readonly positive: boolean;
-  readonly date: Date;
+  readonly date: string;
   readonly content: string;
 }

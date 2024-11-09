@@ -12,10 +12,7 @@ import { useAppSelector } from '@store/hooks';
 // Styles
 import '@styles/components/SignUpVerifyModal.scss';
 
-// Types
-import type { JSX } from 'react';
-
-export default function VerifyModal(): JSX.Element {
+export default function VerifyModal() {
   //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);

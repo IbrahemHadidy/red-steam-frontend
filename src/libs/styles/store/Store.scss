@@ -371,27 +371,18 @@
 
 .mini-price {
 	height: 20px;
-	margin: 0;
-	text-align: right;
-	padding: 5px;
-	line-height: 17px;
-	min-height: 17px;
-	font-size: 12px;
+	display: flex;
+	align-items: center;
 }
 
 .mini-capsule {
-	padding-top: 46.6%;
 	overflow: hidden;
 	vertical-align: top;
 	position: relative;
 
 	>img {
-		position: absolute;
-		top: 0;
-		left: 0;
 		width: 100%;
-		height: auto;
-		vertical-align: top;
+		height: 106.65px;
 	}
 }
 
@@ -450,10 +441,6 @@
 
 .discount {
 	display: flex;
-	line-height: 15px;
-	position: absolute;
-	top: 39px;
-	left: auto;
 }
 
 .no-discount {
@@ -467,7 +454,7 @@
 
 .price {
 	color: white;
-	padding: 2px 6px;
+	padding: 2px 4px;
 	font-size: 11px;
 	line-height: 12px;
 
@@ -505,10 +492,7 @@
 
 .mini-discount-block {
 	display: flex;
-	line-height: 15px;
 	position: relative;
-	bottom: -68.5px;
-	left: -8px;
 }
 
 .discount-percentage {

@@ -25,11 +25,10 @@ import cart from '@images/cart.svg';
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { JSX } from 'react';
 import type { SpringValue } from 'react-spring';
 import type { GroupedMenuItem, MenuItem } from '../SecondNavbar.types';
 
-export default function DesktopSecondNav(): JSX.Element {
+export default function DesktopSecondNav() {
   //--------------------------- Initializations ---------------------------//
   const pathname = usePathname();
 

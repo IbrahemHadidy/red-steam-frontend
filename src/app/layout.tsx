@@ -1,5 +1,4 @@
 // NextJS
-import Head from 'next/head';
 
 // Toast notifications
 import Toaster from '@components/Toaster/Toaster';
@@ -17,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -43,14 +42,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/motiva-sans" />
-        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/arial" />
-        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/microsoft-sans-serif" />
-      </Head>
+      <head>
+        <link
+          rel="preload stylesheet"
+          href="https://fonts.cdnfonts.com/css/motiva-sans"
+          as="style"
+        />
+        <link rel="preload stylesheet" href="https://fonts.cdnfonts.com/css/arial" as="style" />
+        <link
+          rel="preload stylesheet"
+          href="https://fonts.cdnfonts.com/css/microsoft-sans-serif"
+          as="style"
+        />
+      </head>
 
       <body>
         <div id="root">

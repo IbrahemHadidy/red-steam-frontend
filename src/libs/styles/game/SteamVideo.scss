@@ -29,9 +29,9 @@
 		position: absolute;
 		height: 35px;
 		background-color: rgba(0, 0, 0, 0.8);
-		width: 100%;
+		width: calc(100% - 2px);
 		text-align: left;
-		border: 0.4px solid black;
+		border: 1px solid black;
 		border-top: 0;
 
 		@media (max-width: 960px) {

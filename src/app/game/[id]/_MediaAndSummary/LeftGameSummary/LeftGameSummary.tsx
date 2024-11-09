@@ -1,7 +1,10 @@
 'use client';
 
-// React Spring
-import { animated, useTransition } from 'react-spring';
+// React
+import { useRef } from 'react';
+
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
 
 // Components
 import { Screenshot } from './Screenshot/Screenshot';
@@ -11,72 +14,43 @@ import SteamVideo from './Video/SteamVideo';
 // Utils
 import isVideoEntry from '@utils/checkMediaEntry';
 
-// Types
-import type { JSX } from 'react';
-import type { LeftGameSummaryProps } from '../MediaAndSummary.types';
+// Components
+import FadingContainer from '@components/FadingContainer';
 
-export default function LeftGameSummary({
-  videoRef,
-  selectedItem,
-  selectedEntry,
-  isAutoplay,
-  setAutoplay,
-  isMouseOverScreenshot,
-  setIsMouseOverScreenshot,
-  orderedMedia,
-  setSelectedItem,
-  handleSliderClick,
-  openModal,
-  autoplayInitialized,
-  setAutoplayInitialized,
-  slideAreaRef,
-}: LeftGameSummaryProps): JSX.Element {
-  const transitions = useTransition(selectedEntry, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-  });
+// Custom Hooks
+import usePageVisibility from './hooks/usePageVisibility';
+
+export default function LeftGameSummary() {
+  //--------------------------- State Selectors ---------------------------//
+  const { currentMediaLink, orderedMediaEntries } = useAppSelector((state) => state.game);
+
+  //------------------------------- Refs ----------------------------------//
+  const slideAreaRef = useRef<HTMLDivElement>(null);
+
+  //------------------------------- Hooks ---------------------------------//
+  usePageVisibility();
 
   return (
     <div className="left-game-summary">
       <div className="game-highlights">
-        {selectedEntry && isVideoEntry(selectedEntry) && (
-          <SteamVideo
-            key={selectedEntry.link}
-            videoRef={videoRef}
-            videoSrc={selectedEntry.link}
-            poster={selectedEntry.posterLink}
-            isAutoplay={isAutoplay}
-            setAutoplay={setAutoplay}
-            autoplayInitialized={autoplayInitialized}
-            setAutoplayInitialized={setAutoplayInitialized}
-          />
-        )}
+        {orderedMediaEntries.map((entry) => (
+          <FadingContainer key={entry.order} isVisible={currentMediaLink === entry.link}>
+            {isVideoEntry(entry) ? (
+              <SteamVideo
+                slideAreaRef={slideAreaRef}
+                videoSrc={entry.link}
+                poster={entry.posterLink}
+              />
+            ) : (
+              <Screenshot slideAreaRef={slideAreaRef} src={entry.link} />
+            )}
+          </FadingContainer>
+        ))}
 
-        {selectedEntry &&
-          !isVideoEntry(selectedEntry) &&
-          transitions((style, selectedEntry) => (
-            <animated.div style={style}>
-              {selectedEntry?.link && (
-                <Screenshot
-                  key={selectedEntry.link}
-                  imgSrc={selectedEntry.link}
-                  isMouseOverScreenshot={isMouseOverScreenshot}
-                  onEnter={() => setIsMouseOverScreenshot(true)}
-                  onLeave={() => setIsMouseOverScreenshot(false)}
-                  openModal={openModal}
-                />
-              )}
-            </animated.div>
-          ))}
-        <SlidesArea
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-          orderedMedia={orderedMedia}
-          slideAreaRef={slideAreaRef}
-        />
+        <SlidesArea slideAreaRef={slideAreaRef} />
       </div>
-      {orderedMedia.length >= 6 && <SliderButtons handleSliderClick={handleSliderClick} />}
+
+      {orderedMediaEntries.length >= 6 && <SliderButtons slideAreaRef={slideAreaRef} />}
     </div>
   );
 }

@@ -9,6 +9,7 @@ import '@styles/shop/Wishlist.scss';
 // Types
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+
 interface WishlistLayoutProps {
   children: ReactNode;
 }

@@ -35,10 +35,26 @@ export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string 
       return rejectWithValue('Please provide a valid name or email and password');
     }
 
-    try {
-      const loginResult = await dispatch(
-        userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })
-      ).unwrap();
+    const loginResult = await toast
+      .promise(
+        dispatch(
+          userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })
+        ).unwrap(),
+        {
+          pending: 'Logging in...',
+          success: 'Logged in successfully!',
+          error:
+            'An error occurred while trying to connect to the server. Please check your internet connection and try again.',
+        },
+        { toastId: 'login' }
+      )
+      .catch((error) => {
+        authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
+        console.error('Error during login:', error);
+        return rejectWithValue('Invalid login credentials');
+      });
+
+    if ('userData' in loginResult) {
       const currentUserData = loginResult.userData;
 
       // Store session information
@@ -49,10 +65,8 @@ export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string 
 
       // Fulfill the promise with the user data
       return fulfillWithValue(currentUserData);
-    } catch (error) {
-      // Notify other tabs about the error
-      authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
-      console.error('Error during login:', error);
+    } else {
+      // Handle the case where loginResult is a RejectWithValue object
       return rejectWithValue('Invalid login credentials');
     }
   }
@@ -61,21 +75,26 @@ export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string 
 export const logout = createAppAsyncThunk<void, void, { rejectValue: string }>(
   'auth/logout',
   async (_, { rejectWithValue, dispatch }) => {
-    try {
-      // Notify other tabs about the logout status
-      authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
+    // Notify other tabs about the logout status
+    authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
 
-      // Call the logout user service
-      await dispatch(userAuthApi.endpoints.logout.initiate()).unwrap();
+    // Call the logout user service
+    await toast
+      .promise(dispatch(userAuthApi.endpoints.logout.initiate()).unwrap(), {
+        pending: 'Logging out...',
+        success: 'Logged out successfully!',
+        error:
+          'An error occurred while trying to connect to the server. Please check your internet connection and try again.',
+      })
+      .catch((error) => {
+        console.error('Error during logout:', error);
+        return rejectWithValue('Logout failed');
+      });
 
-      // Perform any additional local state cleanup
-      sessionStorage.removeItem('verificationInProgress');
-      localStorage.removeItem('recentGames');
-      sessionStorage.removeItem('isSessionLogin');
-    } catch (error) {
-      console.error('Error during logout:', error);
-      return rejectWithValue('Logout failed');
-    }
+    // Perform any additional local state cleanup
+    sessionStorage.removeItem('verificationInProgress');
+    localStorage.removeItem('recentGames');
+    sessionStorage.removeItem('isSessionLogin');
   }
 );
 

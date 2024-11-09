@@ -39,12 +39,13 @@ export interface CheckNameAndPasswordRejectValue {
 
 export const checkExistingEmail = createAppAsyncThunk<
   string,
-  { recaptchaRef: RefObject<ReCAPTCHA | null> },
+  RefObject<ReCAPTCHA | null>,
   { rejectValue: CheckExistingEmailRejectValue }
 >(
   'user/signup/checkExistingEmail',
-  async ({ recaptchaRef }, { rejectWithValue, getState, dispatch }) => {
+  async (recaptchaRef, { rejectWithValue, getState, dispatch }) => {
     const { email, confirmEmail, isAgreeChecked } = getState().user.signup;
+
     const recaptchaValue = recaptchaRef.current?.getValue();
     const resetRecaptchaValue = () => recaptchaRef.current?.reset();
 
@@ -78,9 +79,20 @@ export const checkExistingEmail = createAppAsyncThunk<
     }
 
     try {
-      const exists = await dispatch(
-        userManagementApi.endpoints.checkEmailExists.initiate(email)
-      ).unwrap();
+      const result = await toast
+        .promise(dispatch(userManagementApi.endpoints.checkEmailExists.initiate(email)).unwrap(), {
+          pending: 'Checking if email exists...',
+          error: 'An error occurred while checking if email exists. Please try again.',
+        })
+        .catch((error) => {
+          console.error('Error checking existing email:', error);
+          rejectValue.errors.push(
+            '- An error occurred while checking if email exists. Please try again.'
+          );
+          return rejectWithValue(rejectValue);
+        });
+
+      const exists = 'exists' in result ? result.exists : false;
 
       if (exists) {
         // Email already exists

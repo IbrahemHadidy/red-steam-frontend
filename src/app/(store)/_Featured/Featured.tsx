@@ -10,7 +10,7 @@ const FeaturedDesktop = dynamic(() => import('./Desktop/FeaturedDesktop'), {
 const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'));
 
 // Skeletons
-const LoadingSkeleton = dynamic(() => import('./Desktop/Skeleton'));
+const LoadingSkeleton = dynamic(() => import('./Skeleton'));
 
 // Redux Hooks
 import { useGetFeaturedQuery } from '@store/apis/game/data';
@@ -34,10 +34,10 @@ export default function Featured() {
 
   return (
     <>
-      {isViewport960 ? (
-        <FeaturedMobile featuredGames={featuredGames ?? []} />
-      ) : isLoading ? (
+      {isLoading ? (
         <LoadingSkeleton />
+      ) : isViewport960 ? (
+        <FeaturedMobile featuredGames={featuredGames ?? []} />
       ) : (
         <FeaturedDesktop featuredGames={featuredGames ?? []} />
       )}

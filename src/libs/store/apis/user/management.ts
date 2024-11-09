@@ -14,7 +14,7 @@ const userManagementApi = createApi({
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({
-    checkEmailExists: builder.query<boolean, string>({
+    checkEmailExists: builder.query<{ exists: boolean }, string>({
       query: (email) => ({
         url: `/email/${email}`,
         method: 'GET',

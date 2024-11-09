@@ -7,13 +7,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-// Components
-import Footer from '@components/Footer/Footer';
-import Header from '@components/Header/Header';
-import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
-import SearchLeft from './_SearchLeft/SearchLeft';
-import SearchRight from './_SearchRight/SearchRight';
-
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
@@ -26,21 +19,32 @@ import { getAllTags } from '@services/common/tags';
 import { getByParameters } from '@services/game/data';
 
 // Custom Hooks
+import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
 import debounce from '@utils/debounce';
 import Decimal from 'decimal.js';
 
+// Constants
+import { DEFAULT_BG } from '@config/constants/backgrounds';
+
+// Components
+import Footer from '@components/Footer/Footer';
+import Header from '@components/Header/Header';
+import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
+import SearchLeft from './_SearchLeft/SearchLeft';
+import SearchRight from './_SearchRight/SearchRight';
+
 // Images
 import searchCrouton from '@images/search_crouton_not.svg';
 
 // Types
 import type { Game } from '@interfaces/game';
-import type { ChangeEvent, FC, JSX, MouseEvent } from 'react';
+import type { ChangeEvent, MouseEvent } from 'react';
 import type { Filter, FilterState, RequestParams } from './Search.types';
 
-const SearchPage: FC = (): JSX.Element => {
+export default function SearchPage() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -648,7 +652,7 @@ const SearchPage: FC = (): JSX.Element => {
     setSavedSearchValue('');
   };
 
-  const searchRight: JSX.Element = (
+  const searchRight = (
     <SearchRight
       rangeValue={rangeValue}
       setRangeValue={setRangeValue}
@@ -668,7 +672,7 @@ const SearchPage: FC = (): JSX.Element => {
     />
   );
 
-  const searchLeft: JSX.Element = (
+  const searchLeft = (
     <SearchLeft
       toggleDropdown={toggleDropdown}
       sortOption={sortOption}
@@ -689,6 +693,7 @@ const SearchPage: FC = (): JSX.Element => {
     />
   );
 
+  useDynamicBackground(DEFAULT_BG);
   return (
     <>
       {isViewport960 && searchRight}
@@ -750,6 +755,4 @@ const SearchPage: FC = (): JSX.Element => {
       <Footer />
     </>
   );
-};
-
-export default SearchPage;
+}

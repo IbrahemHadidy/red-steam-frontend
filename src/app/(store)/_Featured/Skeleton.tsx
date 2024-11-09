@@ -1,10 +1,10 @@
-import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
+import useResponsiveViewport from '@hooks/useResponsiveViewport';
+import { Box, Skeleton } from '@mui/material';
 
-import type { JSX } from 'react';
+export default function LoadingSkeleton() {
+  const isViewport960 = useResponsiveViewport(960);
 
-export default function LoadingSkeleton(): JSX.Element {
-  return (
+  return !isViewport960 ? (
     <Box
       sx={{
         display: 'block',
@@ -230,5 +230,7 @@ export default function LoadingSkeleton(): JSX.Element {
         </Box>
       </Box>
     </Box>
+  ) : (
+    <></>
   );
 }
