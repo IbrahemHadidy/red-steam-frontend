@@ -14,10 +14,10 @@ import {
 } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../FormButtons';
 
 // Form Validation
-import { validateAdditionalInfo } from './validations';
+import { validateAdditionalInfo } from '../validations';
 
 // Types
 import type { ChangeEvent } from 'react';

@@ -1,5 +1,3 @@
-'use client';
-
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 

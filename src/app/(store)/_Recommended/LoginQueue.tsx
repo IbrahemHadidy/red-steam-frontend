@@ -1,5 +1,3 @@
-'use client';
-
 // NextJS
 import Link from 'next/link';
 

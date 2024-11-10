@@ -10,7 +10,7 @@ import { updateCurrentMediaLink } from '@store/features/game/gameSlice';
 import useMediaSwapHandlers from './hooks/useMediaSwapHandlers';
 
 // Utils
-import isVideoEntry from '@utils/checkMediaEntry';
+import { isImageEntry, isVideoEntry } from '@utils/checkMediaEntry';
 
 // Types
 import type { ImageEntry, VideoEntry } from '@interfaces/game';
@@ -65,7 +65,11 @@ function SlideItem({ entry }: SlideItemProps) {
   return (
     <div
       className={`higlight-slide-item ${
-        isVideoEntry(entry) ? 'higlight-slide-movie' : 'highlight-slide-screenshot'
+        isVideoEntry(entry)
+          ? 'higlight-slide-movie'
+          : isImageEntry(entry)
+            ? 'highlight-slide-screenshot'
+            : ''
       }`}
       id={entry.link}
       onClick={() => handleSlideClick(entry.link)}
@@ -76,7 +80,7 @@ function SlideItem({ entry }: SlideItemProps) {
           <div className="movie-marker"></div>
         </>
       ) : (
-        <img className="mini-img" src={entry.link} alt="Screenshot" />
+        isImageEntry(entry) && <img className="mini-img" src={entry.link} alt="Screenshot" />
       )}
     </div>
   );

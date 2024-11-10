@@ -17,11 +17,11 @@ import {
 } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../../FormButtons';
 import LanguagesTable from './LanguagesTable';
 
 // Form Validation
-import { validateSpecifications } from './validations';
+import { validateSpecifications } from '../../validations';
 
 // APIs
 import { useGetAllFeaturesQuery } from '@store/apis/common/features';

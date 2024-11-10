@@ -1,5 +1,8 @@
 'use client';
 
+// React
+import { useState } from 'react';
+
 // NextJS
 import dynamic from 'next/dynamic';
 
@@ -14,66 +17,95 @@ import { HOME_DESKTOP_BG } from '@config/constants/backgrounds';
 
 // Components
 import RenderOnViewportEntry from '@components/RenderOnViewportEntry';
-const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
-const Categories = dynamic(() => import('./_Categories/Categories'));
+
 const Featured = dynamic(() => import('./_Featured/Featured'), {
   loading: () => <FeaturedSkeleton />,
-});
-const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'), {
-  loading: () => <TabsSkeleton />,
-});
-const LoginQueue = dynamic(() => import('./_Recommended/LoginQueue'));
-const Queue = dynamic(() => import('./_Recommended/Queue'));
-const Recommended = dynamic(() => import('./_Recommended/Recommended'), {
-  loading: () => <RecommendedSkeleton />,
 });
 const Offers = dynamic(() => import('./_Offers/Offers'), {
   loading: () => <OffersSkeleton />,
 });
+const Categories = dynamic(() => import('./_Categories/Categories'));
+const Queue = dynamic(() => import('./_Recommended/Queue'));
+const Recommended = dynamic(() => import('./_Recommended/Recommended'), {
+  loading: () => <RecommendedSkeleton />,
+});
+const LoginQueue = dynamic(() => import('./_Recommended/LoginQueue'));
+const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
+const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'), {
+  loading: () => <TabsSkeleton />,
+});
 
 // Skeletons
-const FeaturedSkeleton = dynamic(() => import('./_Featured/Skeleton'));
-const OffersSkeleton = dynamic(() => import('./_Offers/Skeleton'));
-const RecommendedSkeleton = dynamic(() => import('./_Recommended/Skeleton'));
-const TabsSkeleton = dynamic(() => import('./_HomeTabs/Skeleton'));
+import FeaturedSkeleton from './_Featured/Skeleton';
+import TabsSkeleton from './_HomeTabs/Skeleton';
+import OffersSkeleton from './_Offers/Skeleton';
+import RecommendedSkeleton from './_Recommended/Skeleton';
 
 export default function StorePage() {
   //--------------------------- State Selectors ---------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
+  const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
+
+  //----------------------------- State Hooks -----------------------------//
+  const [offersLoaded, setOffersLoaded] = useState<boolean>(false);
+  const [categoriesLoaded, setCategoriesLoaded] = useState<boolean>(false);
+  const [userSectionLoaded, setUserSectionLoaded] = useState<boolean>(false);
+  const [browseSteamLoaded, setBrowseSteamLoaded] = useState<boolean>(false);
 
   //-------------------------- Render UI Section --------------------------//
   useDynamicBackground(HOME_DESKTOP_BG);
 
-  return (
-    <div className="store">
-      <Featured />
+  if (!isAuthInitialized || !authOnLoadIntialized) {
+    return (
+      <>
+        <FeaturedSkeleton />
+        <OffersSkeleton />
+      </>
+    );
+  } else {
+    return (
+      <div className="store">
+        <Featured />
 
-      <RenderOnViewportEntry loader={<OffersSkeleton />}>
-        <Offers />
-      </RenderOnViewportEntry>
+        <RenderOnViewportEntry
+          loader={<OffersSkeleton />}
+          onLoadComplete={() => setOffersLoaded(true)}
+        >
+          <Offers />
+        </RenderOnViewportEntry>
 
-      <RenderOnViewportEntry>
-        <Categories />
-      </RenderOnViewportEntry>
+        <RenderOnViewportEntry
+          shouldLoad={offersLoaded}
+          onLoadComplete={() => setCategoriesLoaded(true)}
+        >
+          <Categories />
+        </RenderOnViewportEntry>
 
-      <RenderOnViewportEntry>
-        {isUserLoggedIn ? (
-          <>
-            <Queue />
-            <Recommended />
-          </>
-        ) : (
-          <LoginQueue />
-        )}
-      </RenderOnViewportEntry>
+        <RenderOnViewportEntry
+          shouldLoad={categoriesLoaded}
+          onLoadComplete={() => setUserSectionLoaded(true)}
+        >
+          {isUserLoggedIn ? (
+            <>
+              <Queue />
+              <Recommended />
+            </>
+          ) : (
+            <LoginQueue />
+          )}
+        </RenderOnViewportEntry>
 
-      <RenderOnViewportEntry>
-        <BrowseSteam />
-      </RenderOnViewportEntry>
+        <RenderOnViewportEntry
+          shouldLoad={userSectionLoaded}
+          onLoadComplete={() => setBrowseSteamLoaded(true)}
+        >
+          <BrowseSteam />
+        </RenderOnViewportEntry>
 
-      <RenderOnViewportEntry loader={<TabsSkeleton />}>
-        <HomeTabs />
-      </RenderOnViewportEntry>
-    </div>
-  );
+        <RenderOnViewportEntry loader={<TabsSkeleton />} shouldLoad={browseSteamLoaded}>
+          <HomeTabs />
+        </RenderOnViewportEntry>
+      </div>
+    );
+  }
 }

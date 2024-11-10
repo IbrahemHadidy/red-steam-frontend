@@ -14,19 +14,19 @@ import {
 } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../../FormButtons';
 import MediaScreenshot from './MediaScreenshot';
 import MediaVideo from './MediaVideo';
 
 // Form Validation
-import { validateMedia } from './validations';
+import { validateMedia } from '../../validations';
 
 // Utils
 import { saveFileToLocalStorage } from '@utils/filesStorageUtils';
 
 // Types
+import type { Screenshot, Video } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
-import type { Screenshot, Video } from './game-admin.types';
 
 export default function Media() {
   //--------------------------- Initializations ---------------------------//

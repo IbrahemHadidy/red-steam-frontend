@@ -1,5 +1,5 @@
 import { useAppSelector } from '@store/hooks';
-import isVideoEntry from '@utils/checkMediaEntry';
+import { isImageEntry } from '@utils/checkMediaEntry';
 import { useEffect } from 'react';
 import useMediaSwapHandlers from '../../hooks/useMediaSwapHandlers';
 
@@ -21,7 +21,7 @@ const useAutoScreenshotSwap = (
     const screenshotIntervalId = setInterval(() => {
       const isCurrentMediaScreenshot =
         currentMediaLink &&
-        !isVideoEntry(orderedMediaEntries.find((entry) => entry.link === currentMediaLink));
+        isImageEntry(orderedMediaEntries.find((entry) => entry.link === currentMediaLink));
 
       if (
         isCurrentMediaScreenshot &&

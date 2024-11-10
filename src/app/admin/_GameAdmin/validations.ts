@@ -2,7 +2,6 @@ import { validateUrl } from '@utils/inputValidations';
 import { toast } from 'react-toastify';
 
 // Types
-import type { RefObject } from 'react';
 import type {
   Language,
   Platforms,
@@ -10,7 +9,8 @@ import type {
   Screenshot,
   SystemRequirements,
   Thumbnails,
-} from './game-admin.types';
+} from '@custom-types/game-admin';
+import type { RefObject } from 'react';
 
 // Error style
 const errorStyle = 'border: 1px solid rgb(255, 82, 82);';

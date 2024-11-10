@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { setCurrentMediaIndex, updateCurrentMediaLink } from '@store/features/game/gameSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
-import isVideoEntry from '@utils/checkMediaEntry';
+import { isImageEntry } from '@utils/checkMediaEntry';
 
 import type { RefObject } from 'react';
 
@@ -70,12 +70,12 @@ const useMediaSwapHandlers = ({ slideAreaRef }: UseMediaSwapHandlersProps): Medi
         } else {
           // Find the next image, skipping videos if autoplay is disabled
           let nextPhotoIndex = orderedMediaEntries.findIndex(
-            (entry, idx) => idx > currentIndex && !isVideoEntry(entry)
+            (entry, idx) => idx > currentIndex && isImageEntry(entry)
           );
 
           // If no subsequent image found, wrap back to the first image
           if (nextPhotoIndex === -1) {
-            nextPhotoIndex = orderedMediaEntries.findIndex((entry) => !isVideoEntry(entry));
+            nextPhotoIndex = orderedMediaEntries.findIndex((entry) => isImageEntry(entry));
           }
 
           nextIndex = nextPhotoIndex;
@@ -152,7 +152,7 @@ const useMediaSwapHandlers = ({ slideAreaRef }: UseMediaSwapHandlersProps): Medi
       const currentIndex = orderedMediaEntries.findIndex(
         (entry) => entry.link === currentMediaLink
       );
-      const totalScreenshots = orderedMediaEntries.filter((entry) => !isVideoEntry(entry)).length;
+      const totalScreenshots = orderedMediaEntries.filter((entry) => isImageEntry(entry)).length;
 
       if (direction === 'right') {
         // Trigger right swap with autoplay ignored, increment index accordingly

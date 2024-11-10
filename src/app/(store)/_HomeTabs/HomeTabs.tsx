@@ -1,5 +1,3 @@
-'use client';
-
 // React
 import { useState } from 'react';
 
@@ -22,7 +20,7 @@ const LeftSection = dynamic(() => import('./LeftSection'));
 const RightSection = dynamic(() => import('./RightSection'));
 
 // Skeletons
-const Skeleton = dynamic(() => import('./Skeleton'));
+import Skeleton from './Skeleton';
 
 // Types
 import type { Game } from '@interfaces/game';

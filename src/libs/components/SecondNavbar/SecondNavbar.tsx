@@ -3,17 +3,31 @@
 // NextJS
 import dynamic from 'next/dynamic';
 
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
+
+// Components
+import LoadingSkeleton from './Skeleton';
+const DesktopSecondNav = dynamic(() => import('./Desktop/DesktopSecondNav'), {
+  loading: () => <LoadingSkeleton />,
+});
+const MobileSecondNav = dynamic(() => import('./Mobile/MobileSecondNav'), {
+  loading: () => <LoadingSkeleton />,
+});
 
 // Styles
 import '@styles/components/SecondNavbar.scss';
 
-const DesktopSecondNav = dynamic(() => import('./Desktop/DesktopSecondNav'), { ssr: false });
-const MobileSecondNav = dynamic(() => import('./Mobile/MobileSecondNav'), { ssr: false });
-
 export default function SecondNavbar() {
   const isViewport960 = useResponsiveViewport(960);
+  const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
 
-  return <>{isViewport960 ? <MobileSecondNav /> : <DesktopSecondNav />}</>;
+  if (!isAuthInitialized || !authOnLoadIntialized) {
+    return <LoadingSkeleton />;
+  } else {
+    return <>{isViewport960 ? <MobileSecondNav /> : <DesktopSecondNav />}</>;
+  }
 }

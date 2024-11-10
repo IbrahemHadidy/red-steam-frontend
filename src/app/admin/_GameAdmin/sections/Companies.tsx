@@ -8,10 +8,10 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { updateDevelopers, updatePublishers } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../FormButtons';
 
 // Form Validation
-import { validateCompanies } from './validations';
+import { validateCompanies } from '../validations';
 
 // React-Select
 import defaultDarkStyles from '@styles/react-select/react-select-dark';

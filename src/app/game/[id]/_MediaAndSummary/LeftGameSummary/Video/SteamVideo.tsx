@@ -21,7 +21,6 @@ import {
 import useAutoVideoSwap from './hooks/useAutoVideoSwap';
 import useVideoAutoplay from './hooks/useVideoAutoplay';
 import useVideoFullscreen from './hooks/useVideoFullscreen';
-import useVideoPlaybackControl from './hooks/useVideoPlaybackControl';
 import useVideoPlaybackOnVisibility from './hooks/useVideoPlaybackOnVisibility';
 import useVideoPlayState from './hooks/useVideoPlayState';
 import useVideoProgress from './hooks/useVideoProgress';
@@ -85,7 +84,6 @@ export default function SteamVideo({ slideAreaRef, videoSrc, poster }: SteamVide
   //-------------------------------- Hooks --------------------------------//
   useVideoVisibility(videoRef);
   useVideoPlaybackOnVisibility(videoRef);
-  useVideoPlaybackControl(videoRef);
   useVideoVolume(videoRef);
   useVideoAutoplay(videoRef);
   useVideoFullscreen(videoOverlayRef);

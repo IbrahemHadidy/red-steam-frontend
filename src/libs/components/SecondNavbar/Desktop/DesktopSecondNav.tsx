@@ -76,15 +76,16 @@ export default function DesktopSecondNav() {
     <>
       <div className="d-none d-md-block mx-auto myNavSec">
         <div className="wishlist-cart-container">
-          {isUserLoggedIn && currentUserData && currentUserData?.wishlist && (
+          {isUserLoggedIn && currentUserData && currentUserData?.wishlist.length > 0 && (
             <div className="wishlist-Link-div">
               <Link className="wishlist-link" href="/wishlist">
                 Wishlist&nbsp;
-                {currentUserData.wishlist.length > 0 && `(${currentUserData?.wishlist?.length})`}
+                {currentUserData.wishlist.length > 0 && `(${currentUserData.wishlist.length})`}
               </Link>
             </div>
           )}
-          {isUserLoggedIn && currentUserData && currentUserData?.cart && (
+
+          {isUserLoggedIn && currentUserData && currentUserData?.cart.length > 0 && (
             <div className="cart-Link-div">
               <Link className="cart-link" href="/cart">
                 <Image
@@ -97,11 +98,12 @@ export default function DesktopSecondNav() {
                   }}
                 />
                 &nbsp;Cart&nbsp;
-                {currentUserData.cart.length > 0 && `(${currentUserData?.cart?.length})`}
+                {currentUserData.cart.length > 0 && `(${currentUserData.cart.length})`}
               </Link>
             </div>
           )}
         </div>
+
         <nav className="navbar navbar-expand-sm navbarBg">
           <ul className="navbar-nav">
             {isUserLoggedIn && (

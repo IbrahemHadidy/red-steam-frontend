@@ -4,7 +4,7 @@ import WeekendOffer from './WeekendOffer';
 
 // Types
 import type { Game } from '@interfaces/game';
-import type { Dispatch, SetStateAction, JSX } from 'react';
+import type { Dispatch, JSX, SetStateAction } from 'react';
 
 const renderSmallGroups = (specialOffers: Game[]): JSX.Element[] => {
   const smallGroups: JSX.Element[] = [];
@@ -77,8 +77,8 @@ export const renderSlides = (
     addOfferToSlide(smallGroup, SMALL_GROUP_SLOTS);
   });
 
-  // Push the last slide if it is full
-  if (currentSlots === SLOTS_PER_SLIDE) {
+  // Push the last slide if it is full or if it is the first slide
+  if (currentSlots === SLOTS_PER_SLIDE || (slides.length === 0 && currentSlide.length > 0)) {
     slides.push(<div className="offers-row">{currentSlide}</div>);
   }
 

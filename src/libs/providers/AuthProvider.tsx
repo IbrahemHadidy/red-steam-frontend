@@ -16,7 +16,6 @@ import { onLoadIntialization } from '@store/features/auth/authSlice';
 import { checkVerificationAndTagsStatus } from '@store/features/auth/authThunks';
 
 // Components
-import Loading from '@app/loading';
 import VerifyModal from '@components/SignUpVerifyModal/SignUpVerifyModal';
 
 // Types
@@ -33,13 +32,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const dispatch = useAppDispatch();
 
   //--------------------------- State Selectors ---------------------------//
-  const {
-    authOnLoadIntialized,
-    currentUserData,
-    isUserLoggedIn,
-    isVerifyModalVisible,
-    isAuthInitialized,
-  } = useAppSelector((state) => state.auth);
+  const { currentUserData, isUserLoggedIn, isVerifyModalVisible } = useAppSelector(
+    (state) => state.auth
+  );
 
   const isNotVerifyPath = !pathname.includes('/verify-account');
 
@@ -57,12 +52,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [currentUserData, dispatch, isNotVerifyPath, isUserLoggedIn, router]);
 
-  return isAuthInitialized && authOnLoadIntialized ? (
+  return (
     <>
       {isVerifyModalVisible && <VerifyModal />}
       {children}
     </>
-  ) : (
-    <Loading />
   );
 }

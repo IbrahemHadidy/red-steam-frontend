@@ -25,7 +25,7 @@ import {
 } from './gameSlice';
 
 // Utils
-import isVideoEntry from '@utils/checkMediaEntry';
+import { isImageEntry } from '@utils/checkMediaEntry';
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
@@ -98,7 +98,7 @@ listen({
       // When autoplay is not enabled, find the first non-video entry or fallback to the first entry
       dispatch(
         updateCurrentMediaLink(
-          orderedMedia.find((entry) => !isVideoEntry(entry))?.link ?? orderedMedia[0]?.link ?? null
+          orderedMedia.find((entry) => isImageEntry(entry))?.link ?? orderedMedia[0]?.link ?? null
         )
       );
     } else {

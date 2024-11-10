@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { toggleLanguageField } from '@store/features/admin/game/gameAdminSlice';
 
 // Types
+import type { Language } from '@custom-types/game-admin';
 import type { RefObject } from 'react';
-import type { Language } from './game-admin.types';
 
 interface LanguagesTableProps {
   languagesTableRef: RefObject<HTMLTableElement | null>;

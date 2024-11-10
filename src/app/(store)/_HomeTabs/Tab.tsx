@@ -1,5 +1,3 @@
-'use client';
-
 // Types
 import type { OpenedTab } from '../Store.types';
 

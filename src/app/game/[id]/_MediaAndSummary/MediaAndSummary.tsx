@@ -1,5 +1,3 @@
-'use client';
-
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 

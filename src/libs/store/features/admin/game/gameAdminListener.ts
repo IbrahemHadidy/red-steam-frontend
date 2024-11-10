@@ -19,7 +19,7 @@ import {
 import gameDataApi from '@store/apis/game/data';
 
 // Types
-import type { Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
+import type { Screenshot, Video } from '@custom-types/game-admin';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from '@store/store';
 

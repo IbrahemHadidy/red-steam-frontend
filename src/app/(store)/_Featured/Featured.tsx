@@ -1,5 +1,3 @@
-'use client';
-
 // NextJS
 import dynamic from 'next/dynamic';
 
@@ -10,7 +8,7 @@ const FeaturedDesktop = dynamic(() => import('./Desktop/FeaturedDesktop'), {
 const FeaturedMobile = dynamic(() => import('./Mobile/FeaturedMobile'));
 
 // Skeletons
-const LoadingSkeleton = dynamic(() => import('./Skeleton'));
+import LoadingSkeleton from './Skeleton';
 
 // Redux Hooks
 import { useGetFeaturedQuery } from '@store/apis/game/data';

@@ -12,7 +12,7 @@ import { SliderButtons, SlidesArea } from './SlidesArea';
 import SteamVideo from './Video/SteamVideo';
 
 // Utils
-import isVideoEntry from '@utils/checkMediaEntry';
+import { isImageEntry, isVideoEntry } from '@utils/checkMediaEntry';
 
 // Components
 import FadingContainer from '@components/FadingContainer';
@@ -42,7 +42,7 @@ export default function LeftGameSummary() {
                 poster={entry.posterLink}
               />
             ) : (
-              <Screenshot slideAreaRef={slideAreaRef} src={entry.link} />
+              isImageEntry(entry) && <Screenshot slideAreaRef={slideAreaRef} src={entry.link} />
             )}
           </FadingContainer>
         ))}

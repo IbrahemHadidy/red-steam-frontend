@@ -17,6 +17,9 @@ import { addToWishlist, removeFromWishlist } from '@store/features/game/gameThun
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
+// Skeleton
+import LoadingSkeleton from './Skeleton';
+
 // Images
 import selectedIcon from '@images/ico_selected.png';
 
@@ -27,7 +30,9 @@ export default function QueueArea() {
   const isViewport630 = useResponsiveViewport(630);
 
   //--------------------------- State Selectors ---------------------------//
-  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
+  const { isUserLoggedIn, authOnLoadIntialized, isAuthInitialized } = useAppSelector(
+    (state) => state.auth
+  );
   const { currentGame, isGameInWishlist, isGameInLibrary, isGameInCart, isWishlistBtnLoading } =
     useAppSelector((state) => state.game);
 
@@ -59,93 +64,98 @@ export default function QueueArea() {
   };
 
   //-------------------------- Render UI Section --------------------------//
-  return (
-    <div className="queue-area">
-      {!isUserLoggedIn && (
-        <div className="queue-actions">
-          <Link href="/login">Sign in</Link> to add this item to your wishlist, follow it, or mark
-          it as ignored
-        </div>
-      )}
+  if (!authOnLoadIntialized || !isAuthInitialized) {
+    return <LoadingSkeleton />;
+  } else {
+    return (
+      <div className="queue-area">
+        {!isUserLoggedIn && (
+          <div className="queue-actions">
+            <Link href="/login">Sign in</Link> to add this item to your wishlist, follow it, or mark
+            it as ignored
+          </div>
+        )}
 
-      {isUserLoggedIn && (
-        <div className="queue-actions">
-          {!isViewport630 && (
-            <div className="view-queue-button">
-              <span>
-                View Your Queue&nbsp;&nbsp;&nbsp;
-                <i className="arrow-next" />
-              </span>
-            </div>
-          )}
-
-          {!isGameInWishlist ? (
-            <div
-              id="add-wishlist"
-              className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
-              onClick={handleAddWishlistBtnClick}
-            >
-              <div className="queue-button">
+        {isUserLoggedIn && (
+          <div className="queue-actions">
+            {!isViewport630 && (
+              <div className="view-queue-button">
                 <span>
-                  {isGameInLibrary
-                    ? 'You own this item '
-                    : isGameInCart
-                      ? 'Already in your cart'
-                      : 'Add to your wishlist'}
+                  View Your Queue&nbsp;&nbsp;&nbsp;
+                  <i className="arrow-next" />
+                </span>
+              </div>
+            )}
+
+            {!isGameInWishlist ? (
+              <div
+                id="add-wishlist"
+                className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
+                onClick={handleAddWishlistBtnClick}
+              >
+                <div className="queue-button">
+                  <span>
+                    {isGameInLibrary
+                      ? 'You own this item '
+                      : isGameInCart
+                        ? 'Already in your cart'
+                        : 'Add to your wishlist'}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div
+                id="added-wishlist"
+                className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
+                onClick={handleRemoveFromWishlist}
+              >
+                <div className="queue-button">
+                  <span>
+                    <Image src={selectedIcon} alt="selected" /> On Wishlist
+                  </span>
+                </div>
+              </div>
+            )}
+            <div id="follow" className="queue-button-container">
+              {/* TODO: isFollowed backend logic */}
+              <div
+                className="queue-button"
+                style={{ display: 'inline-block' }}
+                onClick={handleFollowClick}
+              >
+                <span>Follow</span>
+              </div>
+              {/* !isFollowed */}
+              <div className="queue-button" style={{ display: 'none' }}>
+                <span>
+                  <Image src={selectedIcon} alt="selected" /> Following
                 </span>
               </div>
             </div>
-          ) : (
+
+            {/* TODO: isNotIgnored backend logic */}
             <div
-              id="added-wishlist"
-              className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
-              onClick={handleRemoveFromWishlist}
-            >
-              <div className="queue-button">
-                <span>
-                  <Image src={selectedIcon} alt="selected" /> On Wishlist
-                </span>
-              </div>
-            </div>
-          )}
-          <div id="follow" className="queue-button-container">
-            {/* TODO: isFollowed backend logic */}
-            <div
-              className="queue-button"
+              id="ignore"
+              className="queue-button-container"
               style={{ display: 'inline-block' }}
-              onClick={handleFollowClick}
+              onClick={handleIgnoreClick}
             >
-              <span>Follow</span>
+              <div className="queue-button">
+                <span>Ignore</span>
+              </div>
             </div>
-            {/* !isFollowed */}
-            <div className="queue-button" style={{ display: 'none' }}>
-              <span>
-                <Image src={selectedIcon} alt="selected" /> Following
-              </span>
-            </div>
-          </div>
 
-          {/* TODO: isNotIgnored backend logic */}
-          <div
-            id="ignore"
-            className="queue-button-container"
-            style={{ display: 'inline-block' }}
-            onClick={handleIgnoreClick}
-          >
-            <div className="queue-button">
-              <span>Ignore</span>
+            {/* !isNotIgnored */}
+            <div id="ignored" className="queue-button-container" style={{ display: 'none' }}>
+              <div className="queue-button">
+                <span>
+                  <Image src={selectedIcon} alt="selected" /> Ignored
+                </span>
+              </div>
             </div>
           </div>
-          {/* !isNotIgnored */}
-          <div id="ignored" className="queue-button-container" style={{ display: 'none' }}>
-            <div className="queue-button">
-              <span>
-                <Image src={selectedIcon} alt="selected" /> Ignored
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
 }

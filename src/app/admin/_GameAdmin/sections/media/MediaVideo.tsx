@@ -14,8 +14,8 @@ import {
 import getFileUrl from '@utils/getFileUrl';
 
 // Types
+import type { Video } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
-import type { Video } from './game-admin.types';
 
 interface MediaVideoProps {
   item: Video;

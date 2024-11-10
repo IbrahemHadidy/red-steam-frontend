@@ -8,10 +8,10 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { toggleFree, updatePrice } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../FormButtons';
 
 // Form Validation
-import { validatePricing } from './validations';
+import { validatePricing } from '../validations';
 
 // Types
 import type { ChangeEvent } from 'react';

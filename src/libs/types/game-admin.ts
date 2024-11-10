@@ -14,6 +14,7 @@ export interface Thumbnails {
   searchImage: Thumbnail;
   tabImage: Thumbnail;
 }
+
 export interface Screenshot {
   id: string;
   image: FileMetadata | string;
@@ -22,6 +23,7 @@ export interface Screenshot {
   baseOrder: number;
   order: number;
 }
+
 export interface Video {
   id: string;
   video: FileMetadata | string;
@@ -30,29 +32,24 @@ export interface Video {
   baseOrder: number;
   order: number;
 }
-export interface ChangedOrder {
-  type: 'screenshot' | 'video';
-  oldOrder: number;
-  newOrder: number;
-}
-export interface ChangedFeatured {
-  order: number;
-  featured: boolean;
-}
+
 export interface Pricing {
   free: boolean;
   price?: string;
 }
+
 export interface Language {
   name: string;
   interface: boolean;
   fullAudio: boolean;
   subtitles: boolean;
 }
+
 export interface Platforms {
   win: boolean;
   mac: boolean;
 }
+
 export interface SystemRequirementsDetails {
   os: string;
   cpu: string;

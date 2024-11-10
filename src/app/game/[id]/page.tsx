@@ -1,6 +1,3 @@
-// NextJS
-import dynamic from 'next/dynamic';
-
 // Redux
 import makeStore from '@store/store';
 
@@ -10,28 +7,14 @@ import gameDataApi from '@store/apis/game/data';
 // Providers
 import GameProvider from '@providers/GameProvider';
 
-// Skeletons
-import Loader from '@components/Loader';
-import ContentSkeleton from './_GameContent/Skeleton';
-import MediaAndSummarySkeleton from './_MediaAndSummary/Skeleton';
-
-// Components
-import RenderOnViewportEntry from '@components/RenderOnViewportEntry';
-const MediaAndSummary = dynamic(() => import('./_MediaAndSummary/MediaAndSummary'), {
-  loading: () => <MediaAndSummarySkeleton />,
-});
-const GameContent = dynamic(() => import('./_GameContent/GameContent'), {
-  loading: () => <ContentSkeleton />,
-});
-const GameReviews = dynamic(() => import('./_GameReviews/GameReviews'), {
-  loading: () => <Loader />,
-});
-
 // Images
 import pwaIcon from '@images/pwa-icon.png';
 
+// Components
+import Game from './game';
+
 // Types
-import type { Game } from '@interfaces/game';
+import type { Game as GameType } from '@interfaces/game';
 import type { Metadata } from 'next';
 
 interface GamePageProps {
@@ -43,13 +26,12 @@ const store = makeStore();
 const dispatch = store.dispatch;
 
 export async function generateMetadata(props: GamePageProps): Promise<Metadata> {
-  //--------------------------- Initializations ---------------------------//
   const params = await props.params;
   const { id } = params;
 
   try {
     const gameId = Number(id);
-    const game: Game | undefined = !isNaN(gameId)
+    const game: GameType | undefined = !isNaN(gameId)
       ? await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap()
       : undefined;
 
@@ -92,15 +74,7 @@ export default async function GamePage(props: GamePageProps) {
 
   return (
     <GameProvider id={id}>
-      <MediaAndSummary />
-
-      <RenderOnViewportEntry loader={<ContentSkeleton />}>
-        <GameContent />
-      </RenderOnViewportEntry>
-
-      <RenderOnViewportEntry loader={<Loader />}>
-        <GameReviews />
-      </RenderOnViewportEntry>
+      <Game />
     </GameProvider>
   );
 }

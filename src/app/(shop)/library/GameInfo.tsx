@@ -11,7 +11,8 @@ import {
 } from '@store/features/shop/library/librarySlice';
 
 // Utils
-import { gameMediaItem, isVideoEntry } from './library-utils';
+import { isImageEntry, isVideoEntry } from '@utils/checkMediaEntry';
+import { gameMediaItem } from './library-utils';
 
 export default function GameInfo() {
   //--------------------------- Initializations ---------------------------//
@@ -44,7 +45,9 @@ export default function GameInfo() {
               controlsList="nodownload"
             />
           ) : (
-            <img src={gameMediaItem(selectedGame)?.link || ''} alt="Game" />
+            isImageEntry(gameMediaItem(selectedGame)) && (
+              <img src={gameMediaItem(selectedGame)?.link || ''} alt="Game" />
+            )
           )}
         </div>
 

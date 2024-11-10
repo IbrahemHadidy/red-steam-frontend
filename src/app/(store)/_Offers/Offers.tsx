@@ -1,7 +1,5 @@
-'use client';
-
 // React
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 
 // NextJS
 import Link from 'next/link';
@@ -28,8 +26,8 @@ import { renderSlides } from './offers-utils';
 import responsiveChevron from '@images/ResponsiveChevron.svg';
 
 // Types
-import type { Game } from '@interfaces/game';
 import type { Settings as SliderSettings } from 'react-slick';
+import { useFilteredOffers } from './hooks/useFilteredOffers';
 
 export default function Offers() {
   //--------------------------- Initializations ---------------------------//
@@ -37,14 +35,15 @@ export default function Offers() {
 
   //--------------------------- State Selectors ---------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const [weekendOffers, setWeekendOffers] = useState<Game[]>([]);
-  const [specialOffers, setSpecialOffers] = useState<Game[]>([]);
   const [totalSlides, setTotalSlides] = useState(0);
 
   //----------------------------- Redux Queries ----------------------------//
   const { data: offersData, isLoading } = useGetByOffersQuery(
     (currentUserData && currentUserData.library.map((game) => game.id)) ?? []
   );
+
+  //--------------------------------- Hooks --------------------------------//
+  const { specialOffers, weekendOffers } = useFilteredOffers(offersData);
 
   //----------------------------- Slider Config ----------------------------//
   const offersSettings: SliderSettings = {
@@ -55,21 +54,6 @@ export default function Offers() {
     fade: true,
     arrows: totalSlides > 1,
   };
-
-  //------------------------------- Effects -------------------------------//
-  // Set Special and Weekend Offers after fetching
-  useEffect(() => {
-    (async () => {
-      offersData?.forEach((game) => {
-        if (game.pricing?.offerType === 'SPECIAL PROMOTION') {
-          setSpecialOffers((prev) => [...prev, game]);
-        }
-        if (game.pricing?.offerType === 'WEEKEND DEAL') {
-          setWeekendOffers((prev) => [...prev, game]);
-        }
-      });
-    })();
-  }, [offersData]);
 
   //-------------------------- Render UI Section --------------------------//
   const renderedSlides = renderSlides(weekendOffers, specialOffers, totalSlides, setTotalSlides);
@@ -98,23 +82,31 @@ export default function Offers() {
         </h2>
 
         <div className="offers-slides">
-          <div className="offers-items">
-            {isViewport960 ? (
-              <div className="mobile-offers">
-                {renderedSlides.map((slide, idx) => (
-                  <Fragment key={idx}>{slide}</Fragment>
-                ))}
-              </div>
-            ) : (
-              <Slider {...offersSettings}>
-                {renderedSlides.map((slide, idx) => (
-                  <div className="offers-row" key={idx}>
-                    {slide}
-                  </div>
-                ))}
-              </Slider>
-            )}
-          </div>
+          {renderedSlides.length === 0 ? (
+            <div className="no-offers">
+              <h3 className="no-offers-text">
+                No Offers Available at the moment, check back later.
+              </h3>
+            </div>
+          ) : (
+            <div className="offers-items">
+              {isViewport960 ? (
+                <div className="mobile-offers">
+                  {renderedSlides.map((slide, idx) => (
+                    <Fragment key={idx}>{slide}</Fragment>
+                  ))}
+                </div>
+              ) : (
+                <Slider {...offersSettings}>
+                  {renderedSlides.map((slide, idx) => (
+                    <div className="offers-row" key={idx}>
+                      {slide}
+                    </div>
+                  ))}
+                </Slider>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

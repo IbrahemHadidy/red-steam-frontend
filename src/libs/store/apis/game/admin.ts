@@ -5,8 +5,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getFileFromLocalStorage } from '@utils/filesStorageUtils';
 
 // Types
-import type { Language, Screenshot, Video } from '@app/admin/_GameAdmin/game-admin.types';
 import type FileMetadata from '@custom-types/file-metadata';
+import type { Language, Screenshot, Video } from '@custom-types/game-admin';
 import type { Game, SystemRequirementsEntry } from '@interfaces/game';
 
 export type Thumbnails = {

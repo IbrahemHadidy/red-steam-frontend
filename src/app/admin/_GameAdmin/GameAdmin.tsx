@@ -14,24 +14,32 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 import { ADMIN_BG } from '@config/constants/backgrounds';
 
 // Components
-const FormSkeleton = dynamic(() => import('./Skeleton'));
-const MediaAndSummarySkeleton = dynamic(() => import('@app/game/[id]/_MediaAndSummary/Skeleton'));
-const GameContentSkeleton = dynamic(() => import('@app/game/[id]/_GameContent/Skeleton'));
 const SecondNavbar = dynamic(() => import('@components/SecondNavbar/SecondNavbar'));
-const BasicInfoSection = dynamic(() => import('./BasicInfo'), { loading: () => <FormSkeleton /> });
-const CompaniesSection = dynamic(() => import('./Companies'), { loading: () => <FormSkeleton /> });
-const ThumbnailsSection = dynamic(() => import('./Thumbnails'), {
+const BasicInfoSection = dynamic(() => import('./sections/BasicInfo'), {
   loading: () => <FormSkeleton />,
 });
-const MediaSection = dynamic(() => import('./Media'), { loading: () => <FormSkeleton /> });
-const PricingSection = dynamic(() => import('./Pricing'), { loading: () => <FormSkeleton /> });
-const SpecificationsSection = dynamic(() => import('./Specifications'), {
+const CompaniesSection = dynamic(() => import('./sections/Companies'), {
   loading: () => <FormSkeleton />,
 });
-const SystemRequirementsSection = dynamic(() => import('./SystemRequirements'), {
+const ThumbnailsSection = dynamic(() => import('./sections/Thumbnails'), {
   loading: () => <FormSkeleton />,
 });
-const AdditionalInfoSection = dynamic(() => import('./AdditionalInfo'), {
+const MediaSection = dynamic(() => import('./sections/media/Media'), {
+  loading: () => <FormSkeleton />,
+});
+const PricingSection = dynamic(() => import('./sections/Pricing'), {
+  loading: () => <FormSkeleton />,
+});
+const SpecificationsSection = dynamic(() => import('./sections/specifications/Specifications'), {
+  loading: () => <FormSkeleton />,
+});
+const SystemRequirementsSection = dynamic(
+  () => import('./sections/system-requirements/SystemRequirements'),
+  {
+    loading: () => <FormSkeleton />,
+  }
+);
+const AdditionalInfoSection = dynamic(() => import('./sections/AdditionalInfo'), {
   loading: () => <FormSkeleton />,
 });
 const MediaAndSummary = dynamic(() => import('@app/game/[id]/_MediaAndSummary/MediaAndSummary'), {
@@ -40,6 +48,11 @@ const MediaAndSummary = dynamic(() => import('@app/game/[id]/_MediaAndSummary/Me
 const GameContent = dynamic(() => import('@app/game/[id]/_GameContent/GameContent'), {
   loading: () => <GameContentSkeleton />,
 });
+
+// Skeletons
+import GameContentSkeleton from '@app/game/[id]/_GameContent/Skeleton';
+import MediaAndSummarySkeleton from '@app/game/[id]/_MediaAndSummary/Skeleton';
+import FormSkeleton from './Skeleton';
 
 // Utils
 import getFileUrl from '@utils/getFileUrl';

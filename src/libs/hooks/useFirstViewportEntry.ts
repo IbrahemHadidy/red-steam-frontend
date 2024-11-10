@@ -9,7 +9,8 @@ import { RefObject, useEffect, useState } from 'react';
 export default function useFirstViewportEntry(
   ref: RefObject<HTMLDivElement | null>,
   threshold = 0,
-  rootMargin = '0px 0px 0px 0px'
+  rootMargin = '0px 0px 0px 0px',
+  shouldLoad: boolean
 ): boolean {
   const [hasEntered, setHasEntered] = useState(false);
 
@@ -18,7 +19,7 @@ export default function useFirstViewportEntry(
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasEntered) {
           setHasEntered(true);
           observer.disconnect();
         }
@@ -29,7 +30,7 @@ export default function useFirstViewportEntry(
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [hasEntered, threshold, ref, rootMargin]);
+  }, [hasEntered, ref, threshold, rootMargin, shouldLoad]);
 
   return hasEntered;
 }

@@ -17,7 +17,7 @@ import {
 import useAutoScreenshotSwap from './hooks/useAutoScreenshotSwap';
 
 // Utils
-import isVideoEntry from '@utils/checkMediaEntry';
+import { isImageEntry } from '@utils/checkMediaEntry';
 
 // Images
 import highlightSpacer from '@images/game_highlight_image_spacer.gif';
@@ -46,7 +46,7 @@ export function ScreenshotModal() {
   //------------------------------ Render -------------------------------//
   const totalScreenshots = currentGame?.imageEntries.length ?? 0;
   const currentScreenshotIndex = orderedMediaEntries
-    .filter((entry) => !isVideoEntry(entry))
+    .filter((entry) => isImageEntry(entry))
     .findIndex((entry) => entry.link === currentMediaLink);
 
   return (

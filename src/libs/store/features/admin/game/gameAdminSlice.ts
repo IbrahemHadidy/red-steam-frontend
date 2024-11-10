@@ -8,6 +8,7 @@ import { getPreviewData, submitForm } from './gameAdminThunks';
 import { checkDuplicateScreenshot, checkDuplicateVideo, getNextOrder } from './gameAdminUtils';
 
 // Types
+import type FileMetadata from '@custom-types/file-metadata';
 import type {
   Language,
   Platforms,
@@ -16,8 +17,7 @@ import type {
   SystemRequirements,
   Thumbnails,
   Video,
-} from '@app/admin/_GameAdmin/game-admin.types';
-import type FileMetadata from '@custom-types/file-metadata';
+} from '@custom-types/game-admin';
 import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 

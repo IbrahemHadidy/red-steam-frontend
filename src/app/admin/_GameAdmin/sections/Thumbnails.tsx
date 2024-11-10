@@ -8,18 +8,18 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { updateThumbnails } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../FormButtons';
 
 // Form Validation
-import { validateThumbnails } from './validations';
+import { validateThumbnails } from '../validations';
 
 // Utils
 import { saveFileToLocalStorage } from '@utils/filesStorageUtils';
 import getFileUrl from '@utils/getFileUrl';
 
 // Types
+import type { Thumbnails } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
-import type { Thumbnails } from './game-admin.types';
 
 export default function Thumbnails() {
   //--------------------------- Initializations ---------------------------//

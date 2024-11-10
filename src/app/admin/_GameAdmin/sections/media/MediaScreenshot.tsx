@@ -13,8 +13,8 @@ import {
 import getFileUrl from '@utils/getFileUrl';
 
 // Types
+import type { Screenshot } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
-import type { Screenshot } from './game-admin.types';
 
 interface MediaScreenshotProps {
   item: Screenshot;

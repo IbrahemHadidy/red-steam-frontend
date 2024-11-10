@@ -3,12 +3,16 @@
 // NextJS
 import dynamic from 'next/dynamic';
 
+// Redux Hooks
+import { useAppSelector } from '@store/hooks';
+
 // Components
+import LoadingSkeleton from './Skeleton';
 const DefaultDesktopComponent = dynamic(() => import('./Desktop/DefaultDesktopComponent'), {
-  ssr: false,
+  loading: () => <LoadingSkeleton />,
 });
 const CustomMobileComponent = dynamic(() => import('./Mobile/CustomMobileComponent'), {
-  ssr: false,
+  loading: () => <LoadingSkeleton />,
 });
 
 // Custom Hooks
@@ -19,6 +23,11 @@ import '@styles/components/Header.scss';
 
 export default function Header() {
   const isViewport960 = useResponsiveViewport(960);
+  const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
 
-  return <>{isViewport960 ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;
+  if (!isAuthInitialized || !authOnLoadIntialized) {
+    return <LoadingSkeleton />;
+  } else {
+    return <>{isViewport960 ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;
+  }
 }

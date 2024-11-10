@@ -12,12 +12,3 @@ export const gameMediaItem = (game: Game): VideoEntry | ImageEntry | undefined =
   const imageEntry = game.imageEntries.length > 0 && game.imageEntries[0];
   if (imageEntry) return imageEntry;
 };
-
-/**
- * Type guard function to check if an entry is of type VideoEntry
- * @param entry - The entry to check
- * @returns True if the entry is a VideoEntry
- */
-export const isVideoEntry = (entry: VideoEntry | ImageEntry | undefined): entry is VideoEntry => {
-  return (entry as VideoEntry)?.posterLink !== undefined;
-};

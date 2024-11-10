@@ -30,11 +30,11 @@ import {
 } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
-import FormButtons from './FormButtons';
+import FormButtons from '../../FormButtons';
 import SystemRequirementsInput from './SystemRequirementsInput';
 
 // Form Validation
-import { validateSystemRequirements } from './validations';
+import { validateSystemRequirements } from '../../validations';
 
 // Types
 import type { UnknownAction } from '@reduxjs/toolkit';
