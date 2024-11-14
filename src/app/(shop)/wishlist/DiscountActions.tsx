@@ -18,7 +18,7 @@ export default function DiscountActions({ game }: DiscountActionsProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { isCartBtnLoading } = useAppSelector((state) => state.shop.wishlist);
 

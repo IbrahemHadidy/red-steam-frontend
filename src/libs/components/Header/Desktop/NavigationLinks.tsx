@@ -24,7 +24,7 @@ export default function NavigationLinks() {
   const router = useRouter();
   const pathname = usePathname();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<number | null>(null);
 
@@ -37,7 +37,7 @@ export default function NavigationLinks() {
     title: string,
     renderKey: number,
     items: { link: string; text: string }[]
-  ): JSX.Element => {
+  ) => {
     const isUserActive: boolean = pathname?.includes('/user') && !pathname?.includes('/admin');
     const dropdownUserClassName: string = isUserActive ? 'active-title' : '';
     const isAdminActive: boolean = pathname?.startsWith('/admin');

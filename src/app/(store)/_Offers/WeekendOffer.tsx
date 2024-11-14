@@ -22,32 +22,31 @@ interface WeekendOfferProps {
 
 export default function WeekendOffer({ offer }: WeekendOfferProps) {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //----------------------------- State Hooks -----------------------------//
-  const [offerHoverStates, setOfferHoverStates] = useState<{ [key: string]: boolean }>({});
+  //------------------------------- States --------------------------------//
+  const [isOfferHovered, setIsOfferHovered] = useState<boolean>(false);
 
-  //---------------------------- Event Handlers ----------------------------//
-  const handleOfferPointerMove = (offerId: number): void => {
-    setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: true }));
+  //--------------------------- Event Handlers ----------------------------//
+  const handleOfferMouseEnter = (): void => {
+    setIsOfferHovered(true);
   };
 
-  const handleOfferPointerLeave = (offerId: number): void => {
-    setOfferHoverStates((prevState) => ({ ...prevState, [offerId]: false }));
+  const handleOfferMouseLeave = (): void => {
+    setIsOfferHovered(false);
   };
 
   //-------------------------- Render UI Section --------------------------//
   return (
     <div
       className="offer-result-container big"
-      key={`offer-${offer.id}`}
-      onMouseEnter={() => handleOfferPointerMove(offer.id)}
-      onMouseLeave={() => handleOfferPointerLeave(offer.id)}
+      onMouseEnter={handleOfferMouseEnter}
+      onMouseLeave={handleOfferMouseLeave}
     >
       <Link href={`/game/${offer.id}`} className="offer-bg">
         <div className="spotlight-img">
           <img
-            src={offer.thumbnailEntries.verticalHeaderImage || '/spotlight_background.jpg'}
+            src={offer.thumbnailEntries.verticalHeaderImage ?? '/spotlight_background.jpg'}
             alt={offer.name}
           />
         </div>
@@ -73,20 +72,19 @@ export default function WeekendOffer({ offer }: WeekendOfferProps) {
         </div>
       </Link>
 
-      {!isViewport960 && offerHoverStates[offer.id] && (
-        <div>
-          <HoverSummary
-            title={offer.name}
-            date={formatDate(offer.releaseDate)}
-            screenshots={offer.imageEntries.filter((img) => img.featured).map((img) => img.link)}
-            description={offer.description}
-            positivePercentage={offer.averageRating}
-            totalReviews={offer.reviewsCount}
-            tags={offer.tags?.map((tag) => tag.name) || []}
-            leftArrow={!isViewport960}
-            rightArrow={!isViewport960}
-          />
-        </div>
+      {!isViewport960OrLess && (
+        <HoverSummary
+          title={offer.name}
+          date={formatDate(offer.releaseDate)}
+          screenshots={offer.imageEntries.filter((img) => img.featured).map((img) => img.link)}
+          description={offer.description}
+          positivePercentage={offer.averageRating}
+          totalReviews={offer.reviewsCount}
+          tags={offer.tags?.map((tag) => tag.name) ?? []}
+          leftArrow={!isViewport960OrLess}
+          rightArrow={!isViewport960OrLess}
+          isVisible={isOfferHovered}
+        />
       )}
     </div>
   );

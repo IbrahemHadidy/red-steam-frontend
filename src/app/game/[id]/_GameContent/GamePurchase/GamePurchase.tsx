@@ -16,7 +16,7 @@ export default function GamePurchase() {
   //--------------------------- Initializations ---------------------------//
   const platform = getPlatform();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
   const { currentGame } = useAppSelector((state) => state.game);
 

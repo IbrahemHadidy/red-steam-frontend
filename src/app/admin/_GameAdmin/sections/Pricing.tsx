@@ -20,7 +20,7 @@ export default function Pricing() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { pricing } = useAppSelector((state) => state.admin.game);
 
   //------------------------ Refs for Input Fields ------------------------//

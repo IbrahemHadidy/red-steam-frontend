@@ -25,7 +25,7 @@ export default function LoginForm() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const {
     isLoginLoading,
     rememberMePreference,

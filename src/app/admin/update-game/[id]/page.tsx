@@ -25,7 +25,7 @@ export default function GameUpdate({ params }: GameUpdateProps) {
   const { id } = use(params);
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUpdateFetching, isGameUpdateInitialized } = useAppSelector((state) => state.admin.game);
 
   //-------------------------- Portals Selection  -------------------------//

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import type { Game } from '@interfaces/game';
 
-export const useFilteredOffers = (offersData: Game[] | undefined) => {
+export default function useFilteredOffers(offersData: Game[] | undefined) {
   const [specialOffers, setSpecialOffers] = useState<Game[]>([]);
   const [weekendOffers, setWeekendOffers] = useState<Game[]>([]);
 
@@ -24,4 +24,4 @@ export const useFilteredOffers = (offersData: Game[] | undefined) => {
   }, [offersData]);
 
   return { specialOffers, weekendOffers };
-};
+}

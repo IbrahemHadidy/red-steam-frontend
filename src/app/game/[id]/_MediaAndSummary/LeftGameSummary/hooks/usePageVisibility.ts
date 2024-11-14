@@ -6,7 +6,7 @@ import { useAppDispatch } from '@store/hooks';
 /**
  * Track if the page is visible
  */
-const usePageVisibility = () => {
+export default function usePageVisibility() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -20,6 +20,4 @@ const usePageVisibility = () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [dispatch]);
-};
-
-export default usePageVisibility;
+}

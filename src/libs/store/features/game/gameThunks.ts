@@ -1,11 +1,14 @@
 // Toast notifications
 import { toast } from 'react-toastify';
 
+// Redux Hooks
+import { createAppAsyncThunk } from '@store/hooks';
+
 // Redux Handlers
 import { resetReviews } from './gameSlice';
 
-// Redux Hooks
-import { createAppAsyncThunk } from '@store/hooks';
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
@@ -34,6 +37,8 @@ export const addToWishlist = createAppAsyncThunk<void, void, { rejectValue: stri
         return rejectWithValue('Error adding to wishlist');
       });
 
+    await dispatch(fetchUserData());
+
     return fulfillWithValue(undefined);
   }
 );
@@ -59,6 +64,8 @@ export const removeFromWishlist = createAppAsyncThunk<void, void, { rejectValue:
         console.error('Error removing from wishlist:', error);
         return rejectWithValue('Error removing from wishlist');
       });
+
+    await dispatch(fetchUserData());
 
     return fulfillWithValue(undefined);
   }
@@ -90,6 +97,8 @@ export const addToCart = createAppAsyncThunk<void, AppRouterInstance, { rejectVa
         return rejectWithValue('Error adding to cart');
       });
 
+    await dispatch(fetchUserData());
+
     return fulfillWithValue(undefined);
   }
 );
@@ -119,6 +128,8 @@ export const addToLibrary = createAppAsyncThunk<void, AppRouterInstance, { rejec
         console.error('Error adding to library:', error);
         return rejectWithValue('Error adding to library');
       });
+
+    await dispatch(fetchUserData());
 
     return fulfillWithValue(undefined);
   }
@@ -167,6 +178,8 @@ export const submitReview = createAppAsyncThunk<void, void, { rejectValue: strin
           return rejectWithValue('Error updating review');
         });
     }
+
+    await dispatch(fetchUserData());
 
     dispatch(resetReviews());
     return fulfillWithValue(undefined);

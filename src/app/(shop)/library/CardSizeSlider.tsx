@@ -11,7 +11,7 @@ export default function CardSizeSlider() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { cardSize } = useAppSelector((state) => state.shop.library);
 
   //---------------------------- Event Handlers ----------------------------//

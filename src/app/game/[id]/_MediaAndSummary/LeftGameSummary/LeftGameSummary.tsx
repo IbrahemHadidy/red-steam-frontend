@@ -21,7 +21,7 @@ import FadingContainer from '@components/FadingContainer';
 import usePageVisibility from './hooks/usePageVisibility';
 
 export default function LeftGameSummary() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentMediaLink, orderedMediaEntries } = useAppSelector((state) => state.game);
 
   //------------------------------- Refs ----------------------------------//

@@ -28,9 +28,9 @@ import type { Settings as SliderSettings } from 'react-slick';
 
 export default function Recommended() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
   //---------------------------- Redux Queries ----------------------------//
@@ -81,7 +81,7 @@ export default function Recommended() {
               className="view-more"
               href={`/search?tags=${currentUserData?.tags.map((tag) => tag.id)}`}
             >
-              {isViewport960 ? (
+              {isViewport960OrLess ? (
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
                     Customize{' '}
@@ -95,7 +95,7 @@ export default function Recommended() {
           </span>
         </h2>
 
-        {isViewport960 ? (
+        {isViewport960OrLess ? (
           <div className="mobile-mini mini">{renderAllCategories()}</div>
         ) : (
           <div className="mini-slides mini">

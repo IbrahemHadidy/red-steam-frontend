@@ -13,7 +13,7 @@ export default function DeletePhoneModal() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isDeletePhoneModalVisible } = useAppSelector((state) => state.user.settings);
 
   //---------------------------- Event Handlers ---------------------------//

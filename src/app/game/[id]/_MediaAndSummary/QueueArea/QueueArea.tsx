@@ -27,9 +27,9 @@ export default function QueueArea() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isViewport630 = useResponsiveViewport(630);
+  const isViewport630OrLess = useResponsiveViewport(630);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn, authOnLoadIntialized, isAuthInitialized } = useAppSelector(
     (state) => state.auth
   );
@@ -37,11 +37,11 @@ export default function QueueArea() {
     useAppSelector((state) => state.game);
 
   //---------------------------- Event Handlers ---------------------------//
-  const handleRemoveFromWishlist = async (): Promise<void> => {
+  const handleAddToWishlist = async (): Promise<void> => {
     await dispatch(addToWishlist());
   };
 
-  const handleAddToWishlist = async (): Promise<void> => {
+  const handleRemoveFromWishlist = async (): Promise<void> => {
     await dispatch(removeFromWishlist());
   };
 
@@ -78,7 +78,7 @@ export default function QueueArea() {
 
         {isUserLoggedIn && (
           <div className="queue-actions">
-            {!isViewport630 && (
+            {!isViewport630OrLess && (
               <div className="view-queue-button">
                 <span>
                   View Your Queue&nbsp;&nbsp;&nbsp;

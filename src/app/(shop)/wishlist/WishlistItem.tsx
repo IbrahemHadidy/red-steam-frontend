@@ -1,5 +1,5 @@
 // React
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 // NextJS
 import dynamic from 'next/dynamic';
@@ -7,9 +7,6 @@ import Link from 'next/link';
 
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
-
-// Redux Handlers
-import { setHoveredItemIndex } from '@store/features/shop/wishlist/wishlistSlice';
 
 // Redux Thunks
 import { removeFromWishlist } from '@store/features/shop/wishlist/wishlistThunks';
@@ -36,19 +33,21 @@ interface WishlistItemProps {
 export default function WishlistItem({ game, idx }: WishlistItemProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { hoveredItemIndex, isRemoveBtnLoading } = useAppSelector((state) => state.shop.wishlist);
+  const { isRemoveBtnLoading } = useAppSelector((state) => state.shop.wishlist);
+
+  const [isCapsuleHovered, setIsCapsuleHovered] = useState<boolean>(false);
 
   //--------------------------- Event Handlers ----------------------------//
-  const handleCapsuleMouseEnter = (idx: number): void => {
-    dispatch(setHoveredItemIndex(idx));
+  const handleCapsuleMouseEnter = (): void => {
+    setIsCapsuleHovered(true);
   };
 
   const handleCapsuleMouseLeave = (): void => {
-    dispatch(setHoveredItemIndex(null));
+    setIsCapsuleHovered(false);
   };
 
   const handleRemoveBtnClick = async (itemId: number): Promise<void> => {
@@ -59,18 +58,20 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
   return (
     <div className="wishlist-container">
       <div className="wishlist-row">
-        {!isViewport960 && (
+        {!isViewport960OrLess && (
           <Link
             className="capsule"
             href={`/game/${game?.id}`}
-            onMouseEnter={() => handleCapsuleMouseEnter(idx)}
+            onMouseEnter={handleCapsuleMouseEnter}
             onMouseLeave={handleCapsuleMouseLeave}
           >
             <img src={game?.thumbnailEntries.horizontalHeaderImage} alt="game-header" />
-            <div className="screenshots" style={{ opacity: hoveredItemIndex === idx ? '1' : '0' }}>
-              {game?.imageEntries.map((item, idx) => (
-                <div key={idx * 100} style={{ backgroundImage: `url(${item.link})` }} />
-              ))}
+            <div className="screenshots" style={{ opacity: isCapsuleHovered ? '1' : '0' }}>
+              {game?.imageEntries
+                .filter((item) => item.featured)
+                .map((item, idx) => (
+                  <div key={idx * 100} style={{ backgroundImage: `url(${item.link})` }} />
+                ))}
             </div>
           </Link>
         )}
@@ -82,7 +83,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
           </Link>
 
           <div className="mid-container">
-            {!isViewport960 && (
+            {!isViewport960OrLess && (
               <div className="stats">
                 <div className="label">Overall Reviews:</div>
                 <div className={`value game-review-summary ${getRatingClass(game.averageRating)}`}>
@@ -94,6 +95,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
                 <div className="value">{formatDate(game?.releaseDate)}</div>
               </div>
             )}
+
             <div className="purchase-container">
               <div className="purchase-area">
                 <Suspense fallback={<div>Loading...</div>}>

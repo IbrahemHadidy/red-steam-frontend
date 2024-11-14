@@ -15,7 +15,7 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Utils
 import formatDate from '@utils/formatDate';
-import getRecommendationClass from '../featured-utils';
+import { getRecommendationClass } from '@utils/recommendationReason';
 
 // Types
 import type { Game, ImageEntry } from '@interfaces/game';
@@ -26,14 +26,13 @@ interface FeaturedDesktopProps {
 
 export default function Slide({ slide }: FeaturedDesktopProps) {
   //--------------------------- Initializations ---------------------------//
-  const isViewport1600 = useResponsiveViewport(1600);
+  const isViewport1600OrLess = useResponsiveViewport(1600);
 
-  //----------------------------- State Hooks -----------------------------//
-  const [summaryHoverStates, setSummaryHoverStates] = useState<{ [key: string]: boolean }>({});
-  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
+
+  const [isSlideHovered, setIsSlideHovered] = useState<boolean>(false);
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   //--------------------------- Event Handlers ----------------------------//
   const handleMouseEnterImage = (img: ImageEntry): void => {
@@ -44,18 +43,12 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
     setHoveredImage(null);
   };
 
-  const handleMouseEnterSlide = (slide: Game): void => {
-    setSummaryHoverStates((prevState) => ({
-      ...prevState,
-      [slide.id]: true,
-    }));
+  const handleMouseEnterSlide = (): void => {
+    setIsSlideHovered(true);
   };
 
-  const handleMouseLeaveSlide = (slide: Game): void => {
-    setSummaryHoverStates((prevState) => ({
-      ...prevState,
-      [slide.id]: false,
-    }));
+  const handleMouseLeaveSlide = (): void => {
+    setIsSlideHovered(false);
   };
 
   //-------------------------- Render UI Section --------------------------//
@@ -64,13 +57,13 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
       <Link
         className="slide"
         href={`/game/${slide.id}`}
-        onMouseEnter={() => handleMouseEnterSlide(slide)}
-        onMouseLeave={() => handleMouseLeaveSlide(slide)}
+        onMouseEnter={handleMouseEnterSlide}
+        onMouseLeave={handleMouseLeaveSlide}
       >
         <div
           className="main-card"
           style={{
-            backgroundImage: `url(${hoveredImage || slide.thumbnailEntries.mainImage})`,
+            backgroundImage: `url(${hoveredImage ?? slide.thumbnailEntries.mainImage})`,
             transition: 'background-image 0.1s',
           }}
         />
@@ -139,19 +132,18 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
         </div>
       </Link>
 
-      {!isViewport1600 && summaryHoverStates[slide.id] && (
-        <div>
-          <HoverSummary
-            title={slide.name}
-            date={formatDate(slide.releaseDate)}
-            screenshots={slide.imageEntries.filter((img) => img.featured).map((img) => img.link)}
-            description={slide.description}
-            positivePercentage={slide.averageRating}
-            totalReviews={slide.reviewsCount}
-            tags={slide.tags?.map((tag) => tag.name) || []}
-            leftArrow={!isViewport1600}
-          />
-        </div>
+      {!isViewport1600OrLess && (
+        <HoverSummary
+          title={slide.name}
+          date={formatDate(slide.releaseDate)}
+          screenshots={slide.imageEntries.filter((img) => img.featured).map((img) => img.link)}
+          description={slide.description}
+          positivePercentage={slide.averageRating}
+          totalReviews={slide.reviewsCount}
+          tags={slide.tags?.map((tag) => tag.name) ?? []}
+          leftArrow={!isViewport1600OrLess}
+          isVisible={isSlideHovered}
+        />
       )}
     </>
   );

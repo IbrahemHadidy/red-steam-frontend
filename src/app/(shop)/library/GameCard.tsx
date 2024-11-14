@@ -15,7 +15,7 @@ export default function GameCard({ game }: GameCardProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { cardSize } = useAppSelector((state) => state.shop.library);
 
   //---------------------------- Event Handlers ----------------------------//

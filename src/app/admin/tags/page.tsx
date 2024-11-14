@@ -16,7 +16,7 @@ import { createTag } from '@services/common/tags';
 import type { JSX } from 'react';
 
 export default function TagsAdmin(): JSX.Element {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [name, setName] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
 

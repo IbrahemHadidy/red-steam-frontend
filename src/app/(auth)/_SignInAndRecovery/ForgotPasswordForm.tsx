@@ -25,7 +25,7 @@ export default function ForgotPasswordForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { resetPasswordLoadingState, isPasswordPage, resetEmail, resetPasswordErrorMessage } =
     useAppSelector((state) => state.user.recovery);
 
@@ -68,7 +68,7 @@ export default function ForgotPasswordForm() {
 
       <div className="recaptcha-container">
         <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ''}
           theme="dark"
           style={{ backgroundColor: '#181a21' }}
           ref={recaptchaRef}

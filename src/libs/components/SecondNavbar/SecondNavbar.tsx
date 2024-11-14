@@ -22,12 +22,12 @@ const MobileSecondNav = dynamic(() => import('./Mobile/MobileSecondNav'), {
 import '@styles/components/SecondNavbar.scss';
 
 export default function SecondNavbar() {
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
 
   if (!isAuthInitialized || !authOnLoadIntialized) {
     return <LoadingSkeleton />;
   } else {
-    return <>{isViewport960 ? <MobileSecondNav /> : <DesktopSecondNav />}</>;
+    return <>{isViewport960OrLess ? <MobileSecondNav /> : <DesktopSecondNav />}</>;
   }
 }

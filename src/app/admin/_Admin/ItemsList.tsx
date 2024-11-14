@@ -37,7 +37,7 @@ import type { ChangeEvent } from 'react';
 import type { Item, ItemsListProps } from './admin.types';
 
 export default function ItemsList({ type, submitted }: ItemsListProps) {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [items, setItems] = useState<Item[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);

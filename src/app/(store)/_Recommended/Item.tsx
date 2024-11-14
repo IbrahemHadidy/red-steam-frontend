@@ -21,30 +21,28 @@ interface ItemProps {
 }
 export default function Item({ game }: ItemProps) {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //----------------------------- State Hooks -----------------------------//
-  const [gameHoverStates, setGameHoverStates] = useState<{
-    [key: string]: boolean;
-  }>({});
+  //------------------------------- States --------------------------------//
+  const [isGameHovered, setIsGameHovered] = useState<boolean>(false);
 
   //---------------------------- Event Handlers ---------------------------//
-  const handleMiniItemPointerMove = (id: number): void => {
-    setGameHoverStates((prevState) => ({ ...prevState, [id]: true }));
+  const handleMiniItemPointerMove = (): void => {
+    setIsGameHovered(true);
   };
 
-  const handleMiniItemPointerLeave = (id: number): void => {
-    setGameHoverStates((prevState) => ({ ...prevState, [id]: false }));
+  const handleMiniItemPointerLeave = (): void => {
+    setIsGameHovered(false);
   };
 
   //-------------------------- Render UI Section --------------------------//
   return (
-    <div className="mini-item-container" key={game.id}>
+    <div className="mini-item-container">
       <Link
         className="mini-item"
         href={`/game/${game.id}`}
-        onMouseEnter={() => handleMiniItemPointerMove(game.id)}
-        onMouseLeave={() => handleMiniItemPointerLeave(game.id)}
+        onMouseEnter={handleMiniItemPointerMove}
+        onMouseLeave={handleMiniItemPointerLeave}
       >
         <div className="mini-capsule">
           <img src={game.thumbnailEntries.smallHeaderImage} alt={game.name} />
@@ -74,20 +72,19 @@ export default function Item({ game }: ItemProps) {
         </div>
       </Link>
 
-      {!isViewport960 && gameHoverStates[game.id] && (
-        <div>
-          <HoverSummary
-            title={game.name}
-            date={formatDate(game.releaseDate)}
-            screenshots={game.imageEntries.filter((img) => img.featured).map((img) => img.link)}
-            description={game.description}
-            positivePercentage={game.averageRating}
-            totalReviews={game.reviewsCount}
-            tags={game.tags?.map((item) => item.name) || []}
-            leftArrow={!isViewport960}
-            rightArrow={!isViewport960}
-          />
-        </div>
+      {!isViewport960OrLess && (
+        <HoverSummary
+          title={game.name}
+          date={formatDate(game.releaseDate)}
+          screenshots={game.imageEntries.filter((img) => img.featured).map((img) => img.link)}
+          description={game.description}
+          positivePercentage={game.averageRating}
+          totalReviews={game.reviewsCount}
+          tags={game.tags?.map((item) => item.name) ?? []}
+          leftArrow={!isViewport960OrLess}
+          rightArrow={!isViewport960OrLess}
+          isVisible={isGameHovered}
+        />
       )}
     </div>
   );

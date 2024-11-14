@@ -25,10 +25,10 @@ import TagsModal from './TagsModal';
 export default function RightGameSummary() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
-  const isViewport630 = useResponsiveViewport(630);
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport630OrLess = useResponsiveViewport(630);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame, tagsModalVisible } = useAppSelector((state) => state.game);
 
   //--------------------------- Event Handlers ---------------------------//
@@ -47,7 +47,7 @@ export default function RightGameSummary() {
         />
       </div>
 
-      {isViewport630 && <div className="game-name-mobile">{currentGame?.name}</div>}
+      {isViewport630OrLess && <div className="game-name-mobile">{currentGame?.name}</div>}
 
       <div className="game-description">{currentGame?.description}</div>
 
@@ -105,7 +105,7 @@ export default function RightGameSummary() {
 
       <div className="user-defined-tags">
         <div className="glance-tags-label">Popular user-defined tags for this product:</div>
-        {!isViewport960 ? (
+        {!isViewport960OrLess ? (
           <div className="glance-tags">
             {!tagsModalVisible &&
               currentGame?.tags?.slice(0, 4).map((tag) => (
@@ -123,7 +123,7 @@ export default function RightGameSummary() {
             {tagsModalVisible && (
               <TagsModal
                 onClose={toggleModal}
-                tags={currentGame?.tags?.map((tag) => tag.name) || []}
+                tags={currentGame?.tags?.map((tag) => tag.name) ?? []}
               />
             )}
           </div>

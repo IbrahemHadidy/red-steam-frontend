@@ -9,7 +9,7 @@ import { useAppSelector } from '@store/hooks';
 import steamLogo from '@images/logo_steam.svg';
 
 export default function CheckoutHeader() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isPaymentConfirmed, isReviewSelected } = useAppSelector((state) => state.shop.checkout);
 
   //-------------------------- Render UI Section --------------------------//

@@ -58,7 +58,7 @@ import FormSkeleton from './Skeleton';
 import getFileUrl from '@utils/getFileUrl';
 
 export default function GameAdmin() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { type, name, currentPage, thumbnails, previewData } = useAppSelector(
     (state) => state.admin.game
   );

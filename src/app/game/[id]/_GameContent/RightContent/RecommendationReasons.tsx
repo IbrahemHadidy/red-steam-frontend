@@ -2,7 +2,7 @@
 import { useAppSelector } from '@store/hooks';
 
 export default function RecommendationReasons() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { currentGame } = useAppSelector((state) => state.game);
 

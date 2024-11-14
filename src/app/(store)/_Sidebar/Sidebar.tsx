@@ -17,7 +17,7 @@ import steamPromoCard from '@images/steamcards_promo_03.png';
 
 // Types
 import type RecentGames from '@custom-types/recent-games';
-import type { JSX, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import type { LinkItem } from '../Store.types';
 
 export default function Sidebar() {
@@ -31,11 +31,12 @@ export default function Sidebar() {
   //-------------------------- Utility Functions --------------------------//
   // Get recently viewed games
   const recentGames: RecentGames =
-    (typeof window !== 'undefined' && JSON.parse(localStorage.getItem('recentGames') || '[]')) ??
-    [];
+    typeof window !== 'undefined'
+      ? (JSON.parse(localStorage.getItem('recentGames') ?? '[]') ?? [])
+      : [];
 
   // Helper function to generate links
-  const generateLinks = (links: LinkItem[]): JSX.Element[] => {
+  const generateLinks = (links: LinkItem[]) => {
     return links.map((link, idx) => (
       <Link key={idx} className="item" href={link.to}>
         {link.text}

@@ -35,7 +35,7 @@ export async function generateMetadata(props: GamePageProps): Promise<Metadata> 
       ? await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap()
       : undefined;
 
-    const discountPercentage = game?.pricing?.discountPercentage?.toString() || '';
+    const discountPercentage = game?.pricing?.discountPercentage?.toString() ?? '';
 
     return {
       title: `${
@@ -53,7 +53,7 @@ export async function generateMetadata(props: GamePageProps): Promise<Metadata> 
         description: game?.description,
         images: [
           {
-            url: game?.thumbnailEntries.mainImage || pwaIcon.src,
+            url: game?.thumbnailEntries.mainImage ?? pwaIcon.src,
             width: 800,
             height: 600,
           },
@@ -61,7 +61,7 @@ export async function generateMetadata(props: GamePageProps): Promise<Metadata> 
       },
     };
   } catch (error) {
-    console.log('Error fetching game metadata:', error);
+    console.error('Error generating metadata:', error);
     return {
       title: 'Game not found',
       description: 'Game not found',

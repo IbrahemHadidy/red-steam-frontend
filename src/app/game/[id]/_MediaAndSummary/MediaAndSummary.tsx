@@ -2,7 +2,7 @@
 import { useAppSelector } from '@store/hooks';
 
 // Utils
-import { isInLibrary } from './media-utils';
+import { isInLibrary } from './utils/isInLibrary';
 
 // Skeletons
 import Skeleton from './Skeleton';
@@ -16,7 +16,7 @@ import QueueArea from './QueueArea/QueueArea';
 import RightGameSummary from './RightGameSummary/RightGameSummary';
 
 export default function MediaAndSummary() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { isGameFetching, currentGame, isScreenshotModalOpen } = useAppSelector(
     (state) => state.game

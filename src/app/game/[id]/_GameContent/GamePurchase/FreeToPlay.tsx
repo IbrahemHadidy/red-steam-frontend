@@ -16,7 +16,7 @@ export default function FreeToPlay() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame, isGameInLibrary, isCartBtnLoading } = useAppSelector((state) => state.game);
 
   //--------------------------- Event Handlers ----------------------------//

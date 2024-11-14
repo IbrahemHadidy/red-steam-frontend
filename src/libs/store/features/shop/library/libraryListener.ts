@@ -1,8 +1,11 @@
+// Toast Notifications
+import { toast } from 'react-toastify';
+
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
 // Actions
-import { initializeLibrary, updateLibrary } from './librarySlice';
+import { initializeLibrary, setIsLibraryInitialized, updateLibrary } from './librarySlice';
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
@@ -24,18 +27,26 @@ listen({
     const userLibrary = getState().auth.currentUserData?.library ?? [];
     let libraryItems: Game[] = [];
 
-    try {
-      if (userLibrary.length > 0) {
-        libraryItems = await dispatch(
-          gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
-        ).unwrap();
-      }
-
-      // Update library
-      dispatch(updateLibrary(libraryItems));
-    } catch (error) {
-      console.error('Error fetching library:', error);
+    if (userLibrary.length > 0) {
+      libraryItems = await toast
+        .promise(
+          dispatch(
+            gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
+          ).unwrap(),
+          {
+            pending: 'Fetching library items',
+            error: 'Error fetching library items',
+          }
+        )
+        .catch((error) => {
+          console.error('Error fetching library items:', error);
+          return [];
+        });
     }
+
+    // Update library
+    dispatch(updateLibrary(libraryItems));
+    dispatch(setIsLibraryInitialized(true));
   },
 });
 

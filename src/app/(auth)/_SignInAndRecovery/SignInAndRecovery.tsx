@@ -25,10 +25,12 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function SignInAndRecovery() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport740 = useResponsiveViewport(740);
-  useDynamicBackground(!isViewport740 ? LOGIN_DESKTOP_BG : LOGIN_MOBILE_BG, [isViewport740]);
+  const isViewport740OrLess = useResponsiveViewport(740);
+  useDynamicBackground(!isViewport740OrLess ? LOGIN_DESKTOP_BG : LOGIN_MOBILE_BG, [
+    isViewport740OrLess,
+  ]);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { showResetPasswordInterface, isPasswordPage } = useAppSelector(
     (state) => state.user.recovery
   );
@@ -69,7 +71,7 @@ export default function SignInAndRecovery() {
 
               <animated.div
                 className={`forgot-my-password ${!isPasswordPage ? 'login-page' : 'active'}`}
-                style={!isViewport740 ? springProps : springProps740}
+                style={!isViewport740OrLess ? springProps : springProps740}
               >
                 {showResetPasswordInterface ? <ResetPasswordForm /> : <ForgotPasswordForm />}
               </animated.div>

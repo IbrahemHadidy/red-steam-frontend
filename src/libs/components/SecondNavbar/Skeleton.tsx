@@ -2,9 +2,9 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import { Box, Skeleton } from '@mui/material';
 
 export default function LoadingSkeleton() {
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  return !isViewport960 ? (
+  return !isViewport960OrLess ? (
     <Box
       sx={{
         display: 'flex',

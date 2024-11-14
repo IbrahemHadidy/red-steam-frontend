@@ -1,4 +1,6 @@
+import type { Game } from '@interfaces/game';
 import type { Tag } from '@interfaces/tag';
+import type { User } from '@interfaces/user';
 
 const MINIMUM_COMMON_TAGS = 3;
 
@@ -8,7 +10,7 @@ const MINIMUM_COMMON_TAGS = 3;
  * @param userTags
  * @returns true if the game has at least the minimum common tags with the user
  */
-export default function isTagInUserTags(gametags: Tag[], userTags: Tag[]): boolean {
+export function isTagInUserTags(gametags: Tag[], userTags: Tag[]): boolean {
   if (gametags.length === 0 || userTags.length === 0) return false;
 
   const userTagNames = new Set(userTags.map((ut) => ut.name));
@@ -19,3 +21,15 @@ export default function isTagInUserTags(gametags: Tag[], userTags: Tag[]): boole
 
   return commonTagsCount >= MINIMUM_COMMON_TAGS;
 }
+
+/**
+ * Get recommendation class
+ * @param game The current game to get recommendation class for
+ * @param currentUserData The current user
+ * @returns
+ */
+export const getRecommendationClass = (game: Game, currentUserData?: User): string => {
+  if (!currentUserData) return 'available';
+  if (isTagInUserTags(game.tags ?? [], currentUserData.tags ?? [])) return 'recommended';
+  return 'available';
+};

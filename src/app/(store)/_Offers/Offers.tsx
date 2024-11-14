@@ -18,22 +18,22 @@ import { useGetByOffersQuery } from '@store/apis/game/data';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
+import useFilteredOffers from './hooks/useFilteredOffers';
 
 // Utils
-import { renderSlides } from './offers-utils';
+import renderSlides from './utils/renderSlides';
 
 // Images
 import responsiveChevron from '@images/ResponsiveChevron.svg';
 
 // Types
 import type { Settings as SliderSettings } from 'react-slick';
-import { useFilteredOffers } from './hooks/useFilteredOffers';
 
 export default function Offers() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [totalSlides, setTotalSlides] = useState(0);
 
@@ -67,7 +67,7 @@ export default function Offers() {
           Special Offers
           <span className="right-btn">
             <Link className="view-more" href="/search?priceOptions=Special%20Offers">
-              {isViewport960 ? (
+              {isViewport960OrLess ? (
                 <div className="mobile-more">
                   <div className="mobile-more-dive">
                     More{' '}
@@ -90,7 +90,7 @@ export default function Offers() {
             </div>
           ) : (
             <div className="offers-items">
-              {isViewport960 ? (
+              {isViewport960OrLess ? (
                 <div className="mobile-offers">
                   {renderedSlides.map((slide, idx) => (
                     <Fragment key={idx}>{slide}</Fragment>

@@ -8,12 +8,12 @@ import { useEffect, useState } from 'react';
  * @returns The viewport state as a boolean
  */
 export default function useResponsiveViewport(width: number, delay: number = 100): boolean {
-  const [isViewport, setIsViewport] = useState<boolean>(false);
+  const [isViewportWidthOrLess, setIsViewportWidthOrLess] = useState<boolean>(false);
 
   useEffect(() => {
     const handleResize = (): void => {
       const newViewportState = window.innerWidth <= width;
-      setIsViewport(newViewportState);
+      setIsViewportWidthOrLess(newViewportState);
     };
 
     const debounceResize = () => {
@@ -34,5 +34,5 @@ export default function useResponsiveViewport(width: number, delay: number = 100
     };
   }, [width, delay]);
 
-  return isViewport;
+  return isViewportWidthOrLess;
 }

@@ -19,9 +19,9 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 export default function Featured() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
   // Queries
@@ -34,7 +34,7 @@ export default function Featured() {
     <>
       {isLoading ? (
         <LoadingSkeleton />
-      ) : isViewport960 ? (
+      ) : isViewport960OrLess ? (
         <FeaturedMobile featuredGames={featuredGames ?? []} />
       ) : (
         <FeaturedDesktop featuredGames={featuredGames ?? []} />

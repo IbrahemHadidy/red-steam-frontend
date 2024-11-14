@@ -1,6 +1,3 @@
-// Providers
-import CartProvider from '@providers/CartProvider';
-
 // Styles
 import '@styles/shop/Checkout.scss';
 
@@ -18,5 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function CheckoutLayout({ children }: CheckoutLayoutProps) {
-  return <CartProvider>{children}</CartProvider>;
+  return <>{children}</>;
 }

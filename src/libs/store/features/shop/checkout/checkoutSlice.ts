@@ -8,7 +8,6 @@ import { captureOrder } from './checkoutThunks';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface CheckoutState {
-  readonly isCartInitialized: boolean;
   readonly isPaymentConfirmed: boolean;
   readonly isReviewSelected: boolean;
   readonly isCheckboxChecked: boolean;
@@ -17,7 +16,6 @@ interface CheckoutState {
 
 // Initial state
 const checkoutState: CheckoutState = {
-  isCartInitialized: false,
   isPaymentConfirmed: false,
   isReviewSelected: false,
   isCheckboxChecked: false,
@@ -29,9 +27,6 @@ const checkoutSlice = createSlice({
   initialState: checkoutState,
 
   reducers: {
-    setCartInitialized: (state, action: PayloadAction<boolean>) => {
-      state.isCartInitialized = action.payload;
-    },
     setPaymentConfirmed: (state, action: PayloadAction<boolean>) => {
       state.isPaymentConfirmed = action.payload;
     },
@@ -54,11 +49,6 @@ const checkoutSlice = createSlice({
   },
 });
 
-export const {
-  setCartInitialized,
-  setPaymentConfirmed,
-  setReviewSelected,
-  toggleCheckboxChecked,
-  setOrderId,
-} = checkoutSlice.actions;
+export const { setPaymentConfirmed, setReviewSelected, toggleCheckboxChecked, setOrderId } =
+  checkoutSlice.actions;
 export default checkoutSlice;

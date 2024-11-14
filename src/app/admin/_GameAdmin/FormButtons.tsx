@@ -19,7 +19,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { type, currentPage, loading } = useAppSelector((state) => state.admin.game);
 
   //---------------------------- Event Handlers ---------------------------//

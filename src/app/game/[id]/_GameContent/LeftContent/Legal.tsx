@@ -5,7 +5,7 @@ import { sanitize } from 'dompurify';
 import { useAppSelector } from '@store/hooks';
 
 export default function Legal() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame } = useAppSelector((state) => state.game);
 
   //-------------------------- Render UI Section --------------------------//

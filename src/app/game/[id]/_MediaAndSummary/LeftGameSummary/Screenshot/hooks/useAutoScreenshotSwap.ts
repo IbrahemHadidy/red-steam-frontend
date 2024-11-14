@@ -8,10 +8,10 @@ import type { RefObject } from 'react';
 /**
  * Handles the auto screenshot swap
  */
-const useAutoScreenshotSwap = (
+export default function useAutoScreenshotSwap(
   isPageVisible: boolean,
   slideAreaRef: RefObject<HTMLDivElement | null>
-) => {
+) {
   const { currentMediaLink, orderedMediaEntries, isScreenshotModalOpen, isMouseOverScreenshot } =
     useAppSelector((state) => state.game);
 
@@ -44,6 +44,4 @@ const useAutoScreenshotSwap = (
     isScreenshotModalOpen,
     orderedMediaEntries,
   ]);
-};
-
-export default useAutoScreenshotSwap;
+}

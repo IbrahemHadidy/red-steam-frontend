@@ -23,7 +23,7 @@ interface RootLayoutProps {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_PATH || ''),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_PATH ?? ''),
   icons: {
     icon: favIcon.src,
   },

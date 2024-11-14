@@ -27,7 +27,7 @@ interface ReviewProps {
 
 export default function Review({ review }: ReviewProps) {
   //--------------------------- Initializations ---------------------------//
-  const isViewport630 = useResponsiveViewport(630);
+  const isViewport630OrLess = useResponsiveViewport(630);
 
   //-------------------------------- Hooks --------------------------------//
   const { isPartialView, setIsPartialView } = usePartialViewCheck();
@@ -43,7 +43,7 @@ export default function Review({ review }: ReviewProps) {
         <div className="avatar">
           <Link href={`/user/${review.user?.id}`}>
             <div className={`player-avatar ${review.user?.isActive ? 'online' : 'offline'}`}>
-              <img src={review.user?.profilePicture || defaultPFP.src} alt="pfp" />
+              <img src={review.user?.profilePicture ?? defaultPFP.src} alt="pfp" />
             </div>
           </Link>
         </div>
@@ -52,7 +52,7 @@ export default function Review({ review }: ReviewProps) {
           <Link href={`/user/${review.user?.id}`}>{review.user?.username}</Link>
         </div>
 
-        {isViewport630 && <div className="post-date"> Posted: {formatDate(review.date)}</div>}
+        {isViewport630OrLess && <div className="post-date"> Posted: {formatDate(review.date)}</div>}
       </div>
 
       <div className="rightcol">
@@ -69,7 +69,9 @@ export default function Review({ review }: ReviewProps) {
           <div className="title">{!review.positive ? 'Not Recommended' : 'Recommended'}</div>
         </div>
 
-        {!isViewport630 && <div className="post-date"> Posted: {formatDate(review.date)}</div>}
+        {!isViewport630OrLess && (
+          <div className="post-date"> Posted: {formatDate(review.date)}</div>
+        )}
 
         <div className="content">
           <div

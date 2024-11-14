@@ -8,7 +8,7 @@ export default function SettingsHeader() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { isIdVisible } = useAppSelector((state) => state.user.settings);
 

@@ -25,7 +25,7 @@ export default function MediaVideo({ item }: MediaVideoProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { duplicateOrders } = useAppSelector((state) => state.admin.game);
 
   //---------------------------- Event Handlers ---------------------------//

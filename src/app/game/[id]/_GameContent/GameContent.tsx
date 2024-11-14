@@ -9,7 +9,7 @@ import RightContent from './RightContent/RightContent';
 import Skeleton from './Skeleton';
 
 export default function GameContent() {
-  //---------------------------- State Selectors --------------------------//
+  //-------------------------------- States -------------------------------//
   const { currentGame, isGameFetching } = useAppSelector((state) => state.game);
 
   //--------------------------- Render UI Section -------------------------//

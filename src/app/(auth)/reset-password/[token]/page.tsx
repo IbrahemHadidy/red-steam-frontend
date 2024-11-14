@@ -9,8 +9,8 @@ import { useAppDispatch } from '@store/hooks';
 // Redux Handlers
 import { setType } from '@store/features/user/login/loginSlice';
 
-// Providers
-import ResetPasswordProvider from '@providers/ResetPasswordProvider';
+// Custom Hooks
+import useInitializePasswordReset from './_hooks/useInitializePasswordReset';
 
 // Components
 import ResetPassword from '@app/(auth)/_SignInAndRecovery/SignInAndRecovery';
@@ -33,10 +33,13 @@ export default function ResetPasswordPage(props: ResetPasswordPageProps) {
     dispatch(setType('Password Reset'));
   }, [dispatch]);
 
+  // Initialize password reset
+  useInitializePasswordReset({ token });
+
   return (
-    <ResetPasswordProvider token={token}>
+    <>
       <RedirectIfLoggedIn />
       <ResetPassword />
-    </ResetPasswordProvider>
+    </>
   );
 }

@@ -21,7 +21,8 @@ import '@styles/store/Store.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
 interface StoreLayoutProps {
   children: ReactNode;
 }
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   description: 'Browse Steam games and offers.',
 };
 
-export default function StoreLayout({ children }: StoreLayoutProps): JSX.Element {
+export default function StoreLayout({ children }: StoreLayoutProps) {
   return (
     <>
       <Header />

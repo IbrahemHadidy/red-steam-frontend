@@ -26,7 +26,7 @@ export default function AdditionalInfo() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { link, about, mature, matureDescription, legal } = useAppSelector(
     (state) => state.admin.game
   );

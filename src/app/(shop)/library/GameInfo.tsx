@@ -19,7 +19,7 @@ export default function GameInfo() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { selectedGame } = useAppSelector((state) => state.shop.library);
 
   //---------------------------- Event Handlers ---------------------------//
@@ -46,7 +46,7 @@ export default function GameInfo() {
             />
           ) : (
             isImageEntry(gameMediaItem(selectedGame)) && (
-              <img src={gameMediaItem(selectedGame)?.link || ''} alt="Game" />
+              <img src={gameMediaItem(selectedGame)?.link ?? ''} alt="Game" />
             )
           )}
         </div>

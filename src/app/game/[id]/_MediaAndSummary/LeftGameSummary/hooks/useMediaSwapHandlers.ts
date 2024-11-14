@@ -16,7 +16,9 @@ interface MediaSwapHandlers {
   handleSwap: (direction: 'left' | 'right') => void;
 }
 
-const useMediaSwapHandlers = ({ slideAreaRef }: UseMediaSwapHandlersProps): MediaSwapHandlers => {
+export default function useMediaSwapHandlers({
+  slideAreaRef,
+}: UseMediaSwapHandlersProps): MediaSwapHandlers {
   const dispatch = useAppDispatch();
 
   const { orderedMediaEntries, currentMediaLink, currentMediaIndex, autoPlayVideo } =
@@ -177,6 +179,4 @@ const useMediaSwapHandlers = ({ slideAreaRef }: UseMediaSwapHandlersProps): Medi
   );
 
   return { handleRightSwap, handleLeftSwap, handleSwap };
-};
-
-export default useMediaSwapHandlers;
+}

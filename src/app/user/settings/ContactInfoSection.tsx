@@ -23,7 +23,7 @@ export default function ContactInfoSection() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
   //---------------------------- Event Handlers ----------------------------//

@@ -532,9 +532,20 @@
 			}
 
 			.game-hover {
-				left: 100%;
+				left: -50%;
 				margin-top: -125px;
 				position: relative;
+			}
+		}
+
+		.end-of-results {
+			text-align: center;
+			font-size: 24px;
+			color: #c6d4df;
+			margin: 10px 0;
+
+			.hint {
+				font-size: 20px;
 			}
 		}
 	}

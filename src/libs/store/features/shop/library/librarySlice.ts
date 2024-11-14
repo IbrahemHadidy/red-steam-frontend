@@ -6,6 +6,7 @@ import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface LibraryState {
+  readonly isLibraryInitialized: boolean;
   readonly cardSize: number;
   readonly selectedGame: Game | null;
   readonly userLibrary: Game[];
@@ -15,6 +16,7 @@ interface LibraryState {
 
 // Initial state
 const libraryState: LibraryState = {
+  isLibraryInitialized: false,
   cardSize: 250,
   selectedGame: null,
   userLibrary: [],
@@ -27,6 +29,9 @@ const librarySlice = createSlice({
   initialState: libraryState,
 
   reducers: {
+    setIsLibraryInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isLibraryInitialized = action.payload;
+    },
     setCardSize: (state, action: PayloadAction<number>) => {
       state.cardSize = action.payload;
     },
@@ -46,9 +51,10 @@ const librarySlice = createSlice({
 });
 
 // Listener actions
-export const initializeLibrary = createAction('shop/library/initializeWislist');
+export const initializeLibrary = createAction('shop/library/initializeLibrary');
 
 export const {
+  setIsLibraryInitialized,
   setCardSize,
   setSelectedGame,
   updateLibrary,

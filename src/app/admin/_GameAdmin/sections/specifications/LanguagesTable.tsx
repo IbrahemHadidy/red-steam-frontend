@@ -16,7 +16,7 @@ export default function LanguagesTable({ languagesTableRef }: LanguagesTableProp
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { languages } = useAppSelector((state) => state.admin.game);
 
   //---------------------------- Event Handlers ---------------------------//

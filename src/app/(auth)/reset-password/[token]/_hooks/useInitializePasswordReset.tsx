@@ -21,15 +21,11 @@ import {
 // Constants
 import { MIN_RECOVERY_TOKEN_LENGTH } from '@constants/recovery';
 
-// Types
-import type { ReactNode } from 'react';
-
-interface ResetPasswordProviderProps {
+interface InitializePasswordResetProps {
   token: string;
-  children: ReactNode;
 }
 
-export default function ResetPasswordProvider({ children, token }: ResetPasswordProviderProps) {
+export default function useInitializePasswordReset({ token }: InitializePasswordResetProps) {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -45,6 +41,4 @@ export default function ResetPasswordProvider({ children, token }: ResetPassword
       dispatch(setResetPasswordInterfaceVisibility(true));
     }
   }, [dispatch, router, token]);
-
-  return token && token.length >= MIN_RECOVERY_TOKEN_LENGTH ? <>{children}</> : null;
 }

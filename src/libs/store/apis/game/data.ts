@@ -2,6 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
+import type { RequestParams } from '@custom-types/search';
 import type { Game } from '@interfaces/game';
 import type { Review } from '@interfaces/review';
 
@@ -16,37 +17,7 @@ const gameDataApi = createApi({
       query: (partialName) => `search/${partialName}`,
     }),
 
-    getByParameters: builder.query<
-      Game[],
-      {
-        searchData: {
-          sort?:
-            | 'relevance'
-            | 'name'
-            | 'lowestPrice'
-            | 'highestPrice'
-            | 'releaseDate'
-            | 'reviews'
-            | 'totalSales';
-          partialName?: string;
-          maxPrice?: string;
-          tags?: number[];
-          excludeTags?: number[];
-          paid?: boolean;
-          offers?: boolean;
-          platforms?: ('win' | 'mac')[];
-          publishers?: number[];
-          developers?: number[];
-          features?: number[];
-          languages?: number[];
-          featured?: boolean;
-          excludeMature?: boolean;
-          excludedGames?: number[];
-          upcomingMode?: 'onlyUpcoming' | 'exclude';
-        };
-        pagination?: { offset?: number; limit?: number };
-      }
-    >({
+    getByParameters: builder.query<Game[], RequestParams>({
       query: ({ searchData, pagination }) => {
         const queryParams = new URLSearchParams();
 
@@ -72,10 +43,8 @@ const gameDataApi = createApi({
         appendArrayParam('languages', searchData.languages);
         appendArrayParam('excludedGames', searchData.excludedGames);
 
-        if (pagination) {
-          if (pagination.offset) queryParams.append('offset', pagination.offset.toString());
-          if (pagination.limit) queryParams.append('limit', pagination.limit.toString());
-        }
+        if (pagination.page) queryParams.append('page', pagination.page.toString());
+        if (pagination.limit) queryParams.append('limit', pagination.limit.toString());
 
         return `search?${queryParams.toString()}`;
       },

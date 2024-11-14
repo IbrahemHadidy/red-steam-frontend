@@ -10,6 +10,7 @@ import { useAppSelector } from '@store/hooks';
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
+import useInitializeCart from '../_hooks/useInitializeCart';
 
 // Utils
 import getRandomArrayItem from '@utils/getRandomArrayItem';
@@ -27,10 +28,13 @@ import type { Game } from '@interfaces/game';
 
 export default function CartPage() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport840 = useResponsiveViewport(840);
+  const isViewport840OrLess = useResponsiveViewport(840);
 
-  //--------------------------- State Selectors ---------------------------//
-  const { userCart } = useAppSelector((state) => state.shop.cart);
+  //------------------------------- States --------------------------------//
+  const { isCartInitialized, userCart } = useAppSelector((state) => state.shop.cart);
+
+  //------------------------------- Hooks ---------------------------------//
+  useInitializeCart();
 
   //-------------------------- Render UI Section --------------------------//
   useDynamicBackground(
@@ -40,36 +44,41 @@ export default function CartPage() {
     [userCart]
   );
 
-  return (
-    <div className="cart-content-container">
-      <div className="cart-path">
-        <Link href="/">Home </Link>
-        <span>&gt;&nbsp; Your Shopping Cart</span>
-      </div>
-
-      <h2 className="cart-title">Your Shopping Cart</h2>
-
-      <div className="cart-main">
-        <div className="cart-content">
-          {userCart.length === 0 ? (
-            <div className="cart-empty">
-              <p>Your cart is empty.</p>
-            </div>
-          ) : (
-            <div className="cart-items">
-              {userCart.map((game) => (
-                <CartItem key={game.id} game={game} />
-              ))}
-            </div>
-          )}
-
-          {isViewport840 && <CartSummary />}
-
-          {userCart.length !== 0 && <CartActions />}
+  if (!isCartInitialized) {
+    // TODO: Add skeleton
+    return <></>;
+  } else {
+    return (
+      <div className="cart-content-container">
+        <div className="cart-path">
+          <Link href="/">Home </Link>
+          <span>&gt;&nbsp; Your Shopping Cart</span>
         </div>
 
-        {!isViewport840 && <CartSummary />}
+        <h2 className="cart-title">Your Shopping Cart</h2>
+
+        <div className="cart-main">
+          <div className="cart-content">
+            {userCart.length === 0 ? (
+              <div className="cart-empty">
+                <p>Your cart is empty.</p>
+              </div>
+            ) : (
+              <div className="cart-items">
+                {userCart.map((game) => (
+                  <CartItem key={game.id} game={game} />
+                ))}
+              </div>
+            )}
+
+            {isViewport840OrLess && <CartSummary />}
+
+            {userCart.length !== 0 && <CartActions />}
+          </div>
+
+          {!isViewport840OrLess && <CartSummary />}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

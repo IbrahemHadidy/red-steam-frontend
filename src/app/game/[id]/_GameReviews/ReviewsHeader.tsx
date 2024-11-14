@@ -15,7 +15,7 @@ export default function ReviewsHeader() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame, reviews, filter, sort } = useAppSelector((state) => state.game);
 
   //---------------------------- Event Handlers ---------------------------//

@@ -45,13 +45,14 @@ const listen = gameListener.startListening.withTypes<RootState, AppDispatch>();
 // Listen for game initialization
 listen({
   actionCreator: initializeGame,
+
   effect: async (action: PayloadAction<string>, listenerApi) => {
     const { dispatch } = listenerApi;
 
     //------------------------------ Get game data ------------------------------//
     dispatch(reset());
     const gameId = Number(action.payload);
-    const recentGames: RecentGames = JSON.parse(localStorage.getItem('recentGames') || '[]');
+    const recentGames: RecentGames = JSON.parse(localStorage.getItem('recentGames') ?? '[]');
 
     const fetchedGame = !isNaN(gameId)
       ? await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap()
@@ -111,6 +112,7 @@ listen({
 // Listen for game preview initialization (Game admin)
 listen({
   actionCreator: initializeGamePreview,
+
   effect: (action: PayloadAction<Game>, listenerApi) => {
     const { dispatch } = listenerApi;
     const game = action.payload;
@@ -130,9 +132,9 @@ listen({
 
 // Listen for autoplay changes and update the local storage
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return currentState.game.autoPlayVideo !== previousState.game.autoPlayVideo;
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.game.autoPlayVideo !== previousState.game.autoPlayVideo,
+
   effect: (_action, listenerApi) => {
     const { getState } = listenerApi;
     const { autoPlayVideo } = getState().game;
@@ -143,9 +145,9 @@ listen({
 
 // Listen for volume changes and update the local storage
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return currentState.game.videoVolume !== previousState.game.videoVolume;
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.game.videoVolume !== previousState.game.videoVolume,
+
   effect: (_action, listenerApi) => {
     const { getState } = listenerApi;
     const { videoVolume } = getState().game;
@@ -156,9 +158,9 @@ listen({
 
 // Listen for muted changes and update the local storage
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return currentState.game.videoMuted !== previousState.game.videoMuted;
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.game.videoMuted !== previousState.game.videoMuted,
+
   effect: (_action, listenerApi) => {
     const { getState } = listenerApi;
     const { videoMuted } = getState().game;
@@ -169,12 +171,10 @@ listen({
 
 // Listen for review changes and update review state
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return (
-      currentState.auth.currentUserData !== previousState.auth.currentUserData ||
-      currentState.game.currentGame !== previousState.game.currentGame
-    );
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.auth.currentUserData !== previousState.auth.currentUserData ||
+    currentState.game.currentGame !== previousState.game.currentGame,
+
   effect: async (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { currentUserData } = listenerApi.getState().auth;
@@ -198,18 +198,16 @@ listen({
 
 // Listen for shop changes and update shop state
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return (
-      currentState.auth.currentUserData !== previousState.auth.currentUserData ||
-      currentState.game.currentGame !== previousState.game.currentGame
-    );
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.auth.currentUserData !== previousState.auth.currentUserData ||
+    currentState.game.currentGame !== previousState.game.currentGame,
+
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { currentUserData } = listenerApi.getState().auth;
     const { currentGame } = listenerApi.getState().game;
 
-    const isInCart = !!currentUserData?.library?.some((item) => item.id === currentGame?.id);
+    const isInCart = !!currentUserData?.cart?.some((item) => item.id === currentGame?.id);
     const isInWishlist = !!currentUserData?.wishlist?.some((item) => item.id === currentGame?.id);
     const isInLibrary = !!currentUserData?.library?.some((item) => item.id === currentGame?.id);
 
@@ -222,6 +220,7 @@ listen({
 // Listen for reviews initialization
 listen({
   actionCreator: initializeReviews,
+
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     dispatch(getReviews());

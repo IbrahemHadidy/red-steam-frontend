@@ -16,15 +16,15 @@ export default function RedirectIfNotAdmin(): null {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  //--------------------------- State Selectors ---------------------------//
-  const { currentUserData } = useAppSelector((state) => state.auth);
+  //------------------------------- States --------------------------------//
+  const { currentUserData, isAuthInitialized } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!currentUserData?.isAdmin) {
+    if (!currentUserData?.isAdmin && isAuthInitialized) {
       toast.warn('You are not authorized to access this page!');
       router.push('/');
     }
-  }, [currentUserData, router]);
+  }, [currentUserData, isAuthInitialized, router]);
 
   return null;
 }

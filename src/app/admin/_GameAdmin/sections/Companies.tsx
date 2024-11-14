@@ -33,7 +33,7 @@ export default function Companies() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { publishers, developers } = useAppSelector((state) => state.admin.game);
 
   //---------------------------- Redux Queries ----------------------------//

@@ -58,8 +58,8 @@ function Content() {
 }
 
 export default function LoadingSkeleton() {
-  const isViewport960 = useResponsiveViewport(960);
-  return !isViewport960 ? (
+  const isViewport960OrLess = useResponsiveViewport(960);
+  return !isViewport960OrLess ? (
     <>
       <Box
         sx={{

@@ -17,15 +17,15 @@ import SystemRequirements from './SystemRequirements';
 export default function LeftContent() {
   //--------------------------- Initializations ---------------------------//
   const platform = getPlatform();
-  const isViewport630 = useResponsiveViewport(630);
+  const isViewport630OrLess = useResponsiveViewport(630);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame } = useAppSelector((state) => state.game);
 
   //------------------------- Render UI Section --------------------------//
   return (
     <div className="game-content-left">
-      {!isViewport630 && <GamePurchase />}
+      {!isViewport630OrLess && <GamePurchase />}
 
       <About />
 

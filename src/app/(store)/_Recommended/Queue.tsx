@@ -14,7 +14,7 @@ interface queueGame {
 
 export default function Queue(): JSX.Element {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
   //----------------------------- Queue Config ----------------------------//
   const queueGames: queueGame[] = [
@@ -50,7 +50,7 @@ export default function Queue(): JSX.Element {
 
         <div className="static-queue">
           <a className="static-queue-link" onClick={handleQueueLinkClick}>
-            {isViewport960 ? (
+            {isViewport960OrLess ? (
               <div className="begin-explore-mobile">
                 <div className="begin-explore-mobile-btn">Explore Your Queue</div>
               </div>

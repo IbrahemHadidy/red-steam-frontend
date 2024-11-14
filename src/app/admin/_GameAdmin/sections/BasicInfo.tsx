@@ -26,7 +26,7 @@ export default function BasicInfo() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { name, category, description, releaseDate, featured } = useAppSelector(
     (state) => state.admin.game
   );

@@ -209,7 +209,7 @@ const signupSlice = createSlice({
             passwordInputError,
             confirmPasswordInputError,
             errors,
-          } = action.payload || {};
+          } = action.payload ?? {};
 
           state.isCheckingAvailability = false;
           state.submitButtonDisabled = false;

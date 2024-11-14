@@ -4,7 +4,6 @@
 import { useEffect } from 'react';
 
 // NextJS
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 // Redux Hooks
@@ -12,7 +11,6 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
 import {
-  initializeLibrary,
   setCardSize,
   setIsCompleteModalOpen,
   setIsGameModalOpen,
@@ -22,36 +20,32 @@ import {
 import { LIBRARY_BG } from '@config/constants/backgrounds';
 
 // Components
-const GameCard = dynamic(() => import('./GameCard'));
-const CardSizeSlider = dynamic(() => import('./CardSizeSlider'));
-const GameInfo = dynamic(() => import('./GameInfo'));
-const CompleteModal = dynamic(() => import('./CompleteModal'));
+import CardSizeSlider from './CardSizeSlider';
+import CompleteModal from './CompleteModal';
+import GameCard from './GameCard';
+import GameInfo from './GameInfo';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
+import useInitializeLibrary from '../_hooks/useInitializeLibrary';
 
 export default function LibraryPage() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
-  const isViewport1000 = useResponsiveViewport(1000);
-  useDynamicBackground(LIBRARY_BG);
+  const isViewport1000OrLess = useResponsiveViewport(1000);
 
-  //--------------------------- State Selectors ---------------------------//
-  const { selectedGame, userLibrary, isGameModalOpen, isCompleteModalOpen } = useAppSelector(
-    (state) => state.shop.library
-  );
+  //------------------------------- States --------------------------------//
+  const { selectedGame, userLibrary, isGameModalOpen, isCompleteModalOpen, isLibraryInitialized } =
+    useAppSelector((state) => state.shop.library);
 
-  //------------------------------ On Mount -------------------------------//
-  // Initialize library (fetch user library)
+  //------------------------------- Hooks ---------------------------------//
+  useInitializeLibrary();
+
+  // Set card size to 320 on viewport less than 1000px on mount
   useEffect(() => {
-    dispatch(initializeLibrary());
-  }, [dispatch]);
-
-  // Set card size to 320 on viewport less than 1000px
-  useEffect(() => {
-    if (isViewport1000) dispatch(setCardSize(320));
-  }, [dispatch, isViewport1000]);
+    if (isViewport1000OrLess) dispatch(setCardSize(320));
+  }, [dispatch, isViewport1000OrLess]);
 
   //---------------------------- Event Handlers ----------------------------//
   const handleCloseShowClick = (): void => {
@@ -63,36 +57,43 @@ export default function LibraryPage() {
   };
 
   //-------------------------- Render UI Section --------------------------//
-  return (
-    <>
-      <div className="Library">
-        {userLibrary?.length === 0 && (
-          <div className="no-games">
-            <div className="no-game">You have no games in your library</div>
-            <Link className="back-button" href="/">
-              <span>Go to store</span>
-            </Link>
-          </div>
-        )}
+  useDynamicBackground(LIBRARY_BG);
 
-        <div className="game-list">
-          {userLibrary?.map((game) => <GameCard game={game} key={game.id} />)}
+  if (!isLibraryInitialized) {
+    // TODO: Add skeleton
+    return <></>;
+  } else {
+    return (
+      <>
+        <div className="Library">
+          {userLibrary?.length === 0 && (
+            <div className="no-games">
+              <div className="no-game">You have no games in your library</div>
+              <Link className="back-button" href="/">
+                <span>Go to store</span>
+              </Link>
+            </div>
+          )}
+
+          <div className="game-list">
+            {userLibrary?.map((game) => <GameCard game={game} key={game.id} />)}
+          </div>
+
+          {!isViewport1000OrLess && userLibrary?.length !== 0 && <CardSizeSlider />}
         </div>
 
-        {!isViewport1000 && userLibrary?.length !== 0 && <CardSizeSlider />}
-      </div>
+        <div className={`before-play-info ${isGameModalOpen ? 'shown' : ''}`}>
+          {selectedGame && <GameInfo />}
+        </div>
 
-      <div className={`before-play-info ${isGameModalOpen ? 'shown' : ''}`}>
-        {selectedGame && <GameInfo />}
-      </div>
+        {isCompleteModalOpen && <CompleteModal />}
 
-      {isCompleteModalOpen && <CompleteModal />}
+        {isGameModalOpen && <div className="show-overlay" onClick={handleCloseShowClick} />}
 
-      {isGameModalOpen && <div className="show-overlay" onClick={handleCloseShowClick}></div>}
-
-      {isCompleteModalOpen && (
-        <div className="complete-overlay" onClick={handleCloseCompleteClick}></div>
-      )}
-    </>
-  );
+        {isCompleteModalOpen && (
+          <div className="complete-overlay" onClick={handleCloseCompleteClick} />
+        )}
+      </>
+    );
+  }
 }

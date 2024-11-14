@@ -20,13 +20,13 @@ export default function DeleteAccountModal() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { errorMessage, currentPassword, deleteAccountButtonDisabled } = useAppSelector(
     (state) => state.user.settings
   );
 
   //----------------------------- Validations -----------------------------//
-  const isPasswordValid: boolean = currentPassword.length >= 8;
+  const isPasswordValid = currentPassword.length >= 8;
 
   //--------------------------- Event Handlers ----------------------------//
   const closeDeleteModal = (): void => {

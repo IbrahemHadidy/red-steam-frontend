@@ -26,7 +26,7 @@ export default function ProfileDropdown() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState<string | null>(null);
 
@@ -44,7 +44,7 @@ export default function ProfileDropdown() {
     renderKey: string,
     links: string[],
     items: string[]
-  ): JSX.Element => {
+  ) => {
     return (
       <NavDropdown
         title={title}
@@ -69,14 +69,14 @@ export default function ProfileDropdown() {
   return (
     <>
       {renderNavDropdownWithClick(
-        currentUserData?.username || 'profile',
+        currentUserData?.username ?? 'profile',
         '4',
         sharedData.minorMenuItems.map((item) => item.link),
         sharedData.minorMenuItems.map((item) => item.text)
       )}
       <Link href="/user/settings" className="compact-profile-link">
         <img
-          src={currentUserData?.profilePicture || defaultPFP.src}
+          src={currentUserData?.profilePicture ?? defaultPFP.src}
           alt="Profile"
           width="40"
           height="40"

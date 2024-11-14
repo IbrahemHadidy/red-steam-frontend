@@ -43,7 +43,7 @@ const debouncedCheckUsernameExists = debounce<
   (accountName: string, dispatch: AppDispatch) => Promise<void>
 >(async (accountName: string, dispatch: AppDispatch) => {
   try {
-    const exists = dispatch(
+    const exists = await dispatch(
       userManagementApi.endpoints.checkUsernameExists.initiate(accountName)
     ).unwrap();
 
@@ -60,9 +60,8 @@ const debouncedCheckUsernameExists = debounce<
 
 // Listen for username changes and check if it is available
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return currentState.user.settings.newUsername !== previousState.user.settings.newUsername;
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.user.settings.newUsername !== previousState.user.settings.newUsername,
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { newUsername } = listenerApi.getState().user.settings;

@@ -43,7 +43,7 @@ export default function SignUpPage() {
   const dispatch = useAppDispatch();
   useDynamicBackground(SIGNUP_BG);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isSecondPage, isEmailAvailable, errorMessages } = useAppSelector(
     (state) => state.user.signup
   );

@@ -80,9 +80,9 @@ const debouncedCheckUsernameExists = debounce<
 
 // Listen for username changes and check if it is available
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return currentState.user.signup.accountName !== previousState.user.signup.accountName;
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.user.signup.accountName !== previousState.user.signup.accountName,
+
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { accountName } = listenerApi.getState().user.signup;
@@ -101,12 +101,10 @@ listen({
 
 // Listen for password and confirm password changes and update the passwords do not match state
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return (
-      currentState.user.signup.password !== previousState.user.signup.password ||
-      currentState.user.signup.confirmPassword !== previousState.user.signup.confirmPassword
-    );
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.user.signup.password !== previousState.user.signup.password ||
+    currentState.user.signup.confirmPassword !== previousState.user.signup.confirmPassword,
+
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { password, confirmPassword } = listenerApi.getState().user.signup;

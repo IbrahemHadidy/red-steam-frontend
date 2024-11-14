@@ -27,13 +27,12 @@ import type { Game } from '@interfaces/game';
 import type { OpenedTab } from '../Store.types';
 
 export default function HomeTabs() {
-  //----------------------------- State Hooks -----------------------------//
+  //------------------------------- States --------------------------------//
+  const { currentUserData } = useAppSelector((state) => state.auth);
+  
   const [openedTab, setOpenedTab] = useState<OpenedTab>('New & Trending');
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
-
-  //--------------------------- State Selectors ---------------------------//
-  const { currentUserData } = useAppSelector((state) => state.auth);
 
   //---------------------------- Redux Queries ----------------------------//
   const { isLoading: newAndTrendingLoading, data: newAndTrending } = useGetByNewestQuery(

@@ -1,33 +1,15 @@
-// Components
-import SpecialOffer from './SpecialOffer';
-import WeekendOffer from './WeekendOffer';
+import WeekendOffer from '../WeekendOffer';
+import renderSmallGroups from './renderSmallGroups';
 
-// Types
 import type { Game } from '@interfaces/game';
 import type { Dispatch, JSX, SetStateAction } from 'react';
 
-const renderSmallGroups = (specialOffers: Game[]): JSX.Element[] => {
-  const smallGroups: JSX.Element[] = [];
-  for (let i = 0; i < specialOffers.length; i += 2) {
-    const smallGroup: JSX.Element = (
-      <div className="small-group" key={`small-group-${i}`}>
-        {<SpecialOffer offer={specialOffers[i]} key={specialOffers[i].id} />}
-        {specialOffers[i + 1] && (
-          <SpecialOffer offer={specialOffers[i + 1]} key={specialOffers[i + 1].id} />
-        )}
-      </div>
-    );
-    smallGroups.push(smallGroup);
-  }
-  return smallGroups;
-};
-
-export const renderSlides = (
+export default function renderSlides(
   weekendOffers: Game[],
   specialOffers: Game[],
   totalSlides: number,
   setTotalSlides: Dispatch<SetStateAction<number>>
-): JSX.Element[] => {
+): JSX.Element[] {
   const SLOTS_PER_SLIDE: number = 6;
   const BIG_OFFER_SLOTS: number = 2; // 2 slots for each big offer
   const SMALL_GROUP_SLOTS: number = 2; // 2 slots for each small group
@@ -89,4 +71,4 @@ export const renderSlides = (
 
   // Limit the number of slides to 6
   return slides.slice(0, 6);
-};
+}

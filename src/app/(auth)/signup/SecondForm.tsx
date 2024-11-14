@@ -26,7 +26,7 @@ export default function SecondForm() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const {
     isCheckingAvailability,
     accountNameInputError,

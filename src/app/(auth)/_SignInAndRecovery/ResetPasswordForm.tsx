@@ -28,7 +28,7 @@ export default function ResetPasswordForm() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const {
     resetPasswordLoadingState,
     isResetButtonDisabled,

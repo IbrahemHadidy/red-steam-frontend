@@ -16,7 +16,7 @@ import { createFeature } from '@services/common/features';
 import type { ChangeEvent, JSX } from 'react';
 
 export default function FeaturesAdmin(): JSX.Element {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [name, setName] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);

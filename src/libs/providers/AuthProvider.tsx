@@ -31,7 +31,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData, isUserLoggedIn, isVerifyModalVisible } = useAppSelector(
     (state) => state.auth
   );

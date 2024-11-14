@@ -11,8 +11,8 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import Slider from 'react-slick';
 const Category = dynamic(() => import('./Category'));
 
-// Static Data
-import categories from './categoryItems';
+// Constants
+import CATEGORIES from '@constants/categories';
 
 // Types
 import type { JSX } from 'react';
@@ -21,7 +21,7 @@ import type { Category } from '../Store.types';
 
 export default function Categories() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
   //---------------------------- Slider Config ----------------------------//
   // Slider Settings
@@ -35,11 +35,11 @@ export default function Categories() {
 
   // Category Groups (5 per row)
   const categoryGroups: Category[][] = [
-    categories.slice(0, 4),
-    categories.slice(4, 8),
-    categories.slice(8, 12),
-    categories.slice(12, 16),
-    categories.slice(16),
+    CATEGORIES.slice(0, 4),
+    CATEGORIES.slice(4, 8),
+    CATEGORIES.slice(8, 12),
+    CATEGORIES.slice(12, 16),
+    CATEGORIES.slice(16),
   ];
 
   //-------------------------- Utility Functions --------------------------//
@@ -55,7 +55,7 @@ export default function Categories() {
   return (
     <div className="home-section">
       <div className="home-contents">
-        {isViewport960 ? (
+        {isViewport960OrLess ? (
           <div className="mobile-mini">
             {categoryGroups.map((group, idx) => (
               <Fragment key={idx}>{renderCategoryGroup(group, idx)}</Fragment>

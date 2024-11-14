@@ -16,7 +16,7 @@ import { createLanguage } from '@services/common/languages';
 import type { JSX } from 'react';
 
 export default function LanguagesAdmin(): JSX.Element {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [name, setName] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);
 

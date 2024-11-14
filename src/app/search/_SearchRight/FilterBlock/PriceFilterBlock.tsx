@@ -1,61 +1,81 @@
+// NextJS
+import Image from 'next/image';
+
 // React
 import { useEffect, useRef, useState } from 'react';
 
-// NextJS
-import Image from 'next/image';
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Handlers
+import { checkFilter, setPriceRange, uncheckFilter } from '@store/features/search/searchSlice';
+
+// Constants
+import { PRICE_RANGES } from '@config/constants/search';
 
 // Images
 import dropdown from '@images/dropdown.png';
 
 // Types
-import type { ChangeEvent, JSX, MouseEvent } from 'react';
-import type { Filter, PriceFilterBlockProps } from '../Search.types';
+import type { Filter } from '@custom-types/search';
+import type { ChangeEvent, MouseEvent } from 'react';
 
-export default function PriceFilterBlock({
-  filters,
-  rangeValue,
-  setRangeValue,
-  handlePriceChange,
-  handlePriceRowClick,
-  getPriceRangeLabel,
-}: PriceFilterBlockProps): JSX.Element {
-  //--------------------------- State Selectors ---------------------------//
+interface PriceFilterBlockProps {
+  filters: Filter[];
+}
+
+export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
+  //--------------------------- Initializations ---------------------------//
+  const dispatch = useAppDispatch();
+
+  //------------------------------- States --------------------------------//
+  const { priceRange } = useAppSelector((state) => state.search);
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
 
-  // Refs
+  //----------------------------- Refs ---------------------------------//
   const priceFilterRef = useRef<HTMLDivElement | null>(null);
 
-  // Add the dropdowns you want to be openend as default here
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
+  // Open the price dropdown on load
+  useEffect(() => setIsOpen(true), []);
 
   // Handle the expanding of the price dropdown
   useEffect(() => {
     setDropdownHeight(priceFilterRef.current?.scrollHeight ?? 0);
   }, [isOpen]);
 
+  //---------------------------- Event Handlers ---------------------------//
   const handlePriceHeaderClick = (): void => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
+  };
+
+  const handlePriceChange = (value: number): void => {
+    setPriceRange(value);
   };
 
   const handlePriceRangeChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setRangeValue(Number(e.target.value));
+    dispatch(setPriceRange(Number(e.target.value)));
   };
 
   const handlePriceRangeMouseUp = (e: MouseEvent<HTMLInputElement>): void => {
     handlePriceChange(Number((e.target as HTMLInputElement).value));
   };
 
-  const handlePriceIncludeClick = (row: Filter): void => {
-    handlePriceRowClick({
-      id: row.id,
-      name: row.name,
-      check: row.check,
-    });
+  const handleIncludeClick = (row: Filter): void => {
+    if (row.check === 'included') {
+      dispatch(uncheckFilter({ filterType: 'price', id: row.id }));
+    } else {
+      dispatch(checkFilter({ filterType: 'price', check: 'included', id: row.id }));
+    }
   };
 
+  //---------------------------- Helper Functions ---------------------------//
+  const getPriceRangeLabel = (value: number): string => {
+    return PRICE_RANGES[value]?.label ?? '';
+  };
+
+  //---------------------------- Render UI Section --------------------------//
   return (
     <div className="filter-block">
       <div className="filter-header" onClick={handlePriceHeaderClick}>
@@ -70,6 +90,7 @@ export default function PriceFilterBlock({
           />
         </div>
       </div>
+
       <div
         className={`filter-content ${!isOpen ? 'closed' : ''}`}
         style={{
@@ -85,23 +106,25 @@ export default function PriceFilterBlock({
               step={1}
               min={0}
               max={13}
-              defaultValue={rangeValue === 0 ? 0 : rangeValue || 13}
+              defaultValue={priceRange === 0 ? 0 : (priceRange ?? 13)}
               onChange={handlePriceRangeChange}
               onMouseUp={handlePriceRangeMouseUp}
             />
           </div>
           <div className="range-display">
-            {getPriceRangeLabel(rangeValue === 0 ? 0 : rangeValue || 13)}
+            {getPriceRangeLabel(priceRange === 0 ? 0 : (priceRange ?? 13))}
           </div>
         </div>
+
         <div className="block-rule" />
+
         {filters.map((row) => (
           <div
             key={row.name}
             className={`filter-control-row ${row.check === 'included' ? 'checked' : ''} ${
-              row.id === 2 && rangeValue === 0 ? 'disabled' : ''
+              row.id === 2 && priceRange === 0 ? 'disabled' : ''
             }`}
-            onClick={() => handlePriceIncludeClick(row)}
+            onClick={() => handleIncludeClick(row)}
           >
             <span className="filter-tab">
               <span>

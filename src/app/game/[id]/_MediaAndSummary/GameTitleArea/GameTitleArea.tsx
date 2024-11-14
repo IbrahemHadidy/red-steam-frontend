@@ -27,11 +27,10 @@ export default function GameTitleArea() {
   const router = useRouter();
   const pathname = usePathname();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { currentGame } = useAppSelector((state) => state.game);
 
-  //----------------------------- State Hooks -----------------------------//
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
 

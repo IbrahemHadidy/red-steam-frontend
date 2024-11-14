@@ -26,7 +26,8 @@ import { ACCOUNT_CREATION_BG } from '@config/constants/backgrounds';
 import useDynamicBackground from '@hooks/useDynamicBackground';
 
 // Utils
-import { filteredSortedTags, isTagSelected } from './userTags-utils';
+import getFilteredSortedTags from './utils/getFilteredSortedTags';
+import isTagSelected from './utils/isTagSelected';
 
 // Types
 import type { Tag } from '@interfaces/tag';
@@ -38,7 +39,7 @@ export default function TagsPage() {
   const dispatch = useAppDispatch();
   useDynamicBackground(ACCOUNT_CREATION_BG);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { initialTags, selectedTags, searchQuery, isSubmitDisabled } = useAppSelector(
     (state) => state.user.tags
   );
@@ -63,7 +64,7 @@ export default function TagsPage() {
   };
 
   //---------------------------- Render UI Section ------------------------//
-  const sortedTags = filteredSortedTags(searchQuery, initialTags, selectedTags);
+  const sortedTags = getFilteredSortedTags(searchQuery, initialTags, selectedTags);
 
   return (
     <>

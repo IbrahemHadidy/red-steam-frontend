@@ -24,13 +24,11 @@ const listen = recoveryListener.startListening.withTypes<RootState, AppDispatch>
 
 // Listen for new password and confirm new password changes and update the reset button state
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return (
-      currentState.user.recovery.newPassword !== previousState.user.recovery.newPassword ||
-      currentState.user.recovery.confirmNewPassword !==
-        previousState.user.recovery.confirmNewPassword
-    );
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.user.recovery.newPassword !== previousState.user.recovery.newPassword ||
+    currentState.user.recovery.confirmNewPassword !==
+      previousState.user.recovery.confirmNewPassword,
+
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { newPassword, confirmNewPassword } = listenerApi.getState().user.recovery;
@@ -53,9 +51,8 @@ listen({
 
 // Listen for page type changes and update the password page visibility based on the new type
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return currentState.user.login.type !== previousState.user.login.type;
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.user.login.type !== previousState.user.login.type,
   effect: async (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const type = listenerApi.getState().user.login.type;

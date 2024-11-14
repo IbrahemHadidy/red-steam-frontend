@@ -32,7 +32,7 @@ export default function DesktopSecondNav() {
   //--------------------------- Initializations ---------------------------//
   const pathname = usePathname();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
@@ -109,10 +109,11 @@ export default function DesktopSecondNav() {
             {isUserLoggedIn && (
               <img
                 className="profile-picture"
-                src={currentUserData?.profilePicture || defaultPFP.src}
+                src={currentUserData?.profilePicture ?? defaultPFP.src}
                 alt="Avatar"
               />
             )}
+
             {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
               <li
                 key={idx}
@@ -171,7 +172,7 @@ export default function DesktopSecondNav() {
                                 key={itemIndex}
                                 className={`menuItem ${
                                   categoryItem.className
-                                } ${categoryItem.specialClass || ''}`}
+                                } ${categoryItem.specialClass ?? ''}`}
                                 href={categoryItem.url}
                               >
                                 {categoryItem.label}

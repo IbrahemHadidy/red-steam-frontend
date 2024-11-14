@@ -20,7 +20,7 @@ export default function CartItem({ game }: CartItemProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { removeBtnLoading } = useAppSelector((state) => state.shop.cart);
 
   //--------------------------- Event Handlers ----------------------------//

@@ -44,7 +44,7 @@ export default function SystemRequirements() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { systemRequirements } = useAppSelector((state) => state.admin.game);
 
   //------------------------ Refs for File Inputs -------------------------//

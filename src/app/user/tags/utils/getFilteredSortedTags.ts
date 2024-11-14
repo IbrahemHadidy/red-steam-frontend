@@ -1,16 +1,17 @@
 import type { Tag } from '@interfaces/tag';
 
-// Check if a tag is selected
-export const isTagSelected = (selectedTags: Tag[], tag: Tag): boolean => {
-  return selectedTags.some((selectedTag) => selectedTag.id === tag.id);
-};
-
-// Filter and sort tags based on search query and selected status
-export const filteredSortedTags = (
+/**
+ * Filter and sort tags based on search query and selected status
+ * @param searchQuery The search query
+ * @param initialTags The initial tags
+ * @param selectedTags The selected tags
+ * @returns The filtered and sorted tags
+ */
+export default function getFilteredSortedTags(
   searchQuery: string,
   initialTags: Tag[],
   selectedTags: Tag[]
-) => {
+): Tag[] {
   const normalizedQuery = searchQuery.toLowerCase();
 
   return initialTags
@@ -25,4 +26,4 @@ export const filteredSortedTags = (
       // Sort alphabetically if both are selected/unselected
       return a.name.localeCompare(b.name);
     });
-};
+}

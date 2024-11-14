@@ -24,7 +24,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { screenshots, duplicateOrders } = useAppSelector((state) => state.admin.game);
 
   //-------------------------- Utility Functions --------------------------//
@@ -84,7 +84,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
         <label>Featured:</label>
         <input
           type="checkbox"
-          checked={item.featured || false}
+          checked={item.featured ?? false}
           onChange={() => handleFeaturedChange(item.baseOrder)}
           disabled={isFeaturedDisabled() && !item.featured}
         />

@@ -29,12 +29,10 @@ const listen = gameAdminListener.startListening.withTypes<RootState, AppDispatch
 
 // Listen for screenshots and videos changes and update the duplicate orders if exists
 listen({
-  predicate: (_action, currentState, previousState) => {
-    return (
-      currentState.admin.game.screenshots !== previousState.admin.game.screenshots ||
-      currentState.admin.game.videos !== previousState.admin.game.videos
-    );
-  },
+  predicate: (_action, currentState, previousState) =>
+    currentState.admin.game.screenshots !== previousState.admin.game.screenshots ||
+    currentState.admin.game.videos !== previousState.admin.game.videos,
+
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
     const { screenshots, videos } = listenerApi.getState().admin.game;
@@ -57,6 +55,7 @@ listen({
 // Listen for game update initialization
 listen({
   actionCreator: initializeGameUpdate,
+
   effect: async (action: PayloadAction<number>, listenerApi) => {
     const { dispatch } = listenerApi;
     const gameId = action.payload;

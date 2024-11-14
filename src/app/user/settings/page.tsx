@@ -22,7 +22,7 @@ export default function SettingsPage() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { isDeleteAccountModalVisible, isDeletePhoneModalVisible, isChangeModalVisible } =
     useAppSelector((state) => state.user.settings);

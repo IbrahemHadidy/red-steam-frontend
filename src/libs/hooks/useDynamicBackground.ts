@@ -12,6 +12,7 @@ export default function useDynamicBackground(
 ): void {
   useEffect(() => {
     document.body.style.background = background;
+
     return () => {
       document.body.style.background = '';
     };

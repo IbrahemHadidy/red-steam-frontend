@@ -23,7 +23,7 @@ export default function CheckoutReview() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { userCart, totalPrice } = useAppSelector((state) => state.shop.cart);
   const { isCheckboxChecked } = useAppSelector((state) => state.shop.checkout);

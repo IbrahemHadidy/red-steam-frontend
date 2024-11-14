@@ -22,7 +22,7 @@ export default function GameReviews() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame, isGameFetching, reviews, filter, hasMore } = useAppSelector(
     (state) => state.game
   );

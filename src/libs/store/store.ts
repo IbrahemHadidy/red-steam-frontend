@@ -17,6 +17,8 @@ import userTagsSlice from './features/user/tags/userTagsSlice';
 
 import gameSlice from './features/game/gameSlice';
 
+import searchSlice from './features/search/searchSlice';
+
 import gameAdminSlice from './features/admin/game/gameAdminSlice';
 
 // Listeners
@@ -25,13 +27,15 @@ import authListener from './features/auth/authListener';
 import cartListener from './features/shop/cart/cartListener';
 import libraryListener from './features/shop/library/libraryListener';
 import wishlistListener from './features/shop/wishlist/wishlistListener';
-import userSettingsListener from './features/user/settings/userSettingsListener';
-import userTagsListener from './features/user/tags/userTagsListener';
 
 import recoveryListener from './features/user/recovery/recoveryListener';
+import userSettingsListener from './features/user/settings/userSettingsListener';
 import signupListener from './features/user/signup/signupListener';
+import userTagsListener from './features/user/tags/userTagsListener';
 
 import gameListener from './features/game/gameListener';
+
+import searchListener from './features/search/searchListener';
 
 import gameAdminListener from './features/admin/game/gameAdminListener';
 
@@ -87,6 +91,7 @@ const store = configureStore({
     user: userReducer,
     shop: shopReducer,
     game: gameSlice.reducer,
+    search: searchSlice.reducer,
     admin: adminReducer,
 
     // APIs
@@ -129,6 +134,8 @@ const store = configureStore({
         libraryListener.middleware,
 
         gameListener.middleware,
+
+        searchListener.middleware,
 
         gameAdminListener.middleware
       )

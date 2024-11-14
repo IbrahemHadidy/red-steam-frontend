@@ -3,17 +3,27 @@
 // NextJS
 import Image from 'next/image';
 
-// React Spring
-import { animated, useSpring } from 'react-spring';
-
 // Utils
 import { getRatingClass, getRatingText } from '@utils/ratingUtils';
+
+// Components
+import FadingContainer from '@components/FadingContainer';
 
 // Styles
 import '@styles/components/HoverSummary.scss';
 
-// Types
-import type { HoverSummaryType } from './HoverSummary.types';
+export interface HoverSummaryType {
+  title: string;
+  date: string;
+  screenshots: string[];
+  description: string;
+  positivePercentage: number;
+  totalReviews: number;
+  tags: string[];
+  leftArrow?: boolean;
+  rightArrow?: boolean;
+  isVisible: boolean;
+}
 
 export default function HoverSummary({
   title,
@@ -25,19 +35,16 @@ export default function HoverSummary({
   tags,
   leftArrow,
   rightArrow,
+  isVisible,
 }: HoverSummaryType) {
-  const fadeEffect = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-    config: { duration: 280 },
-  });
-
   return (
-    <animated.div className="game-hover" style={fadeEffect}>
+    <FadingContainer isVisible={isVisible} className="game-hover">
       <div className="hover-box">
         <div className="hover-content">
           <h4 className="hover-title">{title}</h4>
+
           <span className="hover-release">{date}</span>
+
           {screenshots ? (
             <div className="hover-screenshots">
               {screenshots.map((screenshot, idx) => (
@@ -54,14 +61,18 @@ export default function HoverSummary({
           ) : (
             <p className="hover-description">{description}</p>
           )}
+
           <div className="hover-review-summary">
             <div className="hover-review-title">Overall user reviews:</div>
+
             <span className={`game-review-summary ${getRatingClass(positivePercentage)}`}>
               {getRatingText(positivePercentage, totalReviews)}
               &nbsp;
             </span>
+
             {totalReviews !== 0 && `(${totalReviews} reviews)`}
           </div>
+
           <div className="hover-tag-body">
             User tags: <br />
             <div className="hover-tag-row">
@@ -74,8 +85,9 @@ export default function HoverSummary({
           </div>
         </div>
       </div>
+
       {leftArrow && <div className="hover-arrow-left" />}
       {rightArrow && <div className="hover-arrow-right" />}
-    </animated.div>
+    </FadingContainer>
   );
 }

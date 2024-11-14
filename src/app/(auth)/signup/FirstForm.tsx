@@ -28,7 +28,7 @@ export default function FirstForm({ recaptchaRef }: FirstFormProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const {
     emailInputError,
     confirmEmailInputError,
@@ -118,7 +118,7 @@ export default function FirstForm({ recaptchaRef }: FirstFormProps) {
       <div className="form-row">
         <div className="recaptcha-container">
           <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ''}
             theme="dark"
             ref={recaptchaRef}
           />

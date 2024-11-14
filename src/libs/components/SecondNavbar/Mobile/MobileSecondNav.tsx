@@ -26,7 +26,7 @@ export default function MobileSecondNav() {
   //--------------------------- Initializations ---------------------------//ializattions
   const path = usePathname();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState<menuTitle | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
@@ -72,10 +72,11 @@ export default function MobileSecondNav() {
             {isUserLoggedIn && (
               <img
                 className="profile_picture-mobile"
-                src={currentUserData?.profilePicture || defaultPFP.src}
+                src={currentUserData?.profilePicture ?? defaultPFP.src}
                 alt="Avatar"
               />
             )}
+
             {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
               <li key={idx} className="nav-item nav-item-mobile dropdown">
                 <a
@@ -87,6 +88,7 @@ export default function MobileSecondNav() {
                 >
                   {menuTitle}
                 </a>
+
                 {/* Conditionally render the dropdown menu based on the openMenu state */}
                 {isUserLoggedIn && openMenu === 'Your Store' && (
                   <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
@@ -107,6 +109,7 @@ export default function MobileSecondNav() {
                     )}
                   </div>
                 )}
+
                 {!isUserLoggedIn && openMenu === 'Your Store' && (
                   <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     <div className="category-div store-div" style={{ marginTop: '-10px' }}>
@@ -116,6 +119,7 @@ export default function MobileSecondNav() {
                     </div>
                   </div>
                 )}
+
                 {openMenu === menuTitle && openMenu !== 'Your Store' && (
                   <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     {Object.entries(categoryGroups).map(
@@ -125,7 +129,7 @@ export default function MobileSecondNav() {
                             <Link
                               key={itemIndex}
                               className={`menuItem ${categoryItem.className} ${
-                                categoryItem.specialClass || ''
+                                categoryItem.specialClass ?? ''
                               }`}
                               href={categoryItem.url}
                             >
@@ -153,6 +157,7 @@ export default function MobileSecondNav() {
             </ul>
           </div>
         ))}
+
         {!isSearchPage && <NavSearch />}
       </nav>
     </div>

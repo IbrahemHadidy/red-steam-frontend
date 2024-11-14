@@ -37,7 +37,7 @@ export default function ChangeModal() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const {
     changeModalType,
     currentChangeStep,

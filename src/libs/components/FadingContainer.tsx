@@ -4,12 +4,14 @@ interface FadingContainerProps {
   isVisible: boolean;
   children: ReactNode;
   transitionDuration?: number;
+  className?: string;
 }
 
 export default function FadingContainer({
   isVisible,
   children,
   transitionDuration = 500,
+  className,
 }: FadingContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +35,9 @@ export default function FadingContainer({
         transition: `opacity ${transitionDuration}ms ease-in-out`,
       }}
     >
-      <div ref={containerRef}>{children}</div>
+      <div ref={containerRef} className={className}>
+        {children}
+      </div>
     </div>
   );
 }

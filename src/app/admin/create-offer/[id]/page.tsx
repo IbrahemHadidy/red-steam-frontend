@@ -36,7 +36,7 @@ export default function CreateOfferAdmin(props: CreateOfferAdminProps) {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [game, setGame] = useState<Game>();
   const [discountPrice, setDiscountPrice] = useState<Decimal>(new Decimal('0.00'));
   const [offerType, setOfferType] = useState<'SPECIAL PROMOTION' | 'WEEKEND DEAL'>(

@@ -25,7 +25,7 @@ export default function Thumbnails() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { thumbnails } = useAppSelector((state) => state.admin.game);
 
   //------------------------ Refs for File Inputs -------------------------//

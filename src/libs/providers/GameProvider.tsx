@@ -33,7 +33,7 @@ export default function GameProvider({ id, children }: GameProviderProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame, isGameFetching } = useAppSelector((state) => state.game);
 
   //-----------------------------  On Mount -------------------------------//

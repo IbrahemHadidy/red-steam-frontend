@@ -16,7 +16,7 @@ import { createDeveloper } from '@services/common/developers';
 import type { JSX } from 'react';
 
 export default function DevelopersAdmin(): JSX.Element {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [name, setName] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
   const [submitted, setSubmitted] = useState<number>(0);

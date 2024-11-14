@@ -30,7 +30,7 @@ export default function Create({
   icon,
   onSubmit,
 }: CreateProps): JSX.Element {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Refs
@@ -118,7 +118,7 @@ export default function Create({
       resetAllWarnings();
       try {
         setIsLoading(true);
-        onSubmit && onSubmit(e);
+        if (onSubmit) onSubmit(e);
       } finally {
         setIsLoading(false);
       }
@@ -146,7 +146,7 @@ export default function Create({
                       type="number"
                       className="form-input"
                       value={discountPrice?.toString()}
-                      onChange={(e) => setDiscountPrice(new Decimal(e.target.value || '0.00'))}
+                      onChange={(e) => setDiscountPrice(new Decimal(e.target.value ?? '0.00'))}
                       placeholder={`Discount price, Current price: ${game?.pricing?.basePrice}`}
                       ref={nameRef}
                     />

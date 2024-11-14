@@ -20,7 +20,7 @@ export default function LogoutPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   useEffect(() => {

@@ -1,9 +1,11 @@
+// Toast Notifications
+import { toast } from 'react-toastify';
+
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
 // Actions
-import { setCartInitialized } from '../checkout/checkoutSlice';
-import { initializeCart, setTotalPrice, updateCart } from './cartSlice';
+import { initializeCart, setCartInitialized, setTotalPrice, updateCart } from './cartSlice';
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
@@ -22,39 +24,47 @@ const listen = cartListener.startListening.withTypes<RootState, AppDispatch>();
 // Listen for cart initialization
 listen({
   actionCreator: initializeCart,
+
   effect: async (_action, listenerApi) => {
     const { dispatch, getState } = listenerApi;
 
     const userCart = getState().auth.currentUserData?.cart ?? [];
     let cartItems: Game[] = [];
 
-    try {
-      if (userCart.length > 0) {
-        cartItems = await dispatch(
-          gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
-        ).unwrap();
-      }
-
-      // Update cart
-      dispatch(updateCart(cartItems));
-
-      // Update total price
-      dispatch(
-        setTotalPrice(
-          cartItems
-            .reduce((total: Decimal, game: Game) => {
-              const gamePrice = new Decimal(game.pricing?.price ?? '0.00');
-              return total.plus(gamePrice);
-            }, new Decimal('0.00'))
-            .toFixed(2)
+    if (userCart.length > 0) {
+      cartItems = await toast
+        .promise(
+          dispatch(
+            gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
+          ).unwrap(),
+          {
+            pending: 'Fetching cart items',
+            error: 'Error fetching cart items',
+          }
         )
-      );
-
-      // Set cart initialized
-      dispatch(setCartInitialized(true));
-    } catch (error) {
-      console.error('Error initializing cart:', error);
+        .catch((error) => {
+          console.error('Error fetching cart items:', error);
+          return [];
+        });
     }
+
+    // Update cart
+    dispatch(updateCart(cartItems));
+
+    // Update total price
+    dispatch(
+      setTotalPrice(
+        cartItems
+          .reduce((total: Decimal, game: Game) => {
+            const gamePrice = new Decimal(game.pricing?.price ?? '0.00');
+            return total.plus(gamePrice);
+          }, new Decimal('0.00'))
+          .toFixed(2)
+      )
+    );
+
+    // Set cart initialized
+    dispatch(setCartInitialized(true));
   },
 });
 

@@ -1,19 +1,14 @@
 'use client';
 
-// React
-import { useEffect } from 'react';
-
 // NextJS
 import dynamic from 'next/dynamic';
 
 // Redux Hooks
-import { useAppDispatch, useAppSelector } from '@store/hooks';
-
-// Redux Handlers
-import { initializeWishlist } from '@store/features/shop/wishlist/wishlistSlice';
+import { useAppSelector } from '@store/hooks';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
+import useInitializeWishlist from '../_hooks/useInitializeWishlist';
 
 // Utils
 import getRandomArrayItem from '@utils/getRandomArrayItem';
@@ -31,43 +26,43 @@ import defaultPFP from '@images/default-pfp.png';
 import type { Game } from '@interfaces/game';
 
 export default function WishlistPage() {
-  //--------------------------- Initializations ---------------------------//
-  const dispatch = useAppDispatch();
-
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  const { userWishlist } = useAppSelector((state) => state.shop.wishlist);
+  const { userWishlist, isWishlistInitialized } = useAppSelector((state) => state.shop.wishlist);
 
-  //------------------------------ On Mount -------------------------------//
-  useEffect(() => {
-    dispatch(initializeWishlist());
-  }, [dispatch]);
+  //------------------------------- Hooks ---------------------------------//
+  useInitializeWishlist();
 
   //-------------------------- Render UI Section --------------------------//
   useDynamicBackground(
     userWishlist.length === 0
       ? DEFAULT_BG
-      : getRandomArrayItem<Game>(userWishlist).thumbnailEntries.backgroundImage,
+      : `url(${getRandomArrayItem<Game>(userWishlist).thumbnailEntries.backgroundImage}) center top no-repeat #1b2838`,
     [userWishlist]
   );
 
-  return (
-    <>
-      <div className="page-content">
-        <div className="wishlist-header">
-          <img src={currentUserData?.profilePicture || defaultPFP.src} alt="user-pfp" />
-          <h2>{currentUserData?.username}'s wishlist</h2>
-        </div>
-
-        {!userWishlist || userWishlist?.length === 0 ? (
-          <div className="nothing-to-see">
-            <h2>Oops, there's nothing to show here</h2>
-            <p>There are no items on your wishlist.</p>
+  if (!isWishlistInitialized) {
+    // TODO: Add skeleton
+    return <></>;
+  } else {
+    return (
+      <>
+        <div className="page-content">
+          <div className="wishlist-header">
+            <img src={currentUserData?.profilePicture ?? defaultPFP.src} alt="user-pfp" />
+            <h2>{currentUserData?.username}'s wishlist</h2>
           </div>
-        ) : (
-          userWishlist?.map((game, idx) => <WishlistItem game={game} idx={idx} key={game.id} />)
-        )}
-      </div>
-    </>
-  );
+
+          {!userWishlist || userWishlist?.length === 0 ? (
+            <div className="nothing-to-see">
+              <h2>Oops, there's nothing to show here</h2>
+              <p>There are no items on your wishlist.</p>
+            </div>
+          ) : (
+            userWishlist?.map((game, idx) => <WishlistItem game={game} idx={idx} key={game.id} />)
+          )}
+        </div>
+      </>
+    );
+  }
 }

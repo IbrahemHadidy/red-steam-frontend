@@ -10,22 +10,22 @@ import SupportedLanguages from './SupportedLanguages';
 
 export default function RightContent() {
   //--------------------------- Initializations ---------------------------//
-  const isViewport630 = useResponsiveViewport(630);
-  const isViewport960 = useResponsiveViewport(960);
+  const isViewport630OrLess = useResponsiveViewport(630);
+  const isViewport960OrLess = useResponsiveViewport(960);
 
   //-------------------------- Render UI Section --------------------------//
   return (
     <>
-      {isViewport630 && <GamePurchase />}
+      {isViewport630OrLess && <GamePurchase />}
 
-      {isViewport630 ? (
+      {isViewport630OrLess ? (
         <div className="game-content-right">
           <RecommendationReasons />
           <GameFeatures />
           <SupportedLanguages />
           <GameDetails />
         </div>
-      ) : isViewport960 ? (
+      ) : isViewport960OrLess ? (
         <div className="mobile-right-content">
           <div className="game-content-right">
             <GameFeatures />

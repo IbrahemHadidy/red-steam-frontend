@@ -42,11 +42,10 @@ import OffersSkeleton from './_Offers/Skeleton';
 import RecommendedSkeleton from './_Recommended/Skeleton';
 
 export default function StorePage() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
-
-  //----------------------------- State Hooks -----------------------------//
+  
   const [offersLoaded, setOffersLoaded] = useState<boolean>(false);
   const [categoriesLoaded, setCategoriesLoaded] = useState<boolean>(false);
   const [userSectionLoaded, setUserSectionLoaded] = useState<boolean>(false);

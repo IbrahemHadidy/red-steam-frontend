@@ -16,15 +16,15 @@ export default function RedirectIfNotLoggedIn(): null {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  //--------------------------- State Selectors ---------------------------//
-  const { isUserLoggedIn } = useAppSelector((state) => state.auth);
+  //------------------------------- States --------------------------------//
+  const { isUserLoggedIn, isAuthInitialized } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!isUserLoggedIn) {
+    if (!isUserLoggedIn && isAuthInitialized) {
       toast.info('Please log in first to access this page!');
       router.push('/login');
     }
-  }, [isUserLoggedIn, router]);
+  }, [isAuthInitialized, isUserLoggedIn, router]);
 
   return null;
 }

@@ -37,7 +37,7 @@ export default function SteamMenu() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData, isUserLoggedIn } = useAppSelector((state) => state.auth);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [openedItems, setOpenedItems] = useState<Record<string, boolean>>({});
@@ -191,7 +191,7 @@ export default function SteamMenu() {
                   <div className="playerAvatar offline">
                     <Link href={`/user/${currentUserData?.id}/`}>
                       <img
-                        src={currentUserData?.profilePicture || defaultPFP.src}
+                        src={currentUserData?.profilePicture ?? defaultPFP.src}
                         alt="User Avatar"
                       />
                     </Link>
@@ -201,7 +201,7 @@ export default function SteamMenu() {
                 <div className="responsive_menu_cartwallet_area persona offline">
                   <div className="responsive_menu_user_cart">
                     <Link href="/cart">
-                      Cart&nbsp;<b>({currentUserData?.cart?.length || 0})</b>
+                      Cart&nbsp;<b>({currentUserData?.cart?.length ?? 0})</b>
                     </Link>
                   </div>
                 </div>

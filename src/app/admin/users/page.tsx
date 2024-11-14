@@ -39,7 +39,7 @@ export default function UsersAdmin(): JSX.Element {
   //--------------------------- Initializations ---------------------------//
   useDynamicBackground(DEFAULT_BG);
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [users, setUsers] = useState<User[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [usersPerPage, setUsersPerPage] = useState<number>(10);

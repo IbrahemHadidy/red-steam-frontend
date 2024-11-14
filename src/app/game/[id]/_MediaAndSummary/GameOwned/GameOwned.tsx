@@ -22,7 +22,7 @@ export default function GameOwned() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const { currentGame, hasReviewed, positive, content, isReviewBtnDisabled } = useAppSelector(
     (state) => state.game
@@ -103,7 +103,7 @@ export default function GameOwned() {
               <div className="avatar-block">
                 <Link href={`/id/${currentGame?.id}`}>
                   <div className="avatar online">
-                    <img src={currentUserData?.profilePicture || defaultPFP.src} alt="pfp" />
+                    <img src={currentUserData?.profilePicture ?? defaultPFP.src} alt="pfp" />
                   </div>
                 </Link>
               </div>

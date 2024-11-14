@@ -13,7 +13,7 @@ import { useAppSelector } from '@store/hooks';
 import '@styles/components/SignUpVerifyModal.scss';
 
 export default function VerifyModal() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
   const [totalHeight, setTotalHeight] = useState(0);
@@ -51,31 +51,38 @@ export default function VerifyModal() {
   return (
     <>
       <div className="modal-overlay" />
+
       <div className="verify-modal">
         <div className="top-bar" />
+
         <div className="title-container">
           <div className="title">Verify Your Email</div>
         </div>
+
         <div className="content-border">
           <div className="content">
             <div className="verify-dialog">
               <div className="verification-header">
                 <div className="verification-subheader">
                   Check&nbsp;
-                  <span className="verification-email">{currentUserData?.email || ''}</span>
+                  <span className="verification-email">{currentUserData?.email ?? ''}</span>
                   &nbsp;for an email from Red Steam to verify and access your account.
                 </div>
+
                 <div className="loadding-wrapper">
                   <div className="throbber">
                     <div />
                     <div />
                     <div />
                   </div>
+
                   <div className="loading-text">Waiting for you to verify...</div>
                 </div>
               </div>
+
               <div className="verification-missing">
                 <div className="email-missing">Haven't gotten our email?</div>
+
                 <div className="expand-btn" onClick={handleExpandClick}>
                   <span>
                     Expand&nbsp;
@@ -83,6 +90,7 @@ export default function VerifyModal() {
                   </span>
                 </div>
               </div>
+
               <animated.div
                 className="verification-troubleshooting"
                 style={{ ...expandSpring }}
@@ -91,17 +99,20 @@ export default function VerifyModal() {
                 <div>
                   If you haven't gotten our email please try the below troubleshooting steps:
                 </div>
+
                 <ul>
                   <li>
                     Double check that your email&nbsp;
-                    <span>{currentUserData?.email || ''}</span>
+                    <span>{currentUserData?.email ?? ''}</span>
                     &nbsp;is accurate and doesn't contain any typos.
                   </li>
+
                   <li>
                     Please check both your spam and trash folder for an email from
                     "steam.redclone@gmail.com". Sometimes emails can be incorrectly identified as
                     spam by your email provider.
                   </li>
+
                   <li>
                     Wait a few minutes. Sometimes email servers are slow and can take a bit of time
                     to receive an email.

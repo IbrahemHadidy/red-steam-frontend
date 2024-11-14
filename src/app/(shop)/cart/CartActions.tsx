@@ -12,7 +12,7 @@ export default function CartActions() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { removeAllBtnLoading } = useAppSelector((state) => state.shop.cart);
 
   //--------------------------- Event Handlers ----------------------------//

@@ -23,7 +23,7 @@ export default function SignInPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   //-------------------------- Utility Functions --------------------------//

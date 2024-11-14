@@ -23,7 +23,7 @@ import installSteamBtn from '@images/btn_header_installsteam_download.png';
 import steamLogo from '@images/logo_steam.svg';
 
 export default function DefaultDesktopComponent() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
   const handleInstallSteamBtn = (): void => {

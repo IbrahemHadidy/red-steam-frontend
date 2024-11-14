@@ -3,9 +3,6 @@ import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
 import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
 
-// Providers
-import CartProvider from '@providers/CartProvider';
-
 // Styles
 import '@styles/shop/Cart.scss';
 
@@ -27,7 +24,7 @@ export default function CartLayout({ children }: CartLayoutProps) {
     <>
       <Header />
       <SecondNavbar />
-      <CartProvider>{children}</CartProvider>
+      {children}
       <Footer />
     </>
   );

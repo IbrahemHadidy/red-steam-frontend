@@ -107,8 +107,6 @@ export const fetchUserData = createAppAsyncThunk<User | null, void, { rejectValu
         await dispatch(userAuthApi.endpoints.updateUserData.initiate()).unwrap()
       ).userData;
 
-      console.log('Fetched user data:', currentUserData);
-
       // Notify other tabs about the login status
       if (!currentUserData)
         authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });

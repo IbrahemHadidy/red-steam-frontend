@@ -21,9 +21,9 @@ export default function TabContent({
   onTabHover,
   setHoveredGame,
 }: TabContentProps) {
-  //----------------------------- State Hooks -----------------------------//
+  //-------------------------------- States -------------------------------//
   const [focusedTab, setFocusedTab] = useState<number | null>(null);
-  const [hasHovered, setHasHovered] = useState(false);
+  const [hasHovered, setHasHovered] = useState<boolean>(false);
 
   //------------------------------- Effects -------------------------------//
   useEffect(() => {
@@ -44,16 +44,14 @@ export default function TabContent({
 
   //-------------------------- Render UI Section --------------------------//
   return (
-    <div
-      className={`content-list ${isOpened ? 'opened-tab' : ''}`}
-      id={`tab-${title.toLowerCase().replace(/\s/g, '')}`}
-    >
+    <div className={`content-list ${isOpened ? 'opened-tab' : ''}`}>
       <div className="tab-see-more">
         See more:
         <Link className="btn-white-transparent" href={seeMore}>
           <span>{title}</span>
         </Link>
       </div>
+
       {items.map((tabItem, idx) => (
         <Link
           className={`tab-item ${idx === focusedTab ? 'focus' : ''}`}

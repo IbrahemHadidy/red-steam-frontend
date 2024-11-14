@@ -9,6 +9,7 @@ import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface CartState {
+  readonly isCartInitialized: boolean;
   readonly userCart: Game[];
   readonly removeBtnLoading: boolean;
   readonly removeAllBtnLoading: boolean;
@@ -17,6 +18,7 @@ interface CartState {
 
 // Initial state
 const cartState: CartState = {
+  isCartInitialized: false,
   userCart: [],
   removeBtnLoading: false,
   removeAllBtnLoading: false,
@@ -28,6 +30,9 @@ const cartSlice = createSlice({
   initialState: cartState,
 
   reducers: {
+    setCartInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isCartInitialized = action.payload;
+    },
     updateCart: (state, action: PayloadAction<Game[]>) => {
       state.userCart = action.payload;
     },
@@ -69,6 +74,11 @@ const cartSlice = createSlice({
 // Listener actions
 export const initializeCart = createAction('shop/cart/initializeCart');
 
-export const { updateCart, setRemoveBtnLoading, setRemoveAllBtnLoading, setTotalPrice } =
-  cartSlice.actions;
+export const {
+  setCartInitialized,
+  updateCart,
+  setRemoveBtnLoading,
+  setRemoveAllBtnLoading,
+  setTotalPrice,
+} = cartSlice.actions;
 export default cartSlice;

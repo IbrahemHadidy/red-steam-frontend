@@ -40,7 +40,7 @@ export default function Specifications() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { tags, features, languages, platforms } = useAppSelector((state) => state.admin.game);
 
   // Refs

@@ -9,7 +9,7 @@ import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface WishlistState {
-  readonly hoveredItemIndex: number | null;
+  readonly isWishlistInitialized: boolean;
   readonly userWishlist: Game[];
   readonly isCartBtnLoading: boolean;
   readonly isRemoveBtnLoading: boolean;
@@ -17,7 +17,7 @@ interface WishlistState {
 
 // Initial state
 const wishlistState: WishlistState = {
-  hoveredItemIndex: null,
+  isWishlistInitialized: false,
   userWishlist: [],
   isCartBtnLoading: false,
   isRemoveBtnLoading: false,
@@ -28,8 +28,8 @@ const wishlistSlice = createSlice({
   initialState: wishlistState,
 
   reducers: {
-    setHoveredItemIndex: (state, action: PayloadAction<number | null>) => {
-      state.hoveredItemIndex = action.payload;
+    setIsWishlistInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isWishlistInitialized = action.payload;
     },
     updateWishlist: (state, action: PayloadAction<Game[]>) => {
       state.userWishlist = action.payload;
@@ -79,6 +79,6 @@ const wishlistSlice = createSlice({
 // Listener actions
 export const initializeWishlist = createAction('shop/wishlist/initializeWislist');
 
-export const { setHoveredItemIndex, updateWishlist, setCartBtnLoading, setRemoveBtnLoading } =
+export const { setIsWishlistInitialized, updateWishlist, setCartBtnLoading, setRemoveBtnLoading } =
   wishlistSlice.actions;
 export default wishlistSlice;

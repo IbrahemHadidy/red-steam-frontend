@@ -10,7 +10,7 @@ export default function CartSummary() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { userCart, totalPrice } = useAppSelector((state) => state.shop.cart);
 
   const handleCartCheckoutClick = (): void => {

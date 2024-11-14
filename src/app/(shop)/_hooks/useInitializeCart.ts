@@ -15,27 +15,21 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 // Redux Handlers
 import { initializeCart } from '@store/features/shop/cart/cartSlice';
 
-// Types
-import type { ReactNode } from 'react';
-
-interface CartProviderProps {
-  children: ReactNode;
-}
-
-export default function CartProvider({ children }: CartProviderProps) {
+export default function useInitializeCart() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
-  const { userCart } = useAppSelector((state) => state.shop.cart);
-  const { isPaymentConfirmed, isCartInitialized } = useAppSelector((state) => state.shop.checkout);
+  //------------------------------- States --------------------------------//
+  const { isAuthInitialized } = useAppSelector((state) => state.auth);
+  const { userCart, isCartInitialized } = useAppSelector((state) => state.shop.cart);
+  const { isPaymentConfirmed } = useAppSelector((state) => state.shop.checkout);
 
   // Fetch cart data
   useEffect(() => {
-    dispatch(initializeCart());
-  }, [dispatch]);
+    if (isAuthInitialized) dispatch(initializeCart());
+  }, [dispatch, isAuthInitialized]);
 
   // Redirect if in checkout page and cart is empty
   useEffect(() => {
@@ -49,6 +43,4 @@ export default function CartProvider({ children }: CartProviderProps) {
       router.push('/');
     }
   }, [isCartInitialized, isPaymentConfirmed, pathname, router, userCart]);
-
-  return <>{children}</>;
 }

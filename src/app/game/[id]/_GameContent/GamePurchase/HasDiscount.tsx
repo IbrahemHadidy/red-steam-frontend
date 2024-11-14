@@ -13,7 +13,7 @@ export default function HasDiscount() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const { currentGame, isGameInCart, isGameInLibrary, isCartBtnLoading } = useAppSelector(
     (state) => state.game
   );

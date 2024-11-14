@@ -26,6 +26,7 @@ const listen = authListener.startListening.withTypes<RootState, AppDispatch>();
 // Listen for reset token changes and update the reset interface state
 listen({
   actionCreator: onLoadIntialization,
+
   effect: async (_action, listenerApi) => {
     const { dispatch } = listenerApi;
 

@@ -4,7 +4,7 @@
  * @param delay The delay to wait before calling the function in ms
  * @returns The debounced function
  */
-export default function debounce<T extends (...args: never[]) => void>(func: T, delay: number) {
+export default function debounce<T extends (...args: never[]) => unknown>(func: T, delay: number) {
   let timeoutId: NodeJS.Timeout | null = null;
 
   // Default method to debounce the function

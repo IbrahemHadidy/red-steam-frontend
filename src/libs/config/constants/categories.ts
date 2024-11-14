@@ -5,7 +5,7 @@ interface category {
   gradRGP: string;
 }
 
-const categories: category[] = [
+const CATEGORIES: category[] = [
   {
     title: 'Open World',
     link: '/search?tags=37',
@@ -128,4 +128,4 @@ const categories: category[] = [
   },
 ];
 
-export default categories;
+export default CATEGORIES;

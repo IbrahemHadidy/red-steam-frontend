@@ -40,10 +40,10 @@ export default function EditModal({ type, setOpen, item }: EditModalProps) {
     isPricing(item) ? (item.offerType ?? 'SPECIAL PROMOTION') : 'SPECIAL PROMOTION'
   );
   const [discountStartDate, setDiscountStartDate] = useState<Date>(
-    isPricing(item) ? (item.discountStartDate ?? new Date()) : new Date()
+    isPricing(item) ? new Date(item.discountStartDate ?? new Date()) : new Date()
   );
   const [discountEndDate, setDiscountEndDate] = useState<Date>(
-    isPricing(item) ? (item.discountEndDate ?? get7DaysFromNow()) : get7DaysFromNow()
+    isPricing(item) ? new Date(item.discountEndDate ?? new Date()) : get7DaysFromNow()
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -274,7 +274,7 @@ export default function EditModal({ type, setOpen, item }: EditModalProps) {
                   id="discountStartDate"
                   name="discountStartDate"
                   type="date"
-                  value={formatDate(discountStartDate)}
+                  value={formatDate(discountStartDate.toISOString())}
                   onChange={handleDiscountStartDateChange}
                   disabled={!discount}
                 />
@@ -286,7 +286,7 @@ export default function EditModal({ type, setOpen, item }: EditModalProps) {
                   id="discountEndDate"
                   name="discountEndDate"
                   type="date"
-                  value={formatDate(discountEndDate)}
+                  value={formatDate(discountEndDate.toISOString())}
                   onChange={handleDiscountEndDateChange}
                   disabled={!discount}
                 />

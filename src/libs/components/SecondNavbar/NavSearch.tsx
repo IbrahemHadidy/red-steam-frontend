@@ -17,7 +17,7 @@ import blank from '@images/blank.gif';
 import type { ChangeEvent } from 'react';
 
 export default function NavSearch() {
-  //--------------------------- State Selectors ---------------------------//
+  //------------------------------- States --------------------------------//
   const [searchInput, setSearchInput] = useState<string>('');
 
   //------------------------------ API Calls ------------------------------//
