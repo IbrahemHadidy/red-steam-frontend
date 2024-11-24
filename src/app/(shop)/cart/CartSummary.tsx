@@ -17,7 +17,7 @@ export default function CartSummary() {
     router.push('/checkout');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="cart-summary-container">
       <div className="cart-summary">

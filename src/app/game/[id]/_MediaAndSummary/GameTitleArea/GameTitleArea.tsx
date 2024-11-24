@@ -55,7 +55,7 @@ export default function GameTitleArea() {
     setDeleteModalOpen(true);
   };
 
-  //------------------------- Render UI Section ---------------------------//
+  ///------------------------------ Render --------------------------------//
   return (
     <>
       <div className="game-title-area">
@@ -129,7 +129,6 @@ export default function GameTitleArea() {
 
       {deleteModalOpen && deleteItemId && (
         <DeleteModal
-          type="game"
           gameName={currentGame?.name}
           setOpen={setDeleteModalOpen}
           itemId={deleteItemId}

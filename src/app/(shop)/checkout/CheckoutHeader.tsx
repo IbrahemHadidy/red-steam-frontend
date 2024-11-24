@@ -12,7 +12,7 @@ export default function CheckoutHeader() {
   //------------------------------- States --------------------------------//
   const { isPaymentConfirmed, isReviewSelected } = useAppSelector((state) => state.shop.checkout);
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="checkout-header">
       <div className="checkout-header-content">

@@ -22,7 +22,6 @@
       "@components/*": ["src/libs/components/*"],
       "@config/*": ["src/libs/config/*"],
       "@constants/*": ["src/libs/config/constants/*"],
-      "@services/*": ["src/libs/services/*"],
       "@utils/*": ["src/libs/utils/*"],
       "@hooks/*": ["src/libs/hooks/*"],
       "@contexts/*": ["src/libs/contexts/*"],

@@ -62,7 +62,7 @@ export default function AdditionalInfo() {
     dispatch(updateLegal(value));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section className="section-additional-info">

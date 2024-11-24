@@ -54,7 +54,7 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
     await dispatch(removeFromWishlist(itemId));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="wishlist-container">
       <div className="wishlist-row">

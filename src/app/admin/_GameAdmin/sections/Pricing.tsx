@@ -36,7 +36,7 @@ export default function Pricing() {
     dispatch(updatePrice(value));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section className="pricing-section">

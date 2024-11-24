@@ -36,7 +36,8 @@ export default function Review({ review }: ReviewProps) {
     setIsPartialView((prev) => !prev);
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <div className={`review-box ${isPartialView ? 'partial' : ''}`} key={review.id}>
       <div className="leftcol">

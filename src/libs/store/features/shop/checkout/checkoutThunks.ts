@@ -18,7 +18,7 @@ export const createOrder = createAppAsyncThunk<string, void, { rejectValue: stri
 
     // Create order
     const result = await toast
-      .promise(
+      .promise<{ orderId: string }>(
         dispatch(
           userPaymentApi.endpoints.createOrder.initiate({
             totalPrice,
@@ -32,10 +32,9 @@ export const createOrder = createAppAsyncThunk<string, void, { rejectValue: stri
       )
       .catch((error) => {
         console.error('Error creating PayPal order:', error);
-        return rejectWithValue('Failed to create PayPal order');
       });
 
-    if (!('orderId' in result)) return rejectWithValue('Failed to create PayPal order');
+    if (!result) return rejectWithValue('Failed to create PayPal order');
     return fulfillWithValue(result.orderId);
   }
 );
@@ -47,7 +46,7 @@ export const captureOrder = createAppAsyncThunk<string, OnApproveData, { rejectV
 
     // Capture order
     const response = await toast
-      .promise(
+      .promise<{ orderId: string }>(
         dispatch(
           userPaymentApi.endpoints.captureOrder.initiate({
             orderId: data.orderID,
@@ -61,10 +60,9 @@ export const captureOrder = createAppAsyncThunk<string, OnApproveData, { rejectV
       )
       .catch((error) => {
         console.error('Error capturing PayPal order:', error);
-        return rejectWithValue('Failed to capture PayPal order');
       });
 
-    if (!('orderId' in response)) return rejectWithValue('Failed to capture PayPal order');
+    if (!response) return rejectWithValue('Failed to capture PayPal order');
 
     await dispatch(userAuthApi.endpoints.updateUserData.initiate()).unwrap();
     return fulfillWithValue(response.orderId);

@@ -38,7 +38,7 @@ export default function HoverSummary({
   isVisible,
 }: HoverSummaryType) {
   return (
-    <FadingContainer isVisible={isVisible} className="game-hover">
+    <FadingContainer isVisible={isVisible} zIndex={2000} className="game-hover">
       <div className="hover-box">
         <div className="hover-content">
           <h4 className="hover-title">{title}</h4>

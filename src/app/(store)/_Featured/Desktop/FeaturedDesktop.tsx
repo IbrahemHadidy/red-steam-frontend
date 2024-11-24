@@ -28,7 +28,7 @@ export default function FeaturedDesktop({ featuredGames }: FeaturedDesktopProps)
     arrows: featuredGames.length > 1,
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="featured-carousel">
       <div className="main-carousel-content">

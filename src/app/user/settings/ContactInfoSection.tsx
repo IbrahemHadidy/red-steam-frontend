@@ -48,7 +48,8 @@ export default function ContactInfoSection() {
     dispatch(setDeletePhoneModalVisiblity(true));
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <>
       <div className="account-header-line">

@@ -29,7 +29,7 @@ listen({
 
     if (userLibrary.length > 0) {
       libraryItems = await toast
-        .promise(
+        .promise<Game[]>(
           dispatch(
             gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
           ).unwrap(),

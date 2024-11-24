@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Pricing } from '@interfaces/pricing';
+import type { Game } from '@interfaces/game';
 
 const gameOfferApi = createApi({
   reducerPath: 'api/game/offer',
@@ -17,8 +17,8 @@ const gameOfferApi = createApi({
         gameId: number;
         discountPrice: string;
         offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
-        discountStartDate: Date;
-        discountEndDate: Date;
+        discountStartDate: string;
+        discountEndDate: string;
       }
     >({
       query: ({ gameId, discountPrice, offerType, discountStartDate, discountEndDate }) => ({
@@ -37,7 +37,7 @@ const gameOfferApi = createApi({
     }),
 
     getOffersPaginated: builder.query<
-      { items: Pricing[]; total: number; totalPages: number },
+      { items: Game[]; total: number; totalPages: number },
       {
         page: number;
         limit: number;
@@ -68,8 +68,8 @@ const gameOfferApi = createApi({
         discount: boolean;
         discountPrice: string;
         offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
-        discountStartDate: Date;
-        discountEndDate: Date;
+        discountStartDate: string;
+        discountEndDate: string;
       }
     >({
       query: ({ id, discount, discountPrice, offerType, discountStartDate, discountEndDate }) => ({

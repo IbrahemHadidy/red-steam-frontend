@@ -42,7 +42,7 @@ export default function Queue(): JSX.Element {
     toast.info('Coming Soon!');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="home-section">
       <div className="home-contents">

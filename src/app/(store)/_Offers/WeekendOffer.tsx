@@ -36,7 +36,7 @@ export default function WeekendOffer({ offer }: WeekendOfferProps) {
     setIsOfferHovered(false);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div
       className="offer-result-container big"

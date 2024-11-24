@@ -19,7 +19,9 @@ import gameSlice from './features/game/gameSlice';
 
 import searchSlice from './features/search/searchSlice';
 
+import adminSlice from './features/admin/adminSlice';
 import gameAdminSlice from './features/admin/game/gameAdminSlice';
+import userAdminSlice from './features/admin/user/userAdminSlice';
 
 // Listeners
 import authListener from './features/auth/authListener';
@@ -37,7 +39,9 @@ import gameListener from './features/game/gameListener';
 
 import searchListener from './features/search/searchListener';
 
+import adminListener from './features/admin/adminListener';
 import gameAdminListener from './features/admin/game/gameAdminListener';
+import userAdminListener from './features/admin/user/userAdminListener';
 
 // APIs
 import ipBaseApi from './apis/countries/countryCode';
@@ -80,6 +84,8 @@ const shopReducer = combineReducers({
 });
 
 const adminReducer = combineReducers({
+  common: adminSlice.reducer,
+  user: userAdminSlice.reducer,
   game: gameAdminSlice.reducer,
 });
 
@@ -137,6 +143,8 @@ const store = configureStore({
 
         searchListener.middleware,
 
+        adminListener.middleware,
+        userAdminListener.middleware,
         gameAdminListener.middleware
       )
       .concat(

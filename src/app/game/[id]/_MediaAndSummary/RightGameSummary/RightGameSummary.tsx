@@ -31,12 +31,12 @@ export default function RightGameSummary() {
   //------------------------------- States --------------------------------//
   const { currentGame, tagsModalVisible } = useAppSelector((state) => state.game);
 
-  //--------------------------- Event Handlers ---------------------------//
+  //--------------------------- Event Handlers ----------------------------//
   const toggleModal = (): void => {
     dispatch(toggleTagsModalVisible());
   };
 
-  //-------------------------- Render UI Section -------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="right-game-summary">
       <div className="game-image">

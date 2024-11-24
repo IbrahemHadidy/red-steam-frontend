@@ -748,7 +748,7 @@
 					background: rgba(255, 255, 255, 0.1);
 				}
 
-				&.checked,
+				&.included,
 				&.excluded {
 					display: flex;
 					cursor: pointer;
@@ -759,7 +759,7 @@
 					}
 				}
 
-				&.checked {
+				&.included {
 					.tab-checkbox {
 						background-position: bottom center !important;
 					}

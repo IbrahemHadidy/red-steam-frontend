@@ -260,7 +260,7 @@ const userSettingsSlice = createSlice({
 });
 
 // Listener actions
-export const setInitialSettings = createAction('user/settings/setInitialSettings');
+export const setInitialSettings = createAction<void>('user/settings/setInitialSettings');
 
 export const {
   toggleIdVisibility,

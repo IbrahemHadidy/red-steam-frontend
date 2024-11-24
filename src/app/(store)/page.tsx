@@ -45,13 +45,13 @@ export default function StorePage() {
   //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
-  
+
   const [offersLoaded, setOffersLoaded] = useState<boolean>(false);
   const [categoriesLoaded, setCategoriesLoaded] = useState<boolean>(false);
   const [userSectionLoaded, setUserSectionLoaded] = useState<boolean>(false);
   const [browseSteamLoaded, setBrowseSteamLoaded] = useState<boolean>(false);
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   useDynamicBackground(HOME_DESKTOP_BG);
 
   if (!isAuthInitialized || !authOnLoadIntialized) {

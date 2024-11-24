@@ -19,7 +19,7 @@ export default function CardSizeSlider() {
     dispatch(setCardSize(Number(event.target.value)));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="sizing">
       <h1>Card size:&nbsp;&nbsp;</h1>

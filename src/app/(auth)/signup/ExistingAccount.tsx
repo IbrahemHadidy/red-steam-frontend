@@ -22,7 +22,7 @@ export default function ExistingAccountPage() {
     router.push('/login');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="existing-account">
       <div className="section-title">Email in use</div>

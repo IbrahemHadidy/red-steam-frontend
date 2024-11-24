@@ -39,7 +39,8 @@ export default function AccountSecuritySection() {
     openChangeModal('password');
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <>
       <div className="account-header-line">

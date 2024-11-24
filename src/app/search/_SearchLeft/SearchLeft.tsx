@@ -39,7 +39,8 @@ export default function SearchLeft() {
     }
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <div className="search-leftcol">
       <SearchBar />

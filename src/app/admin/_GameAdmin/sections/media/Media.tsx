@@ -121,7 +121,7 @@ export default function Media() {
     dispatch(resetMedia());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section className="section-media">

@@ -56,7 +56,7 @@ export default function GameOwned() {
     await dispatch(submitReview());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   const isSubmitBtnDisabled = isReviewBtnDisabled || content === '' || positive === null;
   return (
     <>

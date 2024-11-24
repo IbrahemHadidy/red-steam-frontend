@@ -36,7 +36,7 @@ export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string 
     }
 
     const loginResult = await toast
-      .promise(
+      .promise<{ userData: User; isSessionLoggedIn: boolean }>(
         dispatch(
           userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })
         ).unwrap(),

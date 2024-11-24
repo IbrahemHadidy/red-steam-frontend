@@ -82,7 +82,7 @@ export default function Thumbnails() {
     fileInputRefs.current[key]?.click();
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section className="section-thumbnails">

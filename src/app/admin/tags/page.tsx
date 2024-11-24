@@ -1,37 +1,23 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-// Toast notifications
-import { toast } from 'react-toastify';
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Handlers
+import { initializeTagsAdmin } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
 
-// Services
-import { createTag } from '@services/common/tags';
+export default function TagsAdmin() {
+  const dispatch = useAppDispatch();
 
-// Types
-import type { JSX } from 'react';
+  useEffect(() => {
+    dispatch(initializeTagsAdmin());
+  }, [dispatch]);
 
-export default function TagsAdmin(): JSX.Element {
-  //------------------------------- States --------------------------------//
-  const [name, setName] = useState<string>('');
-  const [submitted, setSubmitted] = useState<number>(0);
-
-  const onSubmit = async (): Promise<void> => {
-    await toast.promise(createTag(name.trim()), {
-      pending: 'Creating tag...',
-      success: 'Tag created successfully',
-      error: 'Failed to create tag, please try again',
-    });
-
-    setSubmitted((prevSubmitted) => prevSubmitted + 1);
-    setName('');
-  };
-
-  return (
-    <Admin type="tag" name={name} setName={setName} onSubmit={onSubmit} submitted={submitted} />
-  );
+  return <Admin />;
 }

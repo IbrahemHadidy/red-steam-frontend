@@ -80,19 +80,26 @@ export const checkExistingEmail = createAppAsyncThunk<
 
     try {
       const result = await toast
-        .promise(dispatch(userManagementApi.endpoints.checkEmailExists.initiate(email)).unwrap(), {
-          pending: 'Checking if email exists...',
-          error: 'An error occurred while checking if email exists. Please try again.',
-        })
+        .promise<{ exists: boolean }>(
+          dispatch(userManagementApi.endpoints.checkEmailExists.initiate(email)).unwrap(),
+          {
+            pending: 'Checking if email exists...',
+            error: 'An error occurred while checking if email exists. Please try again.',
+          }
+        )
         .catch((error) => {
           console.error('Error checking existing email:', error);
           rejectValue.errors.push(
             '- An error occurred while checking if email exists. Please try again.'
           );
-          return rejectWithValue(rejectValue);
         });
 
-      const exists = 'exists' in result ? result.exists : false;
+      let exists = false;
+      if (!result || !('exists' in result)) {
+        return rejectWithValue(rejectValue);
+      } else {
+        exists = result.exists;
+      }
 
       if (exists) {
         // Email already exists

@@ -41,7 +41,7 @@ export default function GameProvider({ id, children }: GameProviderProps) {
     dispatch(initializeGame(id));
   }, [dispatch, id]);
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   useDynamicBackground(
     `url(${currentGame?.thumbnailEntries.backgroundImage}) center top no-repeat #1b2838`,
     [currentGame?.thumbnailEntries.backgroundImage]

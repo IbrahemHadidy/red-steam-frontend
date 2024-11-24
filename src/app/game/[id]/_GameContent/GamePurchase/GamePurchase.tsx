@@ -20,7 +20,7 @@ export default function GamePurchase() {
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
   const { currentGame } = useAppSelector((state) => state.game);
 
-  //------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   if (!isAuthInitialized || !authOnLoadIntialized) {
     return <LoadingSkeleton />;
   } else {

@@ -13,7 +13,7 @@ export default function RightContent() {
   const isViewport630OrLess = useResponsiveViewport(630);
   const isViewport960OrLess = useResponsiveViewport(960);
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       {isViewport630OrLess && <GamePurchase />}

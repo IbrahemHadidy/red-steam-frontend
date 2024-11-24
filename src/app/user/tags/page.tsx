@@ -49,7 +49,7 @@ export default function TagsPage() {
     dispatch(setInitialTags());
   }, [dispatch]);
 
-  //----------------------------- Event Handlers --------------------------//
+  //--------------------------- Event Handlers ----------------------------//
   const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateSearchQuery(value));
@@ -63,7 +63,7 @@ export default function TagsPage() {
     await dispatch(submitTags(router));
   };
 
-  //---------------------------- Render UI Section ------------------------//
+  //------------------------------- Render -------------------------------//
   const sortedTags = getFilteredSortedTags(searchQuery, initialTags, selectedTags);
 
   return (

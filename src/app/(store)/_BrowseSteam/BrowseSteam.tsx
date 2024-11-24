@@ -14,7 +14,7 @@ export default function BrowseSteam() {
       currentUserData?.tags.map((tag) => tag.id).join(',')) ||
     '';
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="home-section">
       <div className="home-contents">

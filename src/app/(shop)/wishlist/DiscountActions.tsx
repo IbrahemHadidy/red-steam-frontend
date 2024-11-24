@@ -31,7 +31,7 @@ export default function DiscountActions({ game }: DiscountActionsProps) {
     await dispatch(addToCart(itemId));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="game-purchase-action">
       <div className="game-purchase-action-background">

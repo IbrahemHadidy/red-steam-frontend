@@ -82,7 +82,7 @@ export default function SignUpPage() {
     dispatch(setSecondPage(false));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <div className="page-content-sign signup">

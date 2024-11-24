@@ -364,13 +364,13 @@
 		position: relative;
 		vertical-align: top;
 		width: 229px;
-		background: linear-gradient(-45deg, rgba(64, 121, 153, 1) 5%, rgba(42, 62, 89, 1) 95%);
+		background: radial-gradient(62.67% 62.67% at 62.67% 100%, rgba(255, 255, 255, 0.15) 0%, rgba(116, 133, 140, 0.15) 100%);
 	}
 }
 
 
 .mini-price {
-	height: 20px;
+	height: 25px;
 	display: flex;
 	align-items: center;
 }
@@ -447,7 +447,6 @@
 	display: flex;
 	line-height: 15px;
 	position: absolute;
-	bottom: 2px;
 	left: 3px;
 	background-color: #141f2c66;
 }

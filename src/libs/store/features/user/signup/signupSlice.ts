@@ -225,7 +225,7 @@ const signupSlice = createSlice({
 });
 
 // Listener actions
-export const fetchCountry = createAction('user/signup/fetchCountry');
+export const fetchCountry = createAction<void>('user/signup/fetchCountry');
 
 export const {
   setSecondPage,

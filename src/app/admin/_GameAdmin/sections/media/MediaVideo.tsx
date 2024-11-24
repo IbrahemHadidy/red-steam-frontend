@@ -42,7 +42,7 @@ export default function MediaVideo({ item }: MediaVideoProps) {
     dispatch(updateVideoOrder({ from: id, to: newOrder }));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="media-video">
       <video controls poster={getFileUrl(item.poster)} className="media-preview">

@@ -13,7 +13,7 @@ export default function PaymentMethod() {
     dispatch(setReviewSelected(true));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <div className="form-row">

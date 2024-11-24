@@ -29,7 +29,7 @@ import type { OpenedTab } from '../Store.types';
 export default function HomeTabs() {
   //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
-  
+
   const [openedTab, setOpenedTab] = useState<OpenedTab>('New & Trending');
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
@@ -60,7 +60,7 @@ export default function HomeTabs() {
     setHoveredTabIndex(idx);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="tab-container">
       {newAndTrendingLoading || specialsLoading || topSellersLoading || popularUpcomingLoading ? (

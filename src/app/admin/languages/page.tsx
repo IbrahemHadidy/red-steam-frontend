@@ -1,43 +1,23 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-// Toast notifications
-import { toast } from 'react-toastify';
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Handlers
+import { initializeLanguagesAdmin } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
 
-// Services
-import { createLanguage } from '@services/common/languages';
+export default function LanguagesAdmin() {
+  const dispatch = useAppDispatch();
 
-// Types
-import type { JSX } from 'react';
+  useEffect(() => {
+    dispatch(initializeLanguagesAdmin());
+  }, [dispatch]);
 
-export default function LanguagesAdmin(): JSX.Element {
-  //------------------------------- States --------------------------------//
-  const [name, setName] = useState<string>('');
-  const [submitted, setSubmitted] = useState<number>(0);
-
-  const onSubmit = async (): Promise<void> => {
-    await toast.promise(createLanguage(name.trim()), {
-      pending: 'Creating language...',
-      success: 'Language created successfully',
-      error: 'Failed to create language, please try again',
-    });
-
-    setSubmitted((prevSubmitted) => prevSubmitted + 1);
-    setName('');
-  };
-
-  return (
-    <Admin
-      type="language"
-      name={name}
-      setName={setName}
-      onSubmit={onSubmit}
-      submitted={submitted}
-    />
-  );
+  return <Admin />;
 }

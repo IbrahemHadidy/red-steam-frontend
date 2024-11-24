@@ -1,47 +1,23 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useEffect } from 'react';
+
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Handlers
+import { initializeDevelopersAdmin } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
 
-// Toast notifications
-import { toast } from 'react-toastify';
+export default function DevelopersAdmin() {
+  const dispatch = useAppDispatch();
 
-// Services
-import { createDeveloper } from '@services/common/developers';
+  useEffect(() => {
+    dispatch(initializeDevelopersAdmin());
+  }, [dispatch]);
 
-// Types
-import type { JSX } from 'react';
-
-export default function DevelopersAdmin(): JSX.Element {
-  //------------------------------- States --------------------------------//
-  const [name, setName] = useState<string>('');
-  const [website, setWebsite] = useState<string>('');
-  const [submitted, setSubmitted] = useState<number>(0);
-
-  //---------------------------- Event Handlers ----------------------------//
-  const onSubmit = async (): Promise<void> => {
-    await toast.promise(createDeveloper(name.trim(), website.trim()), {
-      pending: 'Creating developer...',
-      success: 'Developer created successfully',
-      error: 'Failed to create developer, please try again',
-    });
-    setSubmitted((prevSubmitted) => prevSubmitted + 1);
-    setName('');
-    setWebsite('');
-  };
-
-  return (
-    <Admin
-      type="developer"
-      website={website}
-      setWebsite={setWebsite}
-      name={name}
-      setName={setName}
-      onSubmit={onSubmit}
-      submitted={submitted}
-    />
-  );
+  return <Admin />;
 }

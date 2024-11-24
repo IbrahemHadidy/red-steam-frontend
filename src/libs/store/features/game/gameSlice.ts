@@ -303,7 +303,7 @@ const gameSlice = createSlice({
 // Listener actions
 export const initializeGame = createAction<string>('game/initializeGame');
 export const initializeGamePreview = createAction<Game>('game/initializeGamePreview');
-export const initializeReviews = createAction('game/initializeReviews');
+export const initializeReviews = createAction<void>('game/initializeReviews');
 
 export const {
   setIsGameFetching,

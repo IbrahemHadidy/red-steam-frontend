@@ -27,7 +27,7 @@ export default function DiscountActions({ game }: NoDiscountActionsProps) {
     }
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="game-purchase-action">
       <div className="game-purchase-action-background">

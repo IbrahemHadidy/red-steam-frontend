@@ -22,7 +22,7 @@ export default function LeftContent() {
   //------------------------------- States --------------------------------//
   const { currentGame } = useAppSelector((state) => state.game);
 
-  //------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="game-content-left">
       {!isViewport630OrLess && <GamePurchase />}

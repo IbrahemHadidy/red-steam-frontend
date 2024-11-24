@@ -25,7 +25,7 @@ export default function FreeToPlay() {
     await dispatch(addToLibrary(router));
   };
 
-  //------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <h1>Play {currentGame?.name}</h1>

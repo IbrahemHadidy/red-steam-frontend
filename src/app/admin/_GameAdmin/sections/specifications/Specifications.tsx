@@ -94,7 +94,7 @@ export default function Specifications() {
     togglePlatform(changedPlatform);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section className="section-specifications">

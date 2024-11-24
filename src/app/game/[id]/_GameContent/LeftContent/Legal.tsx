@@ -8,7 +8,7 @@ export default function Legal() {
   //------------------------------- States --------------------------------//
   const { currentGame } = useAppSelector((state) => state.game);
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     currentGame?.legal && (
       <div className="autocollapse-container">

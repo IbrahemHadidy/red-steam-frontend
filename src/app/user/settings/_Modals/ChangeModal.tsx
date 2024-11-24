@@ -116,7 +116,7 @@ export default function ChangeModal() {
 
   const newInputPlaceholder = getNewInputPlaceholder(changeModalType);
 
-  //-------------------------- Render UI Section ---------------------------//
+  //------------------------------- Render ---------------------------------//
   return (
     <div className="change-modal">
       <div className="modal-content">

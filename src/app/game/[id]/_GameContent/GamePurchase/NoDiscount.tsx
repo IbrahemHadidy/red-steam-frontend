@@ -26,7 +26,7 @@ export default function NoDiscount() {
     await dispatch(addToCart(router));
   };
 
-  //------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       {!isGameInLibrary ? <h1>Buy {currentGame?.name}</h1> : <h1>Play {currentGame?.name}</h1>}

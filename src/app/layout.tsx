@@ -5,7 +5,7 @@ import Toaster from '@components/Toaster/Toaster';
 
 // Providers
 import AuthProvider from '@providers/AuthProvider';
-import StoreProvider from '@providers/StoreProvider';
+import ReduxStoreProvider from '@providers/ReduxStoreProvider';
 
 // Images
 import favIcon from '@images/favicon.ico';
@@ -61,12 +61,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
       <body>
         <div id="root">
-          <StoreProvider>
+          <ReduxStoreProvider>
             <AuthProvider>
               <Toaster />
               {children}
             </AuthProvider>
-          </StoreProvider>
+          </ReduxStoreProvider>
         </div>
         <div id="loading-portal" />
       </body>

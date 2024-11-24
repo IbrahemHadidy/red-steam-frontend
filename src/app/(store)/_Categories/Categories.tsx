@@ -51,7 +51,7 @@ export default function Categories() {
     </>
   );
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="home-section">
       <div className="home-contents">

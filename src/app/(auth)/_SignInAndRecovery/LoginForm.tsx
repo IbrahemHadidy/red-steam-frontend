@@ -66,7 +66,7 @@ export default function LoginForm() {
     );
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <form className="login-form signin-form" onSubmit={handleLoginFormSubmit}>
       <div className="login-dialog-field">

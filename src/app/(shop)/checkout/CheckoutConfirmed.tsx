@@ -22,7 +22,7 @@ export default function CheckoutConfirmed({ router }: CheckoutConfirmedProps) {
     router.push('/');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <h2>Thank you for your purchase!</h2>

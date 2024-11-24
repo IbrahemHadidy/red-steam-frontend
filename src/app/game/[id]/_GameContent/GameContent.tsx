@@ -12,7 +12,8 @@ export default function GameContent() {
   //-------------------------------- States -------------------------------//
   const { currentGame, isGameFetching } = useAppSelector((state) => state.game);
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   if (isGameFetching || !currentGame) {
     return <Skeleton />;
   } else {

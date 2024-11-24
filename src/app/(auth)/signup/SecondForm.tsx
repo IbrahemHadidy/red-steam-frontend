@@ -63,7 +63,7 @@ export default function SecondForm() {
     dispatch(updateConfirmPassword(value));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <div className="form-row-flex">

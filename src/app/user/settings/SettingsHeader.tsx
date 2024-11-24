@@ -17,7 +17,8 @@ export default function SettingsHeader() {
     dispatch(toggleIdVisibility());
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <div className="user-settings-header">
       <div className="setting-content">

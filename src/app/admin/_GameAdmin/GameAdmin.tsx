@@ -73,7 +73,7 @@ export default function GameAdmin() {
     [thumbnails.backgroundImage, currentPage]
   );
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       {currentPage === 'preview' && <SecondNavbar />}

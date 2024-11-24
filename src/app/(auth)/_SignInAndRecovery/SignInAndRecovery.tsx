@@ -55,7 +55,7 @@ export default function SignInAndRecovery() {
     overflow: 'hidden',
   });
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <Header />

@@ -24,7 +24,7 @@ export default function CartActions() {
     router.push('/');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="cart-actions">
       <div>

@@ -42,7 +42,7 @@ export default function CheckoutPage() {
     intent: 'capture',
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   if (!isCartInitialized) {
     // TODO: Add skeleton
     return <></>;

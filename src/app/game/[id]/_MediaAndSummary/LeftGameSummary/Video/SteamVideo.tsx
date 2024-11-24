@@ -151,7 +151,7 @@ export default function SteamVideo({ slideAreaRef, videoSrc, poster }: SteamVide
     preload: 'metadata',
   };
 
-  //---------------------------- Render UI Section ------------------------//
+  //-------------------------------- Render -------------------------------//  
   return (
     <div
       className="player-area"

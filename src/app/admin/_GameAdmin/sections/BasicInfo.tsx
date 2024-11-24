@@ -64,7 +64,7 @@ export default function BasicInfo() {
     dispatch(toggleFeatured());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section>

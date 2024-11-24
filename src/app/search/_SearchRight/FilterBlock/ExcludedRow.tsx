@@ -20,7 +20,10 @@ export default function ExcludedRow({
   handleExcludeClick,
 }: ExcludedRowProps) {
   return (
-    <div className="filter-control-row" onClick={() => handleIncludeClick(row)}>
+    <div
+      className={`filter-control-row ${row.check === 'excluded' ? 'excluded' : ''}`}
+      onClick={() => handleIncludeClick(row)}
+    >
       <span className="filter-tab">
         <span>
           <span className="tab-checkbox" />

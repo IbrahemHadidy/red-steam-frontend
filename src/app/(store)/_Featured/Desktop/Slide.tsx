@@ -51,7 +51,7 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
     setIsSlideHovered(false);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <Link
@@ -64,7 +64,7 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
           className="main-card"
           style={{
             backgroundImage: `url(${hoveredImage ?? slide.thumbnailEntries.mainImage})`,
-            transition: 'background-image 0.1s',
+            transition: 'background-image 0.3s',
           }}
         />
 

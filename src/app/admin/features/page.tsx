@@ -1,60 +1,23 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useEffect } from 'react';
 
-// Toast notifications
-import { toast } from 'react-toastify';
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Handlers
+import { initializeFeaturesAdmin } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
 
-// Services
-import { createFeature } from '@services/common/features';
+export default function FeaturesAdmin() {
+  const dispatch = useAppDispatch();
 
-// Types
-import type { ChangeEvent, JSX } from 'react';
+  useEffect(() => {
+    dispatch(initializeFeaturesAdmin());
+  }, [dispatch]);
 
-export default function FeaturesAdmin(): JSX.Element {
-  //------------------------------- States --------------------------------//
-  const [name, setName] = useState<string>('');
-  const [icon, setIcon] = useState<string>('');
-  const [submitted, setSubmitted] = useState<number>(0);
-
-  const handleIconChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const file: File | undefined = e.target.files?.[0];
-    if (file) {
-      const reader: FileReader = new FileReader();
-      reader.readAsDataURL(file); // Read the file as a data URL (Base64 encoded)
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          setIcon(reader.result.split(',')[1]); // Extract the Base64 string
-        }
-      };
-    } else {
-      setIcon('');
-    }
-  };
-
-  const onSubmit = async (): Promise<void> => {
-    await toast.promise(createFeature(name.trim(), icon), {
-      pending: 'Creating feature...',
-      success: 'Feature created successfully',
-      error: 'Failed to create feature, please try again',
-    });
-    setSubmitted((prevSubmitted) => prevSubmitted + 1);
-    setName('');
-  };
-
-  return (
-    <Admin
-      type="feature"
-      name={name}
-      setName={setName}
-      handleIconChange={handleIconChange}
-      icon={icon}
-      onSubmit={onSubmit}
-      submitted={submitted}
-    />
-  );
+  return <Admin />;
 }

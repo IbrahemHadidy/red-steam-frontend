@@ -57,7 +57,7 @@ export default function CheckoutReview() {
     dispatch(setReviewSelected(false));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       {userCart.map((game) => (

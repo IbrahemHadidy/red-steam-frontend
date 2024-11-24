@@ -72,7 +72,7 @@ const cartSlice = createSlice({
 });
 
 // Listener actions
-export const initializeCart = createAction('shop/cart/initializeCart');
+export const initializeCart = createAction<void>('shop/cart/initializeCart');
 
 export const {
   setCartInitialized,

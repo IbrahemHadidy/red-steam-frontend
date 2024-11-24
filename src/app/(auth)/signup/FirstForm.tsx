@@ -60,7 +60,7 @@ export default function FirstForm({ recaptchaRef }: FirstFormProps) {
     dispatch(toggleAgreeCheck());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <div className="form-row-flex">

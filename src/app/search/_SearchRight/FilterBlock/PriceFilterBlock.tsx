@@ -75,7 +75,7 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
     return PRICE_RANGES[value]?.label ?? '';
   };
 
-  //---------------------------- Render UI Section --------------------------//
+  //--------------------------------- Render --------------------------------//
   return (
     <div className="filter-block">
       <div className="filter-header" onClick={handlePriceHeaderClick}>
@@ -121,7 +121,7 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
         {filters.map((row) => (
           <div
             key={row.name}
-            className={`filter-control-row ${row.check === 'included' ? 'checked' : ''} ${
+            className={`filter-control-row ${row.check === 'included' ? 'included' : ''} ${
               row.id === 2 && priceRange === 0 ? 'disabled' : ''
             }`}
             onClick={() => handleIncludeClick(row)}

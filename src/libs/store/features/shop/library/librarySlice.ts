@@ -51,7 +51,7 @@ const librarySlice = createSlice({
 });
 
 // Listener actions
-export const initializeLibrary = createAction('shop/library/initializeLibrary');
+export const initializeLibrary = createAction<void>('shop/library/initializeLibrary');
 
 export const {
   setIsLibraryInitialized,

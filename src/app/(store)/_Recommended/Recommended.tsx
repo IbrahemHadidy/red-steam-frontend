@@ -68,7 +68,7 @@ export default function Recommended() {
     return categorySlides;
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return isLoading ? (
     <Skeleton />
   ) : (

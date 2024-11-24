@@ -77,7 +77,7 @@ const wishlistSlice = createSlice({
 });
 
 // Listener actions
-export const initializeWishlist = createAction('shop/wishlist/initializeWislist');
+export const initializeWishlist = createAction<void>('shop/wishlist/initializeWislist');
 
 export const { setIsWishlistInitialized, updateWishlist, setCartBtnLoading, setRemoveBtnLoading } =
   wishlistSlice.actions;

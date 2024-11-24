@@ -44,7 +44,7 @@ export default function DeleteAccountModal() {
     await dispatch(deleteAccount());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="delete-modal">
       <div className="modal-content">

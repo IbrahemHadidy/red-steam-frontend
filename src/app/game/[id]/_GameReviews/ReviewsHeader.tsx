@@ -29,7 +29,8 @@ export default function ReviewsHeader() {
     dispatch(setSort(value));
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   if (!currentGame) return null;
   return (
     <>

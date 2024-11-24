@@ -68,7 +68,7 @@ export default function Companies() {
     dispatch(updatePublishers(selectedIds));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <section className="section-companies">

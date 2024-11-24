@@ -35,7 +35,8 @@ export default function SettingsPage() {
     }
   }, [currentUserData, dispatch]);
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <>
       <div className="user-settings-container">

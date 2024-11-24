@@ -78,7 +78,7 @@ const userTagsSlice = createSlice({
 });
 
 // Listener actions
-export const setInitialTags = createAction('user/tags/setInitialTags');
+export const setInitialTags = createAction<void>('user/tags/setInitialTags');
 
 export const {
   updateSearchQuery,

@@ -1,8 +1,23 @@
 'use client';
 
+// React
+import { useEffect } from 'react';
+
+// Redux Hooks
+import { useAppDispatch } from '@store/hooks';
+
+// Redux Handlers
+import { initializeReviewsAdmin } from '@store/features/admin/adminSlice';
+
 // Components
-import ItemsList from '@app/admin/_Admin/ItemsList';
+import Admin from '@app/admin/_Admin/Admin';
 
 export default function ReviewsAdmin() {
-  return <ItemsList type="review" />;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(initializeReviewsAdmin());
+  }, [dispatch]);
+
+  return <Admin />;
 }

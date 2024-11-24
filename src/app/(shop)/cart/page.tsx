@@ -36,7 +36,7 @@ export default function CartPage() {
   //------------------------------- Hooks ---------------------------------//
   useInitializeCart();
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   useDynamicBackground(
     userCart.length === 0
       ? DEFAULT_BG

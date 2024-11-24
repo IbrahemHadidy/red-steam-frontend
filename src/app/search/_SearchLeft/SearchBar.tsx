@@ -57,7 +57,8 @@ export default function SearchBar() {
     }
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <div className="search-bar">
       <div className="sort-box">

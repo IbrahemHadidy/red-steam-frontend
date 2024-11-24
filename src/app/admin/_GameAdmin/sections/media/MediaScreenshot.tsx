@@ -55,7 +55,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
     dispatch(toggleScreenshotFeatured(id));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="media-screenshot">
       <img

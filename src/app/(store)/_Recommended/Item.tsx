@@ -35,7 +35,7 @@ export default function Item({ game }: ItemProps) {
     setIsGameHovered(false);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="mini-item-container">
       <Link

@@ -31,7 +31,7 @@ export default function GameInfo() {
     dispatch(setIsCompleteModalOpen(true));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     selectedGame && (
       <>

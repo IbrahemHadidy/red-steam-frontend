@@ -195,7 +195,7 @@ export const getReviews = createAppAsyncThunk<Review[] | undefined, void, { reje
     if (!gameId) return rejectWithValue('Error getting reviews');
 
     const newReviews = await toast
-      .promise(
+      .promise<Review[]>(
         dispatch(
           gameDataApi.endpoints.getReviews.initiate({
             gameId,
@@ -211,8 +211,9 @@ export const getReviews = createAppAsyncThunk<Review[] | undefined, void, { reje
       )
       .catch((error) => {
         console.error('Error getting reviews:', error);
-        return rejectWithValue('Error getting reviews');
       });
+
+    if (!newReviews) return rejectWithValue('Error getting reviews');
 
     if (Array.isArray(newReviews) && newReviews.length === 0) {
       return fulfillWithValue(undefined);

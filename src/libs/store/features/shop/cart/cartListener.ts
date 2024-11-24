@@ -33,7 +33,7 @@ listen({
 
     if (userCart.length > 0) {
       cartItems = await toast
-        .promise(
+        .promise<Game[]>(
           dispatch(
             gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
           ).unwrap(),

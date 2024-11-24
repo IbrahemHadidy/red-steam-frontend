@@ -72,7 +72,7 @@ export default function SystemRequirements() {
     dispatch(toggleRequired64bit());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   // Render function for system requirements input fields
   const renderSystemRequirementInputs = (
     prefix: 'mini' | 'recommended',

@@ -36,7 +36,7 @@ export default function SpecialOffer({ offer }: SpecialOfferProps) {
     setIsOfferHovered(false);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="offer-result-container small">
       <div

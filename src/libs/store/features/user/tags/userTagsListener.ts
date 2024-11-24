@@ -11,6 +11,7 @@ import { setInitialTags, updateInitialTags, updateSelectedTags } from './userTag
 import tagsApi from '@store/apis/common/tags';
 
 // Types
+import type { Tag } from '@interfaces/tag';
 import type { AppDispatch, RootState } from '@store/store';
 
 // Create listener middleware
@@ -26,17 +27,16 @@ listen({
 
     // Get initial tags
     const initialTags = await toast
-      .promise(dispatch(tagsApi.endpoints.getAllTags.initiate()).unwrap(), {
+      .promise<Tag[]>(dispatch(tagsApi.endpoints.getAllTags.initiate()).unwrap(), {
         pending: 'Fetching tags...',
         error: 'Error fetching tags',
       })
       .catch((error) => {
         console.error('Error fetching tags:', error);
-        return [];
       });
 
     // Update state
-    dispatch(updateInitialTags(initialTags));
+    dispatch(updateInitialTags(initialTags ?? []));
     dispatch(updateSelectedTags(userTags ?? []));
   },
 });

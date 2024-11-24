@@ -14,7 +14,7 @@
         font-size: 12px;
         overflow: hidden;
         box-shadow: 0 0 12px #000000;
-        background: linear-gradient(to bottom,  rgba(227,234,239,1) 0%,rgba(199,213,224,1) 100%);
+        background: linear-gradient(to bottom, rgba(227, 234, 239, 1) 0%, rgba(199, 213, 224, 1) 100%);
         margin-top: 8px;
         margin-bottom: 8px;
 
@@ -57,12 +57,15 @@
                     &:nth-child(1) {
                         animation-delay: 0s;
                     }
+
                     &:nth-child(2) {
                         animation-delay: 1s;
                     }
+
                     &:nth-child(3) {
                         animation-delay: 2s;
                     }
+
                     &:nth-child(4) {
                         animation-delay: 3s;
                     }
@@ -79,7 +82,7 @@
                 border-radius: 2px;
                 padding: 4px;
                 color: #c6d4df;
-                background-color: rgba( 38, 54, 69, 0.6);
+                background-color: rgba(38, 54, 69, 0.6);
             }
 
             .hover-tag-body {
@@ -95,7 +98,7 @@
                         display: inline-block;
                         line-height: 19px;
                         background-color: #96a3ae;
-                        color: rgba(227,234,239,1);
+                        color: rgba(227, 234, 239, 1);
                         box-shadow: none;
                         padding: 0 4px;
                         font-size: 11px;
@@ -113,17 +116,20 @@
         }
     }
 
-    .hover-arrow-right, .hover-arrow-left {
+    .hover-arrow-right,
+    .hover-arrow-left {
         width: 7px;
         height: 15px;
-        background: url( '/images/hover_arrows.png' ) no-repeat top;
+        background: url('/images/hover_arrows.png') no-repeat top;
         position: absolute;
         top: 48px;
     }
+
     .hover-arrow-right {
         background-position: right;
         right: 5px;
     }
+
     .hover-arrow-left {
         background-position: left;
         left: 5px;
@@ -131,8 +137,19 @@
 }
 
 @keyframes screenshot_hover_fadein {
-    0% { opacity: 0; }
-    3% { opacity: 1; }
-    28% { opacity: 1; }
-    31% { opacity: 0; }
+    0% {
+        opacity: 0;
+    }
+
+    3% {
+        opacity: 1;
+    }
+
+    28% {
+        opacity: 1;
+    }
+
+    31% {
+        opacity: 0;
+    }
 }

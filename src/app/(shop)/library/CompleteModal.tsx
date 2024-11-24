@@ -19,7 +19,7 @@ export default function CompleteModal() {
     dispatch(setIsCompleteModalOpen(false));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="complete-modal">
       <div>

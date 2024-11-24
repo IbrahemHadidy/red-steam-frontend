@@ -28,7 +28,7 @@ export default function LanguagesTable({ languagesTableRef }: LanguagesTableProp
     dispatch(toggleLanguageField({ name, field, value }));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <table ref={languagesTableRef}>
       <thead>

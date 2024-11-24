@@ -24,7 +24,7 @@ export default function GameCard({ game }: GameCardProps) {
     dispatch(setIsGameModalOpen(true));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div
       className="game-card"

@@ -33,7 +33,7 @@ export default function WishlistPage() {
   //------------------------------- Hooks ---------------------------------//
   useInitializeWishlist();
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   useDynamicBackground(
     userWishlist.length === 0
       ? DEFAULT_BG

@@ -22,7 +22,7 @@ export default function MediaAndSummary() {
     (state) => state.game
   );
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   if (isGameFetching || !currentGame) {
     return <Skeleton />;
   } else {

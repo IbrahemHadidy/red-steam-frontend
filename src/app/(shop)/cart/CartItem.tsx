@@ -28,7 +28,7 @@ export default function CartItem({ game }: CartItemProps) {
     await dispatch(removeCartItem(id));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="cart-item" key={game.id}>
       <div className="cart-item-content">

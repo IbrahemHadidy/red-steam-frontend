@@ -42,7 +42,7 @@ export default function TabContent({
     setHoveredGame(game);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className={`content-list ${isOpened ? 'opened-tab' : ''}`}>
       <div className="tab-see-more">

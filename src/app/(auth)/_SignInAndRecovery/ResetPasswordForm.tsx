@@ -68,7 +68,7 @@ export default function ResetPasswordForm() {
     router.push('/login');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <form className="login-form" onSubmit={handleResetPasswordFormSubmit}>
       <div className="help-title">Password reset</div>

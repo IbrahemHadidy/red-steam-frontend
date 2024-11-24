@@ -56,7 +56,7 @@ export default function LibraryPage() {
     dispatch(setIsCompleteModalOpen(false));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   useDynamicBackground(LIBRARY_BG);
 
   if (!isLibraryInitialized) {

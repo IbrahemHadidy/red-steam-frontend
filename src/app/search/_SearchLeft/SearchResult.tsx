@@ -48,7 +48,7 @@ export default function SearchResult({ result }: SearchResult) {
     setIsHovered(false);
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="search-result-container">
       <Link

@@ -43,7 +43,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
     dispatch(setPage('basic'));
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="form-buttons">
       <button

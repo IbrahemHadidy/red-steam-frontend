@@ -55,7 +55,7 @@ export default function Offers() {
     arrows: totalSlides > 1,
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   const renderedSlides = renderSlides(weekendOffers, specialOffers, totalSlides, setTotalSlides);
 
   return isLoading ? (

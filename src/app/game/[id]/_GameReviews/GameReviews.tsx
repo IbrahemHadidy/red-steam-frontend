@@ -32,7 +32,8 @@ export default function GameReviews() {
     dispatch(initializeReviews());
   }, [dispatch]);
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   if (isGameFetching || !currentGame) {
     return <Loader />;
   } else {

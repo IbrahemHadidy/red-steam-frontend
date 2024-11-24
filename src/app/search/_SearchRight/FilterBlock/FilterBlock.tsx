@@ -86,7 +86,8 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
     }
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   const includedRows = filters.filter((row) => row.check === 'included');
   const excludedRows = filters.filter((row) => row.check === 'excluded');
   const uncheckedRows = filters.filter((row) => row.check === 'unchecked');

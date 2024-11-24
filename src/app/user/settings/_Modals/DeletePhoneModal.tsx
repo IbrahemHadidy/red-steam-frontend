@@ -26,7 +26,7 @@ export default function DeletePhoneModal() {
     await dispatch(deletePhone());
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="delete-modal">
       <div className="modal-content">

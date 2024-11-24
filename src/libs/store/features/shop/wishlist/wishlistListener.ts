@@ -29,7 +29,7 @@ listen({
 
     if (userWishlist.length > 0) {
       wishlistItems = await toast
-        .promise(
+        .promise<Game[]>(
           dispatch(
             gameDataApi.endpoints.getByIds.initiate(userWishlist.map((item) => item.id))
           ).unwrap(),

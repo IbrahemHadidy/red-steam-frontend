@@ -50,7 +50,7 @@ export default function ForgotPasswordForm() {
     router.push('/login');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <form className="login-form" onSubmit={handleForgotPasswordFormSubmit}>
       <div className="help-title">I forgot my Steam Account name or password</div>

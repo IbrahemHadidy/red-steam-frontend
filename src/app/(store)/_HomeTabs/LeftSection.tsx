@@ -51,7 +51,7 @@ export default function LeftSection({
     { items: specials, title: 'Specials', seeMore: '/search?sort=Relevance' },
   ];
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <div className="tab-left">
       <div className="tabs-row">

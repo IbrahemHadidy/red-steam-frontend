@@ -31,7 +31,7 @@ export default function SearchPage() {
   useInitializeSearch();
   useReplaceUrl(searchUrl);
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   useDynamicBackground(DEFAULT_BG);
   return (
     <>
@@ -50,7 +50,7 @@ export default function SearchPage() {
           {!isViewport960OrLess && <SearchRight />}
         </form>
       </div>
-      
+
       <Footer />
     </>
   );

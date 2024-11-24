@@ -116,7 +116,7 @@ const authSlice = createSlice({
 });
 
 // Listener actions
-export const onLoadIntialization = createAction('auth/onLoadIntialization');
+export const onLoadIntialization = createAction<void>('auth/onLoadIntialization');
 
 export const {
   setOnLoadInitialized,

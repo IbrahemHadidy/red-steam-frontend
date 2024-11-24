@@ -85,7 +85,7 @@ export default function Sidebar() {
     toast.info('Coming Soon!');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   return (
     <aside className="fixed-sidebar">
       <div className="sidebar">

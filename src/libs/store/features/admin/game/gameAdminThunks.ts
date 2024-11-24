@@ -132,7 +132,7 @@ export const getPreviewData = createAppAsyncThunk<Game, void, { rejectValue: str
 const createGame = async (dispatch: AppDispatch, state: RootState, router: AppRouterInstance) => {
   const { previewData, thumbnails, screenshots, videos } = state.admin.game;
 
-  const response = await toast.promise(
+  const response = await toast.promise<{ message: string; id: number }>(
     dispatch(
       gameAdminApi.endpoints.createGame.initiate({
         gameData: previewData as Game,
@@ -308,6 +308,27 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
   ).unwrap();
   if (response.message) router.push(`/game/${gameToUpdate?.id}`);
 };
+
+export const deleteGame = createAppAsyncThunk<
+  void,
+  { id: number; router: AppRouterInstance },
+  { rejectValue: string }
+>('admin/game/deleteGame', async ({ id, router }, { dispatch }) => {
+  const response = await toast
+    .promise<{ message?: string }>(
+      dispatch(gameAdminApi.endpoints.deleteGame.initiate(id)).unwrap(),
+      {
+        success: 'Game deleted successfully',
+        pending: 'Deleting game...',
+        error: 'Error deleting game',
+      }
+    )
+    .catch((error) => {
+      console.error('Error deleting game:', error);
+    });
+
+  if (response?.message) router.push('/');
+});
 
 export const submitForm = createAppAsyncThunk<void, AppRouterInstance, { rejectValue: string }>(
   'admin/game/submitForm',

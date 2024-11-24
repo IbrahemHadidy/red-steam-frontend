@@ -63,7 +63,7 @@ export default function QueueArea() {
     toast.warn('Not implemented yet');
   };
 
-  //-------------------------- Render UI Section --------------------------//
+  //------------------------------- Render --------------------------------//
   if (!authOnLoadIntialized || !isAuthInitialized) {
     return <LoadingSkeleton />;
   } else {

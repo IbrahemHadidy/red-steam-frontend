@@ -99,7 +99,8 @@ export default function ProfileInfoSection() {
     dispatch(setSubmitAvatarButtonDisabled(true));
   };
 
-  //--------------------------- Render UI Section -------------------------//
+  //-------------------------------- Render -------------------------------//
+
   return (
     <>
       <div className="account-header-line">

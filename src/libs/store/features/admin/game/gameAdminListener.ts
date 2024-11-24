@@ -38,15 +38,13 @@ listen({
     const { screenshots, videos } = listenerApi.getState().admin.game;
 
     const findDuplicateOrders = (items: (Screenshot | Video)[]): Set<number> => {
-      const orders: number[] = items.map((item) => item.order);
-      const duplicateOrders: number[] = orders.filter(
-        (order, idx) => orders.indexOf(order) !== idx
-      );
-      return new Set(duplicateOrders);
+      const orders = items.map((item) => item.order);
+      const duplicateOrders = orders.filter((order, idx) => orders.indexOf(order) !== idx);
+      return new Set<number>(duplicateOrders);
     };
 
-    const allItems: (Screenshot | Video)[] = [...screenshots, ...videos];
-    const duplicates: Set<number> = findDuplicateOrders(allItems);
+    const allItems = [...screenshots, ...videos];
+    const duplicates = findDuplicateOrders(allItems);
     dispatch(updateDuplicateOrders(Array.from(duplicates)));
     dispatch(setDuplicateError(duplicates.size > 0));
   },
