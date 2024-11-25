@@ -1,6 +1,8 @@
 // Styles
 import '@styles/admin/GameAdmin.scss';
 import '@styles/game/Game.scss';
+import '@styles/game/GameContent.scss';
+import '@styles/game/MediaAndSummary.scss';
 
 // Types
 import type { Metadata } from 'next';

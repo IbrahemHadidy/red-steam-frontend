@@ -147,7 +147,8 @@ const createGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
       error: 'Failed to create game, please try again',
     }
   );
-  if (response.id) router.push(`/game/${response.id}`);
+
+  if (response?.id) router.push(`/game/${response.id}`);
 };
 
 const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRouterInstance) => {
@@ -176,137 +177,153 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
     gameToUpdate,
   } = state.admin.game;
 
-  const response = await dispatch(
-    gameAdminApi.endpoints.updateGame.initiate({
-      media: {
-        changedThumbnails: {
-          mainImage:
-            thumbnails.mainImage.file instanceof File && thumbnails.mainImage.changed
-              ? thumbnails.mainImage.file
-              : undefined,
-          backgroundImage:
-            thumbnails.backgroundImage.file instanceof File && thumbnails.backgroundImage.changed
-              ? thumbnails.backgroundImage.file
-              : undefined,
-          menuImg:
-            thumbnails.menuImg.file instanceof File && thumbnails.menuImg.changed
-              ? thumbnails.menuImg.file
-              : undefined,
-          horizontalHeaderImage:
-            thumbnails.horizontalHeaderImage.file instanceof File &&
-            thumbnails.horizontalHeaderImage.changed
-              ? thumbnails.horizontalHeaderImage.file
-              : undefined,
-          verticalHeaderImage:
-            thumbnails.verticalHeaderImage.file instanceof File &&
-            thumbnails.verticalHeaderImage.changed
-              ? thumbnails.verticalHeaderImage.file
-              : undefined,
-          smallHeaderImage:
-            thumbnails.smallHeaderImage.file instanceof File && thumbnails.smallHeaderImage.changed
-              ? thumbnails.smallHeaderImage.file
-              : undefined,
-          searchImage:
-            thumbnails.searchImage.file instanceof File && thumbnails.searchImage.changed
-              ? thumbnails.searchImage.file
-              : undefined,
-          tabImage:
-            thumbnails.tabImage.file instanceof File && thumbnails.tabImage.changed
-              ? thumbnails.tabImage.file
-              : undefined,
-        },
-        deletedScreenshots: screenshots
-          .filter((screenshot) => screenshot.change === 'deleted')
-          .map((screenshot) => screenshot.baseOrder),
-        deletedVideos: videos
-          .filter((video) => video.change === 'deleted')
-          .map((video) => video.baseOrder),
-        changedScreenshots: screenshots
-          .filter(
-            (screenshot) =>
-              screenshot.change !== 'deleted' &&
-              screenshot.change !== 'added' &&
-              screenshot.order !== screenshot.baseOrder
-          )
-          .map((screenshot) => ({
-            oldOrder: screenshot.baseOrder,
-            newOrder: screenshot.order,
-          })),
-        changedVideos: videos
-          .filter(
-            (video) =>
-              video.change !== 'deleted' &&
-              video.change !== 'added' &&
-              video.order !== video.baseOrder
-          )
-          .map((video) => ({
-            oldOrder: video.baseOrder,
-            newOrder: video.order,
-          })),
-        addedScreenshots: screenshots.filter((screenshot) => screenshot.change === 'added'),
-        addedVideos: videos.filter((video) => video.change === 'added'),
-        featuredOrders: screenshots
-          .filter((screenshot) => screenshot.featured)
-          .map((screenshot) => screenshot.order),
-      },
-      updateData: {
-        id: gameToUpdate?.id,
-        name: name.trim(),
-        category: gameToUpdate?.category !== category.trim() ? category.trim() : undefined,
-        description:
-          gameToUpdate?.description !== description.trim() ? description.trim() : undefined,
-        releaseDate: gameToUpdate?.releaseDate !== releaseDate ? releaseDate : undefined,
-        featured: gameToUpdate?.featured !== featured ? featured : undefined,
-        publishers:
-          JSON.stringify(gameToUpdate?.publishers?.map((publisher) => publisher.id).sort()) !==
-          JSON.stringify([...publishers].sort())
-            ? publishers
-            : undefined,
-        developers:
-          JSON.stringify(gameToUpdate?.developers?.map((developer) => developer.id).sort()) !==
-          JSON.stringify([...developers].sort())
-            ? developers
-            : undefined,
-        pricing:
-          gameToUpdate?.pricing?.free !== pricing.free ||
-          gameToUpdate?.pricing?.basePrice !== pricing.price?.toString()
-            ? {
-                free: gameToUpdate?.pricing?.free !== pricing.free ? pricing.free : undefined,
-                price:
-                  gameToUpdate?.pricing?.basePrice !== pricing.price
-                    ? pricing.price?.toString()
-                    : undefined,
-              }
-            : undefined,
-        tags:
-          JSON.stringify(gameToUpdate?.tags?.map((tag) => tag.id).sort()) !==
-          JSON.stringify([...tags].sort())
-            ? tags
-            : undefined,
-        features:
-          JSON.stringify(gameToUpdate?.features?.map((feature) => feature.id).sort()) !==
-          JSON.stringify([...features].sort())
-            ? features
-            : undefined,
-        languages: gameToUpdate?.languageSupport !== languages ? languages : undefined,
-        platforms: {
-          win: platforms.win,
-          mac: platforms.mac,
-        },
-        link: gameToUpdate?.link !== link.trim() ? link.trim() : undefined,
-        about: gameToUpdate?.about !== about.trim() ? about.trim() : undefined,
-        mature: gameToUpdate?.mature !== mature ? mature : undefined,
-        matureDescription:
-          gameToUpdate?.matureDescription !== matureDescription.trim()
-            ? matureDescription.trim()
-            : undefined,
-        systemRequirements:
-          gameToUpdate?.systemRequirements !== systemRequirements ? systemRequirements : undefined,
-        legal: gameToUpdate?.legal !== legal.trim() ? legal.trim() : undefined,
-      },
-    })
-  ).unwrap();
-  if (response.message) router.push(`/game/${gameToUpdate?.id}`);
+  const response = await toast
+    .promise(
+      dispatch(
+        gameAdminApi.endpoints.updateGame.initiate({
+          media: {
+            changedThumbnails: {
+              mainImage:
+                thumbnails.mainImage.file instanceof File && thumbnails.mainImage.changed
+                  ? thumbnails.mainImage.file
+                  : undefined,
+              backgroundImage:
+                thumbnails.backgroundImage.file instanceof File &&
+                thumbnails.backgroundImage.changed
+                  ? thumbnails.backgroundImage.file
+                  : undefined,
+              menuImg:
+                thumbnails.menuImg.file instanceof File && thumbnails.menuImg.changed
+                  ? thumbnails.menuImg.file
+                  : undefined,
+              horizontalHeaderImage:
+                thumbnails.horizontalHeaderImage.file instanceof File &&
+                thumbnails.horizontalHeaderImage.changed
+                  ? thumbnails.horizontalHeaderImage.file
+                  : undefined,
+              verticalHeaderImage:
+                thumbnails.verticalHeaderImage.file instanceof File &&
+                thumbnails.verticalHeaderImage.changed
+                  ? thumbnails.verticalHeaderImage.file
+                  : undefined,
+              smallHeaderImage:
+                thumbnails.smallHeaderImage.file instanceof File &&
+                thumbnails.smallHeaderImage.changed
+                  ? thumbnails.smallHeaderImage.file
+                  : undefined,
+              searchImage:
+                thumbnails.searchImage.file instanceof File && thumbnails.searchImage.changed
+                  ? thumbnails.searchImage.file
+                  : undefined,
+              tabImage:
+                thumbnails.tabImage.file instanceof File && thumbnails.tabImage.changed
+                  ? thumbnails.tabImage.file
+                  : undefined,
+            },
+            deletedScreenshots: screenshots
+              .filter((screenshot) => screenshot.change === 'deleted')
+              .map((screenshot) => screenshot.baseOrder),
+            deletedVideos: videos
+              .filter((video) => video.change === 'deleted')
+              .map((video) => video.baseOrder),
+            changedScreenshots: screenshots
+              .filter(
+                (screenshot) =>
+                  screenshot.change !== 'deleted' &&
+                  screenshot.change !== 'added' &&
+                  screenshot.order !== screenshot.baseOrder
+              )
+              .map((screenshot) => ({
+                oldOrder: screenshot.baseOrder,
+                newOrder: screenshot.order,
+              })),
+            changedVideos: videos
+              .filter(
+                (video) =>
+                  video.change !== 'deleted' &&
+                  video.change !== 'added' &&
+                  video.order !== video.baseOrder
+              )
+              .map((video) => ({
+                oldOrder: video.baseOrder,
+                newOrder: video.order,
+              })),
+            addedScreenshots: screenshots.filter((screenshot) => screenshot.change === 'added'),
+            addedVideos: videos.filter((video) => video.change === 'added'),
+            featuredOrders: screenshots
+              .filter((screenshot) => screenshot.featured)
+              .map((screenshot) => screenshot.order),
+          },
+          updateData: {
+            id: gameToUpdate?.id,
+            name: name.trim(),
+            category: gameToUpdate?.category !== category.trim() ? category.trim() : undefined,
+            description:
+              gameToUpdate?.description !== description.trim() ? description.trim() : undefined,
+            releaseDate: gameToUpdate?.releaseDate !== releaseDate ? releaseDate : undefined,
+            featured: gameToUpdate?.featured !== featured ? featured : undefined,
+            publishers:
+              JSON.stringify(gameToUpdate?.publishers?.map((publisher) => publisher.id).sort()) !==
+              JSON.stringify([...publishers].sort())
+                ? publishers
+                : undefined,
+            developers:
+              JSON.stringify(gameToUpdate?.developers?.map((developer) => developer.id).sort()) !==
+              JSON.stringify([...developers].sort())
+                ? developers
+                : undefined,
+            pricing:
+              gameToUpdate?.pricing?.free !== pricing.free ||
+              gameToUpdate?.pricing?.basePrice !== pricing.price?.toString()
+                ? {
+                    free: gameToUpdate?.pricing?.free !== pricing.free ? pricing.free : undefined,
+                    price:
+                      gameToUpdate?.pricing?.basePrice !== pricing.price
+                        ? pricing.price?.toString()
+                        : undefined,
+                  }
+                : undefined,
+            tags:
+              JSON.stringify(gameToUpdate?.tags?.map((tag) => tag.id).sort()) !==
+              JSON.stringify([...tags].sort())
+                ? tags
+                : undefined,
+            features:
+              JSON.stringify(gameToUpdate?.features?.map((feature) => feature.id).sort()) !==
+              JSON.stringify([...features].sort())
+                ? features
+                : undefined,
+            languages: gameToUpdate?.languageSupport !== languages ? languages : undefined,
+            platforms: {
+              win: platforms.win,
+              mac: platforms.mac,
+            },
+            link: gameToUpdate?.link !== link.trim() ? link.trim() : undefined,
+            about: gameToUpdate?.about !== about.trim() ? about.trim() : undefined,
+            mature: gameToUpdate?.mature !== mature ? mature : undefined,
+            matureDescription:
+              gameToUpdate?.matureDescription !== matureDescription.trim()
+                ? matureDescription.trim()
+                : undefined,
+            systemRequirements:
+              gameToUpdate?.systemRequirements !== systemRequirements
+                ? systemRequirements
+                : undefined,
+            legal: gameToUpdate?.legal !== legal.trim() ? legal.trim() : undefined,
+          },
+        })
+      ).unwrap(),
+      {
+        pending: 'Updating game...',
+        success: 'Game updated successfully',
+        error: 'Error updating game',
+      }
+    )
+    .catch((error) => {
+      console.error('Error updating game:', error);
+    });
+
+  if (response?.message) router.push(`/game/${gameToUpdate?.id}`);
 };
 
 export const deleteGame = createAppAsyncThunk<
@@ -347,9 +364,9 @@ export const submitForm = createAppAsyncThunk<void, AppRouterInstance, { rejectV
       window.addEventListener('beforeunload', preventNavigation);
 
       if (type === 'create') {
-        createGame(dispatch, getState(), router);
+        await createGame(dispatch, getState(), router);
       } else if (type === 'update') {
-        updateGame(dispatch, getState(), router);
+        await updateGame(dispatch, getState(), router);
       }
     } catch (error) {
       if (error instanceof Error) {
