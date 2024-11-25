@@ -230,6 +230,7 @@
           border-left: 1px solid #32353c;
           min-width: 302px;
           overflow: hidden;
+          transition: all 0.3s ease-in-out;
 
           &.login-page {
             min-width: unset;

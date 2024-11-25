@@ -20,6 +20,9 @@ import ResetPasswordForm from './ResetPasswordForm';
 import useDynamicBackground from '@hooks/useDynamicBackground';
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
+// Types
+import type { CSSProperties } from 'react';
+
 export default function SignInAndRecovery() {
   //--------------------------- Initializations ---------------------------//
   const isViewport740OrLess = useResponsiveViewport(740);
@@ -37,17 +40,19 @@ export default function SignInAndRecovery() {
 
   //------------------------------- Styles --------------------------------//
   // Styles for the forgot password form
-  const styles = {
+  const styles: CSSProperties = {
     opacity: isForgotPasswordVisible ? 1 : 0,
     width: type === 'Name / Password Recovery' ? '366px' : isForgotPasswordVisible ? '317px' : '0',
     paddingLeft: isForgotPasswordVisible ? '14px' : '0px',
     marginLeft: isForgotPasswordVisible ? '14px' : '0px',
+    pointerEvents: isForgotPasswordVisible ? 'auto' : 'none',
   };
-  const styles740 = {
+  const styles740: CSSProperties = {
     opacity: isForgotPasswordVisible ? 1 : 0,
     height: isForgotPasswordVisible ? '296px' : '0',
     paddingTop: isForgotPasswordVisible ? '14px' : '0px',
     marginTop: isForgotPasswordVisible ? '14px' : '0px',
+    pointerEvents: isForgotPasswordVisible ? 'auto' : 'none',
   };
 
   //------------------------------- Render --------------------------------//
