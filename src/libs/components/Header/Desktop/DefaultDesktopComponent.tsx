@@ -1,5 +1,3 @@
-'use client';
-
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,6 +24,7 @@ export default function DefaultDesktopComponent() {
   //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
 
+  //---------------------------- Event Handlers ----------------------------//
   const handleInstallSteamBtn = (): void => {
     toast.warning('This is not the real Steam website, It is just a clone for learning purposes.');
   };
@@ -34,13 +33,12 @@ export default function DefaultDesktopComponent() {
     toast.info(`Coming soon.`);
   };
 
+  //------------------------------- Render --------------------------------//
   return (
     <>
       <Navbar className="nav-color header-container" variant="dark" collapseOnSelect={false}>
         <Container className="header-content">
-          {/* Right-Top-side navigation links */}
           <Nav className="my-nav">
-            {/* "Install Steam" button */}
             <Button
               variant="secondary"
               className={`mr-2 compact-button ${!isUserLoggedIn && 'login'}`}
@@ -52,7 +50,6 @@ export default function DefaultDesktopComponent() {
               </span>
             </Button>
 
-            {/* "Notifications" button */}
             {isUserLoggedIn && (
               <Button
                 variant="secondary"
@@ -65,7 +62,6 @@ export default function DefaultDesktopComponent() {
               </Button>
             )}
 
-            {/* User profile dropdown menu */}
             {isUserLoggedIn ? (
               <ProfileDropdown />
             ) : (
@@ -77,7 +73,6 @@ export default function DefaultDesktopComponent() {
             )}
           </Nav>
 
-          {/* Brand/logo section */}
           <Link href="/">
             <Image
               alt="Steam"
@@ -88,9 +83,10 @@ export default function DefaultDesktopComponent() {
               priority
             />
           </Link>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
           <Navbar.Collapse id="basic-navbar-nav">
-            {/* Left-side navigation links */}
             <NavigationLinks />
           </Navbar.Collapse>
         </Container>

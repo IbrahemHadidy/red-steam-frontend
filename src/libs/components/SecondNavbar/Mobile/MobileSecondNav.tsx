@@ -1,5 +1,3 @@
-'use client';
-
 // React
 import { useEffect, useState } from 'react';
 
@@ -10,17 +8,18 @@ import { usePathname } from 'next/navigation';
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
-// Components
-import NavSearch from '../NavSearch';
-
 // Static Data
 import { menuData, navigationItems } from './menuData-mobile';
+
+// Components
+import NavSearch from '../NavSearch';
+import NavigationItem from './NavigationItem';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { GroupedMenuItem, MenuItem, menuTitle } from '../SecondNavbar.types';
+import type { MenuItem, menuTitle } from '../SecondNavbar.types';
 
 export default function MobileSecondNav() {
   //--------------------------- Initializations ---------------------------//ializattions
@@ -47,11 +46,11 @@ export default function MobileSecondNav() {
     }
   };
 
-  const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(([menuTitle, menu]) => {
-    const items: MenuItem[] = menu.items;
+  const groupedMenuItems = Object.entries(menuData).map(([menuTitle, menu]) => {
+    const items = menu.items;
     const categoryGroups: Record<string, MenuItem[]> = {};
 
-    items.forEach((item: MenuItem) => {
+    items.forEach((item) => {
       if (item.category) {
         if (!categoryGroups[item.category]) {
           categoryGroups[item.category] = [];
@@ -68,7 +67,6 @@ export default function MobileSecondNav() {
       <nav className="navbar navbar-expand-sm navbarBg-mobile">
         <div>
           <ul className="navbar-nav navbar-nav-mobile">
-            {/* TODO: render real profile image from server */}
             {isUserLoggedIn && (
               <img
                 className="profile_picture-mobile"
@@ -84,12 +82,11 @@ export default function MobileSecondNav() {
                     menuTitle === 'Your Store' && isUserLoggedIn ? 'special-class' : ''
                   }`}
                   href="#"
-                  onClick={() => handleMenuClick(menuTitle)} // Handle click to open/close the menu
+                  onClick={() => handleMenuClick(menuTitle)}
                 >
                   {menuTitle}
                 </a>
 
-                {/* Conditionally render the dropdown menu based on the openMenu state */}
                 {isUserLoggedIn && openMenu === 'Your Store' && (
                   <div className={`dropdown-menu dropdown-menu-mobile ${menuTitle}-div`}>
                     {Object.entries(categoryGroups).map(
@@ -147,15 +144,7 @@ export default function MobileSecondNav() {
         </div>
 
         {navigationItems.map((item, idx) => (
-          <div key={idx}>
-            <ul className="navbar-nav">
-              <li className="nav-item navbar-nav-mobile">
-                <Link className="nav-link navBarItem navBarItem-mobile" href={item.url}>
-                  {item.label}
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <NavigationItem item={item} key={idx} />
         ))}
 
         {!isSearchPage && <NavSearch />}

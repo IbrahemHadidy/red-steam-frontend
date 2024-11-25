@@ -8,9 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-// React spring
-import { animated, useSpring } from 'react-spring';
-
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
@@ -19,14 +16,14 @@ import { menuData, navigationItems } from './menuData';
 
 // Components
 import NavSearch from '../NavSearch';
+import GroupedMenuItem from './GroupedMenuItem';
 
 // Images
 import cart from '@images/cart.svg';
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { SpringValue } from 'react-spring';
-import type { GroupedMenuItem, MenuItem } from '../SecondNavbar.types';
+import type { MenuItem } from '../SecondNavbar.types';
 
 export default function DesktopSecondNav() {
   //--------------------------- Initializations ---------------------------//
@@ -34,9 +31,9 @@ export default function DesktopSecondNav() {
 
   //------------------------------- States --------------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
 
+  //------------------------------- OnMount -------------------------------//
   useEffect(() => {
     if (pathname?.includes('/search')) {
       setIsSearchPage(true);
@@ -45,7 +42,8 @@ export default function DesktopSecondNav() {
     }
   }, [pathname]);
 
-  const groupedMenuItems: GroupedMenuItem[] = Object.entries(menuData).map(([menuTitle, menu]) => {
+  //-------------------------------- Utils --------------------------------//
+  const groupedMenuItems = Object.entries(menuData).map(([menuTitle, menu]) => {
     const items: MenuItem[] = menu.items;
     const categoryGroups: Record<string, MenuItem[]> = {};
 
@@ -61,17 +59,7 @@ export default function DesktopSecondNav() {
     return { menuTitle, categoryGroups };
   });
 
-  const fadeAnimations: Record<string, { opacity: SpringValue<number> }> = {};
-
-  groupedMenuItems.forEach(({ menuTitle }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    fadeAnimations[menuTitle] = useSpring({
-      opacity: openMenu === menuTitle ? 1 : 0,
-      pointerEvents: openMenu === menuTitle ? 'auto' : 'none',
-      config: { duration: openMenu ? 30 : 15 },
-    });
-  });
-
+  //-------------------------------- Render -------------------------------//
   return (
     <>
       <div className="d-none d-md-block mx-auto myNavSec">
@@ -115,76 +103,7 @@ export default function DesktopSecondNav() {
             )}
 
             {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
-              <li
-                key={idx}
-                className="nav-item dropdown"
-                onMouseEnter={() => setOpenMenu(menuTitle)}
-                onMouseLeave={() => setOpenMenu(null)}
-              >
-                <a
-                  className={`nav-link navBarItem ${
-                    menuTitle === 'Your Store' && isUserLoggedIn ? 'special-class' : ''
-                  }`}
-                >
-                  {menuTitle}
-                </a>
-                <animated.div
-                  className={`dropdown-menu ${menuTitle}-div ${isUserLoggedIn ? 'categoryfix' : ''}`}
-                  style={fadeAnimations[menuTitle]}
-                >
-                  {isUserLoggedIn && openMenu === 'Your Store' && (
-                    <>
-                      {Object.entries(categoryGroups).map(
-                        (
-                          [category, categoryItems]: [string, MenuItem[]],
-                          categoryIndex: number
-                        ) => (
-                          <div key={categoryIndex} className={`category-div ${category}`}>
-                            {categoryItems.map((categoryItem, itemIndex) => (
-                              <Link
-                                key={itemIndex}
-                                className={`menuItem ${categoryItem.className}`}
-                                href={categoryItem.url}
-                              >
-                                {categoryItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        )
-                      )}
-                    </>
-                  )}
-
-                  {!isUserLoggedIn && openMenu === 'Your Store' && (
-                    <div className="category-div store-div" style={{ marginTop: '-10px' }}>
-                      <Link className="menuItem custom-label" href="/login">
-                        Home
-                      </Link>
-                    </div>
-                  )}
-                  {openMenu === menuTitle && openMenu !== 'Your Store' && (
-                    <>
-                      {Object.entries(categoryGroups).map(
-                        ([category, categoryItems], categoryIndex) => (
-                          <div key={categoryIndex} className={`category-div ${category}`}>
-                            {categoryItems.map((categoryItem, itemIndex) => (
-                              <Link
-                                key={itemIndex}
-                                className={`menuItem ${
-                                  categoryItem.className
-                                } ${categoryItem.specialClass ?? ''}`}
-                                href={categoryItem.url}
-                              >
-                                {categoryItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        )
-                      )}
-                    </>
-                  )}
-                </animated.div>
-              </li>
+              <GroupedMenuItem menuTitle={menuTitle} categoryGroups={categoryGroups} key={idx} />
             ))}
 
             {navigationItems.map((item, idx) => (

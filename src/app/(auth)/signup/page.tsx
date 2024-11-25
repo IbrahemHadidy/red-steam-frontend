@@ -6,9 +6,6 @@ import { useEffect, useRef } from 'react';
 // NextJS
 import Image from 'next/image';
 
-// React Spring
-import { animated, useSpring } from 'react-spring';
-
 // Google ReCAPTCHA
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -57,15 +54,12 @@ export default function SignUpPage() {
   //--------------------------- Ref for ReCAPTCHA -------------------------//
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
-  //-------------------------- Spring Animations --------------------------//
-  const springProps = useSpring({
-    from: { backgroundColor: 'rgba(244, 183, 134, 1)' },
-    to: {
-      backgroundColor: errorMessages.length !== 0 ? 'rgba(0, 0, 0, 0.5)' : 'rgba(244, 183, 134, 1)',
-      display: errorMessages.length !== 0 ? 'block' : 'none',
-    },
-    config: { duration: 1000 },
-  });
+  //-------------------------------- Styles -------------------------------//
+  const style = {
+    backgroundColor: errorMessages.length !== 0 ? 'rgba(0, 0, 0, 0.5)' : 'rgba(244, 183, 134, 1)',
+    display: errorMessages.length !== 0 ? 'block' : 'none',
+    transition: 'background-color 1s ease',
+  };
 
   //---------------------------- Event Handlers ----------------------------//
   const handleSubmitFirstForm = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -87,11 +81,11 @@ export default function SignUpPage() {
     <>
       <div className="page-content-sign signup">
         <div className="joinsteam-content">
-          <animated.div className="error-display" style={springProps}>
+          <div className="error-display" style={style}>
             {errorMessages.map((message, idx) => (
               <div key={idx}>{message}</div>
             ))}
-          </animated.div>
+          </div>
 
           {isEmailAvailable ? (
             <div className="create-account-container">

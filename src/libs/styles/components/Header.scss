@@ -454,37 +454,36 @@
 						}
 
 						.inner-menu {
-							transition: max-height 0.3s ease-in-out;
-							max-height: 0;
+							transition: height 0.3s ease-in-out;
 							overflow: hidden;
 							border-top: 1px solid #454953;
+
+							.submenuitem {
+								font-family: "Motiva Sans", Sans-serif;
+								font-weight: 200;
+								display: block;
+								padding: 0 12px;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+								line-height: 2.5em;
+								text-decoration: none;
+								cursor: pointer;
+								font-size: 0.75em;
+								color: #ffffff;
+								padding-left: 28px;
+							}
 						}
 
 						&.opened {
 							background-color: #192533;
 							color: #fff;
-							transition: max-height 0.3s ease-in-out;
+							transition: height 0.3s ease-in-out;
 
 							.inner-menu {
-								transition: max-height 0.3s ease-in-out;
+								transition: height 0.3s ease-in-out;
 								max-height: initial;
 								border-top: 1px solid #454953;
-
-								.submenuitem {
-									font-family: "Motiva Sans", Sans-serif;
-									font-weight: 200;
-									display: block;
-									padding: 0 12px;
-									overflow: hidden;
-									text-overflow: ellipsis;
-									white-space: nowrap;
-									line-height: 2.5em;
-									text-decoration: none;
-									cursor: pointer;
-									font-size: 0.75em;
-									color: #ffffff;
-									padding-left: 28px;
-								}
 							}
 						}
 					}

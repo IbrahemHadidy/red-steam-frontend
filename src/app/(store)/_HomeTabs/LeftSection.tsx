@@ -3,8 +3,8 @@ import Tab from './Tab';
 import TabContent from './TabContent';
 
 // Types
+import type { OpenedTab } from '@custom-types/tabs';
 import type { Game } from '@interfaces/game';
-import type { OpenedTab } from '../Store.types';
 
 interface LeftSectionProps {
   openedTab: OpenedTab;

@@ -1,10 +1,6 @@
-interface category {
-  title: string;
-  link: string;
-  img: string;
-}
+import type { Category } from '@custom-types/categories';
 
-const CATEGORIES: category[] = [
+const CATEGORIES: Category[] = [
   {
     title: 'Open World',
     link: '/search?tags=37',

@@ -3,9 +3,6 @@
 // NextJS
 import Link from 'next/link';
 
-// React Spring
-import { animated, useSpring } from 'react-spring';
-
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
@@ -38,22 +35,20 @@ export default function SignInAndRecovery() {
     (state) => state.user.login
   );
 
-  //-------------------------- Spring Animations --------------------------//
-  // Spring animation properties for the "Forgot My Password" section
-  const springProps = useSpring({
+  //------------------------------- Styles --------------------------------//
+  // Styles for the forgot password form
+  const styles = {
     opacity: isForgotPasswordVisible ? 1 : 0,
     width: type === 'Name / Password Recovery' ? '366px' : isForgotPasswordVisible ? '317px' : '0',
     paddingLeft: isForgotPasswordVisible ? '14px' : '0px',
     marginLeft: isForgotPasswordVisible ? '14px' : '0px',
-    overflow: 'hidden',
-  });
-  const springProps740 = useSpring({
+  };
+  const styles740 = {
     opacity: isForgotPasswordVisible ? 1 : 0,
     height: isForgotPasswordVisible ? '296px' : '0',
     paddingTop: isForgotPasswordVisible ? '14px' : '0px',
     marginTop: isForgotPasswordVisible ? '14px' : '0px',
-    overflow: 'hidden',
-  });
+  };
 
   //------------------------------- Render --------------------------------//
   return (
@@ -69,12 +64,12 @@ export default function SignInAndRecovery() {
             <div className={`login-form-container ${isPasswordPage ? 'password-page' : ''}`}>
               {isLoginFormVisible && <LoginForm />}
 
-              <animated.div
+              <div
                 className={`forgot-my-password ${!isPasswordPage ? 'login-page' : 'active'}`}
-                style={!isViewport740OrLess ? springProps : springProps740}
+                style={!isViewport740OrLess ? styles : styles740}
               >
                 {showResetPasswordInterface ? <ResetPasswordForm /> : <ForgotPasswordForm />}
-              </animated.div>
+              </div>
             </div>
           </div>
         </div>

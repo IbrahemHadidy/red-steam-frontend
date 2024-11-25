@@ -23,8 +23,8 @@ const RightSection = dynamic(() => import('./RightSection'));
 import Skeleton from './Skeleton';
 
 // Types
+import type { OpenedTab } from '@custom-types/tabs';
 import type { Game } from '@interfaces/game';
-import type { OpenedTab } from '../Store.types';
 
 export default function HomeTabs() {
   //------------------------------- States --------------------------------//

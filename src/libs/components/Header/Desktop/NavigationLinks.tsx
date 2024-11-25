@@ -1,116 +1,77 @@
-'use client';
-
-// React
-import { useEffect, useState } from 'react';
-
 // NextJS
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
+// Custom Hooks
+import useRenderNavDropdownWithHover from './hooks/useRenderNavDropdownWithHover';
+
 // Bootstrap Components
-import { Nav, NavDropdown } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 
 // Links data
 import sharedData from '../sharedData';
 
-// Types
-import type { MouseEvent } from 'react';
-
 export default function NavigationLinks() {
   //--------------------------- Initializations ---------------------------//
-  const router = useRouter();
   const pathname = usePathname();
 
   //------------------------------- States --------------------------------//
   const { isUserLoggedIn, currentUserData } = useAppSelector((state) => state.auth);
-  const [isOpen, setIsOpen] = useState<number | null>(null);
 
-  const handleDropdownToggle = (e: MouseEvent, eventKey: number): void => {
-    e.preventDefault();
-    setIsOpen(eventKey === isOpen ? null : eventKey);
-  };
-
-  const renderNavDropdownWithHover = (
-    title: string,
-    renderKey: number,
-    items: { link: string; text: string }[]
-  ) => {
-    const isUserActive: boolean = pathname?.includes('/user') && !pathname?.includes('/admin');
-    const dropdownUserClassName: string = isUserActive ? 'active-title' : '';
-    const isAdminActive: boolean = pathname?.startsWith('/admin');
-    const dropdownAdminClassName: string = isAdminActive ? 'active-title' : '';
-
-    return (
-      <NavDropdown
-        title={
-          <span
-            className={`main-dropdowns ${title.includes('Profile') || title.includes(currentUserData?.username as string) ? dropdownUserClassName : ''} ${title.includes('Admin') ? dropdownAdminClassName : ''}`}
-          >
-            {title}
-          </span>
-        }
-        id={renderKey.toString()}
-        className="main-dropdowns"
-        renderMenuOnMount
-        onMouseEnter={(e) => handleDropdownToggle(e, renderKey)}
-        onMouseLeave={(e) => handleDropdownToggle(e, renderKey)}
-        show={isOpen === renderKey}
-        key={renderKey}
-      >
-        {items.map((item, idx) => (
-          <Link key={idx} href={item.link} className="dropdown-item">
-            {item.text}
-          </Link>
-        ))}
-      </NavDropdown>
-    );
-  };
-
-  const isStoreActive: boolean =
+  const isStoreActive =
     !pathname?.includes('/notfound') &&
     !pathname?.includes('/library') &&
     !pathname?.includes('/admin') &&
     !pathname?.includes('/user');
 
-  const dropdownStoreClassName: string = isStoreActive ? 'active-title' : '';
+  const dropdownStoreClassName = isStoreActive ? 'active-title' : '';
+  const isLibraryActive = pathname?.startsWith('/library');
+  const dropdownLibraryClassName = isLibraryActive ? 'active-title' : '';
 
-  const isLibraryActive: boolean = pathname?.startsWith('/library');
-  const dropdownLibraryClassName: string = isLibraryActive ? 'active-title' : '';
+  //------------------------------- Render --------------------------------//
+  const adminDropdown = useRenderNavDropdownWithHover(
+    pathname,
+    'Admin',
+    1,
+    sharedData.subMenus[1].items
+  );
 
-  useEffect(() => {
-    setIsOpen(null);
-  }, [router]);
+  const profileDropdown = useRenderNavDropdownWithHover(
+    pathname,
+    `${currentUserData?.username ? currentUserData.username : 'Profile'}`,
+    2,
+    sharedData.subMenus[0].items
+  );
 
   return (
     <Nav>
-      <Nav.Link href="/" className={`main-dropdowns  ${dropdownStoreClassName}`}>
+      <Link href="/" className={`main-dropdowns nav-link ${dropdownStoreClassName}`}>
         Store
-      </Nav.Link>
-      {isUserLoggedIn && currentUserData?.isAdmin && (
-        <>{renderNavDropdownWithHover('Admin', 1, sharedData.subMenus[1].items)}</>
-      )}
+      </Link>
+
       {isUserLoggedIn && (
-        <Nav.Link href="/library" className={`main-dropdowns  ${dropdownLibraryClassName}`}>
-          Library
-        </Nav.Link>
+        <>
+          {currentUserData?.isAdmin && adminDropdown}
+
+          <Link href="/library" className={`main-dropdowns nav-link ${dropdownLibraryClassName}`}>
+            Library
+          </Link>
+
+          {profileDropdown}
+        </>
       )}
-      {isUserLoggedIn &&
-        renderNavDropdownWithHover(
-          `${currentUserData?.username ? currentUserData.username : 'Profile'}`,
-          2,
-          sharedData.subMenus[0].items
-        )}
-      <Nav.Link
+
+      <Link
         href="https://github.com/IbrahemHadidy/red-steam/issues"
         target="_blank"
         rel="noreferrer noopenner"
-        className="main-dropdowns"
+        className="main-dropdowns nav-link"
       >
         report an issue
-      </Nav.Link>
+      </Link>
     </Nav>
   );
 }

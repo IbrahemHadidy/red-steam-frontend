@@ -18,7 +18,11 @@ import steamPromoCard from '@images/steamcards_promo_03.png';
 // Types
 import type RecentGames from '@custom-types/recent-games';
 import type { MouseEvent } from 'react';
-import type { LinkItem } from '../Store.types';
+
+interface LinkItem {
+  to: string;
+  text: string;
+}
 
 export default function Sidebar() {
   //--------------------------- Initializations ---------------------------//

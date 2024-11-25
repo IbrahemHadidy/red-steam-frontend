@@ -7,5 +7,5 @@ export interface Company {
   readonly games?: Game[];
 }
 
-export interface Publisher extends Company {}
-export interface Developer extends Company {}
+export type Publisher = Company;
+export type Developer = Company;

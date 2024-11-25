@@ -3,9 +3,6 @@
 // React
 import { useEffect, useRef, useState } from 'react';
 
-// React Spring
-import { animated, useSpring } from 'react-spring';
-
 // Hooks
 import { useAppSelector } from '@store/hooks';
 
@@ -36,13 +33,13 @@ export default function VerifyModal() {
     }
   }, []);
 
-  const divHeight: string = `${totalHeight + 24}px`;
+  const divHeight = `${totalHeight + 24}px`;
 
-  const expandSpring = useSpring({
+  const styles = {
     opacity: isExpanded ? 1 : 0,
     height: isExpanded ? divHeight : '0',
     overflow: 'hidden',
-  });
+  };
 
   const handleExpandClick = (): void => {
     setIsExpanded(!isExpanded);
@@ -91,11 +88,7 @@ export default function VerifyModal() {
                 </div>
               </div>
 
-              <animated.div
-                className="verification-troubleshooting"
-                style={{ ...expandSpring }}
-                ref={animatedDivRef}
-              >
+              <div className="verification-troubleshooting" style={styles} ref={animatedDivRef}>
                 <div>
                   If you haven't gotten our email please try the below troubleshooting steps:
                 </div>
@@ -118,7 +111,7 @@ export default function VerifyModal() {
                     to receive an email.
                   </li>
                 </ul>
-              </animated.div>
+              </div>
             </div>
           </div>
         </div>

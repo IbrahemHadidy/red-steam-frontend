@@ -15,9 +15,9 @@ const Category = dynamic(() => import('./Category'));
 import CATEGORIES from '@constants/categories';
 
 // Types
+import type { Category } from '@custom-types/categories';
 import type { JSX } from 'react';
 import type { Settings as SliderSettings } from 'react-slick';
-import type { Category } from '../Store.types';
 
 export default function Categories() {
   //--------------------------- Initializations ---------------------------//

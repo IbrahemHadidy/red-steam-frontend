@@ -25,7 +25,6 @@ export default function LogoutPage() {
 
   useEffect(() => {
     (async () => {
-      // Logout if user is logged in
       if (isUserLoggedIn) await dispatch(logout());
       router.push('/');
     })();

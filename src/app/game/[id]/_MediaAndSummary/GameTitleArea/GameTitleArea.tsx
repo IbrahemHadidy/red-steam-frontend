@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { useAppSelector } from '@store/hooks';
 
 // Components
-import DeleteModal from '@app/admin/_Admin/DeleteModal';
+import DeleteModal from '@app/admin/_GameAdmin/sections/DeleteModal';
 
 // Images
 import deleteIcon from '@images/delete.png';
@@ -32,7 +32,6 @@ export default function GameTitleArea() {
   const { currentGame } = useAppSelector((state) => state.game);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-  const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
 
   //--------------------------- Event Handlers ----------------------------//
   const handleCommunityBtnClick = (): void => {
@@ -51,7 +50,6 @@ export default function GameTitleArea() {
 
   const onDelete = (itemId?: number): void => {
     if (!itemId) return;
-    setDeleteItemId(itemId);
     setDeleteModalOpen(true);
   };
 
@@ -127,11 +125,11 @@ export default function GameTitleArea() {
         </div>
       </div>
 
-      {deleteModalOpen && deleteItemId && (
+      {deleteModalOpen && (
         <DeleteModal
-          gameName={currentGame?.name}
+          gameId={currentGame?.id ?? 0}
+          gameName={currentGame?.name ?? ''}
           setOpen={setDeleteModalOpen}
-          itemId={deleteItemId}
         />
       )}
     </>

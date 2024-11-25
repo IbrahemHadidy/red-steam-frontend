@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 // Types
-import type { Category } from '../Store.types';
+import type { Category } from '@custom-types/categories';
 
 interface CategoryProps {
   category: Category;

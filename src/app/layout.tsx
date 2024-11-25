@@ -1,5 +1,3 @@
-// NextJS
-
 // Toast notifications
 import Toaster from '@components/Toaster/Toaster';
 

@@ -1,5 +1,3 @@
-'use client';
-
 // React
 import { useState } from 'react';
 
@@ -28,6 +26,7 @@ export default function NavSearch() {
     setSearchInput(e.target.value);
   };
 
+  //-------------------------------- Render -------------------------------//
   return (
     <div className="search-area">
       <div id="search">

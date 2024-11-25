@@ -1,5 +1,5 @@
 // Types
-import type { OpenedTab } from '../Store.types';
+import type { OpenedTab } from '@custom-types/tabs';
 
 interface TabProps {
   tabName: string;

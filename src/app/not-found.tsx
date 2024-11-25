@@ -1,5 +1,3 @@
-'use client';
-
 // Components
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
@@ -12,7 +10,6 @@ import '@styles/not-found.scss';
 
 // Types
 import type { Metadata } from 'next';
-import type { JSX } from 'react';
 
 export const metadata: Metadata = {
   title: 'Page Not Found',
@@ -33,7 +30,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function NotFound(): JSX.Element {
+export default function NotFound() {
   return (
     <>
       <Header />
