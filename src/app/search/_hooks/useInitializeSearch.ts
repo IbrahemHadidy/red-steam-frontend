@@ -1,5 +1,5 @@
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { initializeSearch } from '@store/features/search/searchSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
@@ -14,8 +14,12 @@ export default function useInitializeSearch() {
   const { isAuthInitialized } = useAppSelector((state) => state.auth);
   const { isSearchInitialized } = useAppSelector((state) => state.search);
 
+  const [isCalled, setIsCalled] = useState<boolean>(false);
+
   useEffect(() => {
-    if (!isSearchInitialized && isAuthInitialized)
+    if (!isSearchInitialized && !isCalled && isAuthInitialized) {
+      setIsCalled(true);
       dispatch(initializeSearch(searchParams.toString()));
-  }, [dispatch, isAuthInitialized, isSearchInitialized, searchParams]);
+    }
+  }, [dispatch, isAuthInitialized, isCalled, isSearchInitialized, searchParams]);
 }
