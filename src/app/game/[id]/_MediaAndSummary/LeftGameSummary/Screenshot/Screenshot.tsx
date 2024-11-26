@@ -24,7 +24,8 @@ import highlightSpacer from '@images/game_highlight_image_spacer.gif';
 import externalLinkIcon from '@images/ico_external_link.gif';
 
 // Types
-import type { MouseEvent, RefObject } from 'react';
+import { useRef, type MouseEvent, type RefObject } from 'react';
+import useImageCleanup from './hooks/useImageCleanup';
 
 export function ScreenshotModal() {
   const dispatch = useAppDispatch();
@@ -103,8 +104,12 @@ export function Screenshot({ slideAreaRef, src }: ScreenshotProps) {
   //-------------------------- State Selectors --------------------------//
   const { isPageVisible } = useAppSelector((state) => state.game);
 
+  //------------------------------- Refs --------------------------------//
+  const screenshotRef = useRef<HTMLImageElement>(null);
+
   //------------------------------- Hooks -------------------------------//
   useAutoScreenshotSwap(isPageVisible, slideAreaRef);
+  useImageCleanup(screenshotRef);
 
   //--------------------------- Event Handlers ---------------------------//
   const handleMouseEnter = (): void => {
