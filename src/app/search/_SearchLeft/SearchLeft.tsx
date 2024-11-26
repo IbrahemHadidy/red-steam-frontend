@@ -40,7 +40,6 @@ export default function SearchLeft() {
   };
 
   //-------------------------------- Render -------------------------------//
-
   return (
     <div className="search-leftcol">
       <SearchBar />

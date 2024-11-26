@@ -1,4 +1,6 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+
+import type { ReactNode } from 'react';
 
 interface FadingContainerProps {
   isVisible: boolean;
@@ -36,6 +38,7 @@ export default function FadingContainer({
         opacity: isVisible ? 1 : 0,
         transition: `opacity ${transitionDuration}ms ease-in-out`,
         zIndex: zIndex ?? 1000,
+        pointerEvents: 'none',
       }}
     >
       <div ref={containerRef} className={className}>
