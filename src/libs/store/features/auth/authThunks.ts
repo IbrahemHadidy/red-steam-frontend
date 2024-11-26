@@ -44,7 +44,7 @@ export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string 
           pending: 'Logging in...',
           success: 'Logged in successfully!',
           error:
-            'An error occurred while trying to connect to the server. Please check your internet connection and try again.',
+            'User not found or password is incorrect. Please check your credentials and try again.',
         },
         { toastId: 'login' }
       )
@@ -178,21 +178,22 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
       toast.info('Verification email sent. Please check your inbox.');
     }
 
-    const waitingTime = await dispatch(userAuthApi.endpoints.getWaitingTime.initiate()).unwrap();
+    const waitingTime = (await dispatch(userAuthApi.endpoints.getWaitingTime.initiate()).unwrap())
+      .waitingTime;
+
+    const getVerificationStatus = async () =>
+      (await dispatch(userAuthApi.endpoints.verificationStatus.initiate()).unwrap()).verified;
 
     const intervalId = setInterval(async () => {
       try {
-        const verificationResult =
-          currentUserData &&
-          (await dispatch(userAuthApi.endpoints.verificationStatus.initiate()).unwrap());
+        const verificationResult = await getVerificationStatus();
+
         if (verificationResult === true) {
-          await dispatch(fetchUserData());
           clearInterval(intervalId);
           toast.success('Email verified successfully!');
-          setTimeout(() => {
-            router.push('/user/tags');
-          });
           dispatch(setIsVerifyModalVisible(false));
+          router.push('/user/tags');
+          await dispatch(fetchUserData());
           return;
         }
       } catch (error) {
@@ -201,12 +202,12 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
     }, 5000);
 
     // Handle timeout for verification
-    setTimeout(() => {
+    setTimeout(async () => {
       clearInterval(intervalId);
       toast.error('Email verification took too long. Please try again later.');
       dispatch(setIsVerifyModalVisible(false));
       dispatch(setIsVerificationEmailSent(false));
-      dispatch(logout());
+      await dispatch(logout());
     }, waitingTime);
   }
 );

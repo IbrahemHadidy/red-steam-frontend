@@ -79,7 +79,7 @@ const userAuthApi = createApi({
       }),
     }),
 
-    verificationStatus: builder.query<boolean, void>({
+    verificationStatus: builder.mutation<{ verified: boolean }, void>({
       query: () => ({
         url: '/verification-status',
         method: 'GET',
@@ -105,7 +105,7 @@ const userAuthApi = createApi({
       }),
     }),
 
-    getWaitingTime: builder.query<number, void>({
+    getWaitingTime: builder.query<{ waitingTime: number }, void>({
       query: () => '/waiting-time',
       providesTags: ['WaitingTime'],
     }),
@@ -120,7 +120,7 @@ export const {
   useRefreshTokenMutation,
   useUpdateUserDataMutation,
   useResendVerificationTokenMutation,
-  useVerificationStatusQuery,
+  useVerificationStatusMutation,
   useVerifyEmailMutation,
   useUpdateTokensMutation,
   useGetWaitingTimeQuery,

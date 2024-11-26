@@ -192,11 +192,9 @@
             font-size: 12px;
             font-weight: 500;
             text-align: center;
-            height: 34px;
-            width: 290px;
 
             &.error {
-              display: none;
+              display: block;
             }
 
             &.password-page {
