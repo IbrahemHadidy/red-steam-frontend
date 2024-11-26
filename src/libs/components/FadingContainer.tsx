@@ -8,6 +8,7 @@ interface FadingContainerProps {
   transitionDuration?: number;
   className?: string;
   zIndex?: number;
+  disablePointerEvents?: boolean;
 }
 
 export default function FadingContainer({
@@ -16,6 +17,7 @@ export default function FadingContainer({
   transitionDuration = 500,
   className,
   zIndex,
+  disablePointerEvents,
 }: FadingContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,7 @@ export default function FadingContainer({
         opacity: isVisible ? 1 : 0,
         transition: `opacity ${transitionDuration}ms ease-in-out`,
         zIndex: zIndex ?? 1000,
-        pointerEvents: 'none',
+        pointerEvents: disablePointerEvents ? 'none' : 'auto',
       }}
     >
       <div ref={containerRef} className={className}>

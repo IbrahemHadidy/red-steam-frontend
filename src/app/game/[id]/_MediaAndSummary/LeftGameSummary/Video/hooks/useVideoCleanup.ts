@@ -8,13 +8,13 @@ import type { RefObject } from 'react';
  */
 const useVideoCleanup = (videoRef: RefObject<HTMLVideoElement | null>) => {
   useEffect(() => {
-    const videoElement = videoRef.current;
+    const video = videoRef.current;
 
     return () => {
-      if (videoElement) {
-        videoElement.pause();
-        videoElement.src = '';
-        videoElement.load();
+      if (video) {
+        video.pause();
+        video.src = '';
+        video.load();
       }
     };
   }, [videoRef]);

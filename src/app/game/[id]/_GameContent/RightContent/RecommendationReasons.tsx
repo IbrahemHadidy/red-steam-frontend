@@ -36,7 +36,7 @@ export default function RecommendationReasons() {
               currentGame?.tags?.some((gameTag) => gameTag.id === tag.id)
             ).length >= 3 && (
               <>
-                <p className="reason-for">Players like you love this currentGame?.</p>
+                <p className="reason-for">Players like you love this game</p>
                 <hr />
               </>
             )}

@@ -1,6 +1,8 @@
 import { setWasPausedBeforeSwapping } from '@store/features/game/gameSlice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
-import { RefObject, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+
+import type { RefObject } from 'react';
 
 /**
  * Handles the visibility change of the video and pauses it if the tab is hidden.

@@ -24,7 +24,11 @@ const useAutoVideoSwap = (
     };
 
     if (video) {
-      video.addEventListener('ended', handleVideoEnded);
+      if (currentMediaLink !== video?.src) {
+        video.removeEventListener('ended', handleVideoEnded);
+      } else {
+        video.addEventListener('ended', handleVideoEnded);
+      }
 
       return () => {
         video.removeEventListener('ended', handleVideoEnded);

@@ -20,11 +20,11 @@ import {
 // Custom Hooks
 import useAutoVideoSwap from './hooks/useAutoVideoSwap';
 import useVideoAutoplay from './hooks/useVideoAutoplay';
+import useVideoCleanup from './hooks/useVideoCleanup';
 import useVideoFullscreen from './hooks/useVideoFullscreen';
 import useVideoPlaybackOnVisibility from './hooks/useVideoPlaybackOnVisibility';
 import useVideoPlayState from './hooks/useVideoPlayState';
 import useVideoProgress from './hooks/useVideoProgress';
-import useVideoCleanup from './hooks/useVideoUnmount';
 import useVideoVisibility from './hooks/useVideoVisibility';
 import useVideoVolume from './hooks/useVideoVolume';
 
