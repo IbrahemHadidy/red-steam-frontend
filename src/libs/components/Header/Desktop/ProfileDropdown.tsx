@@ -1,5 +1,3 @@
-'use client';
-
 // React
 import { useState } from 'react';
 
@@ -36,7 +34,7 @@ export default function ProfileDropdown() {
   return (
     <>
       <NavDropdown
-        title="profile"
+        title={currentUserData?.username ?? 'Profile'}
         id={'4'}
         className="profile-dropdown"
         renderMenuOnMount

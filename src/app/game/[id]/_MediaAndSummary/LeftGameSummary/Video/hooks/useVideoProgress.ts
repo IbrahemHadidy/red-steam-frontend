@@ -17,7 +17,7 @@ const useVideoProgress = (
   const [videoDuration, setVideoDuration] = useState<number>(0);
 
   useEffect(() => {
-    const video: HTMLVideoElement | null = videoRef.current;
+    const video = videoRef.current;
 
     const handleTimeUpdate = (): void => {
       if (video) {

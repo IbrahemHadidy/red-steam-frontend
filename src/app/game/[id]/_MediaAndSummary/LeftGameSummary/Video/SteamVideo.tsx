@@ -24,6 +24,7 @@ import useVideoFullscreen from './hooks/useVideoFullscreen';
 import useVideoPlaybackOnVisibility from './hooks/useVideoPlaybackOnVisibility';
 import useVideoPlayState from './hooks/useVideoPlayState';
 import useVideoProgress from './hooks/useVideoProgress';
+import useVideoCleanup from './hooks/useVideoUnmount';
 import useVideoVisibility from './hooks/useVideoVisibility';
 import useVideoVolume from './hooks/useVideoVolume';
 
@@ -88,6 +89,7 @@ export default function SteamVideo({ slideAreaRef, videoSrc, poster }: SteamVide
   useVideoAutoplay(videoRef);
   useVideoFullscreen(videoOverlayRef);
   useAutoVideoSwap(isPageVisible, videoRef, slideAreaRef);
+  useVideoCleanup(videoRef);
 
   //---------------------------- Event Handlers ---------------------------//
   const handleTimeUpdate: EventHandler<SyntheticEvent<HTMLVideoElement>> = (): void => {
@@ -151,7 +153,7 @@ export default function SteamVideo({ slideAreaRef, videoSrc, poster }: SteamVide
     preload: 'metadata',
   };
 
-  //-------------------------------- Render -------------------------------//  
+  //-------------------------------- Render -------------------------------//
   return (
     <div
       className="player-area"
