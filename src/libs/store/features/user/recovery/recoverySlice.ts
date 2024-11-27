@@ -123,7 +123,7 @@ const recoverySlice = createSlice({
         state.resetPasswordErrorMessage = '';
         state.resetEmail = '';
       })
-      .addCase(forgotPassword.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(forgotPassword.rejected, (state, action) => {
         state.resetPasswordErrorMessage = action.payload ?? 'An unknown error occurred';
         state.resetPasswordLoadingState = false;
       })
@@ -143,7 +143,7 @@ const recoverySlice = createSlice({
         state.passwordsDoNotMatch = false;
         state.resetToken = '';
       })
-      .addCase(resetPassword.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(resetPassword.rejected, (state, action) => {
         state.resetPasswordErrorMessage = action.payload ?? 'An unknown error occurred';
         state.resetPasswordLoadingState = false;
       });

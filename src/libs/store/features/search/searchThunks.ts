@@ -1,6 +1,3 @@
-// Toast notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
@@ -12,41 +9,37 @@ import gameDataApi from '@store/apis/game/data';
 
 // Utils
 import debounce from '@utils/debounce';
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { Game } from '@interfaces/game';
 import type { AppDispatch } from '@store/store';
 
-export interface FetchSearchResultsFulfillValue {
+interface FetchSearchResultsFulfillValue {
   games: Game[];
   hasMoreResults: boolean;
 }
 
 export const fetchSearchResults = createAppAsyncThunk<
   FetchSearchResultsFulfillValue,
-  boolean | void,
-  { rejectValue: string }
+  boolean | void
 >(
   'search/fetchSearchResults',
   async (addToEnd, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { requestParams, searchResults } = getState().search;
 
-    const response = await toast
-      .promise<Game[]>(
-        dispatch(
-          gameDataApi.endpoints.getByParameters.initiate({
-            searchData: requestParams.searchData,
-            pagination: requestParams.pagination,
-          })
-        ).unwrap(),
-        {
-          error: 'An error occurred while loading games. Please try again.',
-        }
-      )
-      .catch((error) => {
-        console.error('Error loading games:', error);
-      });
-
+    const response = await promiseToast(
+      dispatch(
+        gameDataApi.endpoints.getByParameters.initiate({
+          searchData: requestParams.searchData,
+          pagination: requestParams.pagination,
+        })
+      ).unwrap(),
+      {
+        pending: 'Loading search results',
+        fallbackError: 'An error occurred while loading games. Please try again.',
+      }
+    );
     if (!response) return rejectWithValue('Error loading games');
 
     // Add new games to the current list, avoiding duplicates.

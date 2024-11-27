@@ -1,5 +1,8 @@
 'use client';
 
+// React
+import { useEffect, useState } from 'react';
+
 // NextJS
 import dynamic from 'next/dynamic';
 
@@ -64,12 +67,16 @@ export default function GameAdmin() {
   );
 
   //--------------------------- Dynamic Background ---------------------------//
+  const [background, setBackground] = useState<string>(ADMIN_BG);
+
+  useEffect(() => {
+    (async () => {
+      setBackground(await getFileUrl(thumbnails.backgroundImage.file ?? ''));
+    })();
+  }, [thumbnails.backgroundImage.file]);
+
   useDynamicBackground(
-    // Set game background to selected background thumbnail if in preview mode
-    // else set game background to default
-    currentPage === 'preview'
-      ? `url(${getFileUrl(thumbnails.backgroundImage.file ?? '')}) center top no-repeat #1b2838`
-      : ADMIN_BG,
+    currentPage === 'preview' ? `url(${background}) center top no-repeat #1b2838` : ADMIN_BG,
     [thumbnails.backgroundImage, currentPage]
   );
 

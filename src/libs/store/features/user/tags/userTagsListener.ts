@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -10,8 +7,10 @@ import { setInitialTags, updateInitialTags, updateSelectedTags } from './userTag
 // APIs
 import tagsApi from '@store/apis/common/tags';
 
+// Utils
+import promiseToast from '@utils/promiseToast';
+
 // Types
-import type { Tag } from '@interfaces/tag';
 import type { AppDispatch, RootState } from '@store/store';
 
 // Create listener middleware
@@ -26,14 +25,13 @@ listen({
     const userTags = getState().auth.currentUserData?.tags;
 
     // Get initial tags
-    const initialTags = await toast
-      .promise<Tag[]>(dispatch(tagsApi.endpoints.getAllTags.initiate()).unwrap(), {
-        pending: 'Fetching tags...',
-        error: 'Error fetching tags',
-      })
-      .catch((error) => {
-        console.error('Error fetching tags:', error);
-      });
+    const initialTags = await promiseToast(
+      dispatch(tagsApi.endpoints.getAllTags.initiate()).unwrap(),
+      {
+        pending: 'Fetching tags',
+        fallbackError: 'Error fetching tags',
+      }
+    );
 
     // Update state
     dispatch(updateInitialTags(initialTags ?? []));

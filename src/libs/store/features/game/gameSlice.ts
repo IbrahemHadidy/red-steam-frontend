@@ -288,7 +288,7 @@ const gameSlice = createSlice({
       .addCase(submitReview.rejected, (state) => {
         state.isReviewBtnDisabled = false;
       })
-      .addCase(getReviews.fulfilled, (state, action: PayloadAction<Review[] | undefined>) => {
+      .addCase(getReviews.fulfilled, (state, action) => {
         const newReviews = action.payload;
 
         if (newReviews) {

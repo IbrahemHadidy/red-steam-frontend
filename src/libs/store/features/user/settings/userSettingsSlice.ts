@@ -29,7 +29,6 @@ interface UserSettingsState {
   readonly isUsernameAvailable: boolean;
   readonly submitAvatarButtonDisabled: boolean;
   readonly nextStepButtonDisabled: boolean;
-  readonly deleteAccountButtonDisabled: boolean;
   readonly deletePhoneButtonDisabled: boolean;
 
   // Input States
@@ -60,9 +59,8 @@ const userSettingsState: UserSettingsState = {
   isDeletePhoneModalVisible: false,
   isUsernameAvailable: true,
   submitAvatarButtonDisabled: true,
-  nextStepButtonDisabled: true,
-  deleteAccountButtonDisabled: true,
-  deletePhoneButtonDisabled: true,
+  nextStepButtonDisabled: false,
+  deletePhoneButtonDisabled: false,
 
   email: '',
   phone: '',
@@ -107,9 +105,6 @@ const userSettingsSlice = createSlice({
     },
     setNextStepButtonDisabled(state, action: PayloadAction<boolean>) {
       state.nextStepButtonDisabled = action.payload;
-    },
-    setDeleteAccountButtonDisabled(state, action: PayloadAction<boolean>) {
-      state.deleteAccountButtonDisabled = action.payload;
     },
     setDeletePhoneButtonDisabled(state, action: PayloadAction<boolean>) {
       state.deletePhoneButtonDisabled = action.payload;
@@ -157,7 +152,7 @@ const userSettingsSlice = createSlice({
       state.newPassword = '';
       state.confirmNewPassword = '';
       state.errorMessage = '';
-      state.nextStepButtonDisabled = true;
+      state.nextStepButtonDisabled = false;
     },
 
     resetAccountDeleteModal(state) {
@@ -174,14 +169,14 @@ const userSettingsSlice = createSlice({
       })
       .addCase(changeEmail.fulfilled, (state) => {
         state.errorMessage = '';
-        state.currentChangeStep = 2;
         state.nextStepButtonDisabled = false;
-        state.isChangeModalVisible = false;
         state.email = '';
         state.currentEmail = '';
         state.currentPassword = '';
+        if (state.currentChangeStep === 2) state.isChangeModalVisible = false;
+        state.currentChangeStep = 2;
       })
-      .addCase(changeEmail.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(changeEmail.rejected, (state, action) => {
         state.errorMessage = action.payload ?? 'Failed to change email';
         state.nextStepButtonDisabled = false;
       })
@@ -192,13 +187,13 @@ const userSettingsSlice = createSlice({
       })
       .addCase(changePhone.fulfilled, (state) => {
         state.errorMessage = '';
-        state.currentChangeStep = 2;
         state.nextStepButtonDisabled = false;
-        state.isChangeModalVisible = false;
         state.phone = '';
         state.currentPassword = '';
+        if (state.currentChangeStep === 2) state.isChangeModalVisible = false;
+        state.currentChangeStep = 2;
       })
-      .addCase(changePhone.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(changePhone.rejected, (state, action) => {
         state.errorMessage = action.payload ?? 'Failed to change phone number';
         state.nextStepButtonDisabled = false;
       })
@@ -215,7 +210,7 @@ const userSettingsSlice = createSlice({
         state.newPassword = '';
         state.confirmNewPassword = '';
       })
-      .addCase(changePassword.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(changePassword.rejected, (state, action) => {
         state.errorMessage = action.payload ?? 'Failed to change password';
         state.nextStepButtonDisabled = false;
       })
@@ -239,22 +234,16 @@ const userSettingsSlice = createSlice({
         state.isDeleteAccountModalVisible = false;
         state.currentPassword = '';
       })
-      .addCase(deleteAccount.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(deleteAccount.rejected, (state, action) => {
         state.errorMessage = action.payload ?? 'Failed to delete account';
       })
 
-      .addCase(changeCountry.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(changeCountry.fulfilled, (state, action) => {
         state.selectedCountry = action.payload;
       })
 
       .addCase(changeAvatar.pending, (state) => {
         state.submitAvatarButtonDisabled = true;
-      })
-      .addCase(changeAvatar.fulfilled, (state) => {
-        state.submitAvatarButtonDisabled = false;
-      })
-      .addCase(changeAvatar.rejected, (state) => {
-        state.submitAvatarButtonDisabled = false;
       });
   },
 });
@@ -271,7 +260,6 @@ export const {
   setUsernameAvailability,
   setSubmitAvatarButtonDisabled,
   setNextStepButtonDisabled,
-  setDeleteAccountButtonDisabled,
   setDeletePhoneButtonDisabled,
   updateEmail,
   updatePhone,

@@ -18,8 +18,7 @@ export const forgotPassword = createAppAsyncThunk<
   void,
   {
     recaptchaRef: RefObject<ReCAPTCHA | null>;
-  },
-  { rejectValue: string }
+  }
 >(
   'user/recovery/forgotPassword',
   async ({ recaptchaRef }, { rejectWithValue, getState, dispatch }) => {
@@ -87,7 +86,7 @@ export const forgotPassword = createAppAsyncThunk<
   }
 );
 
-export const resetPassword = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const resetPassword = createAppAsyncThunk(
   'user/recovery/resetPassword',
   async (_, { rejectWithValue, getState, dispatch }) => {
     const { newPassword, confirmNewPassword, resetToken } = getState().user.recovery;

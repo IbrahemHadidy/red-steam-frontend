@@ -13,7 +13,7 @@ import userInteractionApi from '@store/apis/user/interaction';
 // Types
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-export const submitTags = createAppAsyncThunk<string, AppRouterInstance, { rejectValue: string }>(
+export const submitTags = createAppAsyncThunk<string, AppRouterInstance>(
   'user/tags/submitTags',
   async (router, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { selectedTags } = getState().user.tags;

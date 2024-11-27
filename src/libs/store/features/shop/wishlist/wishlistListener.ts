@@ -1,5 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -8,6 +6,9 @@ import { initializeWishlist, setIsWishlistInitialized, updateWishlist } from './
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
+
+// Utils
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { Game } from '@interfaces/game';
@@ -28,20 +29,16 @@ listen({
     let wishlistItems: Game[] = [];
 
     if (userWishlist.length > 0) {
-      wishlistItems = await toast
-        .promise<Game[]>(
+      wishlistItems =
+        (await promiseToast(
           dispatch(
             gameDataApi.endpoints.getByIds.initiate(userWishlist.map((item) => item.id))
           ).unwrap(),
           {
             pending: 'Fetching wishlist items',
-            error: 'Error fetching wishlist items',
+            fallbackError: 'Error fetching wishlist items',
           }
-        )
-        .catch((error) => {
-          console.error('Error fetching wishlist items:', error);
-          return [];
-        });
+        )) ?? [];
     }
 
     // Update wishlist

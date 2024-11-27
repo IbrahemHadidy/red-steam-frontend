@@ -15,10 +15,10 @@ import userAuthApi from '@store/apis/user/auth';
 
 // Utils
 import { validateEmail, validateName, validatePassword } from '@utils/inputValidations';
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { User } from '@interfaces/user';
-import type { AppDispatch, RootState } from '@store/store';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface LoginData {
@@ -27,7 +27,7 @@ interface LoginData {
   rememberMe: boolean;
 }
 
-export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string }>(
+export const login = createAppAsyncThunk<User, LoginData>(
   'auth/login',
   async ({ identifier, password, rememberMe }, { fulfillWithValue, rejectWithValue, dispatch }) => {
     // Validate input
@@ -35,61 +35,44 @@ export const login = createAppAsyncThunk<User, LoginData, { rejectValue: string 
       return rejectWithValue('Please provide a valid name or email and password');
     }
 
-    const loginResult = await toast
-      .promise<{ userData: User; isSessionLoggedIn: boolean }>(
-        dispatch(
-          userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })
-        ).unwrap(),
-        {
-          pending: 'Logging in...',
-          success: 'Logged in successfully!',
-          error:
-            'User not found or password is incorrect. Please check your credentials and try again.',
-        },
-        { toastId: 'login' }
-      )
-      .catch((error) => {
-        authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
-        console.error('Error during login:', error);
-        return rejectWithValue('Invalid login credentials');
-      });
+    const loginResult = await promiseToast(
+      dispatch(userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })).unwrap(),
+      {
+        pending: 'Logging in...',
+        success: 'Logged in successfully!',
+        fallbackError:
+          'User not found or password is incorrect. Please check your credentials and try again.',
+      }
+    );
+    if (!loginResult) return rejectWithValue('Invalid login credentials');
 
-    if ('userData' in loginResult) {
-      const currentUserData = loginResult.userData;
+    const currentUserData = loginResult.userData;
 
-      // Store session information
-      if (loginResult.isSessionLoggedIn) sessionStorage.setItem('isSessionLogin', 'true');
+    // Store session information
+    if (loginResult.isSessionLoggedIn) sessionStorage.setItem('isSessionLogin', 'true');
 
-      // Notify other tabs about the login status
-      authChannel.postMessage({ isUserLoggedIn: true, currentUserData });
+    // Notify other tabs about the login status
+    authChannel.postMessage({ isUserLoggedIn: true, currentUserData });
 
-      // Fulfill the promise with the user data
-      return fulfillWithValue(currentUserData);
-    } else {
-      // Handle the case where loginResult is a RejectWithValue object
-      return rejectWithValue('Invalid login credentials');
-    }
+    // Fulfill the promise with the user data
+    return fulfillWithValue(currentUserData);
   }
 );
 
-export const logout = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const logout = createAppAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue, dispatch }) => {
     // Notify other tabs about the logout status
     authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
 
     // Call the logout user service
-    await toast
-      .promise(dispatch(userAuthApi.endpoints.logout.initiate()).unwrap(), {
-        pending: 'Logging out...',
-        success: 'Logged out successfully!',
-        error:
-          'An error occurred while trying to connect to the server. Please check your internet connection and try again.',
-      })
-      .catch((error) => {
-        console.error('Error during logout:', error);
-        return rejectWithValue('Logout failed');
-      });
+    const result = await promiseToast(dispatch(userAuthApi.endpoints.logout.initiate()).unwrap(), {
+      pending: 'Logging out...',
+      success: 'Logged out successfully!',
+      fallbackError:
+        'An error occurred while trying to connect to the server. Please check your internet connection and try again.',
+    });
+    if (!result) return rejectWithValue('Logout failed');
 
     // Perform any additional local state cleanup
     sessionStorage.removeItem('verificationInProgress');
@@ -98,7 +81,7 @@ export const logout = createAppAsyncThunk<void, void, { rejectValue: string }>(
   }
 );
 
-export const fetchUserData = createAppAsyncThunk<User | null, void, { rejectValue: string }>(
+export const fetchUserData = createAppAsyncThunk<User | null>(
   'auth/fetchUserData',
   async (_, { dispatch, rejectWithValue, fulfillWithValue }) => {
     try {
@@ -119,11 +102,10 @@ export const fetchUserData = createAppAsyncThunk<User | null, void, { rejectValu
   }
 );
 
-export const autoLoginOnLoad = createAppAsyncThunk<
-  { isUserLoggedIn: boolean; currentUserData: User | null },
-  void,
-  { rejectValue: string }
->('auth/autoLogin', async (_, { fulfillWithValue, rejectWithValue, dispatch }) => {
+export const autoLoginOnLoad = createAppAsyncThunk<{
+  isUserLoggedIn: boolean;
+  currentUserData: User | null;
+}>('auth/autoLogin', async (_, { fulfillWithValue, rejectWithValue, dispatch }) => {
   try {
     const data = await dispatch(userAuthApi.endpoints.autoLogin.initiate()).unwrap();
     if (data?.userData === null) return { isUserLoggedIn: false, currentUserData: null };
@@ -134,36 +116,35 @@ export const autoLoginOnLoad = createAppAsyncThunk<
   }
 });
 
-export const refreshAuthorizationToken = createAppAsyncThunk<
-  void,
-  void,
-  { state: RootState; dispatch: AppDispatch }
->('auth/refreshTokenThunk', async (_, { dispatch, getState }) => {
-  const isLoggedIn = getState().auth.isUserLoggedIn;
-  const isSessionLogin = sessionStorage.getItem('isSessionLogin') === 'true';
+export const refreshAuthorizationToken = createAppAsyncThunk(
+  'auth/refreshTokenThunk',
+  async (_, { dispatch, getState }) => {
+    const isLoggedIn = getState().auth.isUserLoggedIn;
+    const isSessionLogin = sessionStorage.getItem('isSessionLogin') === 'true';
 
-  if (isLoggedIn && !isSessionLogin) {
-    try {
-      // Refresh token request
-      await dispatch(userAuthApi.endpoints.refreshToken.initiate()).unwrap();
+    if (isLoggedIn && !isSessionLogin) {
+      try {
+        // Refresh token request
+        await dispatch(userAuthApi.endpoints.refreshToken.initiate()).unwrap();
 
-      // Fetch data after token is refreshed
-      await dispatch(fetchUserData());
+        // Fetch data after token is refreshed
+        await dispatch(fetchUserData());
 
-      // Schedule next token refresh (1 hour interval)
-      setTimeout(
-        () => {
-          dispatch(refreshAuthorizationToken());
-        },
-        60 * 60 * 1000
-      );
-    } catch (error) {
-      console.error('Error refreshing access token:', error);
-      toast.error('Your session has expired. Please login again.');
-      dispatch(logout());
+        // Schedule next token refresh (1 hour interval)
+        setTimeout(
+          () => {
+            dispatch(refreshAuthorizationToken());
+          },
+          60 * 60 * 1000
+        );
+      } catch (error) {
+        console.error('Error refreshing access token:', error);
+        toast.error('Your session has expired. Please login again.');
+        dispatch(logout());
+      }
     }
   }
-});
+);
 
 export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstance>(
   'auth/checkVerificationStatus',

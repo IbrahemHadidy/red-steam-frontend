@@ -625,7 +625,7 @@ const gameAdminSlice = createSlice({
       .addCase(getPreviewData.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getPreviewData.fulfilled, (state, action: PayloadAction<Game>) => {
+      .addCase(getPreviewData.fulfilled, (state, action) => {
         state.previewData = action.payload;
         state.loading = false;
         state.currentPage = 'preview';

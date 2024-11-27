@@ -1,12 +1,6 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Utils
-import { getFileFromLocalStorage } from '@utils/filesStorageUtils';
-
-// Types
-import type FileMetadata from '@custom-types/file-metadata';
-
 const userManagementApi = createApi({
   reducerPath: 'api/user/management',
   baseQuery: fetchBaseQuery({
@@ -38,6 +32,7 @@ const userManagementApi = createApi({
         url: '/username',
         method: 'PATCH',
         body: { newUsername, currentPassword },
+        credentials: 'include',
       }),
       invalidatesTags: ['User'],
     }),
@@ -50,6 +45,7 @@ const userManagementApi = createApi({
         url: '/change-email',
         method: 'PATCH',
         body: { currentEmail, currentPassword, newEmail },
+        credentials: 'include',
       }),
       invalidatesTags: ['User'],
     }),
@@ -59,21 +55,20 @@ const userManagementApi = createApi({
         url: '/country',
         method: 'PATCH',
         body: { newCountry },
+        credentials: 'include',
       }),
       invalidatesTags: ['User'],
     }),
 
-    uploadAvatar: builder.mutation<{ message: string }, FileMetadata>({
+    uploadAvatar: builder.mutation<{ message: string }, File>({
       query: (avatarFile) => {
         const formData = new FormData();
-        formData.append('avatar', getFileFromLocalStorage(avatarFile.id) as File);
+        formData.append('avatar', avatarFile);
         return {
           url: '/avatar',
           method: 'PATCH',
           body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+          credentials: 'include',
         };
       },
       invalidatesTags: ['User'],
@@ -83,6 +78,7 @@ const userManagementApi = createApi({
       query: () => ({
         url: '/avatar',
         method: 'DELETE',
+        credentials: 'include',
       }),
       invalidatesTags: ['User'],
     }),
@@ -93,8 +89,9 @@ const userManagementApi = createApi({
     >({
       query: ({ currentPassword, newPassword }) => ({
         url: '/password/change',
-        method: 'POST',
+        method: 'PATCH',
         body: { currentPassword, newPassword },
+        credentials: 'include',
       }),
     }),
 
@@ -103,14 +100,16 @@ const userManagementApi = createApi({
         url: '/password/forgot',
         method: 'POST',
         body: { email, recaptchaToken },
+        credentials: 'include',
       }),
     }),
 
     resetPassword: builder.mutation<{ message: string }, { token: string; newPassword: string }>({
       query: ({ token, newPassword }) => ({
         url: '/password/reset',
-        method: 'POST',
+        method: 'PATCH',
         body: { token, newPassword },
+        credentials: 'include',
       }),
     }),
 
@@ -119,6 +118,7 @@ const userManagementApi = createApi({
         url: '/account',
         method: 'DELETE',
         body: { password },
+        credentials: 'include',
       }),
     }),
   }),

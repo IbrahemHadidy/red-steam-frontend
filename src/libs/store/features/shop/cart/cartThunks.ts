@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
@@ -11,6 +8,7 @@ import { setTotalPrice, updateCart } from './cartSlice';
 import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Utils
+import promiseToast from '@utils/promiseToast';
 import Decimal from 'decimal.js';
 
 // APIs
@@ -59,19 +57,18 @@ const refreshCart = async (
   }
 };
 
-export const removeCartItem = createAppAsyncThunk<void, number, { rejectValue: string }>(
+export const removeCartItem = createAppAsyncThunk<void, number>(
   'shop/cart/removeCartItem',
   async (id, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    await toast
-      .promise(dispatch(userInteractionApi.endpoints.removeFromCart.initiate([id])).unwrap(), {
-        pending: 'Removing item from cart...',
+    const result = await promiseToast(
+      dispatch(userInteractionApi.endpoints.removeFromCart.initiate([id])).unwrap(),
+      {
+        pending: 'Removing item from cart',
         success: 'Removed from cart',
-        error: 'Error removing from cart',
-      })
-      .catch((error) => {
-        console.error('Error removing item from cart:', error);
-        return rejectWithValue('Error removing item from cart');
-      });
+        fallbackError: 'Error removing from cart',
+      }
+    );
+    if (!result) return rejectWithValue('Error removing from cart');
 
     // Refresh cart
     await refreshCart(dispatch, getState, rejectWithValue);
@@ -79,19 +76,18 @@ export const removeCartItem = createAppAsyncThunk<void, number, { rejectValue: s
   }
 );
 
-export const clearCart = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const clearCart = createAppAsyncThunk(
   'shop/cart/clearCart',
   async (_, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    await toast
-      .promise(dispatch(userInteractionApi.endpoints.clearCart.initiate()).unwrap(), {
-        pending: 'Clearing cart...',
+    const result = await promiseToast(
+      dispatch(userInteractionApi.endpoints.clearCart.initiate()).unwrap(),
+      {
+        pending: 'Clearing cart',
         success: 'Cart cleared',
-        error: 'Error clearing cart',
-      })
-      .catch((error) => {
-        console.error('Error clearing cart:', error);
-        return rejectWithValue('Error clearing cart');
-      });
+        fallbackError: 'Error clearing cart',
+      }
+    );
+    if (!result) return rejectWithValue('Error clearing cart');
 
     // Refresh cart
     await refreshCart(dispatch, getState, rejectWithValue);

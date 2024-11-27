@@ -8,7 +8,6 @@ import { fetchPaginatedUsers, updateUser } from './userAdminThunks';
 import type { SearchQuery, UserSortConfig } from '@custom-types/admin';
 import type { User } from '@interfaces/user';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { FetchPaginatedUsersPayload } from './userAdminThunks';
 
 interface AdminState {
   readonly currentUsers: User[];
@@ -92,14 +91,11 @@ const userAdminSlice = createSlice({
       .addCase(fetchPaginatedUsers.pending, (state) => {
         state.isFetching = true;
       })
-      .addCase(
-        fetchPaginatedUsers.fulfilled,
-        (state, action: PayloadAction<FetchPaginatedUsersPayload>) => {
-          state.currentUsers = action.payload.items;
-          state.totalPages = action.payload.totalPages;
-          state.isFetching = false;
-        }
-      )
+      .addCase(fetchPaginatedUsers.fulfilled, (state, action) => {
+        state.currentUsers = action.payload.items;
+        state.totalPages = action.payload.totalPages;
+        state.isFetching = false;
+      })
       .addCase(fetchPaginatedUsers.rejected, (state) => {
         state.isFetching = false;
       })

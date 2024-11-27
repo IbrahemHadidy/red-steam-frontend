@@ -1,6 +1,3 @@
-// Toast notifications
-import { toast } from 'react-toastify';
-
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -33,6 +30,7 @@ import publisherApi from '@store/apis/common/publishers';
 import tagApi from '@store/apis/common/tags';
 
 // Utils
+import promiseToast from '@utils/promiseToast';
 import {
   getNewRequestParams,
   getNewSearchUrl,
@@ -68,8 +66,8 @@ listen({
 
     //--------------------- Get Initial Filters Data ---------------------//
     // Fetch initial data
-    const [tags, features, publishers, developers, languages] = await toast
-      .promise(
+    const [tags, features, publishers, developers, languages] =
+      (await promiseToast(
         Promise.all([
           dispatch(tagApi.endpoints.getAllTags.initiate()).unwrap(),
           dispatch(featureApi.endpoints.getAllFeatures.initiate()).unwrap(),
@@ -78,24 +76,20 @@ listen({
           dispatch(languageApi.endpoints.getAllLanguages.initiate()).unwrap(),
         ]),
         {
-          pending: 'Initializing search...',
-          error: 'Failed to initialize search, please refresh the page to try again',
+          pending: 'Initializing search',
+          fallbackError: 'Failed to initialize search, please refresh the page to try again',
         }
-      )
-      .catch((error) => {
-        console.error('Error initializing search:', error);
-        return [];
-      });
+      )) ?? [];
 
     // Initialize filters
     if (isUserLoggedIn) dispatch(addUserPreferences());
 
     const fetchedFilters = {
-      tags: initializeFilterData(tags),
-      features: initializeFilterData(features),
-      publishers: initializeFilterData(publishers),
-      developers: initializeFilterData(developers),
-      languages: initializeFilterData(languages),
+      tags: initializeFilterData(tags ?? []),
+      features: initializeFilterData(features ?? []),
+      publishers: initializeFilterData(publishers ?? []),
+      developers: initializeFilterData(developers ?? []),
+      languages: initializeFilterData(languages ?? []),
     };
 
     //---------------------- Set Initial Search Data ---------------------//

@@ -27,7 +27,7 @@ import {
 
 // Utils
 import { countries } from '@utils/countries';
-import { saveFileToLocalStorage } from '@utils/filesStorageUtils';
+import { saveFileToIndexedDB } from '@utils/filesStorageUtils';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
@@ -86,10 +86,12 @@ export default function ProfileInfoSection() {
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const avatarId = await saveFileToLocalStorage(file);
+      const avatarId = await saveFileToIndexedDB(file);
       dispatch(
         updateAvatarFile({ id: avatarId, name: file.name, size: file.size, type: file.type })
       );
+      dispatch(setAvatarPreview(URL.createObjectURL(file)));
+      dispatch(setSubmitAvatarButtonDisabled(false));
     }
   };
 
@@ -100,7 +102,6 @@ export default function ProfileInfoSection() {
   };
 
   //-------------------------------- Render -------------------------------//
-
   return (
     <>
       <div className="account-header-line">
@@ -145,7 +146,9 @@ export default function ProfileInfoSection() {
                 </div>
               </div>
             ) : (
-              <button type="submit">Save</button>
+              <button type="submit" disabled={!isUsernameAvailable}>
+                Save
+              </button>
             )}
 
             <div className="settings-input">

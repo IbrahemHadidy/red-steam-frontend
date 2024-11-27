@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
@@ -9,6 +6,7 @@ import { setIsFetching } from './userAdminSlice';
 
 // Utils
 import debounce from '@utils/debounce';
+import promiseToast from '@utils/promiseToast';
 
 // APIs
 import userAdminApi from '@store/apis/user/admin';
@@ -17,46 +15,35 @@ import userAdminApi from '@store/apis/user/admin';
 import type { User } from '@interfaces/user';
 import type { AppDispatch } from '@store/store';
 
-export interface FetchPaginatedUsersPayload {
+interface FetchPaginatedUsersPayload {
   items: User[];
   total: number;
   totalPages: number;
 }
 
-export const fetchPaginatedUsers = createAppAsyncThunk<
-  FetchPaginatedUsersPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedUsers = createAppAsyncThunk<FetchPaginatedUsersPayload>(
   'admin/user/fetchPaginatedUsers',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, usersPerPage, sortConfig, searchQuery } = getState().admin.user;
 
-    const data = await toast
-      .promise<FetchPaginatedUsersPayload>(
-        dispatch(
-          userAdminApi.endpoints.getUsersPaginated.initiate({
-            page: currentPage,
-            limit: usersPerPage,
-            orderBy: sortConfig.key,
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching users...',
-          error: 'Error fetching users',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        userAdminApi.endpoints.getUsersPaginated.initiate({
+          page: currentPage,
+          limit: usersPerPage,
+          orderBy: sortConfig.key,
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching users...',
+        fallbackError: 'Error fetching users',
+      }
+    );
+    if (!data) return rejectWithValue('Error fetching users');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching users');
-    }
+    return fulfillWithValue(data);
   }
 );
 
@@ -71,46 +58,43 @@ export const debouncedFetchPaginatedUsers = (() => {
   };
 })();
 
-export const updateUser = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const updateUser = createAppAsyncThunk(
   'admin/user/updateUser',
-  async (_, { dispatch, getState }) => {
+  async (_, { dispatch, getState, rejectWithValue }) => {
     const { currentEditUser } = getState().admin.user;
 
-    await toast
-      .promise(
-        dispatch(
-          userAdminApi.endpoints.updateUser.initiate({
-            id: currentEditUser?.id ?? '',
-            isAdmin: currentEditUser?.isAdmin ?? false,
-            isVerified: currentEditUser?.isVerified ?? false,
-          })
-        ).unwrap(),
-        {
-          pending: 'Editing user...',
-          error: 'Error editing user',
-        }
-      )
-      .catch((error) => {
-        console.error('Error editing user:', error);
-      });
+    const result = await promiseToast(
+      dispatch(
+        userAdminApi.endpoints.updateUser.initiate({
+          id: currentEditUser?.id ?? '',
+          isAdmin: currentEditUser?.isAdmin ?? false,
+          isVerified: currentEditUser?.isVerified ?? false,
+        })
+      ).unwrap(),
+      {
+        pending: 'Editing user',
+        fallbackError: 'Error editing user',
+      }
+    );
+    if (!result) return rejectWithValue('Error editing user');
 
     debouncedFetchPaginatedUsers(dispatch);
   }
 );
 
-export const deleteUser = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const deleteUser = createAppAsyncThunk(
   'admin/user/deleteUser',
-  async (_, { dispatch, getState }) => {
+  async (_, { dispatch, getState, rejectWithValue }) => {
     const { deleteUserId } = getState().admin.user;
 
-    await toast
-      .promise(dispatch(userAdminApi.endpoints.deleteUser.initiate(deleteUserId ?? '')).unwrap(), {
-        pending: 'Deleting user...',
-        error: 'Error deleting user',
-      })
-      .catch((error) => {
-        console.error('Error deleting user:', error);
-      });
+    const result = await promiseToast(
+      dispatch(userAdminApi.endpoints.deleteUser.initiate(deleteUserId ?? '')).unwrap(),
+      {
+        pending: 'Deleting user',
+        fallbackError: 'Error deleting user',
+      }
+    );
+    if (!result) return rejectWithValue('Error deleting user');
 
     debouncedFetchPaginatedUsers(dispatch);
   }

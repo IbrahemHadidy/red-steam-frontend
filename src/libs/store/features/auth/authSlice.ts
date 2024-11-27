@@ -55,7 +55,7 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.currentUserData = action.payload;
         state.isUserLoggedIn = true;
         state.isAuthInitialized = true;
@@ -66,7 +66,7 @@ const authSlice = createSlice({
         state.isAuthInitialized = true;
       })
 
-      .addCase(checkNameAndPassword.fulfilled, (state, action: PayloadAction<User>) => {
+      .addCase(checkNameAndPassword.fulfilled, (state, action) => {
         state.currentUserData = action.payload;
         state.isUserLoggedIn = true;
         state.isAuthInitialized = true;
@@ -102,7 +102,7 @@ const authSlice = createSlice({
         state.isAuthInitialized = true;
       })
 
-      .addCase(fetchUserData.fulfilled, (state, action: PayloadAction<User | null>) => {
+      .addCase(fetchUserData.fulfilled, (state, action) => {
         state.currentUserData = action.payload;
         state.isUserLoggedIn = true;
         state.isAuthInitialized = true;

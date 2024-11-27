@@ -19,4 +19,5 @@ export const useAppStore = () => useStore<AppStore>();
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: RootState;
   dispatch: AppDispatch;
+  rejectValue: string;
 }>();

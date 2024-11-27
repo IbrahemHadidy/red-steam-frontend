@@ -14,11 +14,14 @@ import { fetchUserData } from '@store/features/auth/authThunks';
 import gameDataApi from '@store/apis/game/data';
 import userInteractionApi from '@store/apis/user/interaction';
 
+// Utils
+import promiseToast from '@utils/promiseToast';
+
 // Types
 import type { Review } from '@interfaces/review';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-export const addToWishlist = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const addToWishlist = createAppAsyncThunk(
   'game/addToWishlist',
   async (_, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { currentGame } = getState().game;
@@ -26,16 +29,15 @@ export const addToWishlist = createAppAsyncThunk<void, void, { rejectValue: stri
 
     if (!gameId) return rejectWithValue('Error adding game to wishlist');
 
-    await toast
-      .promise(dispatch(userInteractionApi.endpoints.addToWishlist.initiate([gameId])).unwrap(), {
-        pending: 'Adding to wishlist...',
+    const result = await promiseToast(
+      dispatch(userInteractionApi.endpoints.addToWishlist.initiate([gameId])).unwrap(),
+      {
+        pending: 'Adding to wishlist',
         success: 'Added to wishlist',
-        error: 'Error adding to wishlist',
-      })
-      .catch((error) => {
-        console.error('Error adding to wishlist:', error);
-        return rejectWithValue('Error adding to wishlist');
-      });
+        fallbackError: 'Error adding to wishlist',
+      }
+    );
+    if (!result) return rejectWithValue('Error adding to wishlist');
 
     await dispatch(fetchUserData());
 
@@ -43,7 +45,7 @@ export const addToWishlist = createAppAsyncThunk<void, void, { rejectValue: stri
   }
 );
 
-export const removeFromWishlist = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const removeFromWishlist = createAppAsyncThunk(
   'game/removeFromWishlist',
   async (_, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { currentGame } = getState().game;
@@ -51,19 +53,15 @@ export const removeFromWishlist = createAppAsyncThunk<void, void, { rejectValue:
 
     if (!gameId) return rejectWithValue('Error removing game from wishlist');
 
-    await toast
-      .promise(
-        dispatch(userInteractionApi.endpoints.removeFromWishlist.initiate([gameId])).unwrap(),
-        {
-          pending: 'Removing from wishlist...',
-          success: 'Removed from wishlist',
-          error: 'Error removing from wishlist',
-        }
-      )
-      .catch((error) => {
-        console.error('Error removing from wishlist:', error);
-        return rejectWithValue('Error removing from wishlist');
-      });
+    const result = await promiseToast(
+      dispatch(userInteractionApi.endpoints.removeFromWishlist.initiate([gameId])).unwrap(),
+      {
+        pending: 'Removing from wishlist',
+        success: 'Removed from wishlist',
+        fallbackError: 'Error removing from wishlist',
+      }
+    );
+    if (!result) return rejectWithValue('Error removing from wishlist');
 
     await dispatch(fetchUserData());
 
@@ -71,7 +69,7 @@ export const removeFromWishlist = createAppAsyncThunk<void, void, { rejectValue:
   }
 );
 
-export const addToCart = createAppAsyncThunk<void, AppRouterInstance, { rejectValue: string }>(
+export const addToCart = createAppAsyncThunk<void, AppRouterInstance>(
   'game/addToCart',
   async (router, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { isUserLoggedIn } = getState().auth;
@@ -86,16 +84,15 @@ export const addToCart = createAppAsyncThunk<void, AppRouterInstance, { rejectVa
 
     if (!gameId) return rejectWithValue('Error adding game to cart');
 
-    await toast
-      .promise(dispatch(userInteractionApi.endpoints.addToCart.initiate([gameId])).unwrap(), {
-        pending: 'Adding to cart...',
+    const result = await promiseToast(
+      dispatch(userInteractionApi.endpoints.addToCart.initiate([gameId])).unwrap(),
+      {
+        pending: 'Adding to cart',
         success: 'Added to cart',
-        error: 'Error adding to cart',
-      })
-      .catch((error) => {
-        console.error('Error adding to cart:', error);
-        return rejectWithValue('Error adding to cart');
-      });
+        fallbackError: 'Error adding to cart',
+      }
+    );
+    if (!result) return rejectWithValue('Error adding to cart');
 
     await dispatch(fetchUserData());
 
@@ -103,7 +100,7 @@ export const addToCart = createAppAsyncThunk<void, AppRouterInstance, { rejectVa
   }
 );
 
-export const addToLibrary = createAppAsyncThunk<void, AppRouterInstance, { rejectValue: string }>(
+export const addToLibrary = createAppAsyncThunk<void, AppRouterInstance>(
   'game/addToLibrary',
   async (router, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { isUserLoggedIn } = getState().auth;
@@ -118,16 +115,15 @@ export const addToLibrary = createAppAsyncThunk<void, AppRouterInstance, { rejec
 
     if (!gameId) return rejectWithValue('Error adding game to library');
 
-    await toast
-      .promise(dispatch(userInteractionApi.endpoints.addToLibrary.initiate([gameId])).unwrap(), {
-        pending: 'Adding to library...',
+    const result = await promiseToast(
+      dispatch(userInteractionApi.endpoints.addToLibrary.initiate([gameId])).unwrap(),
+      {
+        pending: 'Adding to library',
         success: 'Added to library',
-        error: 'Error adding to library',
-      })
-      .catch((error) => {
-        console.error('Error adding to library:', error);
-        return rejectWithValue('Error adding to library');
-      });
+        fallbackError: 'Error adding to library',
+      }
+    );
+    if (!result) return rejectWithValue('Error adding to library');
 
     await dispatch(fetchUserData());
 
@@ -135,7 +131,7 @@ export const addToLibrary = createAppAsyncThunk<void, AppRouterInstance, { rejec
   }
 );
 
-export const submitReview = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const submitReview = createAppAsyncThunk<void, void>(
   'game/submitReview',
   async (_, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { currentGame, positive, content, reviewId, hasReviewed } = getState().game;
@@ -144,39 +140,31 @@ export const submitReview = createAppAsyncThunk<void, void, { rejectValue: strin
     if (!gameId || positive === null) return rejectWithValue('Error submitting review');
 
     if (!hasReviewed) {
-      await toast
-        .promise(
-          dispatch(
-            userInteractionApi.endpoints.reviewGame.initiate({ gameId, positive, content })
-          ).unwrap(),
-          {
-            pending: 'Submitting review...',
-            success: 'Submitted review',
-            error: 'Error submitting review',
-          }
-        )
-        .catch((error) => {
-          console.error('Error submitting review:', error);
-          return rejectWithValue('Error submitting review');
-        });
+      const result = await promiseToast(
+        dispatch(
+          userInteractionApi.endpoints.reviewGame.initiate({ gameId, positive, content })
+        ).unwrap(),
+        {
+          pending: 'Submitting review',
+          success: 'Submitted review',
+          fallbackError: 'Error submitting review',
+        }
+      );
+      if (!result) return rejectWithValue('Error submitting review');
     } else {
       if (reviewId === null) return rejectWithValue('Error updating review');
 
-      await toast
-        .promise(
-          dispatch(
-            userInteractionApi.endpoints.updateReview.initiate({ reviewId, positive, content })
-          ).unwrap(),
-          {
-            pending: 'Updating review...',
-            success: 'Updated review',
-            error: 'Error updating review',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating review:', error);
-          return rejectWithValue('Error updating review');
-        });
+      const result = await promiseToast(
+        dispatch(
+          userInteractionApi.endpoints.updateReview.initiate({ reviewId, positive, content })
+        ).unwrap(),
+        {
+          pending: 'Updating review',
+          success: 'Updated review',
+          fallbackError: 'Error updating review',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating review');
     }
 
     await dispatch(fetchUserData());
@@ -186,7 +174,7 @@ export const submitReview = createAppAsyncThunk<void, void, { rejectValue: strin
   }
 );
 
-export const getReviews = createAppAsyncThunk<Review[] | undefined, void, { rejectValue: string }>(
+export const getReviews = createAppAsyncThunk<Review[] | undefined>(
   'game/getReviews',
   async (_, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
     const { currentGame, filter, sort, currentPage } = getState().game;
@@ -194,31 +182,23 @@ export const getReviews = createAppAsyncThunk<Review[] | undefined, void, { reje
 
     if (!gameId) return rejectWithValue('Error getting reviews');
 
-    const newReviews = await toast
-      .promise<Review[]>(
-        dispatch(
-          gameDataApi.endpoints.getReviews.initiate({
-            gameId,
-            filter,
-            sort,
-            offset: currentPage,
-            limit: 5,
-          })
-        ).unwrap(),
-        {
-          error: 'Error getting reviews',
-        }
-      )
-      .catch((error) => {
-        console.error('Error getting reviews:', error);
-      });
-
+    const newReviews = await promiseToast(
+      dispatch(
+        gameDataApi.endpoints.getReviews.initiate({
+          gameId,
+          filter,
+          sort,
+          offset: currentPage,
+          limit: 5,
+        })
+      ).unwrap(),
+      {
+        pending: 'Getting reviews',
+        fallbackError: 'Error getting reviews',
+      }
+    );
     if (!newReviews) return rejectWithValue('Error getting reviews');
 
-    if (Array.isArray(newReviews) && newReviews.length === 0) {
-      return fulfillWithValue(undefined);
-    } else {
-      return fulfillWithValue(newReviews);
-    }
+    return fulfillWithValue(newReviews);
   }
 );

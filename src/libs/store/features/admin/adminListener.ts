@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -32,6 +29,9 @@ import {
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
+
+// Utils
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -143,16 +143,16 @@ listen({
     dispatch(reset());
     dispatch(setAdminType('create-offer'));
 
-    const offerGame = await toast.promise(
+    const offerGame = await promiseToast(
       dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap(),
       {
         pending: 'Fetching game data...',
         success: 'Game data fetched successfully',
-        error: 'Error fetching game data',
+        fallbackError: 'Error fetching game data',
       }
     );
 
-    dispatch(setOfferGame(offerGame));
+    dispatch(setOfferGame(offerGame ?? null));
 
     debouncedFetchPaginatedOffers(dispatch);
   },

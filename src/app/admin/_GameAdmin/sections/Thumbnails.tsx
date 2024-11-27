@@ -14,7 +14,7 @@ import FormButtons from '../FormButtons';
 import { validateThumbnails } from '../validations';
 
 // Utils
-import { saveFileToLocalStorage } from '@utils/filesStorageUtils';
+import { saveFileToIndexedDB } from '@utils/filesStorageUtils';
 import getFileUrl from '@utils/getFileUrl';
 
 // Types
@@ -64,7 +64,7 @@ export default function Thumbnails() {
     const file = e.target.files?.[0];
 
     if (file) {
-      const fileId = await saveFileToLocalStorage(file);
+      const fileId = await saveFileToIndexedDB(file);
       const fileMetadata = { id: fileId, name: file.name, size: file.size, type: file.type };
       if (
         thumbnails[key].file &&
@@ -88,7 +88,7 @@ export default function Thumbnails() {
       <section className="section-thumbnails">
         <h2>Thumbnails</h2>
         <div>
-          {Object.entries(thumbnails).map(([key, { file }], idx) => {
+          {Object.entries(thumbnails).map(async ([key, { file }], idx) => {
             const ref = {
               backgroundImage: backgroundImageRef,
               mainImage: mainImageRef,
@@ -98,6 +98,17 @@ export default function Thumbnails() {
               smallHeaderImage: smallHeaderImageRef,
               searchImage: searchImageRef,
               tabImage: tabImageRef,
+            };
+
+            const urls = {
+              backgroundImage: await getFileUrl(file),
+              mainImage: await getFileUrl(file),
+              menuImg: await getFileUrl(file),
+              horizontalHeaderImage: await getFileUrl(file),
+              verticalHeaderImage: await getFileUrl(file),
+              smallHeaderImage: await getFileUrl(file),
+              searchImage: await getFileUrl(file),
+              tabImage: await getFileUrl(file),
             };
 
             return (
@@ -132,7 +143,13 @@ export default function Thumbnails() {
                     </button>
                   </div>
 
-                  {file && <img src={getFileUrl(file)} alt={key} className="thumbnail-image" />}
+                  {file && (
+                    <img
+                      src={urls[key as keyof Thumbnails]}
+                      alt={key}
+                      className="thumbnail-image"
+                    />
+                  )}
                 </div>
                 {idx < Object.keys(thumbnails).length - 1 && <hr />}
               </Fragment>

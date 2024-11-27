@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -9,6 +6,9 @@ import { initializeLibrary, setIsLibraryInitialized, updateLibrary } from './lib
 
 // APIs
 import gameDataApi from '@store/apis/game/data';
+
+// Utils
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { Game } from '@interfaces/game';
@@ -28,20 +28,16 @@ listen({
     let libraryItems: Game[] = [];
 
     if (userLibrary.length > 0) {
-      libraryItems = await toast
-        .promise<Game[]>(
+      libraryItems =
+        (await promiseToast(
           dispatch(
             gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
           ).unwrap(),
           {
             pending: 'Fetching library items',
-            error: 'Error fetching library items',
+            fallbackError: 'Error fetching library items',
           }
-        )
-        .catch((error) => {
-          console.error('Error fetching library items:', error);
-          return [];
-        });
+        )) ?? [];
     }
 
     // Update library

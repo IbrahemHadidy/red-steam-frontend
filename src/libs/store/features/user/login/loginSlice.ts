@@ -81,7 +81,7 @@ const loginSlice = createSlice({
         state.loginPassword = '';
         state.rememberMePreference = false;
       })
-      .addCase(login.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(login.rejected, (state, action) => {
         state.isLoginLoading = false;
         state.loginErrorMessage = action.payload ?? 'Something went wrong. Please try again.';
       });

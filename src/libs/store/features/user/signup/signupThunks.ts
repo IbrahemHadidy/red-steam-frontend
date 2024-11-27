@@ -20,7 +20,7 @@ import type { User } from '@interfaces/user';
 import type { RefObject } from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
-export interface CheckExistingEmailRejectValue {
+interface CheckExistingEmailRejectValue {
   emailInputError?: boolean;
   confirmEmailInputError?: boolean;
   isEmailAvailable?: boolean;
@@ -28,7 +28,7 @@ export interface CheckExistingEmailRejectValue {
   errors: string[];
 }
 
-export interface CheckNameAndPasswordRejectValue {
+interface CheckNameAndPasswordRejectValue {
   accountNameInputError?: boolean;
   passwordInputError?: boolean;
   confirmPasswordInputError?: boolean;

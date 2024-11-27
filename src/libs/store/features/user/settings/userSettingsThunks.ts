@@ -8,13 +8,15 @@ import { createAppAsyncThunk } from '@store/hooks';
 import { fetchUserData, logout } from '@store/features/auth/authThunks';
 
 // Utils
+import { getFileFromIndexedDB } from '@utils/filesStorageUtils';
 import { validateEmail, validatePassword, validatePhone } from '@utils/inputValidations';
+import promiseToast from '@utils/promiseToast';
 
 // Apis
 import userManagementApi from '@store/apis/user/management';
 import userPhoneApi from '@store/apis/user/phone';
 
-export const changeUsername = createAppAsyncThunk<string, void, { rejectValue: string }>(
+export const changeUsername = createAppAsyncThunk<string>(
   'user/settings/changeUsername',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { newUsername, currentPassword } = getState().user.settings;
@@ -41,7 +43,7 @@ export const changeUsername = createAppAsyncThunk<string, void, { rejectValue: s
   }
 );
 
-export const changeEmail = createAppAsyncThunk<void | string, void, { rejectValue: string }>(
+export const changeEmail = createAppAsyncThunk<void | string>(
   'user/settings/changeEmail',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentChangeStep, currentEmail, currentPassword, email } = getState().user.settings;
@@ -63,26 +65,21 @@ export const changeEmail = createAppAsyncThunk<void | string, void, { rejectValu
       }
     } else {
       // Second step: change email
-      // Change email
-      await toast
-        .promise(
-          dispatch(
-            userManagementApi.endpoints.changeEmail.initiate({
-              currentEmail,
-              currentPassword,
-              newEmail: email,
-            })
-          ).unwrap(),
-          {
-            pending: 'Changing email...',
-            success: 'Email changed successfully',
-            error: 'An error occurred while changing email. Please try again.',
-          }
-        )
-        .catch((error) => {
-          console.error('Error changing email:', error);
-          return rejectWithValue('Error changing email');
-        });
+      const response = await promiseToast(
+        dispatch(
+          userManagementApi.endpoints.changeEmail.initiate({
+            currentEmail,
+            currentPassword,
+            newEmail: email,
+          })
+        ).unwrap(),
+        {
+          pending: 'Changing email',
+          success: 'Email changed successfully',
+          fallbackError: 'An error occurred while changing email. Please try again.',
+        }
+      );
+      if (!response) return rejectWithValue('Error changing email');
 
       // Update user data
       await dispatch(fetchUserData());
@@ -93,30 +90,25 @@ export const changeEmail = createAppAsyncThunk<void | string, void, { rejectValu
   }
 );
 
-export const changeCountry = createAppAsyncThunk<string, string, { rejectValue: string }>(
+export const changeCountry = createAppAsyncThunk<string, string>(
   'user/settings/changeCountry',
   async (newCountry, { rejectWithValue, fulfillWithValue, dispatch }) => {
-    // Delete account
-    await toast
-      .promise(
-        dispatch(userManagementApi.endpoints.changeCountry.initiate({ newCountry })).unwrap(),
-        {
-          pending: 'Changing country...',
-          success: 'Country changed successfully',
-          error: 'An error occurred while changing country. Please try again.',
-        }
-      )
-      .catch((error) => {
-        console.error('Error changing country:', error);
-        return rejectWithValue('Error changing country');
-      });
+    const response = await promiseToast(
+      dispatch(userManagementApi.endpoints.changeCountry.initiate({ newCountry })).unwrap(),
+      {
+        pending: 'Changing country',
+        success: 'Country changed successfully',
+        fallbackError: 'An error occurred while changing country. Please try again.',
+      }
+    );
+    if (!response) return rejectWithValue('Error changing country');
 
     // Resolve with value
     return fulfillWithValue(newCountry);
   }
 );
 
-export const changePhone = createAppAsyncThunk<void | string, void, { rejectValue: string }>(
+export const changePhone = createAppAsyncThunk<void | string>(
   'user/settings/changePhone',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentChangeStep, phone } = getState().user.settings;
@@ -133,21 +125,17 @@ export const changePhone = createAppAsyncThunk<void | string, void, { rejectValu
       }
     } else {
       // Second step: change phone
-      await toast
-        .promise(
-          dispatch(
-            userPhoneApi.endpoints.changePhoneNumber.initiate({ newPhoneNumber: phone })
-          ).unwrap(),
-          {
-            pending: 'Changing phone number...',
-            success: 'Phone number changed successfully',
-            error: 'An error occurred while changing phone number. Please try again.',
-          }
-        )
-        .catch((error) => {
-          console.error('Error changing phone:', error);
-          return rejectWithValue('Error changing phone');
-        });
+      const response = await promiseToast(
+        dispatch(
+          userPhoneApi.endpoints.changePhoneNumber.initiate({ newPhoneNumber: phone })
+        ).unwrap(),
+        {
+          pending: 'Changing phone number...',
+          success: 'Phone number changed successfully',
+          fallbackError: 'An error occurred while changing phone number. Please try again.',
+        }
+      );
+      if (!response) return rejectWithValue('Error changing phone');
 
       // Update user data
       await dispatch(fetchUserData());
@@ -158,7 +146,7 @@ export const changePhone = createAppAsyncThunk<void | string, void, { rejectValu
   }
 );
 
-export const changePassword = createAppAsyncThunk<string, void, { rejectValue: string }>(
+export const changePassword = createAppAsyncThunk<string>(
   'user/settings/changePassword',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { newPassword, confirmNewPassword } = getState().user.settings;
@@ -169,24 +157,20 @@ export const changePassword = createAppAsyncThunk<string, void, { rejectValue: s
 
     if (isNewPasswordValid && isNewPasswordConfirmed) {
       // Change password
-      await toast
-        .promise(
-          dispatch(
-            userManagementApi.endpoints.changePassword.initiate({
-              currentPassword: newPassword,
-              newPassword: confirmNewPassword,
-            })
-          ).unwrap(),
-          {
-            pending: 'Changing password...',
-            success: 'Password changed successfully',
-            error: 'An error occurred while changing password. Please try again.',
-          }
-        )
-        .catch((error) => {
-          console.error('Error changing password:', error);
-          return rejectWithValue('Error changing password');
-        });
+      const response = await promiseToast(
+        dispatch(
+          userManagementApi.endpoints.changePassword.initiate({
+            currentPassword: newPassword,
+            newPassword: confirmNewPassword,
+          })
+        ).unwrap(),
+        {
+          pending: 'Changing password...',
+          success: 'Password changed successfully',
+          fallbackError: 'Error changing password',
+        }
+      );
+      if (!response?.message) return rejectWithValue('Error changing password');
 
       // Update user data
       await dispatch(fetchUserData());
@@ -201,20 +185,19 @@ export const changePassword = createAppAsyncThunk<string, void, { rejectValue: s
   }
 );
 
-export const deletePhone = createAppAsyncThunk<string, void, { rejectValue: string }>(
+export const deletePhone = createAppAsyncThunk<string>(
   'user/settings/deletePhone',
   async (_, { rejectWithValue, fulfillWithValue, dispatch }) => {
     // Delete phone
-    await toast
-      .promise(dispatch(userPhoneApi.endpoints.removePhoneNumber.initiate()).unwrap(), {
-        pending: 'Deleting phone number...',
+    const response = await promiseToast(
+      dispatch(userPhoneApi.endpoints.removePhoneNumber.initiate()).unwrap(),
+      {
+        pending: 'Deleting phone number',
         success: 'Phone number deleted successfully',
-        error: 'An error occurred while deleting phone number. Please try again.',
-      })
-      .catch((error) => {
-        console.error('Error deleting phone:', error);
-        return rejectWithValue('Error deleting phone');
-      });
+        fallbackError: 'An error occurred while deleting phone number. Please try again.',
+      }
+    );
+    if (!response) return rejectWithValue('Error deleting phone');
 
     // Update user data
     await dispatch(fetchUserData());
@@ -224,25 +207,21 @@ export const deletePhone = createAppAsyncThunk<string, void, { rejectValue: stri
   }
 );
 
-export const deleteAccount = createAppAsyncThunk<string, void, { rejectValue: string }>(
+export const deleteAccount = createAppAsyncThunk<string>(
   'user/settings/deleteAccount',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPassword } = getState().user.settings;
 
     // Delete account
-    await toast
-      .promise(
-        dispatch(userManagementApi.endpoints.deleteAccount.initiate(currentPassword)).unwrap(),
-        {
-          pending: 'Deleting account...',
-          success: 'Account deleted successfully',
-          error: 'An error occurred while deleting your account. Please try again.',
-        }
-      )
-      .catch((error) => {
-        console.error('Error deleting account:', error);
-        return rejectWithValue('Error deleting account');
-      });
+    const response = await promiseToast(
+      dispatch(userManagementApi.endpoints.deleteAccount.initiate(currentPassword)).unwrap(),
+      {
+        pending: 'Deleting account',
+        success: 'Account deleted successfully',
+        fallbackError: 'An error occurred while deleting your account. Please try again.',
+      }
+    );
+    if (!response) return rejectWithValue('Error deleting account');
 
     // logout
     await dispatch(logout());
@@ -252,23 +231,26 @@ export const deleteAccount = createAppAsyncThunk<string, void, { rejectValue: st
   }
 );
 
-export const changeAvatar = createAppAsyncThunk<string, void, { rejectValue: string }>(
+export const changeAvatar = createAppAsyncThunk<string>(
   'user/settings/changeAvatar',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { avatarFile } = getState().user.settings;
 
     if (avatarFile) {
       // Change avatar
-      await toast
-        .promise(dispatch(userManagementApi.endpoints.uploadAvatar.initiate(avatarFile)).unwrap(), {
+      const response = await promiseToast(
+        dispatch(
+          userManagementApi.endpoints.uploadAvatar.initiate(
+            (await getFileFromIndexedDB(avatarFile.id)) as File
+          )
+        ).unwrap(),
+        {
           pending: 'Uploading avatar...',
           success: 'Avatar uploaded successfully',
-          error: 'An error occurred while uploading avatar. Please try again.',
-        })
-        .catch((error) => {
-          console.error('Error changing avatar:', error);
-          return rejectWithValue('Error uploading avatar');
-        });
+          fallbackError: 'An error occurred while uploading avatar. Please try again.',
+        }
+      );
+      if (!response) return rejectWithValue('Error uploading avatar');
 
       // Update user data
       await dispatch(fetchUserData());
@@ -282,19 +264,18 @@ export const changeAvatar = createAppAsyncThunk<string, void, { rejectValue: str
   }
 );
 
-export const deleteAvatar = createAppAsyncThunk<string, void, { rejectValue: string }>(
+export const deleteAvatar = createAppAsyncThunk<string>(
   'user/settings/deleteAvatar',
   async (_, { rejectWithValue, fulfillWithValue, dispatch }) => {
-    await toast
-      .promise(dispatch(userManagementApi.endpoints.deleteAvatar.initiate()).unwrap(), {
+    const response = await promiseToast(
+      dispatch(userManagementApi.endpoints.deleteAvatar.initiate()).unwrap(),
+      {
         pending: 'Deleting avatar...',
         success: 'Avatar deleted successfully',
-        error: 'An error occurred while deleting avatar. Please try again.',
-      })
-      .catch((error) => {
-        console.error('Error deleting avatar:', error);
-        return rejectWithValue('Error deleting avatar');
-      });
+        fallbackError: 'An error occurred while deleting avatar. Please try again.',
+      }
+    );
+    if (!response) return rejectWithValue('Error deleting avatar');
 
     // Update user data
     await dispatch(fetchUserData());

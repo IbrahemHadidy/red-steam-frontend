@@ -1,6 +1,3 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 
@@ -11,6 +8,7 @@ import { initializeCart, setCartInitialized, setTotalPrice, updateCart } from '.
 import gameDataApi from '@store/apis/game/data';
 
 // Utils
+import promiseToast from '@utils/promiseToast';
 import Decimal from 'decimal.js';
 
 // Types
@@ -32,20 +30,16 @@ listen({
     let cartItems: Game[] = [];
 
     if (userCart.length > 0) {
-      cartItems = await toast
-        .promise<Game[]>(
+      cartItems =
+        (await promiseToast(
           dispatch(
             gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
           ).unwrap(),
           {
             pending: 'Fetching cart items',
-            error: 'Error fetching cart items',
+            fallbackError: 'Error fetching cart items',
           }
-        )
-        .catch((error) => {
-          console.error('Error fetching cart items:', error);
-          return [];
-        });
+        )) ?? [];
     }
 
     // Update cart

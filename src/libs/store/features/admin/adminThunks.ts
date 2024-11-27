@@ -1,14 +1,8 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
 // Redux Handlers
 import { setIsFetching } from './adminSlice';
-
-// Utils
-import debounce from '@utils/debounce';
 
 // APIs
 import developerApi from '@store/apis/common/developers';
@@ -18,6 +12,10 @@ import publisherApi from '@store/apis/common/publishers';
 import reviewApi from '@store/apis/common/reviews';
 import tagApi from '@store/apis/common/tags';
 import gameOfferApi from '@store/apis/game/offer';
+
+// Utils
+import debounce from '@utils/debounce';
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { Company } from '@interfaces/company';
@@ -73,71 +71,54 @@ interface FetchPaginatedOffersPayload {
   totalPages: number;
 }
 
-export const fetchPaginatedFeatures = createAppAsyncThunk<
-  FetchPaginatedFeaturesPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedFeatures = createAppAsyncThunk<FetchPaginatedFeaturesPayload>(
   'admin/fetchPaginatedFeatures',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedFeaturesPayload>(
-        dispatch(
-          featureApi.endpoints.getFeaturesPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as 'id' | 'name',
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching features...',
-          error: 'Error fetching features',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching features:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        featureApi.endpoints.getFeaturesPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as 'id' | 'name',
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching features',
+        fallbackError: 'Error fetching features',
+      }
+    ).catch((error) => {
+      console.error('Error fetching features:', error);
+    });
+    if (!data) return rejectWithValue('Error fetching features');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching features');
-    }
+    return fulfillWithValue(data);
   }
 );
 
-export const fetchPaginatedPublishers = createAppAsyncThunk<
-  FetchPaginatedCompaniesPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedPublishers = createAppAsyncThunk<FetchPaginatedCompaniesPayload>(
   'admin/fetchPaginatedPublishers',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedCompaniesPayload>(
-        dispatch(
-          publisherApi.endpoints.getPublishersPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as 'id' | 'name',
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching publishers...',
-          error: 'Error fetching publishers',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching publishers:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        publisherApi.endpoints.getPublishersPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as 'id' | 'name',
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching publishers',
+        fallbackError: 'Error fetching publishers',
+      }
+    );
 
     if (data) {
       return fulfillWithValue(data);
@@ -147,188 +128,133 @@ export const fetchPaginatedPublishers = createAppAsyncThunk<
   }
 );
 
-export const fetchPaginatedDevelopers = createAppAsyncThunk<
-  FetchPaginatedCompaniesPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedDevelopers = createAppAsyncThunk<FetchPaginatedCompaniesPayload>(
   'admin/fetchPaginatedDevelopers',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedCompaniesPayload>(
-        dispatch(
-          developerApi.endpoints.getDevelopersPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as 'id' | 'name',
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching developers...',
-          error: 'Error fetching developers',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching developers:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        developerApi.endpoints.getDevelopersPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as 'id' | 'name',
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching developers',
+        fallbackError: 'Error fetching developers',
+      }
+    );
+    if (!data) return rejectWithValue('Error fetching developers');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching developers');
-    }
+    return fulfillWithValue(data);
   }
 );
 
-export const fetchPaginatedLanguages = createAppAsyncThunk<
-  FetchPaginatedLanguagesPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedLanguages = createAppAsyncThunk<FetchPaginatedLanguagesPayload>(
   'admin/fetchPaginatedLanguages',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedLanguagesPayload>(
-        dispatch(
-          languageApi.endpoints.getLanguagesPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as 'id' | 'name',
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching languages...',
-          error: 'Error fetching languages',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching languages:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        languageApi.endpoints.getLanguagesPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as 'id' | 'name',
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching languages',
+        fallbackError: 'Error fetching languages',
+      }
+    );
+    if (!data) return rejectWithValue('Error fetching languages');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching languages');
-    }
+    return fulfillWithValue(data);
   }
 );
 
-export const fetchPaginatedTags = createAppAsyncThunk<
-  FetchPaginatedTagsPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedTags = createAppAsyncThunk<FetchPaginatedTagsPayload>(
   'admin/fetchPaginatedTags',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedTagsPayload>(
-        dispatch(
-          tagApi.endpoints.getTagsPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as 'id' | 'name',
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching tags...',
-          error: 'Error fetching tags',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching tags:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        tagApi.endpoints.getTagsPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as 'id' | 'name',
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching tags',
+        fallbackError: 'Error fetching tags',
+      }
+    );
+    if (!data) return rejectWithValue('Error fetching tags');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching tags');
-    }
+    return fulfillWithValue(data);
   }
 );
 
-export const fetchPaginatedReviews = createAppAsyncThunk<
-  FetchPaginatedReviewsPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedReviews = createAppAsyncThunk<FetchPaginatedReviewsPayload>(
   'admin/fetchPaginatedReviews',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedReviewsPayload>(
-        dispatch(
-          reviewApi.endpoints.getReviewsPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as 'id' | 'name',
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching reviews...',
-          error: 'Error fetching reviews',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching reviews:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        reviewApi.endpoints.getReviewsPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as 'id' | 'name',
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching reviews',
+        fallbackError: 'Error fetching reviews',
+      }
+    );
+    if (!data) return rejectWithValue('Error fetching reviews');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching reviews');
-    }
+    return fulfillWithValue(data);
   }
 );
 
-export const fetchPaginatedOffers = createAppAsyncThunk<
-  FetchPaginatedOffersPayload,
-  void,
-  { rejectValue: string }
->(
+export const fetchPaginatedOffers = createAppAsyncThunk<FetchPaginatedOffersPayload>(
   'admin/fetchPaginatedOffers',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const { currentPage, itemsPerPage, sortConfig, searchQuery } = getState().admin.common;
 
-    const data = await toast
-      .promise<FetchPaginatedOffersPayload>(
-        dispatch(
-          gameOfferApi.endpoints.getOffersPaginated.initiate({
-            page: currentPage,
-            limit: itemsPerPage,
-            orderBy: sortConfig.key as OffersOrderBy,
-            order: sortConfig.direction,
-            searchQuery,
-          })
-        ).unwrap(),
-        {
-          pending: 'Fetching reviews...',
-          error: 'Error fetching reviews',
-        }
-      )
-      .catch((error) => {
-        console.error('Error fetching reviews:', error);
-      });
+    const data = await promiseToast(
+      dispatch(
+        gameOfferApi.endpoints.getOffersPaginated.initiate({
+          page: currentPage,
+          limit: itemsPerPage,
+          orderBy: sortConfig.key as OffersOrderBy,
+          order: sortConfig.direction,
+          searchQuery,
+        })
+      ).unwrap(),
+      {
+        pending: 'Fetching reviews',
+        fallbackError: 'Error fetching reviews',
+      }
+    );
+    if (!data) return rejectWithValue('Error fetching reviews');
 
-    if (data) {
-      return fulfillWithValue(data);
-    } else {
-      return rejectWithValue('Error fetching reviews');
-    }
+    return fulfillWithValue(data);
   }
 );
 
@@ -366,7 +292,7 @@ export const debouncedFetchPaginatedOffers = createDebouncedFetch((dispatch) =>
   dispatch(fetchPaginatedOffers())
 );
 
-export const submitItem = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const submitItem = createAppAsyncThunk(
   'admin/submitItem',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const {
@@ -381,104 +307,84 @@ export const submitItem = createAppAsyncThunk<void, void, { rejectValue: string 
       discountEndDate,
     } = getState().admin.common;
 
+    let result: void | { message: string };
     if (adminType === 'feature') {
-      await toast
-        .promise(
-          dispatch(
-            featureApi.endpoints.createFeature.initiate({ name: name.trim(), icon })
-          ).unwrap(),
-          {
-            pending: 'Creating feature...',
-            success: 'Feature created successfully',
-            error: 'Error creating feature',
-          }
-        )
-        .catch((error) => {
-          console.error('Error creating feature:', error);
-        });
+      result = await promiseToast(
+        dispatch(featureApi.endpoints.createFeature.initiate({ name: name.trim(), icon })).unwrap(),
+        {
+          pending: 'Creating feature',
+          success: 'Feature created successfully',
+          fallbackError: 'Error creating feature',
+        }
+      );
     } else if (adminType === 'publisher') {
-      await toast
-        .promise(
-          dispatch(
-            publisherApi.endpoints.createPublisher.initiate({ name: name.trim(), website })
-          ).unwrap(),
-          {
-            pending: 'Creating publisher...',
-            success: 'Publisher created successfully',
-            error: 'Error creating publisher',
-          }
-        )
-        .catch((error) => {
-          console.error('Error creating publisher:', error);
-        });
+      result = await promiseToast(
+        dispatch(
+          publisherApi.endpoints.createPublisher.initiate({ name: name.trim(), website })
+        ).unwrap(),
+        {
+          pending: 'Creating publisher',
+          success: 'Publisher created successfully',
+          fallbackError: 'Error creating publisher',
+        }
+      );
     } else if (adminType === 'developer') {
-      await toast
-        .promise(
-          dispatch(
-            developerApi.endpoints.createDeveloper.initiate({ name: name.trim(), website })
-          ).unwrap(),
-          {
-            pending: 'Creating developer...',
-            success: 'Developer created successfully',
-            error: 'Error creating developer',
-          }
-        )
-        .catch((error) => {
-          console.error('Error creating developer:', error);
-        });
+      result = await promiseToast(
+        dispatch(
+          developerApi.endpoints.createDeveloper.initiate({ name: name.trim(), website })
+        ).unwrap(),
+        {
+          pending: 'Creating developer',
+          success: 'Developer created successfully',
+          fallbackError: 'Error creating developer',
+        }
+      );
     } else if (adminType === 'language') {
-      await toast
-        .promise(
-          dispatch(languageApi.endpoints.createLanguage.initiate({ name: name.trim() })).unwrap(),
-          {
-            pending: 'Creating language...',
-            success: 'Language created successfully',
-            error: 'Error creating language',
-          }
-        )
-        .catch((error) => {
-          console.error('Error creating language:', error);
-        });
+      result = await promiseToast(
+        dispatch(languageApi.endpoints.createLanguage.initiate({ name: name.trim() })).unwrap(),
+        {
+          pending: 'Creating language',
+          success: 'Language created successfully',
+          fallbackError: 'Error creating language',
+        }
+      );
     } else if (adminType === 'tag') {
-      await toast
-        .promise(dispatch(tagApi.endpoints.createTag.initiate({ name: name.trim() })).unwrap(), {
-          pending: 'Creating tag...',
+      result = await promiseToast(
+        dispatch(tagApi.endpoints.createTag.initiate({ name: name.trim() })).unwrap(),
+        {
+          pending: 'Creating tag',
           success: 'Tag created successfully',
-          error: 'Error creating tag',
-        })
-        .catch((error) => {
-          console.error('Error creating tag:', error);
-        });
+          fallbackError: 'Error creating tag',
+        }
+      );
     } else if (adminType === 'create-offer' && offerGame) {
-      await toast
-        .promise(
-          dispatch(
-            gameOfferApi.endpoints.createOffer.initiate({
-              gameId: offerGame.id,
-              discountPrice,
-              offerType,
-              discountStartDate,
-              discountEndDate,
-            })
-          ).unwrap(),
-          {
-            pending: 'Creating offer...',
-            success: 'Offer created successfully',
-            error: 'Error creating offer',
-          }
-        )
-        .catch((error) => {
-          console.error('Error creating offer:', error);
-        });
+      result = await promiseToast(
+        dispatch(
+          gameOfferApi.endpoints.createOffer.initiate({
+            gameId: offerGame.id,
+            discountPrice,
+            offerType,
+            discountStartDate,
+            discountEndDate,
+          })
+        ).unwrap(),
+        {
+          pending: 'Creating offer',
+          success: 'Offer created successfully',
+          fallbackError: 'Error creating offer',
+        }
+      );
     } else {
       return rejectWithValue('Error submitting item');
     }
+
+    if (!result) return rejectWithValue('Error submitting item');
 
     return fulfillWithValue(undefined);
   }
 );
 
-export const updateItem = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const updateItem = createAppAsyncThunk(
   'admin/updateItem',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
     const {
@@ -496,127 +402,109 @@ export const updateItem = createAppAsyncThunk<void, void, { rejectValue: string 
     } = getState().admin.common;
 
     if (adminType === 'feature') {
-      await toast
-        .promise(
-          dispatch(
-            featureApi.endpoints.updateFeature.initiate({
-              id: currentEditItem?.id ?? 0,
-              name: name.trim(),
-              icon,
-            })
-          ).unwrap(),
-          {
-            pending: 'Updating feature...',
-            success: 'Feature updated successfully',
-            error: 'Error updating feature',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating feature:', error);
-        });
+      const result = await promiseToast(
+        dispatch(
+          featureApi.endpoints.updateFeature.initiate({
+            id: currentEditItem?.id ?? 0,
+            name: name.trim(),
+            icon,
+          })
+        ).unwrap(),
+        {
+          pending: 'Updating feature',
+          success: 'Feature updated successfully',
+          fallbackError: 'Error updating feature',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating feature');
 
       debouncedFetchPaginatedFeatures(dispatch);
     } else if (adminType === 'publisher') {
-      await toast
-        .promise(
-          dispatch(
-            publisherApi.endpoints.updatePublisher.initiate({
-              id: currentEditItem?.id ?? 0,
-              name: name.trim(),
-              website,
-            })
-          ).unwrap(),
-          {
-            pending: 'Updating publisher...',
-            success: 'Publisher updated successfully',
-            error: 'Error updating publisher',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating publisher:', error);
-        });
+      const result = await promiseToast(
+        dispatch(
+          publisherApi.endpoints.updatePublisher.initiate({
+            id: currentEditItem?.id ?? 0,
+            name: name.trim(),
+            website,
+          })
+        ).unwrap(),
+        {
+          pending: 'Updating publisher',
+          success: 'Publisher updated successfully',
+          fallbackError: 'Error updating publisher',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating publisher');
 
       debouncedFetchPaginatedPublishers(dispatch);
     } else if (adminType === 'developer') {
-      await toast
-        .promise(
-          dispatch(
-            developerApi.endpoints.updateDeveloper.initiate({
-              id: currentEditItem?.id ?? 0,
-              name: name.trim(),
-              website,
-            })
-          ).unwrap(),
-          {
-            pending: 'Updating developer...',
-            success: 'Developer updated successfully',
-            error: 'Error updating developer',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating developer:', error);
-        });
+      const result = await promiseToast(
+        dispatch(
+          developerApi.endpoints.updateDeveloper.initiate({
+            id: currentEditItem?.id ?? 0,
+            name: name.trim(),
+            website,
+          })
+        ).unwrap(),
+        {
+          pending: 'Updating developer',
+          success: 'Developer updated successfully',
+          fallbackError: 'Error updating developer',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating developer');
 
       debouncedFetchPaginatedDevelopers(dispatch);
     } else if (adminType === 'language') {
-      await toast
-        .promise(
-          dispatch(
-            languageApi.endpoints.updateLanguage.initiate({
-              id: currentEditItem?.id ?? 0,
-              name: name.trim(),
-            })
-          ).unwrap(),
-          {
-            pending: 'Updating language...',
-            success: 'Language updated successfully',
-            error: 'Error updating language',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating language:', error);
-        });
+      const result = await promiseToast(
+        dispatch(
+          languageApi.endpoints.updateLanguage.initiate({
+            id: currentEditItem?.id ?? 0,
+            name: name.trim(),
+          })
+        ).unwrap(),
+        {
+          pending: 'Updating language',
+          success: 'Language updated successfully',
+          fallbackError: 'Error updating language',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating language');
 
       debouncedFetchPaginatedLanguages(dispatch);
     } else if (adminType === 'tag') {
-      await toast
-        .promise(
-          dispatch(
-            tagApi.endpoints.updateTag.initiate({ id: currentEditItem?.id ?? 0, name: name.trim() })
-          ).unwrap(),
-          {
-            pending: 'Updating tag...',
-            success: 'Tag updated successfully',
-            error: 'Error updating tag',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating tag:', error);
-        });
+      const result = await promiseToast(
+        dispatch(
+          tagApi.endpoints.updateTag.initiate({ id: currentEditItem?.id ?? 0, name: name.trim() })
+        ).unwrap(),
+        {
+          pending: 'Updating tag',
+          success: 'Tag updated successfully',
+          fallbackError: 'Error updating tag',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating tag');
 
       debouncedFetchPaginatedTags(dispatch);
     } else if (['offer', 'create-offer'].includes(adminType) && offerGame) {
-      await toast
-        .promise(
-          dispatch(
-            gameOfferApi.endpoints.updateOffer.initiate({
-              id: currentEditItem?.id ?? 0,
-              discount,
-              discountPrice,
-              offerType,
-              discountStartDate,
-              discountEndDate,
-            })
-          ).unwrap(),
-          {
-            pending: 'Updating offer...',
-            success: 'Offer updated successfully',
-            error: 'Error updating offer',
-          }
-        )
-        .catch((error) => {
-          console.error('Error updating offer:', error);
-        });
+      const result = await promiseToast(
+        dispatch(
+          gameOfferApi.endpoints.updateOffer.initiate({
+            id: currentEditItem?.id ?? 0,
+            discount,
+            discountPrice,
+            offerType,
+            discountStartDate,
+            discountEndDate,
+          })
+        ).unwrap(),
+        {
+          pending: 'Updating offer',
+          success: 'Offer updated successfully',
+          fallbackError: 'Error updating offer',
+        }
+      );
+      if (!result) return rejectWithValue('Error updating offer');
 
       debouncedFetchPaginatedOffers(dispatch);
     } else {
@@ -627,81 +515,81 @@ export const updateItem = createAppAsyncThunk<void, void, { rejectValue: string 
   }
 );
 
-export const deleteItem = createAppAsyncThunk<void, void, { rejectValue: string }>(
+export const deleteItem = createAppAsyncThunk(
   'admin/deleteItem',
   async (_, { rejectWithValue, fulfillWithValue, dispatch, getState }) => {
     const { adminType, deleteItemId: id } = getState().admin.common;
 
     if (adminType === 'feature') {
-      await toast
-        .promise(dispatch(featureApi.endpoints.deleteFeature.initiate(id ?? 0)).unwrap(), {
-          pending: 'Deleting feature...',
+      const result = await promiseToast(
+        dispatch(featureApi.endpoints.deleteFeature.initiate(id ?? 0)).unwrap(),
+        {
+          pending: 'Deleting feature',
           success: 'Feature deleted successfully',
-          error: 'Error deleting feature',
-        })
-        .catch((error) => {
-          console.error('Error deleting feature:', error);
-        });
+          fallbackError: 'Error deleting feature',
+        }
+      );
+      if (!result) return rejectWithValue('Error deleting feature');
 
       debouncedFetchPaginatedFeatures(dispatch);
     } else if (adminType === 'publisher') {
-      await toast
-        .promise(dispatch(publisherApi.endpoints.deletePublisher.initiate(id ?? 0)).unwrap(), {
-          pending: 'Deleting publisher...',
+      const result = await promiseToast(
+        dispatch(publisherApi.endpoints.deletePublisher.initiate(id ?? 0)).unwrap(),
+        {
+          pending: 'Deleting publisher',
           success: 'Publisher deleted successfully',
-          error: 'Error deleting publisher',
-        })
-        .catch((error) => {
-          console.error('Error deleting publisher:', error);
-        });
+          fallbackError: 'Error deleting publisher',
+        }
+      );
+      if (!result) return rejectWithValue('Error deleting publisher');
 
       debouncedFetchPaginatedPublishers(dispatch);
     } else if (adminType === 'developer') {
-      await toast
-        .promise(dispatch(developerApi.endpoints.deleteDeveloper.initiate(id ?? 0)).unwrap(), {
-          pending: 'Deleting developer...',
+      const result = await promiseToast(
+        dispatch(developerApi.endpoints.deleteDeveloper.initiate(id ?? 0)).unwrap(),
+        {
+          pending: 'Deleting developer',
           success: 'Developer deleted successfully',
-          error: 'Error deleting developer',
-        })
-        .catch((error) => {
-          console.error('Error deleting developer:', error);
-        });
+          fallbackError: 'Error deleting developer',
+        }
+      );
+      if (!result) return rejectWithValue('Error deleting developer');
 
       debouncedFetchPaginatedDevelopers(dispatch);
     } else if (adminType === 'language') {
-      await toast
-        .promise(dispatch(languageApi.endpoints.deleteLanguage.initiate(id ?? 0)).unwrap(), {
-          pending: 'Deleting language...',
+      const result = await promiseToast(
+        dispatch(languageApi.endpoints.deleteLanguage.initiate(id ?? 0)).unwrap(),
+        {
+          pending: 'Deleting language',
           success: 'Language deleted successfully',
-          error: 'Error deleting language',
-        })
-        .catch((error) => {
-          console.error('Error deleting language:', error);
-        });
+          fallbackError: 'Error deleting language',
+        }
+      );
+      if (!result) return rejectWithValue('Error deleting language');
 
       debouncedFetchPaginatedLanguages(dispatch);
     } else if (adminType === 'tag') {
-      await toast
-        .promise(dispatch(tagApi.endpoints.deleteTag.initiate(id ?? 0)).unwrap(), {
-          pending: 'Deleting tag...',
+      const result = await promiseToast(
+        dispatch(tagApi.endpoints.deleteTag.initiate(id ?? 0)).unwrap(),
+        {
+          pending: 'Deleting tag',
           success: 'Tag deleted successfully',
-          error: 'Error deleting tag',
-        })
-        .catch((error) => {
-          console.error('Error deleting tag:', error);
-        });
+          fallbackError: 'Error deleting tag',
+        }
+      );
+      if (!result) return rejectWithValue('Error deleting tag');
 
       debouncedFetchPaginatedTags(dispatch);
     } else if (['offer', 'create-offer'].includes(adminType)) {
-      await toast
-        .promise(dispatch(gameOfferApi.endpoints.deleteOffer.initiate(id ?? 0)).unwrap(), {
-          pending: 'Deleting offer...',
+      const result = await promiseToast(
+        dispatch(gameOfferApi.endpoints.deleteOffer.initiate(id ?? 0)).unwrap(),
+        {
+          pending: 'Deleting offer',
           success: 'Offer deleted successfully',
-          error: 'Error deleting offer',
-        })
-        .catch((error) => {
-          console.error('Error deleting offer:', error);
-        });
+          fallbackError: 'Error deleting offer',
+        }
+      );
+      if (!result) return rejectWithValue('Error deleting offer');
 
       debouncedFetchPaginatedOffers(dispatch);
     } else {

@@ -8,7 +8,6 @@ import { fetchSearchResults } from './searchThunks';
 import type { FilterState, RequestParams, SortOption } from '@custom-types/search';
 import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { FetchSearchResultsFulfillValue } from './searchThunks';
 
 interface SearchState {
   readonly isSearchInitialized: boolean;
@@ -161,16 +160,13 @@ const searchSlice = createSlice({
       .addCase(fetchSearchResults.pending, (state) => {
         state.isFetchDisabled = true;
       })
-      .addCase(
-        fetchSearchResults.fulfilled,
-        (state, action: PayloadAction<FetchSearchResultsFulfillValue>) => {
-          const { games, hasMoreResults } = action.payload;
+      .addCase(fetchSearchResults.fulfilled, (state, action) => {
+        const { games, hasMoreResults } = action.payload;
 
-          state.isFetchDisabled = false;
-          state.searchResults = games;
-          state.hasMoreResults = hasMoreResults;
-        }
-      )
+        state.isFetchDisabled = false;
+        state.searchResults = games;
+        state.hasMoreResults = hasMoreResults;
+      })
       .addCase(fetchSearchResults.rejected, (state) => {
         state.isFetchDisabled = false;
       });

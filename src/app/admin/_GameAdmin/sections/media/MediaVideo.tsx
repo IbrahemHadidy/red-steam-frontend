@@ -1,4 +1,5 @@
 // React
+import { useEffect, useState } from 'react';
 
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
@@ -27,6 +28,16 @@ export default function MediaVideo({ item }: MediaVideoProps) {
 
   //------------------------------- States --------------------------------//
   const { duplicateOrders } = useAppSelector((state) => state.admin.game);
+  const [videoUrl, setVideoUrl] = useState<string>('');
+  const [posterUrl, setPosterUrl] = useState<string>('');
+
+  //------------------------------- Effects -------------------------------//
+  useEffect(() => {
+    (async () => {
+      setVideoUrl(await getFileUrl(item.video));
+      setPosterUrl(await getFileUrl(item.poster));
+    })();
+  }, [item]);
 
   //---------------------------- Event Handlers ---------------------------//
   const handleRemoveVideo = (order: number): void => {
@@ -45,9 +56,7 @@ export default function MediaVideo({ item }: MediaVideoProps) {
   //------------------------------- Render --------------------------------//
   return (
     <div className="media-video">
-      <video controls poster={getFileUrl(item.poster)} className="media-preview">
-        <source src={getFileUrl(item.video)} type="video/mp4" />
-      </video>
+      <video controls src={videoUrl} poster={posterUrl} className="media-preview" />
       <div className="media-details">
         <label>Order:</label>
         <input

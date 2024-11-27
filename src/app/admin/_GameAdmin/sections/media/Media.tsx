@@ -22,7 +22,7 @@ import MediaVideo from './MediaVideo';
 import { validateMedia } from '../../validations';
 
 // Utils
-import { saveFileToLocalStorage } from '@utils/filesStorageUtils';
+import { saveFileToIndexedDB } from '@utils/filesStorageUtils';
 
 // Types
 import type { Screenshot, Video } from '@custom-types/game-admin';
@@ -80,7 +80,7 @@ export default function Media() {
   const handleAddScreenshot = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     const file = e.target.files?.[0];
     if (file) {
-      const fileId = await saveFileToLocalStorage(file);
+      const fileId = await saveFileToIndexedDB(file);
       const fileReference = { id: fileId, name: file.name, size: file.size, type: file.type };
       dispatch(addScreenshot(fileReference));
     }
@@ -88,8 +88,8 @@ export default function Media() {
 
   const handleAddVideo = async (video: File, poster: File): Promise<void> => {
     if (video && poster) {
-      const videoId = await saveFileToLocalStorage(video);
-      const posterId = await saveFileToLocalStorage(poster);
+      const videoId = await saveFileToIndexedDB(video);
+      const posterId = await saveFileToIndexedDB(poster);
       dispatch(
         addVideo({
           video: { id: videoId, name: video.name, size: video.size, type: video.type },

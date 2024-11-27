@@ -1,44 +1,71 @@
 import { nanoid } from '@reduxjs/toolkit';
 
-export const saveFileToLocalStorage = async (file: File): Promise<string> => {
+const dbName = 'fileStorageDB';
+const storeName = 'files';
+
+const openDB = () => {
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    const request = indexedDB.open(dbName, 1);
+
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { keyPath: 'id' });
+      }
+    };
+
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+  });
+};
+
+// Save file to IndexedDB
+export const saveFileToIndexedDB = async (file: File): Promise<string> => {
   const fileId = nanoid();
 
-  // Convert the file to a Base64 string
-  const fileBase64 = await new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(storeName, 'readwrite');
+    const store = transaction.objectStore(storeName);
 
-  // Store both metadata and Base64 data in localStorage
-  localStorage.setItem(
-    fileId,
-    JSON.stringify({
+    const fileData = {
+      id: fileId,
       name: file.name,
       type: file.type,
       size: file.size,
-      data: fileBase64,
-    })
-  );
+      data: file, // Directly store the file (Blob) in IndexedDB
+    };
 
-  return fileId;
+    store.put(fileData);
+
+    return fileId;
+  } catch (error) {
+    console.error('Error saving file to IndexedDB:', error);
+    throw new Error('Failed to save file to IndexedDB');
+  }
 };
 
-export const getFileFromLocalStorage = (fileId: string): File | undefined => {
-  const fileData = localStorage.getItem(fileId);
-  if (!fileData) return undefined;
+// Retrieve file from IndexedDB
+export const getFileFromIndexedDB = async (fileId: string): Promise<File | undefined> => {
+  try {
+    const db = await openDB();
+    const transaction = db.transaction(storeName, 'readonly');
+    const store = transaction.objectStore(storeName);
 
-  const { name, type, data } = JSON.parse(fileData);
+    return new Promise<File | undefined>((resolve, reject) => {
+      const request = store.get(fileId);
 
-  // Convert Base64 data back to a binary Blob and then to a File object
-  const byteString = atob(data.split(',')[1]);
-  const byteArray = new Uint8Array(byteString.length);
+      request.onsuccess = () => {
+        const fileData = request.result;
+        if (!fileData) return resolve(undefined);
 
-  for (let i = 0; i < byteString.length; i++) {
-    byteArray[i] = byteString.charCodeAt(i);
+        resolve(fileData.data); // Return the Blob (File) directly
+      };
+
+      request.onerror = () => reject(request.error);
+    });
+  } catch (error) {
+    console.error('Error retrieving file from IndexedDB:', error);
+    return undefined;
   }
-
-  const blob = new Blob([byteArray], { type });
-  return new File([blob], name, { type, lastModified: Date.now() });
 };

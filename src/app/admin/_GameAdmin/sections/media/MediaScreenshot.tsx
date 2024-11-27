@@ -1,3 +1,6 @@
+// React
+import { useEffect, useState } from 'react';
+
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -26,6 +29,14 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
 
   //------------------------------- States --------------------------------//
   const { screenshots, duplicateOrders } = useAppSelector((state) => state.admin.game);
+  const [imageUrl, setImageUrl] = useState<string>('');
+
+  //------------------------------ Effects -------------------------------//
+  useEffect(() => {
+    (async () => {
+      setImageUrl(await getFileUrl(item.image));
+    })();
+  }, [item.image]);
 
   //-------------------------- Utility Functions --------------------------//
   const isFeaturedDisabled = (): boolean => {
@@ -58,11 +69,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   //------------------------------- Render --------------------------------//
   return (
     <div className="media-screenshot">
-      <img
-        src={getFileUrl(item.image)}
-        alt={`Screenshot ${item.order}`}
-        className="media-preview"
-      />
+      <img src={imageUrl} alt={`Screenshot ${item.order}`} className="media-preview" />
       <div className="media-details">
         <label>Order:</label>
         <input

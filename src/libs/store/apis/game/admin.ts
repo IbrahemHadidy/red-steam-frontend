@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Utils
-import { getFileFromLocalStorage } from '@utils/filesStorageUtils';
+import { getFileFromIndexedDB } from '@utils/filesStorageUtils';
 
 // Types
 import type FileMetadata from '@custom-types/file-metadata';
@@ -69,24 +69,24 @@ const gameAdminApi = createApi({
 
         formData.append('body', JSON.stringify(body));
 
-        Object.entries(thumbnails).forEach(([key, value]) => {
-          formData.append(key, getFileFromLocalStorage(value.file.id) as File);
+        Object.entries(thumbnails).forEach(async ([key, value]) => {
+          formData.append(key, (await getFileFromIndexedDB(value.file.id)) as File);
         });
 
-        images.forEach((entry) => {
+        images.forEach(async (entry) => {
           formData.append(
             `${entry.order}`,
-            getFileFromLocalStorage((entry.image as FileMetadata).id) as File
+            (await getFileFromIndexedDB((entry.image as FileMetadata).id)) as File
           );
         });
-        videos.forEach((entry) => {
+        videos.forEach(async (entry) => {
           formData.append(
             `${entry.order}`,
-            getFileFromLocalStorage((entry.video as FileMetadata).id) as File
+            (await getFileFromIndexedDB((entry.video as FileMetadata).id)) as File
           );
           formData.append(
             `${entry.order}-poster`,
-            getFileFromLocalStorage((entry.poster as FileMetadata).id) as File
+            (await getFileFromIndexedDB((entry.poster as FileMetadata).id)) as File
           );
         });
 
@@ -180,20 +180,20 @@ const gameAdminApi = createApi({
           }
         });
 
-        media.addedScreenshots?.forEach((screenshot) => {
+        media.addedScreenshots?.forEach(async (screenshot) => {
           formData.append(
             `${screenshot.order}`,
-            getFileFromLocalStorage((screenshot.image as FileMetadata).id) as File
+            (await getFileFromIndexedDB((screenshot.image as FileMetadata).id)) as File
           );
         });
-        media.addedVideos?.forEach((video) => {
+        media.addedVideos?.forEach(async (video) => {
           formData.append(
             `${video.order}`,
-            getFileFromLocalStorage((video.video as FileMetadata).id) as File
+            (await getFileFromIndexedDB((video.video as FileMetadata).id)) as File
           );
           formData.append(
             `${video.order}-poster`,
-            getFileFromLocalStorage((video.poster as FileMetadata).id) as File
+            (await getFileFromIndexedDB((video.poster as FileMetadata).id)) as File
           );
         });
 

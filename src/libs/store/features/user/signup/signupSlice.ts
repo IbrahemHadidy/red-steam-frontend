@@ -6,10 +6,6 @@ import { checkExistingEmail, checkNameAndPassword } from './signupThunks';
 
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type {
-  CheckExistingEmailRejectValue,
-  CheckNameAndPasswordRejectValue,
-} from './signupThunks';
 
 interface SignupState {
   // UI states
@@ -162,33 +158,30 @@ const signupSlice = createSlice({
         state.isCheckingAvailability = true;
         state.submitButtonDisabled = true;
       })
-      .addCase(checkExistingEmail.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(checkExistingEmail.fulfilled, (state, action) => {
         state.isCheckingAvailability = false;
         state.isEmailAvailable = true;
         state.submitButtonDisabled = false;
         state.isSecondPage = true;
         state.recaptchaToken = action.payload;
       })
-      .addCase(
-        checkExistingEmail.rejected,
-        (state, action: PayloadAction<CheckExistingEmailRejectValue | undefined>) => {
-          const {
-            emailInputError,
-            isEmailAvailable,
-            confirmEmailInputError,
-            agreeCheckboxError,
-            errors,
-          } = action.payload ?? {};
+      .addCase(checkExistingEmail.rejected, (state, action) => {
+        const {
+          emailInputError,
+          isEmailAvailable,
+          confirmEmailInputError,
+          agreeCheckboxError,
+          errors,
+        } = action.payload ?? {};
 
-          state.isCheckingAvailability = false;
-          state.submitButtonDisabled = false;
-          state.emailInputError = emailInputError ?? state.emailInputError;
-          state.confirmEmailInputError = confirmEmailInputError ?? state.confirmEmailInputError;
-          state.isEmailAvailable = isEmailAvailable ?? state.isEmailAvailable;
-          state.agreeCheckboxError = agreeCheckboxError ?? state.agreeCheckboxError;
-          state.errorMessages = errors ?? state.errorMessages;
-        }
-      )
+        state.isCheckingAvailability = false;
+        state.submitButtonDisabled = false;
+        state.emailInputError = emailInputError ?? state.emailInputError;
+        state.confirmEmailInputError = confirmEmailInputError ?? state.confirmEmailInputError;
+        state.isEmailAvailable = isEmailAvailable ?? state.isEmailAvailable;
+        state.agreeCheckboxError = agreeCheckboxError ?? state.agreeCheckboxError;
+        state.errorMessages = errors ?? state.errorMessages;
+      })
 
       .addCase(checkNameAndPassword.pending, (state) => {
         state.errorMessages = [];
@@ -200,27 +193,24 @@ const signupSlice = createSlice({
         state.isUsernameAvailable = true;
         state.submitButtonDisabled = false;
       })
-      .addCase(
-        checkNameAndPassword.rejected,
-        (state, action: PayloadAction<CheckNameAndPasswordRejectValue | undefined>) => {
-          const {
-            agreeCheckboxError,
-            accountNameInputError,
-            passwordInputError,
-            confirmPasswordInputError,
-            errors,
-          } = action.payload ?? {};
+      .addCase(checkNameAndPassword.rejected, (state, action) => {
+        const {
+          agreeCheckboxError,
+          accountNameInputError,
+          passwordInputError,
+          confirmPasswordInputError,
+          errors,
+        } = action.payload ?? {};
 
-          state.isCheckingAvailability = false;
-          state.submitButtonDisabled = false;
-          state.accountNameInputError = accountNameInputError ?? state.accountNameInputError;
-          state.passwordInputError = passwordInputError ?? state.passwordInputError;
-          state.confirmPasswordInputError =
-            confirmPasswordInputError ?? state.confirmPasswordInputError;
-          state.agreeCheckboxError = agreeCheckboxError ?? state.agreeCheckboxError;
-          state.errorMessages = errors ?? state.errorMessages;
-        }
-      );
+        state.isCheckingAvailability = false;
+        state.submitButtonDisabled = false;
+        state.accountNameInputError = accountNameInputError ?? state.accountNameInputError;
+        state.passwordInputError = passwordInputError ?? state.passwordInputError;
+        state.confirmPasswordInputError =
+          confirmPasswordInputError ?? state.confirmPasswordInputError;
+        state.agreeCheckboxError = agreeCheckboxError ?? state.agreeCheckboxError;
+        state.errorMessages = errors ?? state.errorMessages;
+      });
   },
 });
 
