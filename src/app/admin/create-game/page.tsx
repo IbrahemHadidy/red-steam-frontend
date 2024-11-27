@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Handlers
-import { resetMedia } from '@store/features/admin/game/gameAdminSlice';
+import { reset, setType } from '@store/features/admin/game/gameAdminSlice';
 
 // Components
 import GameAdmin from '@app/admin/_GameAdmin/GameAdmin';
@@ -16,9 +16,11 @@ export default function GameCreate() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
-  // Reset Media on Mount
+  //------------------------------- Effects -------------------------------//
+  // Reset state on Mount
   useEffect(() => {
-    dispatch(resetMedia());
+    dispatch(setType('create'));
+    dispatch(reset());
   }, [dispatch]);
 
   return <GameAdmin />;

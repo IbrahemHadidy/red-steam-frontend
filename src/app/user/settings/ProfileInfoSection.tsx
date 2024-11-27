@@ -28,6 +28,7 @@ import {
 // Utils
 import { countries } from '@utils/countries';
 import { saveFileToIndexedDB } from '@utils/filesStorageUtils';
+import { validatePassword } from '@utils/inputValidations';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
@@ -45,6 +46,7 @@ export default function ProfileInfoSection() {
   const {
     isUsernameAvailable,
     newUsername,
+    currentPassword,
     selectedCountry,
     avatarPreview,
     submitAvatarButtonDisabled,
@@ -146,7 +148,10 @@ export default function ProfileInfoSection() {
                 </div>
               </div>
             ) : (
-              <button type="submit" disabled={!isUsernameAvailable}>
+              <button
+                type="submit"
+                disabled={!isUsernameAvailable || !validatePassword(currentPassword)}
+              >
                 Save
               </button>
             )}
@@ -174,7 +179,7 @@ export default function ProfileInfoSection() {
                 type="file"
                 className="file-input"
                 accept="image/*"
-                onClick={(e) => ((e.target as HTMLInputElement).value = '')}
+                onClick={(e) => ((e.target as HTMLInputElement).value = '//:0')}
                 onChange={handleFileChange}
               />
 

@@ -1,5 +1,5 @@
 // React
-import { Fragment, useRef } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
@@ -27,6 +27,18 @@ export default function Thumbnails() {
 
   //------------------------------- States --------------------------------//
   const { thumbnails } = useAppSelector((state) => state.admin.game);
+  const [thumbnailUrls, setThumbnailUrls] = useState<Record<string, string>>({});
+
+  //-------------------------- Effect for URLs ----------------------------//
+  useEffect(() => {
+    (async () => {
+      const urls: Record<string, string> = {};
+      for (const [key, { file }] of Object.entries(thumbnails)) {
+        urls[key] = await getFileUrl(file);
+      }
+      setThumbnailUrls(urls);
+    })();
+  }, [thumbnails]);
 
   //------------------------ Refs for File Inputs -------------------------//
   const fileInputRefs = useRef<{ [key in keyof Thumbnails]?: HTMLInputElement }>({});
@@ -88,7 +100,7 @@ export default function Thumbnails() {
       <section className="section-thumbnails">
         <h2>Thumbnails</h2>
         <div>
-          {Object.entries(thumbnails).map(async ([key, { file }], idx) => {
+          {Object.entries(thumbnails).map(([key, { file }], idx) => {
             const ref = {
               backgroundImage: backgroundImageRef,
               mainImage: mainImageRef,
@@ -98,17 +110,6 @@ export default function Thumbnails() {
               smallHeaderImage: smallHeaderImageRef,
               searchImage: searchImageRef,
               tabImage: tabImageRef,
-            };
-
-            const urls = {
-              backgroundImage: await getFileUrl(file),
-              mainImage: await getFileUrl(file),
-              menuImg: await getFileUrl(file),
-              horizontalHeaderImage: await getFileUrl(file),
-              verticalHeaderImage: await getFileUrl(file),
-              smallHeaderImage: await getFileUrl(file),
-              searchImage: await getFileUrl(file),
-              tabImage: await getFileUrl(file),
             };
 
             return (
@@ -143,13 +144,7 @@ export default function Thumbnails() {
                     </button>
                   </div>
 
-                  {file && (
-                    <img
-                      src={urls[key as keyof Thumbnails]}
-                      alt={key}
-                      className="thumbnail-image"
-                    />
-                  )}
+                  <img src={thumbnailUrls[key]} alt={key} className="thumbnail-image" />
                 </div>
                 {idx < Object.keys(thumbnails).length - 1 && <hr />}
               </Fragment>

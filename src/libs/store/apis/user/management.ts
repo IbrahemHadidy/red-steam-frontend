@@ -16,7 +16,7 @@ const userManagementApi = createApi({
       }),
     }),
 
-    checkUsernameExists: builder.query<boolean, string>({
+    checkUsernameExists: builder.query<{ exists: boolean }, string>({
       query: (username) => ({
         url: `/username/${username}`,
         method: 'GET',
@@ -114,10 +114,10 @@ const userManagementApi = createApi({
     }),
 
     deleteAccount: builder.mutation<{ message: string }, string>({
-      query: (password) => ({
+      query: (currentPassword) => ({
         url: '/account',
         method: 'DELETE',
-        body: { password },
+        body: { currentPassword },
         credentials: 'include',
       }),
     }),

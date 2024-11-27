@@ -57,7 +57,7 @@ export default function CreateFeatureForm({ nameRef, iconRef }: CreateFeatureFor
           type="file"
           className="form-input"
           accept="image/*"
-          onClick={(e) => ((e.target as HTMLInputElement).value = '')}
+          onClick={(e) => ((e.target as HTMLInputElement).value = '//:0')}
           onChange={handleIconChange}
           placeholder="Feature Icon"
           ref={iconRef}

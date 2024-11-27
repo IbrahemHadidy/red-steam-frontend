@@ -133,7 +133,7 @@ export default function Media() {
           type="file"
           accept="image/jpeg"
           ref={screenshotInputRef}
-          onClick={(e) => ((e.target as HTMLInputElement).value = '')}
+          onClick={(e) => ((e.target as HTMLInputElement).value = '//:0')}
           onChange={handleAddScreenshot}
           hidden
         />
@@ -144,7 +144,7 @@ export default function Media() {
           type="file"
           accept=".webm"
           ref={videoInputRef}
-          onClick={(e) => ((e.target as HTMLInputElement).value = '')}
+          onClick={(e) => ((e.target as HTMLInputElement).value = '//:0')}
           onChange={handleVideoInputChange}
           hidden
         />
@@ -152,7 +152,7 @@ export default function Media() {
           type="file"
           accept=".jpg"
           ref={posterInputRef}
-          onClick={(e) => ((e.target as HTMLInputElement).value = '')}
+          onClick={(e) => ((e.target as HTMLInputElement).value = '//:0')}
           onChange={handlePosterInputChange}
           hidden
         />

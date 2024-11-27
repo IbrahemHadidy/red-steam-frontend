@@ -29,7 +29,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
 
   //------------------------------- States --------------------------------//
   const { screenshots, duplicateOrders } = useAppSelector((state) => state.admin.game);
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('//:0');
 
   //------------------------------ Effects -------------------------------//
   useEffect(() => {

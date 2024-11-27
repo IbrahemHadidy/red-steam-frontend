@@ -173,7 +173,10 @@ const userSettingsSlice = createSlice({
         state.email = '';
         state.currentEmail = '';
         state.currentPassword = '';
-        if (state.currentChangeStep === 2) state.isChangeModalVisible = false;
+        if (state.currentChangeStep === 2) {
+          state.isChangeModalVisible = false;
+          document.body.style.overflow = 'unset';
+        }
         state.currentChangeStep = 2;
       })
       .addCase(changeEmail.rejected, (state, action) => {
@@ -190,7 +193,10 @@ const userSettingsSlice = createSlice({
         state.nextStepButtonDisabled = false;
         state.phone = '';
         state.currentPassword = '';
-        if (state.currentChangeStep === 2) state.isChangeModalVisible = false;
+        if (state.currentChangeStep === 2) {
+          state.isChangeModalVisible = false;
+          document.body.style.overflow = 'unset';
+        }
         state.currentChangeStep = 2;
       })
       .addCase(changePhone.rejected, (state, action) => {
@@ -205,10 +211,11 @@ const userSettingsSlice = createSlice({
       .addCase(changePassword.fulfilled, (state) => {
         state.errorMessage = '';
         state.nextStepButtonDisabled = false;
-        state.isChangeModalVisible = false;
         state.currentPassword = '';
         state.newPassword = '';
         state.confirmNewPassword = '';
+        state.isChangeModalVisible = false;
+        document.body.style.overflow = 'unset';
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.errorMessage = action.payload ?? 'Failed to change password';
@@ -231,8 +238,9 @@ const userSettingsSlice = createSlice({
         state.nextStepButtonDisabled = true;
       })
       .addCase(deleteAccount.fulfilled, (state) => {
-        state.isDeleteAccountModalVisible = false;
         state.currentPassword = '';
+        state.isDeleteAccountModalVisible = false;
+        document.body.style.overflow = 'unset';
       })
       .addCase(deleteAccount.rejected, (state, action) => {
         state.errorMessage = action.payload ?? 'Failed to delete account';

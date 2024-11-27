@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { createAppAsyncThunk } from '@store/hooks';
 
 // Thunks
-import { fetchUserData, logout } from '@store/features/auth/authThunks';
+import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Utils
 import { getFileFromIndexedDB } from '@utils/filesStorageUtils';
@@ -15,6 +15,9 @@ import promiseToast from '@utils/promiseToast';
 // Apis
 import userManagementApi from '@store/apis/user/management';
 import userPhoneApi from '@store/apis/user/phone';
+
+// Channels
+import { authChannel } from '@store/features/auth/authChannel';
 
 export const changeUsername = createAppAsyncThunk<string>(
   'user/settings/changeUsername',
@@ -223,8 +226,11 @@ export const deleteAccount = createAppAsyncThunk<string>(
     );
     if (!response) return rejectWithValue('Error deleting account');
 
-    // logout
-    await dispatch(logout());
+    // Logout user
+    authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
+    sessionStorage.removeItem('verificationInProgress');
+    localStorage.removeItem('recentGames');
+    sessionStorage.removeItem('isSessionLogin');
 
     // Resolve with success message
     return fulfillWithValue('Account deleted successfully');

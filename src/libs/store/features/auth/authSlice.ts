@@ -2,6 +2,7 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 
 // Thunks
+import { deleteAccount } from '../user/settings/userSettingsThunks';
 import { checkNameAndPassword } from '../user/signup/signupThunks';
 import { autoLoginOnLoad, fetchUserData, login, logout } from './authThunks';
 
@@ -72,19 +73,13 @@ const authSlice = createSlice({
         state.isAuthInitialized = true;
       })
 
-      .addCase(
-        autoLoginOnLoad.fulfilled,
-        (
-          state,
-          action: PayloadAction<{ isUserLoggedIn: boolean; currentUserData: User | null }>
-        ) => {
-          const { isUserLoggedIn, currentUserData } = action.payload;
+      .addCase(autoLoginOnLoad.fulfilled, (state, action) => {
+        const { isUserLoggedIn, currentUserData } = action.payload;
 
-          state.currentUserData = currentUserData;
-          state.isUserLoggedIn = isUserLoggedIn;
-          state.isAuthInitialized = true;
-        }
-      )
+        state.currentUserData = currentUserData;
+        state.isUserLoggedIn = isUserLoggedIn;
+        state.isAuthInitialized = true;
+      })
       .addCase(autoLoginOnLoad.rejected, (state) => {
         state.currentUserData = null;
         state.isUserLoggedIn = false;
@@ -97,6 +92,12 @@ const authSlice = createSlice({
         state.isAuthInitialized = true;
       })
       .addCase(logout.rejected, (state) => {
+        state.currentUserData = null;
+        state.isUserLoggedIn = false;
+        state.isAuthInitialized = true;
+      })
+
+      .addCase(deleteAccount.fulfilled, (state) => {
         state.currentUserData = null;
         state.isUserLoggedIn = false;
         state.isAuthInitialized = true;

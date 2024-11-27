@@ -28,8 +28,8 @@ export default function MediaVideo({ item }: MediaVideoProps) {
 
   //------------------------------- States --------------------------------//
   const { duplicateOrders } = useAppSelector((state) => state.admin.game);
-  const [videoUrl, setVideoUrl] = useState<string>('');
-  const [posterUrl, setPosterUrl] = useState<string>('');
+  const [videoUrl, setVideoUrl] = useState<string>('//:0');
+  const [posterUrl, setPosterUrl] = useState<string>('//:0');
 
   //------------------------------- Effects -------------------------------//
   useEffect(() => {

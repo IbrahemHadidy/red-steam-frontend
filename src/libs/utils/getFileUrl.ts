@@ -2,7 +2,14 @@ import type FileMetadata from '@custom-types/file-metadata';
 import { getFileFromIndexedDB } from './filesStorageUtils';
 
 function isFileMetadata(obj: FileMetadata | string): obj is FileMetadata {
-  return typeof obj === 'object' && 'id' in obj && 'name' in obj && 'size' in obj && 'type' in obj;
+  return (
+    obj !== null &&
+    typeof obj === 'object' &&
+    'id' in obj &&
+    'name' in obj &&
+    'size' in obj &&
+    'type' in obj
+  );
 }
 
 /**
