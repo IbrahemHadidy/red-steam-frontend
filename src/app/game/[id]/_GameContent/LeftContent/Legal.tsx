@@ -1,10 +1,12 @@
 // Sanitization library
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 export default function Legal() {
+  const sanitize = dompurify.sanitize;
+
   //------------------------------- States --------------------------------//
   const { currentGame } = useAppSelector((state) => state.game);
 

@@ -152,7 +152,7 @@ export const changePhone = createAppAsyncThunk<void | string>(
 export const changePassword = createAppAsyncThunk<string>(
   'user/settings/changePassword',
   async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
-    const { newPassword, confirmNewPassword } = getState().user.settings;
+    const { newPassword, currentPassword, confirmNewPassword } = getState().user.settings;
 
     // Validate password format
     const isNewPasswordValid = validatePassword(newPassword);
@@ -163,7 +163,7 @@ export const changePassword = createAppAsyncThunk<string>(
       const response = await promiseToast(
         dispatch(
           userManagementApi.endpoints.changePassword.initiate({
-            currentPassword: newPassword,
+            currentPassword: currentPassword,
             newPassword: confirmNewPassword,
           })
         ).unwrap(),

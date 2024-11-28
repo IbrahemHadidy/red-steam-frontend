@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Sanitization library
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -27,6 +27,7 @@ interface ReviewProps {
 
 export default function Review({ review }: ReviewProps) {
   //--------------------------- Initializations ---------------------------//
+  const sanitize = dompurify.sanitize;
   const isViewport630OrLess = useResponsiveViewport(630);
 
   //-------------------------------- Hooks --------------------------------//

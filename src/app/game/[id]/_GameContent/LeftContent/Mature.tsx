@@ -2,12 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Sanitization library
-import { sanitize } from 'dompurify';
+import dompurify from 'dompurify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 export default function Mature() {
+  const sanitize = dompurify.sanitize;
+
   const { currentGame } = useAppSelector((state) => state.game);
   const [isMatureExpanded, setIsMatureExpanded] = useState<boolean>(true);
 
