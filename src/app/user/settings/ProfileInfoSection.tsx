@@ -28,7 +28,6 @@ import {
 // Utils
 import { countries } from '@utils/countries';
 import { saveFileToIndexedDB } from '@utils/filesStorageUtils';
-import { validatePassword } from '@utils/inputValidations';
 
 // Images
 import defaultPFP from '@images/default-pfp.png';
@@ -46,9 +45,9 @@ export default function ProfileInfoSection() {
   const {
     isUsernameAvailable,
     newUsername,
-    currentPassword,
     selectedCountry,
     avatarPreview,
+    nextStepButtonDisabled,
     submitAvatarButtonDisabled,
   } = useAppSelector((state) => state.user.settings);
 
@@ -148,10 +147,7 @@ export default function ProfileInfoSection() {
                 </div>
               </div>
             ) : (
-              <button
-                type="submit"
-                disabled={!isUsernameAvailable || !validatePassword(currentPassword)}
-              >
+              <button type="submit" disabled={!isUsernameAvailable || !nextStepButtonDisabled}>
                 Save
               </button>
             )}

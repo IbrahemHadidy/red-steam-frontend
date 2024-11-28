@@ -8,6 +8,7 @@ import {
   changeEmail,
   changePassword,
   changePhone,
+  changeUsername,
   deleteAccount,
   deletePhone,
 } from './userSettingsThunks';
@@ -163,6 +164,17 @@ const userSettingsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(changeUsername.pending, (state) => {
+        state.nextStepButtonDisabled = true;
+      })
+      .addCase(changeUsername.fulfilled, (state) => {
+        state.nextStepButtonDisabled = false;
+      })
+      .addCase(changeUsername.rejected, (state) => {
+        state.nextStepButtonDisabled = false;
+        state.currentPassword = '';
+      })
+
       .addCase(changeEmail.pending, (state) => {
         state.errorMessage = '';
         state.nextStepButtonDisabled = true;
@@ -170,11 +182,11 @@ const userSettingsSlice = createSlice({
       .addCase(changeEmail.fulfilled, (state) => {
         state.errorMessage = '';
         state.nextStepButtonDisabled = false;
-        state.email = '';
-        state.currentEmail = '';
-        state.currentPassword = '';
         if (state.currentChangeStep === 2) {
           state.isChangeModalVisible = false;
+          state.email = '';
+          state.currentEmail = '';
+          state.currentPassword = '';
           document.body.style.overflow = 'unset';
         }
         state.currentChangeStep = 2;
@@ -191,9 +203,9 @@ const userSettingsSlice = createSlice({
       .addCase(changePhone.fulfilled, (state) => {
         state.errorMessage = '';
         state.nextStepButtonDisabled = false;
-        state.phone = '';
-        state.currentPassword = '';
         if (state.currentChangeStep === 2) {
+          state.phone = '';
+          state.currentPassword = '';
           state.isChangeModalVisible = false;
           document.body.style.overflow = 'unset';
         }
