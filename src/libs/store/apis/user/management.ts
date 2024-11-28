@@ -42,7 +42,7 @@ const userManagementApi = createApi({
       { currentEmail: string; currentPassword: string; newEmail: string }
     >({
       query: ({ currentEmail, currentPassword, newEmail }) => ({
-        url: '/change-email',
+        url: '/email',
         method: 'PATCH',
         body: { currentEmail, currentPassword, newEmail },
         credentials: 'include',
