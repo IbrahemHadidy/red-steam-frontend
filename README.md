@@ -7,6 +7,7 @@ Red-Steam is a comprehensive web application that functions as a Steam-clone, de
 - User-friendly interface to manage game libraries.
 - Dynamic routing with Next.js.
 - State management powered by Redux Toolkit and RTK Query.
+- Modular architecture for scalability and maintainability: The application is structured into modular components and features, making it easy to develop, test, and extend each part independently. This approach allows for efficient management of code, better separation of concerns, and facilitates parallel development.
 - Custom admin panels for full content and user management.
 - Dynamic forms for creating, updating, and managing game details, media, and promotional offers.
 - User role management and permissions for different admin statuses.
