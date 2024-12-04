@@ -20,6 +20,7 @@ import LoadingPage from '@app/loading';
 
 // APIs
 import userAuthApi from '@store/apis/user/auth';
+import promiseToast from '@utils/promiseToast';
 
 export default function VerifyAccount() {
   //--------------------------- Initializations ---------------------------//
@@ -28,8 +29,8 @@ export default function VerifyAccount() {
   const dispatch = useAppDispatch();
 
   //---------------------------- Search Params ----------------------------//
-  const username: string | null = searchParams?.get('username');
-  const token: string | null = searchParams?.get('token');
+  const username = searchParams?.get('username');
+  const token = searchParams?.get('token');
 
   //------------------------------- Effects -------------------------------//
   // Set Page Title
@@ -41,15 +42,20 @@ export default function VerifyAccount() {
   useEffect(() => {
     if (username && token) {
       (async (): Promise<void> => {
-        const response = await dispatch(
-          userAuthApi.endpoints.verifyEmail.initiate({ token, username })
-        ).unwrap();
+        const response = await promiseToast(
+          dispatch(userAuthApi.endpoints.verifyEmail.initiate({ token, username })).unwrap(),
+          {
+            pending: 'Verifying email',
+            success: 'Email verified successfully',
+            fallbackError: 'Error verifying email',
+          }
+        );
 
-        if (response.message) {
+        if (response) {
           toast.success(response.message);
           await dispatch(fetchUserData());
-          router.push('/');
         }
+        router.push('/');
       })();
     }
   }, [dispatch, router, token, username]);

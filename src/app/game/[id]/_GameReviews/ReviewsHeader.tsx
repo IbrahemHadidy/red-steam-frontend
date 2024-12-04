@@ -30,7 +30,6 @@ export default function ReviewsHeader() {
   };
 
   //-------------------------------- Render -------------------------------//
-
   if (!currentGame) return null;
   return (
     <>
@@ -42,6 +41,7 @@ export default function ReviewsHeader() {
             <span className={`game-review-summary ${getRatingClass(currentGame.averageRating)}`}>
               {getRatingText(currentGame.averageRating, currentGame.reviewsCount)}
             </span>
+            &nbsp;
             <span>({currentGame.reviewsCount.toString()} reviews)</span>
           </div>
         </div>
@@ -72,11 +72,6 @@ export default function ReviewsHeader() {
           <span>
             Showing <b>{reviews.length}</b> reviews that match the filters above
           </span>
-          {' ( '}
-          <span className={`game-review-summary ${getRatingClass(currentGame.averageRating)}`}>
-            {getRatingText(currentGame.averageRating, currentGame.reviewsCount)}
-          </span>
-          {' ) '}
         </div>
       </div>
     </>

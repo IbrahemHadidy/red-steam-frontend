@@ -56,7 +56,7 @@ const debouncedCheckUsernameExists = debounce<
     console.error('Error checking account availability:', error);
     dispatch(setUsernameAvailability(false));
   }
-}, 1000);
+}, 400);
 
 // Listen for username changes and check if it is available
 listen({

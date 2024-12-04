@@ -21,6 +21,11 @@ import promiseToast from '@utils/promiseToast';
 import type { Review } from '@interfaces/review';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
+interface GetReviewsFulfillValue {
+  reviews: Review[];
+  hasMore: boolean;
+}
+
 export const addToWishlist = createAppAsyncThunk(
   'game/addToWishlist',
   async (_, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
@@ -174,15 +179,15 @@ export const submitReview = createAppAsyncThunk<void, void>(
   }
 );
 
-export const getReviews = createAppAsyncThunk<Review[] | undefined>(
+export const getReviews = createAppAsyncThunk<GetReviewsFulfillValue>(
   'game/getReviews',
   async (_, { fulfillWithValue, rejectWithValue, getState, dispatch }) => {
-    const { currentGame, filter, sort, currentPage } = getState().game;
+    const { currentGame, filter, sort, currentPage, reviews } = getState().game;
     const gameId = currentGame?.id;
 
     if (!gameId) return rejectWithValue('Error getting reviews');
 
-    const newReviews = await promiseToast(
+    const response = await promiseToast(
       dispatch(
         gameDataApi.endpoints.getReviews.initiate({
           gameId,
@@ -195,10 +200,23 @@ export const getReviews = createAppAsyncThunk<Review[] | undefined>(
       {
         pending: 'Getting reviews',
         fallbackError: 'Error getting reviews',
+        onlyError: true,
       }
     );
-    if (!newReviews) return rejectWithValue('Error getting reviews');
+    if (!response) return rejectWithValue('Error getting reviews');
 
-    return fulfillWithValue(newReviews);
+    const newReviews: Review[] = [...reviews];
+    newReviews.push(
+      ...response.filter(
+        (newReview) => !reviews.some((prevReview) => prevReview.id === newReview.id)
+      )
+    );
+
+    const fullFillValue: GetReviewsFulfillValue = {
+      reviews: newReviews,
+      hasMore: response.length > 0,
+    };
+
+    return fulfillWithValue(fullFillValue);
   }
 );

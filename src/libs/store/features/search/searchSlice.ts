@@ -32,7 +32,7 @@ const searchState: SearchState = {
   isFetchDisabled: false,
 
   sortOption: 'Relevance',
-  searchInputValue: 'enter game name',
+  searchInputValue: '',
   searchQuery: '',
   priceRange: 13,
   hasMoreResults: true,

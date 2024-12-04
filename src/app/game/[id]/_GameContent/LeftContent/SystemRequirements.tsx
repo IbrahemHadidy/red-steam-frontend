@@ -2,16 +2,36 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Sanitization library
-import dompurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 export default function SystemRequirements() {
-  const sanitize = dompurify.sanitize;
-
   const { currentGame } = useAppSelector((state) => state.game);
   const [isSysReqExpanded, setIsSysReqExpanded] = useState<boolean>(true);
+
+  const [sanitizedMiniAdditionalNotes, setSanitizedMiniAdditionalNotes] = useState<string>('');
+  const [sanitizedRecAdditionalNotes, setSanitizedRecAdditionalNotes] = useState<string>('');
+
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      currentGame?.systemRequirements.recommended.additionalNotes
+    ) {
+      setSanitizedMiniAdditionalNotes(
+        DOMPurify.sanitize(currentGame?.systemRequirements.recommended.additionalNotes)
+      );
+    }
+  }, [currentGame?.systemRequirements.recommended.additionalNotes]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentGame?.systemRequirements.mini.additionalNotes) {
+      setSanitizedRecAdditionalNotes(
+        DOMPurify.sanitize(currentGame?.systemRequirements.mini.additionalNotes)
+      );
+    }
+  }, [currentGame?.systemRequirements.mini.additionalNotes]);
 
   const sysReqRef = useRef<HTMLDivElement>(null);
 
@@ -105,10 +125,7 @@ export default function SystemRequirements() {
                       <strong>Additional Notes:</strong>{' '}
                       <div
                         dangerouslySetInnerHTML={{
-                          __html:
-                            typeof window !== 'undefined'
-                              ? sanitize(currentGame?.systemRequirements.mini.additionalNotes)
-                              : currentGame?.systemRequirements.mini.additionalNotes,
+                          __html: sanitizedMiniAdditionalNotes,
                         }}
                       />
                       <br />
@@ -192,12 +209,7 @@ export default function SystemRequirements() {
                       <strong>Additional Notes:</strong>{' '}
                       <div
                         dangerouslySetInnerHTML={{
-                          __html:
-                            typeof window !== 'undefined'
-                              ? sanitize(
-                                  currentGame?.systemRequirements.recommended.additionalNotes
-                                )
-                              : currentGame?.systemRequirements.recommended.additionalNotes,
+                          __html: sanitizedRecAdditionalNotes,
                         }}
                       />
                       <br />

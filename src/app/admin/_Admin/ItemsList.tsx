@@ -9,16 +9,24 @@ import Pagination from './Pagination';
 import Table from './Table/Table';
 
 export default function ItemsList() {
-  const { adminType, isEditModalOpen, isDeleteModalOpen } = useAppSelector(
+  const { adminType, isEditModalOpen, isDeleteModalOpen, items } = useAppSelector(
     (state) => state.admin.common
   );
+
+  if (items.length === 0)
+    return (
+      <h2 className="no-items">
+        No {adminType.charAt(0).toUpperCase() + adminType.slice(1)}s found
+      </h2>
+    );
 
   return (
     <>
       <div
         className={`items-list-container ${['offer', 'create-offer'].includes(adminType) ? 'wide-list' : ''}`}
       >
-        <hr />
+        {!['offer', 'review'].includes(adminType) && <hr />}
+
         {['offer', 'create-offer'].includes(adminType) ? (
           <h1 className="list-title">Current Offers</h1>
         ) : (

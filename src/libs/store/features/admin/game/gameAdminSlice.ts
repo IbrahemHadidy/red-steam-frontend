@@ -1,3 +1,6 @@
+// Toast Notifications
+import { toast } from 'react-toastify';
+
 // Redux
 import { createAction, createSlice, nanoid } from '@reduxjs/toolkit';
 
@@ -297,7 +300,10 @@ const gameAdminSlice = createSlice({
     addScreenshot: (state, action: PayloadAction<FileMetadata>) => {
       // Check if the screenshot is already in the state
       const isDuplicate = checkDuplicateScreenshot(action.payload, state.screenshots);
-      if (isDuplicate) return;
+      if (isDuplicate) {
+        toast.warn('This screenshot is already added.');
+        return;
+      }
 
       const nextOrder = getNextOrder(state.screenshots, state.videos);
 
@@ -315,8 +321,10 @@ const gameAdminSlice = createSlice({
     addVideo: (state, action: PayloadAction<{ video: FileMetadata; poster: FileMetadata }>) => {
       // Check if the video is already in the state
       const isVideoDuplicate = checkDuplicateVideo(action.payload.video, state.videos);
-      const isPosterDuplicate = checkDuplicateVideo(action.payload.poster, state.videos);
-      if (isVideoDuplicate || isPosterDuplicate) return;
+      if (isVideoDuplicate) {
+        toast.warn('This video is already added.');
+        return;
+      }
 
       const nextOrder = getNextOrder(state.screenshots, state.videos);
 

@@ -41,13 +41,21 @@ const gameOfferApi = createApi({
       {
         page: number;
         limit: number;
-        orderBy: 'id' | 'username' | 'email' | 'country' | 'isVerified' | 'isAdmin' | 'createdAt';
+        orderBy:
+          | 'id'
+          | 'name'
+          | 'discountPrice'
+          | 'basePrice'
+          | 'discountPercentage'
+          | 'offerType'
+          | 'discountStartDate'
+          | 'discountEndDate';
         order: 'ASC' | 'DESC';
         searchQuery?: { [key: string]: string };
       }
     >({
       query: ({ page, limit, orderBy, order, searchQuery }) => {
-        let queryString = `?page=${page}&limit=${limit}&orderBy=${orderBy}&order=${order}`;
+        let queryString = `paginated?page=${page}&limit=${limit}&orderBy=${orderBy}&order=${order}`;
         if (searchQuery) {
           const encodedSearchQuery = encodeURIComponent(JSON.stringify(searchQuery));
           queryString += `&searchQuery=${encodedSearchQuery}`;
@@ -65,18 +73,16 @@ const gameOfferApi = createApi({
       { message: string },
       {
         id: number;
-        discount: boolean;
         discountPrice: string;
         offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
         discountStartDate: string;
         discountEndDate: string;
       }
     >({
-      query: ({ id, discount, discountPrice, offerType, discountStartDate, discountEndDate }) => ({
-        url: `/offer/${id}`,
+      query: ({ id, discountPrice, offerType, discountStartDate, discountEndDate }) => ({
+        url: `/${id}`,
         method: 'PUT',
         body: {
-          discount,
           discountPrice,
           offerType,
           discountStartDate,
@@ -89,7 +95,7 @@ const gameOfferApi = createApi({
 
     deleteOffer: builder.mutation<{ message: string }, number>({
       query: (id) => ({
-        url: `/offer/${id}`,
+        url: `/${id}`,
         method: 'DELETE',
         credentials: 'include',
       }),

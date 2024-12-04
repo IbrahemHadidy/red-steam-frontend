@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 // Toast notifications
-import { toast } from 'react-toastify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
@@ -34,10 +33,6 @@ export default function GameTitleArea() {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   //--------------------------- Event Handlers ----------------------------//
-  const handleCommunityBtnClick = (): void => {
-    toast.warn('Community Hub is not available yet');
-  };
-
   const onUpdate = (itemId?: number): void => {
     if (!itemId) return;
     router.push(`/admin/update-game/${itemId}`);
@@ -67,12 +62,6 @@ export default function GameTitleArea() {
           </Link>
         </div>
         <div className="game-header-content">
-          <div className="game-community">
-            <a className="community-btn" onClick={handleCommunityBtnClick}>
-              <span>Community Hub</span>
-            </a>
-          </div>
-
           <div className="game-name-block">
             <div className="main-game-name">{currentGame?.name}</div>
 

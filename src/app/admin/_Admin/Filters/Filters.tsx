@@ -24,7 +24,6 @@ export default function Filters() {
           <>
             <SearchByUser />
             <SearchByGame />
-            <SearchByWebsite />
           </>
         )}
       </div>

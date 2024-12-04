@@ -57,30 +57,6 @@ export const checkDuplicateVideo = (file: FileMetadata | string, videos: Video[]
 };
 
 /**
- * Check if the poster is already in the state
- * @param file The file to check
- * @param videos The videos state
- * @return True if the file is duplicate
- */
-export const checkDuplicatePoster = (file: FileMetadata | string, videos: Video[]): boolean => {
-  if (file instanceof File) {
-    if (
-      videos.some(
-        (video) =>
-          video.poster instanceof File &&
-          video.poster.name === file.name &&
-          video.poster.size === file.size &&
-          video.poster.type === file.type
-      )
-    ) {
-      toast.warn('This poster is already added.');
-      return true;
-    }
-  }
-  return false;
-};
-
-/**
  * Get next order for added media
  * @param screenshots The screenshots state
  * @param videos The videos state

@@ -41,7 +41,7 @@ export default function SearchBar() {
   };
 
   const handleSearchFocus = (): void => {
-    if (searchInputValue === 'enter game name') dispatch(setSearchQuery(''));
+    if (searchInputValue === '') dispatch(setSearchQuery(''));
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -50,7 +50,7 @@ export default function SearchBar() {
 
   const handleSearchButton = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
-    if (searchInputValue === 'enter game name' || searchInputValue.trim() === '') {
+    if (searchInputValue === '' || searchInputValue.trim() === '') {
       dispatch(setSearchQuery(''));
     } else {
       dispatch(setSearchQuery(searchInputValue));
@@ -91,6 +91,7 @@ export default function SearchBar() {
           ref={inputRef}
           type="text"
           value={searchInputValue}
+          placeholder="Enter game name"
           onFocus={handleSearchFocus}
           onChange={handleInputChange}
         />

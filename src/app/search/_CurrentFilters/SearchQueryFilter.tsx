@@ -10,7 +10,7 @@ export default function SearchQueryFilter() {
   const { searchQuery } = useAppSelector((state) => state.search);
 
   const handleSearchDeleteFilter = (): void => {
-    dispatch(setSearchInputValue('enter game name'));
+    dispatch(setSearchInputValue(''));
     dispatch(setSearchQuery(''));
   };
 

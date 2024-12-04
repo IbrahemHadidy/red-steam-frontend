@@ -6,6 +6,75 @@
 	margin-top: 0px;
 	background: transparent;
 
+	&.coming-soon {
+		.static-queue-link {
+			cursor: not-allowed;
+
+			.begin-explore {
+				text-align: center;
+				font-size: 30px;
+				font-weight: bolder;
+				text-transform: uppercase;
+				color: #e0e4e8;
+				background: linear-gradient(to bottom, #5c6c7c 5%, #3e4a57 95%);
+
+				&:after {
+					background: linear-gradient(134deg, #5c6c7c 5%, #3e4a57 95%);
+				}
+			}
+		}
+
+		.queue-item-1 {
+			.queue-item-overlay {
+				background: rgba(0, 0, 0, 0.5);
+			}
+		}
+
+		.queue-item-2 {
+			.queue-item-overlay {
+				background: rgba(24, 31, 39, 0.6);
+			}
+		}
+
+		.queue-item-3 {
+			.queue-item-overlay {
+				background: rgba(24, 31, 39, 0.7);
+			}
+		}
+
+		.queue-item-4 {
+			.queue-item-overlay {
+				background: rgba(24, 31, 39, 0.8);
+			}
+		}
+
+		&:hover {
+			.queue-item-1 {
+				.queue-item-overlay {
+					background: rgba(0, 0, 0, 0.5);
+				}
+			}
+
+			.queue-item-2 {
+				.queue-item-overlay {
+					background: rgba(24, 31, 39, 0.6);
+				}
+			}
+
+			.queue-item-3 {
+				.queue-item-overlay {
+					background: rgba(24, 31, 39, 0.7);
+				}
+			}
+
+			.queue-item-4 {
+				.queue-item-overlay {
+					background: rgba(24, 31, 39, 0.8);
+				}
+			}
+		}
+	}
+
 	.queue-item-1 {
 		width: 386px;
 		height: 180px;
@@ -62,8 +131,6 @@
 	}
 
 	&:hover {
-		background: transparent;
-
 		.queue-item-1 {
 			.queue-item-overlay {
 				background: rgba(0, 0, 0, 0);

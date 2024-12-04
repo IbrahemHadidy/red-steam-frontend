@@ -48,14 +48,15 @@ export default function Queue(): JSX.Element {
       <div className="home-contents">
         <h2 className="main-btn-title">YOUR DISCOVERY QUEUE</h2>
 
-        <div className="static-queue">
+        <div className="static-queue coming-soon">
           <a className="static-queue-link" onClick={handleQueueLinkClick}>
             {isViewport960OrLess ? (
               <div className="begin-explore-mobile">
                 <div className="begin-explore-mobile-btn">Explore Your Queue</div>
               </div>
             ) : (
-              <div className="begin-explore">Click here to begin exploring your queue</div>
+              // <div className="begin-explore">Click here to begin exploring your queue</div>
+              <div className="begin-explore">Coming Soon</div>
             )}
           </a>
 

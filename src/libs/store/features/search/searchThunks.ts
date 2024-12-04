@@ -38,6 +38,7 @@ export const fetchSearchResults = createAppAsyncThunk<
       {
         pending: 'Loading search results',
         fallbackError: 'An error occurred while loading games. Please try again.',
+        onlyError: true,
       }
     );
     if (!response) return rejectWithValue('Error loading games');

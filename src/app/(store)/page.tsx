@@ -25,11 +25,11 @@ const Offers = dynamic(() => import('./_Offers/Offers'), {
   loading: () => <OffersSkeleton />,
 });
 const Categories = dynamic(() => import('./_Categories/Categories'));
-const Queue = dynamic(() => import('./_Recommended/Queue'));
 const Recommended = dynamic(() => import('./_Recommended/Recommended'), {
   loading: () => <RecommendedSkeleton />,
 });
-const LoginQueue = dynamic(() => import('./_Recommended/LoginQueue'));
+const Queue = dynamic(() => import('./_Recommended/Queue'));
+const LoginFirst = dynamic(() => import('./_Recommended/LoginFirst'));
 const BrowseSteam = dynamic(() => import('./_BrowseSteam/BrowseSteam'));
 const HomeTabs = dynamic(() => import('./_HomeTabs/HomeTabs'), {
   loading: () => <TabsSkeleton />,
@@ -90,7 +90,7 @@ export default function StorePage() {
               <Recommended />
             </>
           ) : (
-            <LoginQueue />
+            <LoginFirst />
           )}
         </RenderOnViewportEntry>
 

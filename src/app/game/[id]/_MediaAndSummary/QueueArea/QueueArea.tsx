@@ -79,7 +79,7 @@ export default function QueueArea() {
         {isUserLoggedIn && (
           <div className="queue-actions">
             {!isViewport630OrLess && (
-              <div className="view-queue-button">
+              <div className="view-queue-button disabled">
                 <span>
                   View Your Queue&nbsp;&nbsp;&nbsp;
                   <i className="arrow-next" />
@@ -88,28 +88,22 @@ export default function QueueArea() {
             )}
 
             {!isGameInWishlist ? (
-              <div
-                id="add-wishlist"
-                className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
-                onClick={handleAddWishlistBtnClick}
-              >
-                <div className="queue-button">
-                  <span>
-                    {isGameInLibrary
-                      ? 'You own this item '
-                      : isGameInCart
-                        ? 'Already in your cart'
-                        : 'Add to your wishlist'}
-                  </span>
+              !isGameInLibrary && (
+                <div id="add-wishlist" className="queue-button-container">
+                  <div
+                    className={`queue-button ${isWishlistBtnLoading ? 'loading' : ''}`}
+                    onClick={handleAddWishlistBtnClick}
+                  >
+                    <span>{isGameInCart ? 'Already in your cart' : 'Add to your wishlist'}</span>
+                  </div>
                 </div>
-              </div>
+              )
             ) : (
-              <div
-                id="added-wishlist"
-                className={`queue-button-container ${isWishlistBtnLoading ? 'loading' : ''}`}
-                onClick={handleRemoveFromWishlist}
-              >
-                <div className="queue-button">
+              <div id="added-wishlist" className="queue-button-container">
+                <div
+                  className={`queue-button ${isWishlistBtnLoading ? 'loading' : ''}`}
+                  onClick={handleRemoveFromWishlist}
+                >
                   <span>
                     <Image src={selectedIcon} alt="selected" /> On Wishlist
                   </span>
@@ -117,37 +111,37 @@ export default function QueueArea() {
               </div>
             )}
             <div id="follow" className="queue-button-container">
-              {/* TODO: isFollowed backend logic */}
+              {/* TODO: isFollowed backend logic and remove 'disabled' class */}
               <div
-                className="queue-button"
+                className="queue-button disabled"
                 style={{ display: 'inline-block' }}
                 onClick={handleFollowClick}
               >
                 <span>Follow</span>
               </div>
               {/* !isFollowed */}
-              <div className="queue-button" style={{ display: 'none' }}>
+              <div className="queue-button disabled" style={{ display: 'none' }}>
                 <span>
                   <Image src={selectedIcon} alt="selected" /> Following
                 </span>
               </div>
             </div>
 
-            {/* TODO: isNotIgnored backend logic */}
+            {/* TODO: isNotIgnored backend logic and remove 'disabled' class */}
             <div
               id="ignore"
               className="queue-button-container"
               style={{ display: 'inline-block' }}
               onClick={handleIgnoreClick}
             >
-              <div className="queue-button">
+              <div className="queue-button disabled">
                 <span>Ignore</span>
               </div>
             </div>
 
             {/* !isNotIgnored */}
             <div id="ignored" className="queue-button-container" style={{ display: 'none' }}>
-              <div className="queue-button">
+              <div className="queue-button disabled">
                 <span>
                   <Image src={selectedIcon} alt="selected" /> Ignored
                 </span>

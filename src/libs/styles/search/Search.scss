@@ -200,6 +200,10 @@
 					overflow: visible;
 					outline-offset: -2px;
 				}
+
+				&::placeholder {
+					color: #9fbbcb;
+				}
 			}
 
 			.search-btn {

@@ -25,15 +25,17 @@ import type { Language } from '@interfaces/language';
 import type { Review } from '@interfaces/review';
 import type { Tag } from '@interfaces/tag';
 import type { AppDispatch } from '@store/store';
+import { isGame } from '@utils/typeGuards';
 
 type OffersOrderBy =
   | 'id'
-  | 'username'
-  | 'email'
-  | 'country'
-  | 'isVerified'
-  | 'isAdmin'
-  | 'createdAt';
+  | 'name'
+  | 'discountPrice'
+  | 'basePrice'
+  | 'discountPercentage'
+  | 'offerType'
+  | 'discountStartDate'
+  | 'discountEndDate';
 
 interface FetchPaginatedFeaturesPayload {
   items: Feature[];
@@ -89,10 +91,9 @@ export const fetchPaginatedFeatures = createAppAsyncThunk<FetchPaginatedFeatures
       {
         pending: 'Fetching features',
         fallbackError: 'Error fetching features',
+        onlyError: true,
       }
-    ).catch((error) => {
-      console.error('Error fetching features:', error);
-    });
+    );
     if (!data) return rejectWithValue('Error fetching features');
 
     return fulfillWithValue(data);
@@ -117,6 +118,7 @@ export const fetchPaginatedPublishers = createAppAsyncThunk<FetchPaginatedCompan
       {
         pending: 'Fetching publishers',
         fallbackError: 'Error fetching publishers',
+        onlyError: true,
       }
     );
 
@@ -146,6 +148,7 @@ export const fetchPaginatedDevelopers = createAppAsyncThunk<FetchPaginatedCompan
       {
         pending: 'Fetching developers',
         fallbackError: 'Error fetching developers',
+        onlyError: true,
       }
     );
     if (!data) return rejectWithValue('Error fetching developers');
@@ -172,6 +175,7 @@ export const fetchPaginatedLanguages = createAppAsyncThunk<FetchPaginatedLanguag
       {
         pending: 'Fetching languages',
         fallbackError: 'Error fetching languages',
+        onlyError: true,
       }
     );
     if (!data) return rejectWithValue('Error fetching languages');
@@ -198,6 +202,7 @@ export const fetchPaginatedTags = createAppAsyncThunk<FetchPaginatedTagsPayload>
       {
         pending: 'Fetching tags',
         fallbackError: 'Error fetching tags',
+        onlyError: true,
       }
     );
     if (!data) return rejectWithValue('Error fetching tags');
@@ -224,6 +229,7 @@ export const fetchPaginatedReviews = createAppAsyncThunk<FetchPaginatedReviewsPa
       {
         pending: 'Fetching reviews',
         fallbackError: 'Error fetching reviews',
+        onlyError: true,
       }
     );
     if (!data) return rejectWithValue('Error fetching reviews');
@@ -250,6 +256,7 @@ export const fetchPaginatedOffers = createAppAsyncThunk<FetchPaginatedOffersPayl
       {
         pending: 'Fetching reviews',
         fallbackError: 'Error fetching reviews',
+        onlyError: true,
       }
     );
     if (!data) return rejectWithValue('Error fetching reviews');
@@ -394,7 +401,6 @@ export const updateItem = createAppAsyncThunk(
       website,
       icon,
       offerGame,
-      discount,
       discountPrice,
       offerType,
       discountStartDate,
@@ -486,12 +492,16 @@ export const updateItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error updating tag');
 
       debouncedFetchPaginatedTags(dispatch);
-    } else if (['offer', 'create-offer'].includes(adminType) && offerGame) {
+    } else if (
+      ['offer', 'create-offer'].includes(adminType) &&
+      offerGame &&
+      currentEditItem &&
+      isGame(currentEditItem)
+    ) {
       const result = await promiseToast(
         dispatch(
           gameOfferApi.endpoints.updateOffer.initiate({
-            id: currentEditItem?.id ?? 0,
-            discount,
+            id: currentEditItem?.pricing?.id ?? 0,
             discountPrice,
             offerType,
             discountStartDate,

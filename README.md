@@ -1,12 +1,13 @@
 # Red-Steam Frontend
 
-Red-Steam is a comprehensive web application that functions as a Steam-clone, designed to manage game libraries, user accounts, and more. This repository contains the frontend built with Next.js, utilizing modern React features and Redux Toolkit for state management.
+Red-Steam is a comprehensive web application that functions as a Steam clone, designed to manage game libraries, user accounts, and more. This project serves as both a learning exercise and a demonstration of my web development skills. It has allowed me to explore and apply technologies such as Next.js, React, Redux Toolkit, and RTK Query in a real-world and challenging context.
 
 ## Features
 
 - User-friendly interface to manage game libraries.
 - Dynamic routing with Next.js.
 - State management powered by Redux Toolkit and RTK Query.
+- Modular architecture for scalability and maintainability: The application is structured into modular components and features, making it easy to develop, test, and extend each part independently. This approach allows for efficient management of code, better separation of concerns, and facilitates parallel development.
 - Custom admin panels for full content and user management.
 - Dynamic forms for creating, updating, and managing game details, media, and promotional offers.
 - User role management and permissions for different admin statuses.
@@ -27,6 +28,13 @@ Red-Steam is a comprehensive web application that functions as a Steam-clone, de
 - **SCSS** for a maintainable CSS.
 
 ## Installation
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (version 18 or above).
+- [pnpm](https://pnpm.io/) package manager.
+
+### Steps
 
 1. **Clone the repository**:
    ```bash
@@ -51,21 +59,38 @@ Red-Steam is a comprehensive web application that functions as a Steam-clone, de
    ```
 5. **Open http://localhost:3000 in your browser.**
 
+## Known Issues
+
+The following features are currently under development or not functioning as intended:
+
+- **Navbar Links**: The links on the navbar are static placeholders and are not functional yet.
+- **Notifications**: Notifications are a placeholder and not yet integrated.
+- **Your Queue**: The "Your Queue" feature is not integrated yet and is currently not working.
+- **Community Features**: All community-based features are disabled as the community system is not implemented yet.
+
 ## Requirements
 
-- This project should be run alongside the [Red-Steam Backend](https://github.com/IbrahemHadidy/red-steam-backend). Ensure that the backend is up and running at `http://localhost:4000` or modify the `NEXT_PUBLIC_BACKEND_API_URL` in your `.env.local` file as needed.
+This project should be run alongside the [Red-Steam Backend](https://github.com/IbrahemHadidy/red-steam-backend). Ensure that the backend is up and running at `http://localhost:4000` or modify the `NEXT_PUBLIC_BACKEND_API_URL` in your `.env.local` file as needed.
 
 ## Build for Production
 
-1. **_Build the application:_**
+1. **Build the application:**
    ```bash
    pnpm build
    ```
-2. **_Start the production server:_**
+2. **Start the production server:**
    ```bash
    pnpm start
    ```
 
+## Future Plans
+
+If the project continues, the following features are planned for potential development:
+
+- **Chat System**: Real-time messaging between users.
+- **Community Features**: Interactive forums, group chats, user-managed groups, and event scheduling.
+- **Enhanced User Profiles**: Public and private profile views with customizable settings.
+
 ## Contributing
 
-Feel free to submit issues or pull requests to contribute to this project.
+This project is a personal endeavor, so contributions are not currently being accepted.

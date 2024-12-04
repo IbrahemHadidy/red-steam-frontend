@@ -11,7 +11,6 @@ const sharedData = {
       items: [
         { id: 'profile-settings', text: 'Settings', link: '/user/settings' },
         { id: 'store-preferences', text: 'tags', link: '/user/tags' },
-        { id: 'inventory', text: 'Inventory', link: '/library' },
         { id: 'wishlish', text: 'Wishlish', link: '/wishlist' },
         { id: 'cart', text: 'Cart', link: '/cart' },
       ],

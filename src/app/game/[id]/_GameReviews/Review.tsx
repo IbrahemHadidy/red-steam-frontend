@@ -1,9 +1,12 @@
+// React
+import { useEffect, useState } from 'react';
+
 // NextJS
 import Image from 'next/image';
 import Link from 'next/link';
 
 // Sanitization library
-import dompurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 // Custom Hooks
 import useResponsiveViewport from '@hooks/useResponsiveViewport';
@@ -27,8 +30,16 @@ interface ReviewProps {
 
 export default function Review({ review }: ReviewProps) {
   //--------------------------- Initializations ---------------------------//
-  const sanitize = dompurify.sanitize;
   const isViewport630OrLess = useResponsiveViewport(630);
+
+  //------------------------------- States --------------------------------//
+  const [sanitizedContent, setSanitizedContent] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && review.content) {
+      setSanitizedContent(DOMPurify.sanitize(review.content));
+    }
+  }, [review.content]);
 
   //-------------------------------- Hooks --------------------------------//
   const { isPartialView, setIsPartialView } = usePartialViewCheck();
@@ -38,7 +49,6 @@ export default function Review({ review }: ReviewProps) {
   };
 
   //-------------------------------- Render -------------------------------//
-
   return (
     <div className={`review-box ${isPartialView ? 'partial' : ''}`} key={review.id}>
       <div className="leftcol">
@@ -78,7 +88,7 @@ export default function Review({ review }: ReviewProps) {
         <div className="content">
           <div
             dangerouslySetInnerHTML={{
-              __html: typeof window !== 'undefined' ? sanitize(review.content) : review.content,
+              __html: sanitizedContent,
             }}
           />
           {isPartialView ? <div className="gradient" /> : ''}

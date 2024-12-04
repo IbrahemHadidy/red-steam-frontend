@@ -2,16 +2,21 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Sanitization library
-import dompurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 export default function About() {
-  const sanitize = dompurify.sanitize;
-
   const { currentGame } = useAppSelector((state) => state.game);
   const [isAboutExpanded, setIsAboutExpanded] = useState<boolean>(true);
+  const [sanitizedAbout, setSanitizedAbout] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentGame?.about) {
+      setSanitizedAbout(DOMPurify.sanitize(currentGame.about));
+    }
+  }, [currentGame?.about]);
 
   const aboutRef = useRef<HTMLDivElement>(null);
 
@@ -35,8 +40,7 @@ export default function About() {
           {currentGame && (
             <div
               dangerouslySetInnerHTML={{
-                __html:
-                  typeof window !== 'undefined' ? sanitize(currentGame.about) : currentGame.about,
+                __html: sanitizedAbout,
               }}
             />
           )}

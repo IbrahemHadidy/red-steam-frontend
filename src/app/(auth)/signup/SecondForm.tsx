@@ -29,6 +29,7 @@ export default function SecondForm() {
   //------------------------------- States --------------------------------//
   const {
     isCheckingAvailability,
+    submitButtonDisabled,
     accountNameInputError,
     passwordInputError,
     confirmPasswordInputError,
@@ -143,7 +144,11 @@ export default function SecondForm() {
       </div>
       <div className="form-row submit-btn-ctn">
         <div className="submit-btn-container">
-          <button className="joinsteam-btn" type="submit" disabled={isCheckingAvailability}>
+          <button
+            className="joinsteam-btn"
+            type="submit"
+            disabled={isCheckingAvailability || submitButtonDisabled}
+          >
             <span>Done</span>
           </button>
         </div>

@@ -6,6 +6,7 @@ import {
   addUserPreferences,
   initializeSearch,
   removeUserPreferences,
+  resetSearch,
   resetSearchResults,
   setHasMoreResults,
   setIsSearchInitialized,
@@ -61,10 +62,13 @@ listen({
 
     const searchParams = new URLSearchParams(action.payload);
 
-    // Check if Search is Already Initialized, If it is, do nothing
+    // Check if Search is Already Initialized.
     if (isSearchInitialized) return;
 
     //--------------------- Get Initial Filters Data ---------------------//
+    // Reset state
+    dispatch(resetSearch());
+
     // Fetch initial data
     const [tags, features, publishers, developers, languages] =
       (await promiseToast(
@@ -93,9 +97,9 @@ listen({
     };
 
     //---------------------- Set Initial Search Data ---------------------//
-    const searchTerm = searchParams?.get('term') ?? 'enter game name';
+    const searchTerm = searchParams?.get('term') ?? '';
     dispatch(setSearchInputValue(decodeURIComponent(searchTerm)));
-    if (searchTerm !== 'enter game name') dispatch(setSearchQuery(decodeURIComponent(searchTerm)));
+    if (searchTerm !== '') dispatch(setSearchQuery(decodeURIComponent(searchTerm)));
 
     const sortOption = searchParams?.get('sort') ?? 'Relevance';
     dispatch(setSortOption(decodeURIComponent(sortOption) as SortOption));

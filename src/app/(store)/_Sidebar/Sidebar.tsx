@@ -1,5 +1,8 @@
 'use client';
 
+// React
+import { useEffect, useState } from 'react';
+
 // NextJS
 import Link from 'next/link';
 
@@ -25,8 +28,9 @@ interface LinkItem {
 }
 
 export default function Sidebar() {
-  //--------------------------- Initializations ---------------------------//
+  //------------------------------- States --------------------------------//
   const { isUserLoggedIn } = useAppSelector((state) => state.auth);
+  const [recentGames, setRecentGames] = useState<RecentGames>([]);
 
   //--------------------------- Redux Selectors ---------------------------//
   const { data } = useGetTagsQuery();
@@ -34,10 +38,13 @@ export default function Sidebar() {
 
   //-------------------------- Utility Functions --------------------------//
   // Get recently viewed games
-  const recentGames: RecentGames =
-    typeof window !== 'undefined'
-      ? (JSON.parse(localStorage.getItem('recentGames') ?? '[]') ?? [])
-      : [];
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedRecentGames = JSON.parse(localStorage.getItem('recentGames') ?? '[]');
+      setRecentGames(storedRecentGames);
+    }
+  }, []);
 
   // Helper function to generate links
   const generateLinks = (links: LinkItem[]) => {

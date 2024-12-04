@@ -601,6 +601,26 @@
             background-size: 330% 100%;
           }
         }
+
+        &:disabled {
+          background: rgba(61, 67, 77, 0.35);
+          color: #464d58;
+          box-shadow: none;
+          cursor: default;
+          pointer-events: none;
+
+          span {
+            background: rgba(61, 67, 77, 0.35);
+            box-shadow: none;
+          }
+
+          &:hover {
+            span {
+              background: rgba(61, 67, 77, 0.35);
+              box-shadow: none;
+            }
+          }
+        }
       }
 
       .availability-container {

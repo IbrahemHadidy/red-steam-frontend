@@ -25,43 +25,40 @@ export const initializeFilterData = <T extends { id: number; name: string }>(
 export const setFiltersFromSearchParams = (
   baseFilters: FilterState,
   searchParams: URLSearchParams
-) => {
-  let updatedFilters: Partial<FilterState> = {};
-  const updateFilter = (
-    searchParams: URLSearchParams,
-    key: FilterSearchParamKey,
-    field: keyof FilterState,
-    status: 'included' | 'excluded'
-  ) => {
+): Partial<FilterState> => {
+  const updatedFilters: Partial<FilterState> = {};
+
+  const fieldsToUpdate: {
+    key: FilterSearchParamKey;
+    field: keyof FilterState;
+    status: 'included' | 'excluded';
+  }[] = [
+    { key: 'priceOptions', field: 'price', status: 'included' },
+    { key: 'preferencesOptions', field: 'preferences', status: 'included' },
+    { key: 'tags', field: 'tags', status: 'included' },
+    { key: 'excludedTags', field: 'tags', status: 'excluded' },
+    { key: 'features', field: 'features', status: 'included' },
+    { key: 'developers', field: 'developers', status: 'included' },
+    { key: 'publishers', field: 'publishers', status: 'included' },
+    { key: 'os', field: 'os', status: 'included' },
+    { key: 'languages', field: 'languages', status: 'included' },
+  ];
+
+  fieldsToUpdate.forEach(({ key, field, status }) => {
     const options =
       searchParams
         ?.get(key)
         ?.split(',')
         .map((id) => Number(id)) ?? [];
 
-    updatedFilters[field] = updatedFilters[field]?.map((row) =>
-      options.includes(row.id) ? { ...row, check: status } : row
-    );
-
-    updatedFilters = {
-      ...baseFilters,
-      [field]: baseFilters[field].map((row) =>
+    if (options.length) {
+      updatedFilters[field] = baseFilters[field].map((row) =>
         options.includes(row.id) ? { ...row, check: status } : row
-      ),
-    };
-  };
+      );
+    }
+  });
 
-  updateFilter(searchParams, 'priceOptions', 'price', 'included');
-  updateFilter(searchParams, 'preferencesOptions', 'preferences', 'included');
-  updateFilter(searchParams, 'tags', 'tags', 'included');
-  updateFilter(searchParams, 'excludedTags', 'tags', 'excluded');
-  updateFilter(searchParams, 'features', 'features', 'included');
-  updateFilter(searchParams, 'developers', 'developers', 'included');
-  updateFilter(searchParams, 'publishers', 'publishers', 'included');
-  updateFilter(searchParams, 'os', 'os', 'included');
-  updateFilter(searchParams, 'languages', 'languages', 'included');
-
-  return updatedFilters;
+  return { ...baseFilters, ...updatedFilters };
 };
 
 //----------------------- Update search params from filters -----------------------//

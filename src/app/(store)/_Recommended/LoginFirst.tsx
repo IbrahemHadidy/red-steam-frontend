@@ -4,7 +4,7 @@ import Link from 'next/link';
 // Types
 import type { JSX } from 'react';
 
-export default function LoginQueue(): JSX.Element {
+export default function LoginFirst(): JSX.Element {
   return (
     <div className="home-section">
       <div className="home-contents login-queue-content">

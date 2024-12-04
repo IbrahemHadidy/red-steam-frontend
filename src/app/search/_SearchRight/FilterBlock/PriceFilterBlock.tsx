@@ -106,7 +106,7 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
               step={1}
               min={0}
               max={13}
-              defaultValue={priceRange === 0 ? 0 : (priceRange ?? 13)}
+              value={priceRange === 0 ? 0 : (priceRange ?? 13)}
               onChange={handlePriceRangeChange}
               onMouseUp={handlePriceRangeMouseUp}
             />

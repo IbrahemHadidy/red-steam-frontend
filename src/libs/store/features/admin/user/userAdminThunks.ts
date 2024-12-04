@@ -39,6 +39,7 @@ export const fetchPaginatedUsers = createAppAsyncThunk<FetchPaginatedUsersPayloa
       {
         pending: 'Fetching users...',
         fallbackError: 'Error fetching users',
+        onlyError: true,
       }
     );
     if (!data) return rejectWithValue('Error fetching users');

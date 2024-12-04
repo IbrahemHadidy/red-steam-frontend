@@ -1,12 +1,14 @@
 import { toast } from 'react-toastify';
 
+import type { ToastPromiseParams } from 'react-toastify';
+
 /**
- * Function to extract and render the error message from the toast response data
+ * Extracts and renders the error message from the toast response data.
  * @param data The response data
- * @param fallbackMessage The fallback message to use if the error message is not found
+ * @param fallbackMessage The fallback message if the error message is not found
  * @returns The error message
  */
-function renderToastErrorMessage(data: unknown, fallbackMessage?: string): string {
+function extractErrorMessage(data: unknown, fallbackMessage = 'An unknown error occurred'): string {
   if (
     data &&
     typeof data === 'object' &&
@@ -16,14 +18,13 @@ function renderToastErrorMessage(data: unknown, fallbackMessage?: string): strin
     'message' in data.data &&
     typeof data?.data?.message === 'string'
   ) {
-    return data?.data?.message ?? fallbackMessage ?? 'An unknown error occurred';
-  } else {
-    return fallbackMessage ?? 'An unknown error occurred';
+    return data.data.message;
   }
+  return fallbackMessage;
 }
 
 /**
- * Utility function to handle toast promises
+ * Handles toast promises with optional configurations for different states.
  * @param promise The promise to handle
  * @param options The toast options
  * @returns The promise result or the fallback value
@@ -35,23 +36,25 @@ export default async function promiseToast<T>(
     success?: string;
     fallbackError?: string;
     disablePendingDots?: boolean;
+    onlyError?: boolean;
   }
 ): Promise<T | void> {
+  const fallbackError =
+    options.fallbackError ?? `An unknown error occurred while ${options.pending.toLowerCase()}`;
+
+  const errorRenderer = ({ data }: { data: unknown }) => extractErrorMessage(data, fallbackError);
+
+  const toastConfig: ToastPromiseParams<T> = options.onlyError
+    ? {
+        error: { render: errorRenderer },
+      }
+    : {
+        pending: options.pending + (options.disablePendingDots ? '' : '...'),
+        success: options.success,
+        error: { render: errorRenderer },
+      };
+
   return await toast
-    .promise(promise, {
-      pending: options.pending + (options.disablePendingDots ? '' : '...'),
-      success: options.success,
-      error: {
-        render({ data }) {
-          return renderToastErrorMessage(
-            data,
-            options.fallbackError ??
-              `An unknown error occurred while ${options.pending.toLowerCase()}`
-          );
-        },
-      },
-    })
-    .catch((error) => {
-      console.error(`Error while ${options.pending.toLowerCase()}:`, error);
-    });
+    .promise(promise, toastConfig)
+    .catch((error) => console.error(`Error while ${options.pending.toLowerCase()}:`, error));
 }

@@ -8,7 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeReviews } from '@store/features/game/gameSlice';
+import { initializeReviews, setCurrentPage } from '@store/features/game/gameSlice';
 
 // Redux Thunks
 import { getReviews } from '@store/features/game/gameThunks';
@@ -23,7 +23,7 @@ export default function GameReviews() {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { currentGame, isGameFetching, reviews, filter, hasMore } = useAppSelector(
+  const { currentGame, isGameFetching, reviews, filter, hasMore, currentPage } = useAppSelector(
     (state) => state.game
   );
 
@@ -32,36 +32,44 @@ export default function GameReviews() {
     dispatch(initializeReviews());
   }, [dispatch]);
 
-  //-------------------------------- Render -------------------------------//
+  //---------------------------- Event Handlers ---------------------------//
+  const handleNextItems = async (): Promise<void> => {
+    dispatch(setCurrentPage(currentPage + 1));
+    await dispatch(getReviews());
+  };
 
+  //-------------------------------- Render -------------------------------//
   if (isGameFetching || !currentGame) {
     return <Loader />;
   } else {
     return (
       <div className="reviews-content">
         <div className="page-content">
-          {reviews.length === 0 ? (
-            <div className="review-comment">No reviews yet</div>
-          ) : (
-            <>
-              <ReviewsHeader />
+          <>
+            <ReviewsHeader />
 
+            {reviews.length === 0 ? (
+              <div className="review-comment">No reviews yet</div>
+            ) : (
               <div className="reviews-summary">
                 <div className="reviews-sub-header">{`${filter} User Reviews`}</div>
+
                 <InfiniteScroll
                   dataLength={reviews.length}
-                  next={getReviews}
+                  next={handleNextItems}
                   hasMore={hasMore}
                   loader={<div className="review-comment">Loading...</div>}
-                  endMessage={<div className="review-comment">No more reviews</div>}
+                  endMessage={
+                    <div className="review-comment">No {reviews.length > 0 && 'more '}reviews</div>
+                  }
                 >
                   {reviews.map((review) => (
                     <Review review={review} key={review.id} />
                   ))}
                 </InfiniteScroll>
               </div>
-            </>
-          )}
+            )}
+          </>
         </div>
       </div>
     );

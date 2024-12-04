@@ -28,7 +28,6 @@ interface AdminState {
 
   //------------------ Offer Creation ------------------//
   readonly offerGame: Game | null;
-  readonly discount: boolean;
   readonly discountPrice: string;
   readonly offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL';
   readonly discountStartDate: string;
@@ -53,6 +52,7 @@ interface AdminState {
   readonly currentEditItem: AdminListItem | null;
   readonly deleteItemId: number | null;
 
+  readonly isInitialized: boolean;
   readonly isFetching: boolean;
 }
 
@@ -61,7 +61,6 @@ const adminState: AdminState = {
   adminType: 'tag',
 
   offerGame: null,
-  discount: false,
   discountPrice: '0.00',
   offerType: 'SPECIAL PROMOTION',
   discountStartDate: new Date().toISOString().split('T')[0],
@@ -84,6 +83,7 @@ const adminState: AdminState = {
   currentEditItem: null,
   deleteItemId: null,
 
+  isInitialized: false,
   isFetching: true,
 };
 
@@ -98,9 +98,6 @@ const adminSlice = createSlice({
 
     setOfferGame: (state, action: PayloadAction<Game | null>) => {
       state.offerGame = action.payload;
-    },
-    setDiscount: (state, action: PayloadAction<boolean>) => {
-      state.discount = action.payload;
     },
     setDiscountPrice: (state, action: PayloadAction<string>) => {
       state.discountPrice = action.payload;
@@ -158,6 +155,9 @@ const adminSlice = createSlice({
       state.isDeleteModalOpen = action.payload;
     },
 
+    setIsInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isInitialized = action.payload;
+    },
     setIsFetching: (state, action: PayloadAction<boolean>) => {
       state.isFetching = action.payload;
     },
@@ -192,9 +192,11 @@ const adminSlice = createSlice({
       })
       .addCase(updateItem.fulfilled, (state) => {
         state.isFetching = false;
+        state.isEditModalOpen = false;
       })
       .addCase(updateItem.rejected, (state) => {
         state.isFetching = false;
+        state.isEditModalOpen = false;
       })
 
       .addCase(deleteItem.pending, (state) => {
@@ -202,9 +204,11 @@ const adminSlice = createSlice({
       })
       .addCase(deleteItem.fulfilled, (state) => {
         state.isFetching = false;
+        state.isDeleteModalOpen = false;
       })
       .addCase(deleteItem.rejected, (state) => {
         state.isFetching = false;
+        state.isDeleteModalOpen = false;
       })
 
       .addCase(fetchPaginatedFeatures.pending, (state) => {
@@ -306,7 +310,6 @@ export const initializeCreateOfferAdmin = createAction<number>('admin/initialize
 export const {
   setAdminType,
   setOfferGame,
-  setDiscount,
   setDiscountPrice,
   setOfferType,
   setDiscountStartDate,
@@ -324,6 +327,7 @@ export const {
   setDeleteItemId,
   setIsEditModalOpen,
   setIsDeleteModalOpen,
+  setIsInitialized,
   setIsFetching,
   resetInputs,
   reset,

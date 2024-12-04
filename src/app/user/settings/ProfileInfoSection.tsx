@@ -47,7 +47,7 @@ export default function ProfileInfoSection() {
     newUsername,
     selectedCountry,
     avatarPreview,
-    nextStepButtonDisabled,
+    currentPassword,
     submitAvatarButtonDisabled,
   } = useAppSelector((state) => state.user.settings);
 
@@ -147,7 +147,7 @@ export default function ProfileInfoSection() {
                 </div>
               </div>
             ) : (
-              <button type="submit" disabled={!isUsernameAvailable || !nextStepButtonDisabled}>
+              <button type="submit" disabled={!isUsernameAvailable || currentPassword.length < 8}>
                 Save
               </button>
             )}

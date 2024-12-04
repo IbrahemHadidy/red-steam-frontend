@@ -1,14 +1,22 @@
+// React
+import { useEffect, useState } from 'react';
+
 // Sanitization library
-import dompurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 export default function Legal() {
-  const sanitize = dompurify.sanitize;
-
   //------------------------------- States --------------------------------//
   const { currentGame } = useAppSelector((state) => state.game);
+  const [sanitizedLegal, setSanitizedLegal] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentGame?.legal) {
+      setSanitizedLegal(DOMPurify.sanitize(currentGame.legal));
+    }
+  }, [currentGame?.legal]);
 
   //------------------------------- Render --------------------------------//
   return (
@@ -18,8 +26,7 @@ export default function Legal() {
           <div className="legal-area">
             <p
               dangerouslySetInnerHTML={{
-                __html:
-                  typeof window !== 'undefined' ? sanitize(currentGame.legal) : currentGame.legal,
+                __html: sanitizedLegal,
               }}
             />
           </div>

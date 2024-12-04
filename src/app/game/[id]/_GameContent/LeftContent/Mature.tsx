@@ -2,16 +2,21 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Sanitization library
-import dompurify from 'dompurify';
+import DOMPurify from 'dompurify';
 
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 export default function Mature() {
-  const sanitize = dompurify.sanitize;
-
   const { currentGame } = useAppSelector((state) => state.game);
   const [isMatureExpanded, setIsMatureExpanded] = useState<boolean>(true);
+  const [sanitizedMatureDescription, setSanitizedMatureDescription] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentGame?.matureDescription) {
+      setSanitizedMatureDescription(DOMPurify.sanitize(currentGame.matureDescription));
+    }
+  }, [currentGame?.matureDescription]);
 
   const matureRef = useRef<HTMLDivElement>(null);
 
@@ -35,10 +40,7 @@ export default function Mature() {
           {currentGame?.matureDescription && (
             <div
               dangerouslySetInnerHTML={{
-                __html:
-                  typeof window !== 'undefined'
-                    ? sanitize(currentGame.matureDescription)
-                    : currentGame.matureDescription,
+                __html: sanitizedMatureDescription,
               }}
             />
           )}

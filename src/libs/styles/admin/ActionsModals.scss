@@ -93,6 +93,23 @@
 
       }
 
+      &.radio {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: flex-end;
+
+        label {
+          margin-bottom: 0;
+        }
+
+        input {
+          width: unset;
+          margin-right: 10px;
+          margin-bottom: 0;
+        }
+      }
+
       label {
         font-size: 14px;
         color: #fff;

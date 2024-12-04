@@ -118,7 +118,7 @@ export default function LoadingSkeleton(): JSX.Element {
         display: 'flex',
         flexDirection: 'row',
         transition: 'padding 0.25s',
-        marginTop: '-31px',
+        marginTop: '60px',
         minHeight: '815px',
       }}
     >

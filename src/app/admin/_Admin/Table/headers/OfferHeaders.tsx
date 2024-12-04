@@ -31,16 +31,16 @@ export default function OfferHeaders() {
       </th>
       <th className="center" onClick={() => sortBykey('discountPrice')}>
         Discount Price {sortArrow('discountPrice')}
-      </th>{' '}
+      </th>
       <th className="center" onClick={() => sortBykey('discountPercentage')}>
         Discount Percentage {sortArrow('discountPercentage')}
       </th>
       <th className="center" onClick={() => sortBykey('offerType')}>
         Offer Type {sortArrow('offerType')}
-      </th>{' '}
+      </th>
       <th className="center" onClick={() => sortBykey('discountStartDate')}>
         Start Date {sortArrow('discountStartDate')}
-      </th>{' '}
+      </th>
       <th className="center" onClick={() => sortBykey('discountEndDate')}>
         End Date {sortArrow('discountEndDate')}
       </th>

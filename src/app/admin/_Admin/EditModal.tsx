@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
 import {
-  setDiscount,
   setDiscountEndDate,
   setDiscountPrice,
   setDiscountStartDate,
@@ -18,9 +17,7 @@ import {
 import { updateItem } from '@store/features/admin/adminThunks';
 
 // Utils
-import formatDate from '@utils/formatDate';
 import getBase64FromFile from '@utils/getBase64FromFile';
-import { isPricing } from '@utils/typeGuards';
 import Decimal from 'decimal.js';
 
 // Types
@@ -33,10 +30,8 @@ export default function EditModal() {
   //--------------------------- State Selectors ---------------------------//
   const {
     adminType,
-    currentEditItem,
     name,
     website,
-    discount,
     discountPrice,
     offerType,
     discountStartDate,
@@ -57,21 +52,12 @@ export default function EditModal() {
     dispatch(setWebsite(e.target.value));
   };
 
-  const handleDiscountChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setDiscount(e.target.checked));
-  };
-
   const handleDiscountPriceChange = (e: ChangeEvent<HTMLInputElement>): void => {
     dispatch(setDiscountPrice(new Decimal(e.target.value).toString()));
   };
 
-  const handleOfferTypeChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value;
-    if (value === 'SPECIAL PROMOTION' || value === 'WEEKEND DEAL') {
-      dispatch(setOfferType(value));
-    } else {
-      console.error('Invalid offer type value');
-    }
+  const handleOfferTypeChange = (offerType: 'SPECIAL PROMOTION' | 'WEEKEND DEAL'): void => {
+    dispatch(setOfferType(offerType));
   };
 
   const handleDiscountStartDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -101,19 +87,6 @@ export default function EditModal() {
         <form onSubmit={handleSubmit}>
           {adminType === 'offer' ? (
             <>
-              <div className="form-group checkbox">
-                <label htmlFor="discount">Discount</label>
-                <input
-                  id="discount"
-                  name="discount"
-                  type="text"
-                  checked={
-                    currentEditItem && isPricing(currentEditItem) ? currentEditItem.discount : false
-                  }
-                  onChange={handleDiscountChange}
-                />
-              </div>
-
               <div className="form-group">
                 <label htmlFor="discountPrice">Discount Price</label>
                 <input
@@ -122,33 +95,35 @@ export default function EditModal() {
                   type="number"
                   value={discountPrice.toString()}
                   onChange={handleDiscountPriceChange}
-                  disabled={!discount}
                 />
               </div>
 
               <div className="form-group radio">
                 <label className="form-label" htmlFor="offerTypeSpecial">
-                  <input
-                    id="offerTypeSpecial"
-                    name="offerType"
-                    className="form-input"
-                    type="radio"
-                    checked={offerType === 'SPECIAL PROMOTION'}
-                    onChange={handleOfferTypeChange}
-                  />
                   SPECIAL PROMOTION
                 </label>
+                <input
+                  id="offerTypeSpecial"
+                  name="offerType"
+                  className="form-input"
+                  type="radio"
+                  checked={offerType === 'SPECIAL PROMOTION'}
+                  onChange={() => handleOfferTypeChange('SPECIAL PROMOTION')}
+                />
+              </div>
+
+              <div className="form-group radio">
                 <label className="form-label" htmlFor="offerTypeWeekend">
-                  <input
-                    id="offerTypeWeekend"
-                    name="offerType"
-                    className="form-input"
-                    type="radio"
-                    checked={offerType === 'WEEKEND DEAL'}
-                    onChange={handleOfferTypeChange}
-                  />
                   WEEKEND DEAL
                 </label>
+                <input
+                  id="offerTypeWeekend"
+                  name="offerType"
+                  className="form-input"
+                  type="radio"
+                  checked={offerType === 'WEEKEND DEAL'}
+                  onChange={() => handleOfferTypeChange('WEEKEND DEAL')}
+                />
               </div>
 
               <div className="form-group">
@@ -157,9 +132,8 @@ export default function EditModal() {
                   id="discountStartDate"
                   name="discountStartDate"
                   type="date"
-                  value={formatDate(discountStartDate)}
+                  value={new Date(discountStartDate).toISOString().split('T')[0]}
                   onChange={handleDiscountStartDateChange}
-                  disabled={!discount}
                 />
               </div>
 
@@ -169,9 +143,8 @@ export default function EditModal() {
                   id="discountEndDate"
                   name="discountEndDate"
                   type="date"
-                  value={formatDate(discountEndDate)}
+                  value={new Date(discountEndDate).toISOString().split('T')[0]}
                   onChange={handleDiscountEndDateChange}
-                  disabled={!discount}
                 />
               </div>
             </>

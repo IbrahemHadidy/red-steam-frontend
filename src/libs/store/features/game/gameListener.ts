@@ -8,6 +8,7 @@ import {
   initializeGamePreview,
   initializeReviews,
   reset,
+  resetReviews,
   setAutoPlayVideo,
   setContent,
   setCurrentGame,
@@ -24,6 +25,9 @@ import {
   updateCurrentMediaLink,
 } from './gameSlice';
 
+// Thunks
+import { getReviews } from './gameThunks';
+
 // Utils
 import { isImageEntry } from '@utils/checkMediaEntry';
 
@@ -36,7 +40,6 @@ import type RecentGames from '@custom-types/recent-games';
 import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from '@store/store';
-import { getReviews } from './gameThunks';
 
 // Create listener middleware
 const gameListener = createListenerMiddleware();
@@ -223,6 +226,20 @@ listen({
 
   effect: (_action, listenerApi) => {
     const { dispatch } = listenerApi;
+    dispatch(getReviews());
+  },
+});
+
+// Listen for filters changes, and update request params
+listen({
+  predicate: (_action, currentState, previousState) =>
+    currentState.game.filter !== previousState.game.filter ||
+    currentState.game.sort !== previousState.game.sort,
+
+  effect: (_action, listenerApi) => {
+    const { dispatch } = listenerApi;
+
+    dispatch(resetReviews());
     dispatch(getReviews());
   },
 });

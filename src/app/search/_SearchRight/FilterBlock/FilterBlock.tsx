@@ -40,29 +40,43 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [currentFilters, setCurrentFilters] = useState<Filter[]>([]);
 
   //-------------------------------- Refs ---------------------------------//
   const filterRef = useRef<HTMLDivElement>(null);
 
   //------------------------------- Effects -------------------------------//
   useEffect(() => {
-    if (DEFAULT_OPEN_DROPDOWNS.includes(title) && filters.length !== 0) setIsOpen(true);
-  }, [filters.length, title]);
+    if (DEFAULT_OPEN_DROPDOWNS.includes(title) && currentFilters.length !== 0) setIsOpen(true);
+  }, [currentFilters.length, title]);
 
   useEffect(() => {
     setDropdownHeight(filterRef.current?.scrollHeight ?? 0);
   }, [isOpen]);
 
-  //---------------------------- Event Handlers ---------------------------//
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
-    setSearchValue(e.target.value.toLowerCase());
+  useEffect(() => {
+    if (searchValue !== '') {
+      setCurrentFilters(
+        filters.filter((filter) => {
+          return filter.name.toLowerCase().includes(searchValue);
+        })
+      );
+    } else {
+      setCurrentFilters(filters);
+    }
+
     setTimeout(() => {
       if (filterRef.current) {
         const childNodesLength = filterRef.current.childNodes.length;
         const height = DROPDOWN_HEIGHTS_BY_CHILD_COUNT[childNodesLength] ?? 340;
         setDropdownHeight(height);
       }
-    });
+    }, 50);
+  }, [filters, searchValue]);
+
+  //---------------------------- Event Handlers ---------------------------//
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
+    setSearchValue(e.target.value.toLowerCase());
   };
 
   const handleIncludeClick = (row: Filter): void => {
@@ -88,9 +102,9 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
 
   //-------------------------------- Render -------------------------------//
 
-  const includedRows = filters.filter((row) => row.check === 'included');
-  const excludedRows = filters.filter((row) => row.check === 'excluded');
-  const uncheckedRows = filters.filter((row) => row.check === 'unchecked');
+  const includedRows = currentFilters.filter((row) => row.check === 'included');
+  const excludedRows = currentFilters.filter((row) => row.check === 'excluded');
+  const uncheckedRows = currentFilters.filter((row) => row.check === 'unchecked');
 
   return (
     <div className="filter-block">

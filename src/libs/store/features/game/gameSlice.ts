@@ -289,13 +289,10 @@ const gameSlice = createSlice({
         state.isReviewBtnDisabled = false;
       })
       .addCase(getReviews.fulfilled, (state, action) => {
-        const newReviews = action.payload;
+        const { reviews, hasMore } = action.payload;
 
-        if (newReviews) {
-          state.reviews = [...state.reviews, ...newReviews];
-        } else {
-          state.hasMore = false;
-        }
+        state.reviews = reviews;
+        state.hasMore = hasMore;
       });
   },
 });

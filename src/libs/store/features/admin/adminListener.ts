@@ -24,6 +24,7 @@ import {
   initializeTagsAdmin,
   reset,
   setAdminType,
+  setIsInitialized,
   setOfferGame,
 } from './adminSlice';
 
@@ -50,6 +51,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('developer'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedDevelopers(dispatch);
   },
 });
@@ -63,6 +65,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('publisher'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedPublishers(dispatch);
   },
 });
@@ -76,6 +79,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('feature'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedFeatures(dispatch);
   },
 });
@@ -89,6 +93,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('tag'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedTags(dispatch);
   },
 });
@@ -102,6 +107,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('language'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedLanguages(dispatch);
   },
 });
@@ -115,6 +121,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('review'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedReviews(dispatch);
   },
 });
@@ -128,6 +135,7 @@ listen({
 
     dispatch(reset());
     dispatch(setAdminType('offer'));
+    dispatch(setIsInitialized(true));
     debouncedFetchPaginatedOffers(dispatch);
   },
 });
@@ -153,6 +161,7 @@ listen({
     );
 
     dispatch(setOfferGame(offerGame ?? null));
+    dispatch(setIsInitialized(true));
 
     debouncedFetchPaginatedOffers(dispatch);
   },
