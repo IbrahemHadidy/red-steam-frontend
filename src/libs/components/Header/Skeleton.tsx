@@ -50,8 +50,7 @@ function MainSkeleton() {
           display: 'flex',
           gap: '12px',
           justifyContent: 'space-between',
-          paddingLeft: '14px',
-          marginRight: '30px',
+          paddingRight: '10px',
         }}
       >
         <Skeleton
@@ -125,6 +124,7 @@ export default function LoadingSkeleton() {
           justifyContent: 'center',
           alignItems: 'center',
           position: 'relative',
+          gap: '50px',
         }}
       >
         <HeaderUserSkeleton />

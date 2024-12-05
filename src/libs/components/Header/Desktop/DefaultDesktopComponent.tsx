@@ -77,7 +77,7 @@ export default function DefaultDesktopComponent() {
             <Image
               alt="Steam"
               src={steamLogo}
-              width="180"
+              width="150"
               height="80"
               className="d-inline-block align-top"
               priority

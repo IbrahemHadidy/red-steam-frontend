@@ -28,6 +28,17 @@ export default function Header() {
   if (!isAuthInitialized || !authOnLoadIntialized) {
     return <LoadingSkeleton />;
   } else {
-    return <>{isViewport960OrLess ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;
+    return (
+      <>
+        {isViewport960OrLess ? (
+          <CustomMobileComponent />
+        ) : (
+          <>
+            <LoadingSkeleton />
+            <DefaultDesktopComponent />
+          </>
+        )}
+      </>
+    );
   }
 }
