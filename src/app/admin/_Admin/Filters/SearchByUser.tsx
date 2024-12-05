@@ -21,7 +21,7 @@ export default function SearchByUser() {
       <input
         type="text"
         id="searchUsername"
-        value={searchQuery.description}
+        value={searchQuery.username ?? ''}
         onChange={handleSearchQueryUserNameChange}
         placeholder="Search by User"
       />

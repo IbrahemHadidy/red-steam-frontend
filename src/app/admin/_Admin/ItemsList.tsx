@@ -13,20 +13,12 @@ export default function ItemsList() {
     (state) => state.admin.common
   );
 
-  if (items.length === 0)
-    return (
-      <h2 className="no-items">
-        No {adminType.charAt(0).toUpperCase() + adminType.slice(1)}s found
-      </h2>
-    );
-
   return (
     <>
       <div
         className={`items-list-container ${['offer', 'create-offer'].includes(adminType) ? 'wide-list' : ''}`}
       >
         {!['offer', 'review'].includes(adminType) && <hr />}
-
         {['offer', 'create-offer'].includes(adminType) ? (
           <h1 className="list-title">Current Offers</h1>
         ) : (
@@ -36,8 +28,16 @@ export default function ItemsList() {
         )}
 
         <Filters />
-        <Table />
-        <Pagination />
+        {items.length !== 0 ? (
+          <>
+            <Table />
+            <Pagination />
+          </>
+        ) : (
+          <h2 className="no-items">
+            No {adminType.charAt(0).toUpperCase() + adminType.slice(1)}s found
+          </h2>
+        )}
       </div>
 
       {isEditModalOpen && <EditModal />}

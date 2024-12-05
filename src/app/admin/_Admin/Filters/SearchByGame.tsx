@@ -21,7 +21,7 @@ export default function SearchByGame() {
       <input
         type="text"
         id="searchGameName"
-        value={searchQuery.gameName}
+        value={searchQuery.gameName ?? ''}
         onChange={handleSearchQueryGameNameChange}
         placeholder="Search by Game"
       />

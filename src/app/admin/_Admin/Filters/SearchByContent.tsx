@@ -21,7 +21,7 @@ export default function SearchByContent() {
       <input
         type="text"
         id="searchContent"
-        value={searchQuery.content}
+        value={searchQuery.content ?? ''}
         onChange={handleSearchQueryContentChange}
         placeholder="Search by Content"
       />

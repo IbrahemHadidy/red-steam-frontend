@@ -30,7 +30,9 @@ export default function UsersAdmin() {
   }, [dispatch]);
 
   //------------------------------- States --------------------------------//
-  const { isEditModalOpen, isDeleteModalOpen } = useAppSelector((state) => state.admin.user);
+  const { currentUsers, isEditModalOpen, isDeleteModalOpen } = useAppSelector(
+    (state) => state.admin.user
+  );
 
   //------------------------------- Render --------------------------------//
   useDynamicBackground(ADMIN_BG);
@@ -39,9 +41,17 @@ export default function UsersAdmin() {
       <div className="items-list-container wide-list">
         <br />
         <h1 className="list-title">Users List</h1>
+
         <Filters />
-        <Table />
-        <Pagination />
+
+        {currentUsers.length !== 0 ? (
+          <>
+            <Table />
+            <Pagination />
+          </>
+        ) : (
+          <h2 className="no-items">No users found</h2>
+        )}
       </div>
 
       {isEditModalOpen && <EditModal />}

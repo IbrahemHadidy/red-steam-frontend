@@ -21,7 +21,7 @@ export default function SearchByWebsite() {
       <input
         type="text"
         id="searchWebsite"
-        value={searchQuery.website}
+        value={searchQuery.website ?? ''}
         onChange={handleSearchQueryWebsiteChange}
         placeholder="Search by Website"
       />

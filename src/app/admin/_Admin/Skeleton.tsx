@@ -269,7 +269,7 @@ export default function LoadingSkeleton() {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: '20px',
+            margin: '20px 0',
             gap: '10px',
           }}
         >

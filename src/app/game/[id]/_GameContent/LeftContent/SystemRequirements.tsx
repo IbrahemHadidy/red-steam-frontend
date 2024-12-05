@@ -36,8 +36,9 @@ export default function SystemRequirements() {
   const sysReqRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250) setIsSysReqExpanded(false);
-  }, [sysReqRef]);
+    if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250)
+      setTimeout(() => setIsSysReqExpanded(false), 400);
+  }, [sysReqRef, sanitizedMiniAdditionalNotes, sanitizedRecAdditionalNotes]);
 
   const handleSysReqExpandClick = () => setIsSysReqExpanded(true);
 

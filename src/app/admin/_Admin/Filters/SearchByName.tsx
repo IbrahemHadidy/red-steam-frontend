@@ -21,7 +21,7 @@ export default function SearchByName() {
       <input
         type="text"
         id="searchName"
-        value={searchQuery.name}
+        value={searchQuery.name ?? ''}
         onChange={handleSearchQueryNameChange}
         placeholder="Search by Name"
       />
