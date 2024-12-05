@@ -48,15 +48,21 @@ export default function MediaVideo({ item }: MediaVideoProps) {
     dispatch(restoreVideo(order));
   };
 
-  const handleVideoOrderChange = (e: ChangeEvent<HTMLInputElement>, id: number): void => {
+  const handleVideoOrderChange = (e: ChangeEvent<HTMLInputElement>, baseOrder: number): void => {
     const newOrder = Number(e.target.value.trim());
-    dispatch(updateVideoOrder({ from: id, to: newOrder }));
+    dispatch(updateVideoOrder({ baseOrder, newOrder }));
   };
 
   //------------------------------- Render --------------------------------//
   return (
     <div className="media-video">
-      <video controls src={videoUrl} poster={posterUrl} className="media-preview" />
+      <video
+        controls
+        src={videoUrl}
+        poster={posterUrl}
+        className="media-preview"
+        preload="metadata"
+      />
       <div className="media-details">
         <label>Order:</label>
         <input

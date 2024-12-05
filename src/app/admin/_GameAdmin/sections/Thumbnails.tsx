@@ -144,7 +144,9 @@ export default function Thumbnails() {
                     </button>
                   </div>
 
-                  <img src={thumbnailUrls[key]} alt={key} className="thumbnail-image" />
+                  {thumbnailUrls[key] && (
+                    <img src={thumbnailUrls[key]} alt={key} className="thumbnail-image" />
+                  )}
                 </div>
                 {idx < Object.keys(thumbnails).length - 1 && <hr />}
               </Fragment>

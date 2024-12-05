@@ -10,6 +10,9 @@ import { nextPage, prevPage, reset, setPage } from '@store/features/admin/game/g
 // Redux Thunks
 import { getPreviewData, submitForm } from '@store/features/admin/game/gameAdminThunks';
 
+// Utils
+import scrollToTop from '@utils/scrollToTop';
+
 interface FormButtonsProps {
   validation?: () => boolean;
 }
@@ -24,6 +27,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
 
   //---------------------------- Event Handlers ---------------------------//
   const handleNextClick = async () => {
+    scrollToTop();
     if (currentPage === 'preview') {
       await dispatch(submitForm(router));
     } else if (currentPage === 'additional') {
@@ -35,10 +39,12 @@ export default function FormButtons({ validation }: FormButtonsProps) {
   };
 
   const handlePrevClick = () => {
+    scrollToTop();
     dispatch(prevPage());
   };
 
   const handleResetClick = () => {
+    scrollToTop();
     dispatch(reset());
     dispatch(setPage('basic'));
   };

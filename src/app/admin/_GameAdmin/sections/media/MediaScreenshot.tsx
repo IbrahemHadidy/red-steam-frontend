@@ -57,9 +57,12 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
     dispatch(restoreScreenshot(order));
   };
 
-  const handleScreenshotOrderChange = (e: ChangeEvent<HTMLInputElement>, id: number): void => {
+  const handleScreenshotOrderChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    baseOrder: number
+  ): void => {
     const newOrder = Number(e.target.value.trim());
-    dispatch(updateScreenshotOrder({ from: id, to: newOrder }));
+    dispatch(updateScreenshotOrder({ baseOrder, newOrder }));
   };
 
   const handleFeaturedChange = (id: number): void => {
@@ -69,7 +72,12 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   //------------------------------- Render --------------------------------//
   return (
     <div className="media-screenshot">
-      <img src={imageUrl} alt={`Screenshot ${item.order}`} className="media-preview" />
+      <img
+        src={imageUrl}
+        alt={`Screenshot ${item.order}`}
+        className="media-preview"
+        loading="lazy"
+      />
       <div className="media-details">
         <label>Order:</label>
         <input

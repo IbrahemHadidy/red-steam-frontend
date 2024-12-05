@@ -404,18 +404,21 @@ const gameAdminSlice = createSlice({
         );
       }
     },
-    updateScreenshotOrder: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      const { from, to } = action.payload;
+    updateScreenshotOrder: (
+      state,
+      action: PayloadAction<{ baseOrder: number; newOrder: number }>
+    ) => {
+      const { baseOrder, newOrder } = action.payload;
 
-      state.screenshots
-        .map((item) => (item.baseOrder === from ? { ...item, order: to } : item))
+      state.screenshots = state.screenshots
+        .map((item) => (item.baseOrder === baseOrder ? { ...item, order: newOrder } : item))
         .sort((a, b) => a.order - b.order);
     },
-    updateVideoOrder: (state, action: PayloadAction<{ from: number; to: number }>) => {
-      const { from, to } = action.payload;
+    updateVideoOrder: (state, action: PayloadAction<{ baseOrder: number; newOrder: number }>) => {
+      const { baseOrder, newOrder } = action.payload;
 
-      state.videos
-        .map((item) => (item.baseOrder === from ? { ...item, order: to } : item))
+      state.videos = state.videos
+        .map((item) => (item.baseOrder === baseOrder ? { ...item, order: newOrder } : item))
         .sort((a, b) => a.order - b.order);
     },
     toggleScreenshotFeatured: (state, action: PayloadAction<number>) => {
