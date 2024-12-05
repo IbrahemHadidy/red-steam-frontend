@@ -9,7 +9,7 @@ import type { LibraryItem, WishlistItem } from '@interfaces/user';
 const userInteractionApi = createApi({
   reducerPath: 'api/user/interaction',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user/interaction`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/interaction`,
   }),
   tagTypes: ['Library', 'Wishlist', 'Cart', 'Tags', 'Reviews'],
   endpoints: (builder) => ({

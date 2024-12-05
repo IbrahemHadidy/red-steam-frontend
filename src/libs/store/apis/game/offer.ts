@@ -7,7 +7,7 @@ import type { Game } from '@interfaces/game';
 const gameOfferApi = createApi({
   reducerPath: 'api/game/offer',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/game/offer`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/game/offer`,
   }),
   tagTypes: ['Game'],
   endpoints: (builder) => ({

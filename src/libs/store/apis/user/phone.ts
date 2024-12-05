@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const userPhoneApi = createApi({
   reducerPath: 'api/user/phone',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user/phone`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/phone`,
     credentials: 'include',
   }),
   endpoints: (builder) => ({

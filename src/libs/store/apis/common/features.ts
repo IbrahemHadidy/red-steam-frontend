@@ -7,7 +7,7 @@ import type { Feature } from '@interfaces/feature';
 const featureApi = createApi({
   reducerPath: 'api/feature',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/feature`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/feature`,
   }),
   tagTypes: ['Feature'],
   endpoints: (builder) => ({

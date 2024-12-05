@@ -23,7 +23,7 @@ export type Thumbnails = {
 const gameAdminApi = createApi({
   reducerPath: 'api/game/admin',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/game/admin`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/game/admin`,
   }),
   tagTypes: ['Game'],
   endpoints: (builder) => ({

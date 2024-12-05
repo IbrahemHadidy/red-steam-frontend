@@ -7,7 +7,7 @@ import type { Tag } from '@interfaces/tag';
 const tagApi = createApi({
   reducerPath: 'api/tag',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/tag`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/tag`,
   }),
   tagTypes: ['Tag'],
   endpoints: (builder) => ({

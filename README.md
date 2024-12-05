@@ -46,18 +46,13 @@ Red-Steam is a comprehensive web application that functions as a Steam clone, de
    pnpm install
    ```
 3. **Set up environment variables**:
-   Create a `.env.local` file in the root directory and add the following (all keys are for development use only):
-   ```bash
-   NEXT_PUBLIC_BASE_PATH="http://localhost:3000"
-   NEXT_PUBLIC_BACKEND_API_URL="http://localhost:4000"
-   NEXT_PUBLIC_RECAPTCHA_SITE_KEY="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-   NEXT_PUBLIC_PAYPAL_CLIENT_ID="ARb1hskRsE2V52bofRMIrK-0S5q369ETWmJ6hsQWPOQEndYGbGgIHsgSgTFEwnkXiPV99ljpkDlPBk0A"
-   ```
+   Copy the sample.env file and rename it to .env.local and update the values according to your local environment.
+
 4. **Run the development server**:
    ```bash
    pnpm dev
    ```
-5. **Open http://localhost:3000 in your browser.**
+5. **Open http://localhost:3000 (or the port you've configured) in your browser.**
 
 ## Known Issues
 
@@ -70,7 +65,7 @@ The following features are currently under development or not functioning as int
 
 ## Requirements
 
-This project should be run alongside the [Red-Steam Backend](https://github.com/IbrahemHadidy/red-steam-backend). Ensure that the backend is up and running at `http://localhost:4000` or modify the `NEXT_PUBLIC_BACKEND_API_URL` in your `.env.local` file as needed.
+This project should be run alongside the [Red-Steam Backend](https://github.com/IbrahemHadidy/red-steam-backend). Ensure that the backend is up and running at `http://localhost:4000/api` or modify the `NEXT_PUBLIC_BACKEND_API_URL` in your `.env.local` file as needed.
 
 ## Build for Production
 

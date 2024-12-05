@@ -7,7 +7,7 @@ import { Language } from '@interfaces/language';
 const languageApi = createApi({
   reducerPath: 'api/language',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/language`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/language`,
   }),
   tagTypes: ['Language'],
   endpoints: (builder) => ({

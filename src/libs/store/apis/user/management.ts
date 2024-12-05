@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const userManagementApi = createApi({
   reducerPath: 'api/user/management',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user/management`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/management`,
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({

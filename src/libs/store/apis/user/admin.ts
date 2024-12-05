@@ -7,7 +7,7 @@ import type { User } from '@interfaces/user';
 const userAdminApi = createApi({
   reducerPath: 'api/user/admin',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user/admin`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/admin`,
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({

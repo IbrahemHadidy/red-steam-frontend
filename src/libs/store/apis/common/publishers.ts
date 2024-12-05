@@ -7,7 +7,7 @@ import type { Publisher } from '@interfaces/company';
 const publisherApi = createApi({
   reducerPath: 'api/publisher',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/publisher`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/publisher`,
   }),
   tagTypes: ['Publisher'],
   endpoints: (builder) => ({

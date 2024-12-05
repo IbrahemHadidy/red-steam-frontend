@@ -9,7 +9,7 @@ import type { Review } from '@interfaces/review';
 const gameDataApi = createApi({
   reducerPath: 'api/game/data',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/game/data`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/game/data`,
   }),
   tagTypes: ['Game', 'GameReviews'],
   endpoints: (builder) => ({

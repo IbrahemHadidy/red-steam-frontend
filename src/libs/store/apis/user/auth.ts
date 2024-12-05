@@ -7,7 +7,7 @@ import type { User } from '@interfaces/user';
 const userAuthApi = createApi({
   reducerPath: 'api/user/auth',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/user/auth`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/auth`,
   }),
   tagTypes: ['User', 'WaitingTime'],
   endpoints: (builder) => ({

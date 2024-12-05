@@ -7,7 +7,7 @@ import type { Developer } from '@interfaces/company';
 const developerApi = createApi({
   reducerPath: 'api/developer',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/developer`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/developer`,
   }),
   tagTypes: ['Developer'],
   endpoints: (builder) => ({

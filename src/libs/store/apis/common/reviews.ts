@@ -7,7 +7,7 @@ import type { Review } from '@interfaces/review';
 const reviewApi = createApi({
   reducerPath: 'api/review',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/review`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/review`,
   }),
   tagTypes: ['Review'],
   endpoints: (builder) => ({
