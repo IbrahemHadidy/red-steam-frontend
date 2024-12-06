@@ -1,6 +1,3 @@
-// Github button
-import GitHubButton from 'react-github-btn';
-
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
@@ -30,40 +27,11 @@ export default function CompleteModal() {
         </p>
         <p>
           If you found my project helpful or inspiring, I would be honored if you could show your
-          support by clicking the star button on my GitHub repository. It would mean the world to
-          me!
+          support by clicking the star button on my GitHub repositories. It would mean a lot to me!
         </p>
-
-        <div className="message">
-          <p>Your support will help me continue building and improving this project.</p>
-          <p>Click the star button below to endorse the project on GitHub:</p>
-        </div>
-
-        <div className="button-group">
-          <GitHubButton
-            href="https://github.com/IbrahemHadidy/red-steam-frontend"
-            data-color-scheme="no-preference: dark_dimmed; light: dark_dimmed; dark: dark_dimmed;"
-            data-icon="octicon-star"
-            data-size="large"
-            data-show-count="true"
-            aria-label="Star IbrahemHadidy/red-steam-frontend on GitHub"
-          >
-            Star Frontend Repo
-          </GitHubButton>
-          <GitHubButton
-            href="https://github.com/IbrahemHadidy/red-steam-backend"
-            data-color-scheme="no-preference: dark_dimmed; light: dark_dimmed; dark: dark_dimmed;"
-            data-icon="octicon-star"
-            data-size="large"
-            data-show-count="true"
-            aria-label="Star IbrahemHadidy/red-steam-backend on GitHub"
-          >
-            Star Backend Repo
-          </GitHubButton>
-        </div>
+        <p>Also, if you’d like to dive deeper into the code, you can find it on my GitHub.</p>
 
         <div className="visit-repos">
-          <p>If you’d like to dive deeper, feel free to visit the full repositories:</p>
           <div className="repo-links">
             <a
               href="https://github.com/IbrahemHadidy/red-steam-frontend"
