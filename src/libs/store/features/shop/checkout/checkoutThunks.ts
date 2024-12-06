@@ -1,8 +1,10 @@
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
+// Redux Thunks
+import { fetchUserData } from '@store/features/auth/authThunks';
+
 // APIs
-import userAuthApi from '@store/apis/user/auth';
 import userPaymentApi from '@store/apis/user/payment';
 
 // Utils
@@ -55,7 +57,7 @@ export const captureOrder = createAppAsyncThunk<string, OnApproveData>(
     );
     if (!response) return rejectWithValue('Failed to capture PayPal order');
 
-    await dispatch(userAuthApi.endpoints.updateUserData.initiate()).unwrap();
+    await dispatch(fetchUserData());
     return fulfillWithValue(response.orderId);
   }
 );
