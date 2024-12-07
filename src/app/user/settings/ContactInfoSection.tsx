@@ -67,7 +67,7 @@ export default function ContactInfoSection() {
         </div>
 
         <div>
-          <div className="phone-header-description">
+          <div className="phone-header-description disabled">
             <span className="account-manage-label">Phone:</span>&nbsp;
             {currentUserData?.phoneNumber && <Image src={mobileIcon} alt="" />}
             &nbsp;

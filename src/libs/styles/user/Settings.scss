@@ -10,8 +10,7 @@
 }
 
 .user-settings-header {
-  background: rgba(0, 0, 0, 0) url('/images/s_cluster_bg.png') no-repeat scroll
-    center bottom;
+  background: rgba(0, 0, 0, 0) url('/images/s_cluster_bg.png') no-repeat scroll center bottom;
   padding-bottom: 64px;
   margin-bottom: -30px;
 
@@ -41,7 +40,8 @@
       color: #c0bebe;
     }
 
-    a, a:hover {
+    a,
+    a:hover {
       color: #ffffff;
     }
   }
@@ -93,11 +93,23 @@
       color: #c6d4df;
     }
 
-    .phone-header-description img {
-      padding: 0 4px 0 4px;
-      vertical-align: top;
-      margin-top: 1px;
+    .phone-header-description {
+      img {
+        padding: 0 4px 0 4px;
+        vertical-align: top;
+        margin-top: 1px;
+      }
+
+      &.disabled {
+        opacity: 0.5;
+
+        a {
+          pointer-events: none;
+          color: #808891;
+        }
+      }
     }
+
     a {
       display: inline-block;
       color: #67c1f5;
@@ -193,6 +205,7 @@
     border-bottom: 1px solid #324a67;
 
     form {
+
       h2,
       p {
         margin-left: 0;
@@ -262,6 +275,7 @@
       &[type='password'] {
         height: 18px;
       }
+
       &[type='checkbox'] {
         display: inline;
         width: 18px;
@@ -354,9 +368,11 @@
     border-radius: 5px;
     max-width: 400px;
     text-align: center;
+
     h2 {
       color: #ff4545;
     }
+
     p {
       color: #ffffff;
     }
@@ -394,6 +410,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .delete-button {
       background-color: #ff4545;
       color: #ffffff;
@@ -444,6 +461,7 @@
     border-radius: 5px;
     max-width: 400px;
     text-align: center;
+
     h2 {
       font-size: large;
       color: #007bff;
@@ -484,6 +502,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .next-button {
       background-color: #007bff;
       color: #ffffff;
