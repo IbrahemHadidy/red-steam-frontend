@@ -32,49 +32,6 @@ $font-family_1: "Motiva Sans", Sans-serif;
 			&:hover {
 				color: #66c0f4;
 			}
-
-			.gift-card {
-				transition: color 0.3s;
-				display: grid;
-
-				&:hover {
-					.gift-card-h6 {
-						color: #f6f2f3;
-					}
-
-					.gift-card-p {
-						color: #c2d8e3;
-					}
-				}
-
-				.image {
-					border: none;
-					-webkit-user-drag: none;
-					max-width: 85%;
-					margin-bottom: 6px;
-				}
-
-				.gift-card-h6 {
-					color: #6fafe6;
-					font-family: $font-family_1;
-					font-size: 14px;
-					text-transform: uppercase;
-					font-weight: bolder;
-					line-height: 16px;
-					font-weight: 550;
-					margin-bottom: 1px;
-				}
-
-				.gift-card-p {
-					color: #a4b3c4;
-					font-family: $font-family_1;
-					display: flex;
-					width: fit-content;
-					font-size: 12px;
-					font-weight: normal;
-					font-weight: 550;
-				}
-			}
 		}
 
 		.recents {

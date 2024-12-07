@@ -104,7 +104,15 @@
   }
 }
 
-.navbar-nav {
+.second-nav {
+  justify-content: space-between;
+  width: 100%;
+
+  .dropdowns {
+    display: flex;
+    flex-direction: row;
+  }
+
   li {
     &:hover {
       .dropdown-menu {
@@ -593,59 +601,4 @@
   margin: 0 !important;
   z-index: 60;
   padding: 0 0 4px !important;
-
-  .profile_picture-mobile {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    left: 13px;
-    top: 9px;
-    z-index: 200;
-    pointer-events: none;
-  }
-
-  .navbar-nav-mobile {
-    width: -webkit-fill-available;
-    width: -moz-available;
-    flex-direction: column !important;
-    cursor: pointer;
-
-    .navBarItem-mobile {
-      width: -webkit-fill-available;
-      width: -moz-available;
-
-      &:hover {
-        width: -webkit-fill-available;
-        width: -moz-available;
-      }
-    }
-  }
-
-  .nav-item-mobile {
-    width: inherit;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .Categories-div {
-    height: 817.1px;
-  }
-
-  .category-second-div {
-    margin-left: 0 !important;
-    border-left: 0 !important;
-    padding-left: 0 !important;
-  }
-
-  .category-fifth-div {
-    margin-left: 0 !important;
-    border-left: 0 !important;
-    padding-left: 0 !important;
-  }
-
-  .new-second-div {
-    margin-left: 0 !important;
-    border-left: 0 !important;
-    padding-left: 0 !important;
-  }
 }

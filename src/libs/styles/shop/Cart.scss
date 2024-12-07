@@ -8,6 +8,10 @@
     padding-bottom: 170px;
   }
 
+  @media screen and (max-width: 960px) {
+    margin: 0 2%;
+  }
+
   .cart-path {
     color: #8f98a0;
     margin-top: 25px;

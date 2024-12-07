@@ -180,12 +180,4 @@ const menuData = {
   },
 };
 
-// Define navigation items for the top-level menu
-const navigationItems = [
-  { label: 'Points Shop', url: '#' },
-  { label: 'News', url: '#' },
-  { label: 'Labs', url: '#' },
-];
-
-export { menuData, navigationItems };
-
+export default menuData;

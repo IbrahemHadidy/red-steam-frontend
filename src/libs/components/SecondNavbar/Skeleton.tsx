@@ -70,33 +70,6 @@ export default function LoadingSkeleton() {
               marginLeft: '20px',
             }}
           />
-          <Skeleton
-            variant="text"
-            width={70}
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              fontSize: '15px',
-              marginLeft: '20px',
-            }}
-          />
-          <Skeleton
-            variant="text"
-            width={40}
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              fontSize: '15px',
-              marginLeft: '20px',
-            }}
-          />
-          <Skeleton
-            variant="text"
-            width={40}
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              fontSize: '15px',
-              marginLeft: '20px',
-            }}
-          />
         </Box>
 
         <Box
@@ -125,70 +98,6 @@ export default function LoadingSkeleton() {
         paddingBottom: '1px',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '10px',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          justifyContent: 'stretch',
-          alignItems: 'stretch',
-          width: '100%',
-          position: 'relative',
-          zIndex: '60',
-          marginLeft: '15px',
-        }}
-      >
-        <Skeleton
-          variant="text"
-          width={65}
-          sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            fontSize: '15px',
-          }}
-        />
-        <Skeleton
-          variant="text"
-          width={110}
-          sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            fontSize: '15px',
-          }}
-        />
-        <Skeleton
-          variant="text"
-          width={70}
-          sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            fontSize: '15px',
-          }}
-        />
-        <Skeleton
-          variant="text"
-          width={70}
-          sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            fontSize: '15px',
-          }}
-        />
-        <Skeleton
-          variant="text"
-          width={40}
-          sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            fontSize: '15px',
-          }}
-        />
-        <Skeleton
-          variant="text"
-          width={40}
-          sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            fontSize: '15px',
-            marginBottom: '8px',
-          }}
-        />
-      </Box>
       <Box
         height={27}
         sx={{

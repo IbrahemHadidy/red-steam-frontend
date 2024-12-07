@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@store/hooks';
 
 // Static Data
-import { menuData, navigationItems } from './menuData';
+import menuData from './menuData';
 
 // Components
 import NavSearch from '../NavSearch';
@@ -93,7 +93,7 @@ export default function DesktopSecondNav() {
         </div>
 
         <nav className="navbar navbar-expand-sm navbarBg">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav second-nav">
             {isUserLoggedIn && (
               <img
                 className="profile-picture"
@@ -102,17 +102,12 @@ export default function DesktopSecondNav() {
               />
             )}
 
-            {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
-              <GroupedMenuItem menuTitle={menuTitle} categoryGroups={categoryGroups} key={idx} />
-            ))}
+            <div className="dropdowns">
+              {groupedMenuItems.map(({ menuTitle, categoryGroups }, idx) => (
+                <GroupedMenuItem menuTitle={menuTitle} categoryGroups={categoryGroups} key={idx} />
+              ))}
+            </div>
 
-            {navigationItems.map((item, idx) => (
-              <Link key={idx} className="nav-link navBarItem" href={item.url}>
-                {item.label}
-              </Link>
-            ))}
-
-            <div className="before-search-space" />
             {!isSearchPage && <NavSearch />}
           </ul>
         </nav>

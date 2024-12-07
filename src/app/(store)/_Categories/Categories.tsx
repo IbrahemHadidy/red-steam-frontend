@@ -1,5 +1,4 @@
 // React
-import { Fragment } from 'react';
 
 // NextJS
 import dynamic from 'next/dynamic';
@@ -56,11 +55,16 @@ export default function Categories() {
     <div className="home-section">
       <div className="home-contents">
         {isViewport960OrLess ? (
-          <div className="mobile-mini">
-            {categoryGroups.map((group, idx) => (
-              <Fragment key={idx}>{renderCategoryGroup(group, idx)}</Fragment>
-            ))}
-          </div>
+          <>
+            <div className="home-titles">BROWSE BY CATEGORY</div>
+            <div className="mobile-mini">
+              {categoryGroups.map((group, idx) => (
+                <div className="categories-row" key={idx}>
+                  {renderCategoryGroup(group, idx)}
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <>
             <div className="home-titles">BROWSE BY CATEGORY</div>

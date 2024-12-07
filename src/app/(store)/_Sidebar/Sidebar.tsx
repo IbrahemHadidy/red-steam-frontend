@@ -6,21 +6,14 @@ import { useEffect, useState } from 'react';
 // NextJS
 import Link from 'next/link';
 
-// Toast notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
 // Redux Queries
 import { useGetTagsQuery } from '@store/apis/user/interaction';
 
-// Images
-import steamPromoCard from '@images/steamcards_promo_03.png';
-
 // Types
 import type RecentGames from '@custom-types/recent-games';
-import type { MouseEvent } from 'react';
 
 interface LinkItem {
   to: string;
@@ -90,26 +83,10 @@ export default function Sidebar() {
     { to: '/search?tags=13', text: 'Strategy' },
   ];
 
-  //--------------------------- Event Handlers ----------------------------//
-  const handleItemClick = (e: MouseEvent<HTMLAnchorElement>): void => {
-    e.preventDefault();
-    toast.info('Coming Soon!');
-  };
-
   //------------------------------- Render --------------------------------//
   return (
     <aside className="fixed-sidebar">
       <div className="sidebar">
-        <div>
-          <a className="item" onClick={handleItemClick}>
-            <div className="gift-card">
-              <img className="image" src={steamPromoCard.src} alt="Steam Gift Cards" />{' '}
-              <h6 className="gift-card-h6">Steam Gift Cards</h6>
-              <p className="gift-card-p">Give the Gift of Game</p>
-            </div>
-          </a>
-        </div>
-
         {isUserLoggedIn && recentlyViewedLinks.length > 0 && (
           <div className="recents" id="hom-elj">
             <div className="header">Recently Viewed</div>
