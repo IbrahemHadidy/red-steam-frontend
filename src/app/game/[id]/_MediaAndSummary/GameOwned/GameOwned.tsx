@@ -1,7 +1,6 @@
 'use client';
 
 // NextJS
-import Link from 'next/link';
 
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
@@ -70,18 +69,6 @@ export default function GameOwned() {
 
       <div className="already-owned">
         <div className="already-owned-actions">
-          <div className="owned-actions-button">
-            <a href="">
-              <span> Install Steam </span>
-            </a>
-          </div>
-
-          <div className="owned-actions-button">
-            <a href="">
-              <span> Play now </span>
-            </a>
-          </div>
-
           <div className="review-container">
             <div className="review-create">
               <h1>Write a review for {currentGame?.name}</h1>
@@ -101,11 +88,9 @@ export default function GameOwned() {
               </div>
 
               <div className="avatar-block">
-                <Link href={`/id/${currentGame?.id}`}>
                   <div className="avatar online">
                     <img src={currentUserData?.profilePicture ?? defaultPFP.src} alt="pfp" />
                   </div>
-                </Link>
               </div>
 
               <div className="content">

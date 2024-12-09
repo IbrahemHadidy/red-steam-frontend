@@ -9,6 +9,7 @@ import ReduxStoreProvider from '@providers/ReduxStoreProvider';
 import favIcon from '@images/favicon.ico';
 
 // Styles
+import '@styles/components/Footer.scss';
 import '@styles/globals.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

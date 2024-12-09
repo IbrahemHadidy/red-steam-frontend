@@ -8,9 +8,6 @@ import facebookIcon from '@images/ico_facebook.png';
 import twitterIcon from '@images/ico_twitter.png';
 import steamFooterLogo from '@images/logo_steam_footer.png';
 
-// Styles
-import '@styles/components/Footer.scss';
-
 export default function Footer() {
   return (
     <footer className="footer">
