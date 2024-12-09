@@ -60,6 +60,20 @@
 				padding: 18px 15px 0px 15px;
 				margin: auto;
 			}
+
+			&.verified {
+				padding: 24px;
+
+				@media screen and (max-width: 630px) {
+					padding: 18px 15px;
+				}
+
+				p {
+					font-size: 20px;
+					color: #cad0d6;
+					font-weight: normal;
+				}
+			}
 		}
 	}
 
