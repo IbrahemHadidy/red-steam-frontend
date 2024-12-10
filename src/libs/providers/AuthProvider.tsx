@@ -54,7 +54,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <>
-      {isVerifyModalVisible && <VerifyModal type="verified" />}
+      {isVerifyModalVisible && <VerifyModal type="verifying" />}
       {children}
     </>
   );

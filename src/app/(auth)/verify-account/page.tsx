@@ -6,9 +6,6 @@ import { useEffect, useState } from 'react';
 // NextJS
 import { useRouter, useSearchParams } from 'next/navigation';
 
-// Toast Notification
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { useAppDispatch } from '@store/hooks';
 
@@ -52,7 +49,6 @@ export default function VerifyAccount() {
 
         if (response) {
           document.title = 'Account verified';
-          toast.success(response.message);
           setIsVerified(true);
         } else {
           router.push('/');
