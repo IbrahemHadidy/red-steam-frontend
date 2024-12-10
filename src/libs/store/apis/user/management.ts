@@ -8,7 +8,7 @@ const userManagementApi = createApi({
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({
-    checkEmailExists: builder.query<{ exists: boolean }, string>({
+    checkEmailExists: builder.mutation<{ exists: boolean }, string>({
       query: (email) => ({
         url: `/email/${email}`,
         method: 'GET',
@@ -16,7 +16,7 @@ const userManagementApi = createApi({
       }),
     }),
 
-    checkUsernameExists: builder.query<{ exists: boolean }, string>({
+    checkUsernameExists: builder.mutation<{ exists: boolean }, string>({
       query: (username) => ({
         url: `/username/${username}`,
         method: 'GET',
@@ -95,7 +95,10 @@ const userManagementApi = createApi({
       }),
     }),
 
-    forgotPassword: builder.mutation<number, { email: string; recaptchaToken: string }>({
+    forgotPassword: builder.mutation<
+      { message: string },
+      { email: string; recaptchaToken: string }
+    >({
       query: ({ email, recaptchaToken }) => ({
         url: '/password/forgot',
         method: 'POST',
@@ -125,8 +128,8 @@ const userManagementApi = createApi({
 });
 
 export const {
-  useCheckEmailExistsQuery,
-  useCheckUsernameExistsQuery,
+  useCheckEmailExistsMutation,
+  useCheckUsernameExistsMutation,
   useChangeUsernameMutation,
   useChangeEmailMutation,
   useChangeCountryMutation,

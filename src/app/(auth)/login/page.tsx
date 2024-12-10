@@ -7,7 +7,7 @@ import { useCallback, useEffect } from 'react';
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Handlers
-import { setType } from '@store/features/user/login/loginSlice';
+import { reset, setType } from '@store/features/user/login/loginSlice';
 
 // NextJS
 import { useRouter } from 'next/navigation';
@@ -46,6 +46,10 @@ export default function SignInPage() {
       // Otherwise, set the state "type" to 'Sign In'
       dispatch(setType('Sign In'));
     }
+
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch, handleLoginRedirect, isUserLoggedIn]);
 
   return <SignIn />;

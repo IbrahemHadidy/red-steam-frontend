@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Handlers
-import { setType } from '@store/features/user/login/loginSlice';
+import { reset, setType } from '@store/features/user/login/loginSlice';
 
 // Components
 import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
@@ -19,6 +19,10 @@ export default function ForgotPasswordPage() {
 
   useEffect(() => {
     dispatch(setType('Name / Password Recovery'));
+
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch]);
 
   return (

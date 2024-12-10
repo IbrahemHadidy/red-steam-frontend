@@ -7,11 +7,11 @@ import { login } from '@store/features/auth/authThunks';
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type Type = 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
+type FormType = 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
 
 interface LoginState {
   // UI states
-  readonly type: Type;
+  readonly type: FormType;
   readonly isLoginLoading: boolean;
   readonly isLoginFormVisible: boolean;
   readonly isForgotPasswordVisible: boolean;
@@ -42,7 +42,7 @@ const loginSlice = createSlice({
   initialState: loginState,
 
   reducers: {
-    setType: (state, action: PayloadAction<Type>) => {
+    setType: (state, action: PayloadAction<FormType>) => {
       state.type = action.payload;
     },
     setLoginLoading: (state, action: PayloadAction<boolean>) => {
@@ -66,6 +66,7 @@ const loginSlice = createSlice({
     updateLoginErrorMessage: (state, action: PayloadAction<string>) => {
       state.loginErrorMessage = action.payload;
     },
+    reset: () => loginState,
   },
 
   extraReducers: (builder) => {
@@ -97,5 +98,6 @@ export const {
   updateLoginPassword,
   toggleRememberMePreference,
   updateLoginErrorMessage,
+  reset,
 } = loginSlice.actions;
 export default loginSlice;

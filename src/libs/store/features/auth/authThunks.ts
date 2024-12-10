@@ -54,6 +54,14 @@ export const login = createAppAsyncThunk<User, LoginData>(
     // Notify other tabs about the login status
     authChannel.postMessage({ isUserLoggedIn: true, currentUserData });
 
+    // Schedule token refresh
+    setTimeout(
+      () => {
+        dispatch(refreshAuthorizationToken());
+      },
+      60 * 60 * 1000
+    );
+
     // Fulfill the promise with the user data
     return fulfillWithValue(currentUserData);
   }
@@ -109,6 +117,14 @@ export const autoLoginOnLoad = createAppAsyncThunk<{
   try {
     const data = await dispatch(userAuthApi.endpoints.autoLogin.initiate()).unwrap();
     if (data?.userData === null) return { isUserLoggedIn: false, currentUserData: null };
+
+    // Schedule token refresh
+    setTimeout(
+      () => {
+        dispatch(refreshAuthorizationToken());
+      },
+      60 * 60 * 1000
+    );
     return fulfillWithValue({ isUserLoggedIn: true, currentUserData: data?.userData ?? null });
   } catch (error) {
     console.error('Error auto-logging in:', error);
@@ -139,7 +155,6 @@ export const refreshAuthorizationToken = createAppAsyncThunk(
         );
       } catch (error) {
         console.error('Error refreshing access token:', error);
-        toast.error('Your session has expired. Please login again.');
         dispatch(logout());
       }
     }

@@ -1,16 +1,15 @@
-// Toast Notifications
-import { toast } from 'react-toastify';
-
 // Redux Hooks
 import { createAppAsyncThunk } from '@store/hooks';
 
 // Utils
 import { validateEmail } from '@utils/inputValidations';
+import promiseToast from '@utils/promiseToast';
 
 // APIs
 import userManagementApi from '@store/apis/user/management';
 
 // Types
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import type { RefObject } from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
@@ -64,16 +63,22 @@ export const forgotPassword = createAppAsyncThunk<
       }
 
       // Proceed with password reset if account exists
-      const status = await dispatch(
-        userManagementApi.endpoints.forgotPassword.initiate({
-          email: resetEmail,
-          recaptchaToken: recaptchaValue ?? '',
-        })
-      ).unwrap();
+      const response = await promiseToast(
+        dispatch(
+          userManagementApi.endpoints.forgotPassword.initiate({
+            email: resetEmail,
+            recaptchaToken: recaptchaValue ?? '',
+          })
+        ).unwrap(),
+        {
+          pending: 'Sending password reset email',
+          success: 'Password reset email sent successfully',
+          fallbackError: 'An error occurred while sending password reset email. Please try again.',
+        }
+      );
 
-      if (status === 200) {
+      if (response) {
         resetRecaptcha();
-        toast.success('Password reset email sent successfully. Please check your email.');
       } else {
         resetRecaptcha();
         return rejectWithValue('Internal server error, please try again later.');
@@ -86,24 +91,30 @@ export const forgotPassword = createAppAsyncThunk<
   }
 );
 
-export const resetPassword = createAppAsyncThunk(
+export const resetPassword = createAppAsyncThunk<void, AppRouterInstance>(
   'user/recovery/resetPassword',
-  async (_, { rejectWithValue, getState, dispatch }) => {
+  async (router, { rejectWithValue, getState, dispatch }) => {
     const { newPassword, confirmNewPassword, resetToken } = getState().user.recovery;
     // Check if passwords match
     if (newPassword !== confirmNewPassword) {
       return rejectWithValue('Passwords do not match. Please try again.');
     }
 
-    try {
-      // Reset the password using the reset token
-      await dispatch(
+    const response = await promiseToast(
+      dispatch(
         userManagementApi.endpoints.resetPassword.initiate({ token: resetToken, newPassword })
-      ).unwrap();
-    } catch (error) {
-      // Return an error message if the request fails
-      console.error('Error during password reset:', error);
+      ).unwrap(),
+      {
+        pending: 'Resetting password',
+        success: 'Password reset successfully',
+        fallbackError: 'An error occurred while resetting password. Please try again.',
+      }
+    );
+
+    if (!response) {
       return rejectWithValue('Internal server error, please try again later.');
+    } else {
+      router.replace('/login');
     }
   }
 );

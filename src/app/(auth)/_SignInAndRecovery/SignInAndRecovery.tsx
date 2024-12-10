@@ -42,17 +42,17 @@ export default function SignInAndRecovery() {
   // Styles for the forgot password form
   const styles: CSSProperties = {
     opacity: isForgotPasswordVisible ? 1 : 0,
-    width: type === 'Name / Password Recovery' ? '366px' : isForgotPasswordVisible ? '317px' : '0',
+    width: type !== 'Sign In' ? 'auto' : isForgotPasswordVisible ? '317px' : '0',
     paddingLeft: isForgotPasswordVisible ? '14px' : '0px',
     marginLeft: isForgotPasswordVisible ? '14px' : '0px',
-    pointerEvents: isForgotPasswordVisible ? 'auto' : 'none',
+    pointerEvents: isForgotPasswordVisible || type !== 'Sign In' ? 'auto' : 'none',
   };
   const styles740: CSSProperties = {
     opacity: isForgotPasswordVisible ? 1 : 0,
     height: isForgotPasswordVisible ? '296px' : '0',
     paddingTop: isForgotPasswordVisible ? '14px' : '0px',
     marginTop: isForgotPasswordVisible ? '14px' : '0px',
-    pointerEvents: isForgotPasswordVisible ? 'auto' : 'none',
+    pointerEvents: isForgotPasswordVisible || type !== 'Sign In' ? 'auto' : 'none',
   };
 
   //------------------------------- Render --------------------------------//
@@ -63,10 +63,10 @@ export default function SignInAndRecovery() {
         <div className="login-container">
           <div className="new-login">
             <div className="signin-title">
-              <div className={`title ${isPasswordPage ? 'password-page' : ''}`}>{type}</div>
+              <div className="title">{type}</div>
             </div>
 
-            <div className={`login-form-container ${isPasswordPage ? 'password-page' : ''}`}>
+            <div className="login-form-container">
               {isLoginFormVisible && <LoginForm />}
 
               <div

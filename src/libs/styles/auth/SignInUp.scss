@@ -61,10 +61,6 @@
         transition: all 0.2s;
         margin: 0 auto;
 
-        &.password-page {
-          width: 366px;
-        }
-
         @media screen and (max-width: 740px) {
           flex-direction: column;
           background-color: rgba(0, 0, 0, 0);
@@ -285,6 +281,7 @@
             .help-title {
               color: #5eafde;
               font-size: 18px;
+              max-width: 300px;
             }
 
             .field-label {

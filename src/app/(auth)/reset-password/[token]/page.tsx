@@ -7,7 +7,7 @@ import { use, useEffect } from 'react';
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Handlers
-import { setType } from '@store/features/user/login/loginSlice';
+import { reset, setType } from '@store/features/user/login/loginSlice';
 
 // Custom Hooks
 import useInitializePasswordReset from './_hooks/useInitializePasswordReset';
@@ -31,6 +31,9 @@ export default function ResetPasswordPage(props: ResetPasswordPageProps) {
   // Set the state "type" to 'Password Reset'
   useEffect(() => {
     dispatch(setType('Password Reset'));
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch]);
 
   // Initialize password reset

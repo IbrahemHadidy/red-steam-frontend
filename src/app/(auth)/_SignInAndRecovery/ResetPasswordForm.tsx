@@ -42,7 +42,7 @@ export default function ResetPasswordForm() {
   //---------------------------- Event Handlers ----------------------------//
   const handleResetPasswordFormSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    await dispatch(resetPassword());
+    await dispatch(resetPassword(router));
   };
 
   const handleResetPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
