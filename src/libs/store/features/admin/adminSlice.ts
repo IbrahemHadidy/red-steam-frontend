@@ -54,6 +54,7 @@ interface AdminState {
 
   readonly isInitialized: boolean;
   readonly isFetching: boolean;
+  readonly isSubmitting: boolean;
 }
 
 // Initial state
@@ -85,6 +86,7 @@ const adminState: AdminState = {
 
   isInitialized: false,
   isFetching: true,
+  isSubmitting: false,
 };
 
 const adminSlice = createSlice({
@@ -179,35 +181,44 @@ const adminSlice = createSlice({
     builder
       .addCase(submitItem.pending, (state) => {
         state.isFetching = true;
+        state.isSubmitting = true;
       })
       .addCase(submitItem.fulfilled, (state) => {
         state.isFetching = false;
+        state.isSubmitting = false;
       })
       .addCase(submitItem.rejected, (state) => {
         state.isFetching = false;
+        state.isSubmitting = false;
       })
 
       .addCase(updateItem.pending, (state) => {
         state.isFetching = true;
+        state.isSubmitting = true;
       })
       .addCase(updateItem.fulfilled, (state) => {
         state.isFetching = false;
+        state.isSubmitting = false;
         state.isEditModalOpen = false;
       })
       .addCase(updateItem.rejected, (state) => {
         state.isFetching = false;
+        state.isSubmitting = false;
         state.isEditModalOpen = false;
       })
 
       .addCase(deleteItem.pending, (state) => {
         state.isFetching = true;
+        state.isSubmitting = true;
       })
       .addCase(deleteItem.fulfilled, (state) => {
         state.isFetching = false;
+        state.isSubmitting = false;
         state.isDeleteModalOpen = false;
       })
       .addCase(deleteItem.rejected, (state) => {
         state.isFetching = false;
+        state.isSubmitting = false;
         state.isDeleteModalOpen = false;
       })
 

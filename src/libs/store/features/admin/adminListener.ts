@@ -174,6 +174,7 @@ listen({
     currentState.admin.common.itemsPerPage !== previousState.admin.common.itemsPerPage ||
     currentState.admin.common.sortConfig !== previousState.admin.common.sortConfig ||
     currentState.admin.common.searchQuery !== previousState.admin.common.searchQuery ||
+    (!currentState.admin.common.isSubmitting && previousState.admin.common.isSubmitting) ||
     (!currentState.admin.common.isEditModalOpen && previousState.admin.common.isEditModalOpen) ||
     (!currentState.admin.common.isDeleteModalOpen && previousState.admin.common.isDeleteModalOpen),
 
