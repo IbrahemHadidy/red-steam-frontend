@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { checkExistingEmail, checkNameAndPassword } from '@store/features/user/signup/signupThunks';
 
 // Redux Handlers
-import { fetchCountry, setSecondPage } from '@store/features/user/signup/signupSlice';
+import { fetchCountry, reset, setSecondPage } from '@store/features/user/signup/signupSlice';
 
 // Contstants
 import { SIGNUP_BG } from '@config/constants/backgrounds';
@@ -47,7 +47,7 @@ export default function SignUpPage() {
 
   //--------------------------- On Mount Effects --------------------------//
   useEffect(() => {
-    // Fetch User Country on mount
+    dispatch(reset());
     dispatch(fetchCountry());
   }, [dispatch]);
 
