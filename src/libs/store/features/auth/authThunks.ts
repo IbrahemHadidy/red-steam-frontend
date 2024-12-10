@@ -165,12 +165,21 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
     const getVerificationStatus = async () =>
       (await dispatch(userAuthApi.endpoints.verificationStatus.initiate()).unwrap()).verified;
 
+    const timeoutId = setTimeout(async () => {
+      clearInterval(intervalId);
+      toast.error('Email verification took too long. Please try again later.');
+      dispatch(setIsVerifyModalVisible(false));
+      dispatch(setIsVerificationEmailSent(false));
+      await dispatch(logout());
+    }, waitingTime);
+
     const intervalId = setInterval(async () => {
       try {
         const verificationResult = await getVerificationStatus();
 
         if (verificationResult === true) {
           clearInterval(intervalId);
+          clearTimeout(timeoutId);
           toast.success('Email verified successfully!');
           dispatch(setIsVerifyModalVisible(false));
           router.push('/user/tags');
@@ -181,15 +190,6 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
         console.error('Error during verification check:', error);
       }
     }, 5000);
-
-    // Handle timeout for verification
-    setTimeout(async () => {
-      clearInterval(intervalId);
-      toast.error('Email verification took too long. Please try again later.');
-      dispatch(setIsVerifyModalVisible(false));
-      dispatch(setIsVerificationEmailSent(false));
-      await dispatch(logout());
-    }, waitingTime);
   }
 );
 

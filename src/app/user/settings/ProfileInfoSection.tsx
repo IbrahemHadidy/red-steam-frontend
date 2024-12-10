@@ -49,6 +49,9 @@ export default function ProfileInfoSection() {
     avatarPreview,
     currentPassword,
     submitAvatarButtonDisabled,
+    isChangeModalVisible,
+    isDeleteAccountModalVisible,
+    isDeletePhoneModalVisible,
   } = useAppSelector((state) => state.user.settings);
 
   //-------------------------------- Refs ---------------------------------//
@@ -139,7 +142,7 @@ export default function ProfileInfoSection() {
                 <div
                   className="availability"
                   style={{
-                    background: isUsernameAvailable ? 'rgb(92, 126, 16)' : 'rgb(160, 56, 43)',
+                    background: 'rgb(160, 56, 43)',
                     display: newUsername !== '' ? 'inline-block' : 'none',
                   }}
                 >
@@ -147,7 +150,17 @@ export default function ProfileInfoSection() {
                 </div>
               </div>
             ) : (
-              <button type="submit" disabled={!isUsernameAvailable || currentPassword.length < 8}>
+              <button
+                type="submit"
+                disabled={
+                  !isUsernameAvailable ||
+                  isChangeModalVisible ||
+                  isDeleteAccountModalVisible ||
+                  isDeletePhoneModalVisible ||
+                  currentPassword.length < 8 ||
+                  ['', currentUserData?.username].includes(newUsername)
+                }
+              >
                 Save
               </button>
             )}
@@ -156,6 +169,11 @@ export default function ProfileInfoSection() {
               <input
                 type="password"
                 name="password"
+                value={
+                  isChangeModalVisible || isDeleteAccountModalVisible || isDeletePhoneModalVisible
+                    ? ''
+                    : currentPassword
+                }
                 autoComplete="off"
                 placeholder="Enter your password"
                 onChange={handlePasswordChange}

@@ -169,6 +169,7 @@ const userSettingsSlice = createSlice({
       })
       .addCase(changeUsername.fulfilled, (state) => {
         state.nextStepButtonDisabled = false;
+        state.currentPassword = '';
       })
       .addCase(changeUsername.rejected, (state) => {
         state.nextStepButtonDisabled = false;
