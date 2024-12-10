@@ -38,7 +38,7 @@ export default function SystemRequirements() {
   useEffect(() => {
     if (sysReqRef.current && sysReqRef.current.scrollHeight >= 250)
       setTimeout(() => setIsSysReqExpanded(false), 400);
-  }, [sysReqRef, sanitizedMiniAdditionalNotes, sanitizedRecAdditionalNotes]);
+  }, [sysReqRef]);
 
   const handleSysReqExpandClick = () => setIsSysReqExpanded(true);
 

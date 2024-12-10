@@ -21,8 +21,8 @@ export default function About() {
   const aboutRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (aboutRef.current && aboutRef.current.scrollHeight >= 850)
-      setTimeout(() => setIsAboutExpanded(false), 400);
+    if (sanitizedAbout && aboutRef.current && aboutRef.current.scrollHeight >= 850)
+      setIsAboutExpanded(false);
   }, [aboutRef, sanitizedAbout]);
 
   const handleAboutExpandClick = () => setIsAboutExpanded(true);

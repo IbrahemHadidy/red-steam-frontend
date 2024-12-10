@@ -21,8 +21,8 @@ export default function Mature() {
   const matureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (matureRef.current && matureRef.current.scrollHeight >= 120)
-      setTimeout(() => setIsMatureExpanded(false), 400);
+    if (sanitizedMatureDescription && matureRef.current && matureRef.current.scrollHeight >= 120)
+      setIsMatureExpanded(false);
   }, [matureRef, sanitizedMatureDescription]);
 
   const handleMatureExpandClick = () => setIsMatureExpanded(true);
