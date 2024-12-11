@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { createAppAsyncThunk } from '@store/hooks';
 
 // Thunks
-import { fetchUserData } from '@store/features/auth/authThunks';
+import { checkVerificationStatus, fetchUserData } from '@store/features/auth/authThunks';
 
 // Utils
 import { getFileFromIndexedDB } from '@utils/filesStorageUtils';
@@ -18,6 +18,9 @@ import userPhoneApi from '@store/apis/user/phone';
 
 // Channels
 import { authChannel } from '@store/features/auth/authChannel';
+
+// Types
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export const changeUsername = createAppAsyncThunk<string>(
   'user/settings/changeUsername',
@@ -46,10 +49,11 @@ export const changeUsername = createAppAsyncThunk<string>(
   }
 );
 
-export const changeEmail = createAppAsyncThunk<void | string>(
+export const changeEmail = createAppAsyncThunk<void | string, AppRouterInstance>(
   'user/settings/changeEmail',
-  async (_, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
-    const { currentChangeStep, currentEmail, currentPassword, email } = getState().user.settings;
+  async (router, { rejectWithValue, fulfillWithValue, getState, dispatch }) => {
+    const { currentChangeStep, currentEmail, currentPassword, email, confirmEmail } =
+      getState().user.settings;
 
     // Validate email format
     const isEmailValid = validateEmail(email);
@@ -58,6 +62,11 @@ export const changeEmail = createAppAsyncThunk<void | string>(
     if (currentChangeStep === 1) {
       // First step: validate email format and move to next step
       if (isEmailValid && isCurrentEmailValid) {
+        if (email !== confirmEmail) {
+          return rejectWithValue(
+            'Please make sure the new email field matches the confirm new email field'
+          );
+        }
         if (email !== currentEmail) {
           return fulfillWithValue(undefined);
         } else {
@@ -86,6 +95,9 @@ export const changeEmail = createAppAsyncThunk<void | string>(
 
       // Update user data
       await dispatch(fetchUserData());
+
+      // Check verification and tags status
+      await dispatch(checkVerificationStatus(router));
 
       // Resolve with success message
       return fulfillWithValue('Email changed successfully');

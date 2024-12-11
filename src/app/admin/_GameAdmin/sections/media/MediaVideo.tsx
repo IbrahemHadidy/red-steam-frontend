@@ -51,6 +51,8 @@ export default function MediaVideo({ item }: MediaVideoProps) {
   const handleVideoOrderChange = (e: ChangeEvent<HTMLInputElement>, baseOrder: number): void => {
     const newOrder = Number(e.target.value.trim());
     dispatch(updateVideoOrder({ baseOrder, newOrder }));
+    const screenshotElement = document.querySelector(`video[title="Video ${newOrder}"]`);
+    screenshotElement?.scrollIntoView({ behavior: 'smooth' });
   };
 
   //------------------------------- Render --------------------------------//
@@ -62,6 +64,7 @@ export default function MediaVideo({ item }: MediaVideoProps) {
         poster={posterUrl}
         className="media-preview"
         preload="metadata"
+        title={`Video ${item.order}`}
       />
       <div className="media-details">
         <label>Order:</label>

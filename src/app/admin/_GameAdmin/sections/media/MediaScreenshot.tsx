@@ -63,6 +63,8 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   ): void => {
     const newOrder = Number(e.target.value.trim());
     dispatch(updateScreenshotOrder({ baseOrder, newOrder }));
+    const screenshotElement = document.querySelector(`img[alt="Screenshot ${newOrder}"]`);
+    screenshotElement?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleFeaturedChange = (id: number): void => {

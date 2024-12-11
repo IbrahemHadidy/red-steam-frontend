@@ -47,7 +47,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     if (currentUserData && isUserLoggedIn && isNotVerifyPath) {
       (async () => {
-        await dispatch(checkVerificationAndTagsStatus({ router }));
+        await dispatch(checkVerificationAndTagsStatus(router));
       })();
     }
   }, [currentUserData, dispatch, isNotVerifyPath, isUserLoggedIn, router]);

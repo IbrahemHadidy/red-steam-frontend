@@ -44,7 +44,9 @@ const debouncedCheckUsernameExists = debounce<
 >(async (accountName: string, dispatch: AppDispatch) => {
   try {
     const exists = (
-      await dispatch(userManagementApi.endpoints.checkUsernameExists.initiate(accountName)).unwrap()
+      await dispatch(
+        userManagementApi.endpoints.checkUsernameExists.initiate(accountName.trim())
+      ).unwrap()
     ).exists;
 
     if (!exists) {

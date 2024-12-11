@@ -34,6 +34,7 @@ interface UserSettingsState {
 
   // Input States
   readonly email: string;
+  readonly confirmEmail: string;
   readonly phone: string;
   readonly newUsername: string;
   readonly currentEmail: string;
@@ -64,6 +65,7 @@ const userSettingsState: UserSettingsState = {
   deletePhoneButtonDisabled: false,
 
   email: '',
+  confirmEmail: '',
   phone: '',
   newUsername: '',
   currentEmail: '',
@@ -112,6 +114,9 @@ const userSettingsSlice = createSlice({
     },
     updateEmail(state, action: PayloadAction<string>) {
       state.email = action.payload;
+    },
+    updateConfirmEmail(state, action: PayloadAction<string>) {
+      state.confirmEmail = action.payload;
     },
     updatePhone(state, action: PayloadAction<string>) {
       state.phone = action.payload;
@@ -283,6 +288,7 @@ export const {
   setNextStepButtonDisabled,
   setDeletePhoneButtonDisabled,
   updateEmail,
+  updateConfirmEmail,
   updatePhone,
   updateNewUsername,
   updateCurrentEmail,

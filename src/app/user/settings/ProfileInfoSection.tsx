@@ -52,6 +52,7 @@ export default function ProfileInfoSection() {
     isChangeModalVisible,
     isDeleteAccountModalVisible,
     isDeletePhoneModalVisible,
+    nextStepButtonDisabled,
   } = useAppSelector((state) => state.user.settings);
 
   //-------------------------------- Refs ---------------------------------//
@@ -154,6 +155,7 @@ export default function ProfileInfoSection() {
                 type="submit"
                 disabled={
                   !isUsernameAvailable ||
+                  nextStepButtonDisabled ||
                   isChangeModalVisible ||
                   isDeleteAccountModalVisible ||
                   isDeletePhoneModalVisible ||

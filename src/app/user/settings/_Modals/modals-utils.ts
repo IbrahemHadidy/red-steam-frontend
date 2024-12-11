@@ -64,7 +64,7 @@ export const getModalHeader = (changeModalType: ChangeModalType): string => {
   return '';
 };
 
-export const getInputType = (changeModalType: ChangeModalType): string => {
+export const getInputType = (changeModalType: ChangeModalType): 'email' | 'text' | '' => {
   if (changeModalType === 'email') {
     return 'email';
   } else if (changeModalType === 'phone') {

@@ -54,7 +54,9 @@ const debouncedCheckUsernameExists = debounce<
   try {
     dispatch(setSubmitButtonDisabled(true));
     const exists = (
-      await dispatch(userManagementApi.endpoints.checkUsernameExists.initiate(accountName)).unwrap()
+      await dispatch(
+        userManagementApi.endpoints.checkUsernameExists.initiate(accountName.trim())
+      ).unwrap()
     ).exists;
 
     if (!exists) {

@@ -1,5 +1,8 @@
 'use client';
 
+// NextJS
+import { useRouter } from 'next/navigation';
+
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
@@ -7,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import {
   resetChangeModal,
   setChangeModalVisiblity,
+  updateConfirmEmail,
   updateConfirmNewPassword,
   updateCurrentEmail,
   updateCurrentPassword,
@@ -36,6 +40,7 @@ import type { ChangeEvent } from 'react';
 export default function ChangeModal() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   //------------------------------- States --------------------------------//
   const {
@@ -44,6 +49,7 @@ export default function ChangeModal() {
     errorMessage,
     email,
     currentEmail,
+    confirmEmail,
     phone,
     currentPassword,
     newPassword,
@@ -72,6 +78,11 @@ export default function ChangeModal() {
     }
   };
 
+  const handleConfirmEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    dispatch(updateConfirmEmail(value));
+  };
+
   const handleCurrentPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     dispatch(updateCurrentPassword(value));
@@ -89,7 +100,7 @@ export default function ChangeModal() {
 
   const handleNextBtnClick = async (): Promise<void> => {
     if (changeModalType === 'email') {
-      await dispatch(changeEmail());
+      await dispatch(changeEmail(router));
     } else if (changeModalType === 'phone') {
       await dispatch(changePhone());
     } else if (changeModalType === 'password') {
@@ -140,6 +151,15 @@ export default function ChangeModal() {
               value={changeModalType === 'email' ? email : phone}
               onChange={handleEmailPhoneChange}
             />
+            {changeModalType === 'email' && (
+              <input
+                className="password-input"
+                type="email"
+                placeholder="Confirm your new email"
+                value={confirmEmail}
+                onChange={handleConfirmEmailChange}
+              />
+            )}
           </>
         )}
 

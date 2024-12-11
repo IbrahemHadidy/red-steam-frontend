@@ -197,7 +197,13 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
           clearTimeout(timeoutId);
           toast.success('Email verified successfully!');
           dispatch(setIsVerifyModalVisible(false));
-          router.push('/user/tags');
+
+          const tags = currentUserData?.tags;
+          if (!tags || tags.length < 3) {
+            router.push('/user/tags');
+            toast.info('Please add at least 3 tags to continue!');
+          }
+
           await dispatch(fetchUserData());
           return;
         }
@@ -208,24 +214,24 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
   }
 );
 
-export const checkVerificationAndTagsStatus = createAppAsyncThunk<
-  void,
-  { router: AppRouterInstance }
->('auth/checkUserStatus', async ({ router }, { dispatch, getState }) => {
-  const { currentUserData } = getState().auth;
+export const checkVerificationAndTagsStatus = createAppAsyncThunk<void, AppRouterInstance>(
+  'auth/checkUserStatus',
+  async (router, { dispatch, getState }) => {
+    const { currentUserData } = getState().auth;
 
-  if (currentUserData) {
-    // Check verification status
-    if (!currentUserData.isVerified) {
-      await dispatch(checkVerificationStatus(router));
-    } else {
-      const tags = currentUserData.tags;
+    if (currentUserData) {
+      // Check verification status
+      if (!currentUserData.isVerified) {
+        await dispatch(checkVerificationStatus(router));
+      } else {
+        const tags = currentUserData.tags;
 
-      // Check if the user has at least 3 tags
-      if (!tags || tags.length < 3) {
-        router.push('/user/tags');
-        toast.info('Please add at least 3 tags to continue!');
+        // Check if the user has at least 3 tags
+        if (!tags || tags.length < 3) {
+          router.push('/user/tags');
+          toast.info('Please add at least 3 tags to continue!');
+        }
       }
     }
   }
-});
+);
