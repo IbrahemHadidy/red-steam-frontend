@@ -13,7 +13,6 @@ interface RenderOnViewportEntryProps {
   threshold?: number;
   rootMargin?: string;
   wrapperProps?: HTMLAttributes<HTMLDivElement>;
-  shouldLoad?: boolean;
   onLoadComplete?: () => void;
 }
 
@@ -23,23 +22,18 @@ export default function RenderOnViewportEntry({
   threshold = 0,
   rootMargin = '0px 0px 0px 0px',
   wrapperProps,
-  shouldLoad = true,
   onLoadComplete,
 }: RenderOnViewportEntryProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useFirstViewportEntry(ref, threshold, rootMargin, shouldLoad);
+  const isInView = useFirstViewportEntry(ref, threshold, rootMargin);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    if (isInView && shouldLoad && !loaded) {
+    if (isInView && !loaded) {
       setLoaded(true);
       onLoadComplete?.();
     }
-  }, [isInView, shouldLoad, loaded, onLoadComplete]);
-
-  if (!shouldLoad) {
-    return null;
-  }
+  }, [isInView, loaded, onLoadComplete]);
 
   return (
     <div {...wrapperProps} ref={ref}>

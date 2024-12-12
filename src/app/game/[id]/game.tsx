@@ -37,9 +37,11 @@ export default function Game() {
         <GameContent />
       </RenderOnViewportEntry>
 
-      <RenderOnViewportEntry loader={<Loader />} shouldLoad={gameContentLoaded}>
-        <GameReviews />
-      </RenderOnViewportEntry>
+      {gameContentLoaded && (
+        <RenderOnViewportEntry loader={<Loader />}>
+          <GameReviews />
+        </RenderOnViewportEntry>
+      )}
     </>
   );
 }

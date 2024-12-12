@@ -73,37 +73,36 @@ export default function StorePage() {
           <Offers />
         </RenderOnViewportEntry>
 
-        <RenderOnViewportEntry
-          shouldLoad={offersLoaded}
-          onLoadComplete={() => setCategoriesLoaded(true)}
-        >
-          <Categories />
-        </RenderOnViewportEntry>
+        {offersLoaded && (
+          <RenderOnViewportEntry onLoadComplete={() => setCategoriesLoaded(true)}>
+            <Categories />
+          </RenderOnViewportEntry>
+        )}
 
-        <RenderOnViewportEntry
-          shouldLoad={categoriesLoaded}
-          onLoadComplete={() => setUserSectionLoaded(true)}
-        >
-          {isUserLoggedIn ? (
-            <>
-              <Queue />
-              <Recommended />
-            </>
-          ) : (
-            <LoginFirst />
-          )}
-        </RenderOnViewportEntry>
+        {categoriesLoaded && (
+          <RenderOnViewportEntry onLoadComplete={() => setUserSectionLoaded(true)}>
+            {isUserLoggedIn ? (
+              <>
+                <Queue />
+                <Recommended />
+              </>
+            ) : (
+              <LoginFirst />
+            )}
+          </RenderOnViewportEntry>
+        )}
 
-        <RenderOnViewportEntry
-          shouldLoad={userSectionLoaded}
-          onLoadComplete={() => setBrowseSteamLoaded(true)}
-        >
-          <BrowseSteam />
-        </RenderOnViewportEntry>
+        {userSectionLoaded && (
+          <RenderOnViewportEntry onLoadComplete={() => setBrowseSteamLoaded(true)}>
+            <BrowseSteam />
+          </RenderOnViewportEntry>
+        )}
 
-        <RenderOnViewportEntry loader={<TabsSkeleton />} shouldLoad={browseSteamLoaded}>
-          <HomeTabs />
-        </RenderOnViewportEntry>
+        {browseSteamLoaded && (
+          <RenderOnViewportEntry loader={<TabsSkeleton />}>
+            <HomeTabs />
+          </RenderOnViewportEntry>
+        )}
       </div>
     );
   }

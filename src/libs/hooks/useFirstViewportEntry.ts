@@ -9,8 +9,7 @@ import { RefObject, useEffect, useState } from 'react';
 export default function useFirstViewportEntry(
   ref: RefObject<HTMLDivElement | null>,
   threshold = 0,
-  rootMargin = '0px 0px 0px 0px',
-  shouldLoad: boolean
+  rootMargin = '0px 0px 0px 0px'
 ): boolean {
   const [hasEntered, setHasEntered] = useState(false);
 
@@ -30,7 +29,7 @@ export default function useFirstViewportEntry(
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [hasEntered, ref, threshold, rootMargin, shouldLoad]);
+  }, [hasEntered, ref, threshold, rootMargin]);
 
   return hasEntered;
 }
