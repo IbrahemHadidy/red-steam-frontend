@@ -72,7 +72,7 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
       if (filterRef.current) {
         const childNodesLength = filterRef.current.childNodes.length;
         const height = DROPDOWN_HEIGHTS_BY_CHILD_COUNT[childNodesLength] ?? 340;
-        setDropdownHeight(height);
+        setDropdownHeight(height - (filters.length > 10 ? 0 : 40));
       }
     }, 50);
   }, [filters, searchValue]);
