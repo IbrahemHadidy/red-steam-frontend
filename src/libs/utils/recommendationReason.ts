@@ -30,9 +30,9 @@ export function hasMinimumCommonTags(gametags: Tag[], userTags: Tag[]): boolean 
 export function getRecommendationClass(game: Game, currentUserData?: User): RecommendationStatus {
   const gameTags = game.tags ?? [];
   const userTags = currentUserData?.tags ?? [];
-  if (gameTags.length < 3 || userTags.length < 3) return RecommendationStatus.AVAILABLE;
+  if (gameTags.length < 3 || userTags.length < 3) return RecommendationStatus.Available;
 
   return hasMinimumCommonTags(gameTags, userTags)
-    ? RecommendationStatus.RECOMMENDED
-    : RecommendationStatus.AVAILABLE;
+    ? RecommendationStatus.Recommended
+    : RecommendationStatus.Available;
 }

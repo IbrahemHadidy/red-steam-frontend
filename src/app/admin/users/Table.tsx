@@ -74,26 +74,26 @@ export default function Table() {
         <tr>
           <th className="user-id">ID</th>
 
-          <th onClick={() => sortBykey(UserSortOption.USERNAME)}>
-            Username {sortArrow(UserSortOption.USERNAME)}
+          <th onClick={() => sortBykey(UserSortOption.Username)}>
+            Username {sortArrow(UserSortOption.Username)}
           </th>
 
-          <th onClick={() => sortBykey(UserSortOption.EMAIL)}>Email {UserSortOption.EMAIL}</th>
+          <th onClick={() => sortBykey(UserSortOption.Email)}>Email {UserSortOption.Email}</th>
 
-          <th className="mini" onClick={() => sortBykey(UserSortOption.COUNTRY)}>
-            Country {sortArrow(UserSortOption.COUNTRY)}
+          <th className="mini" onClick={() => sortBykey(UserSortOption.Country)}>
+            Country {sortArrow(UserSortOption.Country)}
           </th>
 
-          <th className="mini" onClick={() => sortBykey(UserSortOption.VERIFIED)}>
-            Verified {sortArrow(UserSortOption.VERIFIED)}
+          <th className="mini" onClick={() => sortBykey(UserSortOption.Verified)}>
+            Verified {sortArrow(UserSortOption.Verified)}
           </th>
 
-          <th className="mini" onClick={() => sortBykey(UserSortOption.ADMIN)}>
-            Admin {sortArrow(UserSortOption.ADMIN)}
+          <th className="mini" onClick={() => sortBykey(UserSortOption.Admin)}>
+            Admin {sortArrow(UserSortOption.Admin)}
           </th>
 
-          <th className="created-at" onClick={() => sortBykey(UserSortOption.CREATED_AT)}>
-            Created at {sortArrow(UserSortOption.CREATED_AT)}
+          <th className="created-at" onClick={() => sortBykey(UserSortOption.CreatedAt)}>
+            Created at {sortArrow(UserSortOption.CreatedAt)}
           </th>
 
           <th>Actions</th>

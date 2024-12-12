@@ -24,7 +24,7 @@ export default function IncludedRow({
 }: IncludedRowProps) {
   return (
     <div
-      className={`filter-control-row ${row.check === FilterCheckType.INCLUDED ? 'included' : ''}`}
+      className={`filter-control-row ${row.check === FilterCheckType.Included ? 'included' : ''}`}
       onClick={() => handleIncludeClick(row)}
     >
       <span className="filter-tab">

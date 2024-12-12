@@ -53,7 +53,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.DEVELOPER));
+    dispatch(setAdminType(AdminType.Developer));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedDevelopers(dispatch);
   },
@@ -67,7 +67,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.PUBLISHER));
+    dispatch(setAdminType(AdminType.Publisher));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedPublishers(dispatch);
   },
@@ -81,7 +81,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.FEATURE));
+    dispatch(setAdminType(AdminType.Feature));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedFeatures(dispatch);
   },
@@ -95,7 +95,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.TAG));
+    dispatch(setAdminType(AdminType.Tag));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedTags(dispatch);
   },
@@ -109,7 +109,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.LANGUAGE));
+    dispatch(setAdminType(AdminType.Language));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedLanguages(dispatch);
   },
@@ -123,7 +123,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.REVIEW));
+    dispatch(setAdminType(AdminType.Review));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedReviews(dispatch);
   },
@@ -137,7 +137,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.OFFER));
+    dispatch(setAdminType(AdminType.Offer));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedOffers(dispatch);
   },
@@ -152,7 +152,7 @@ listen({
     const gameId = action.payload;
 
     dispatch(reset());
-    dispatch(setAdminType(AdminType.CREATE_OFFER));
+    dispatch(setAdminType(AdminType.CreateOffer));
 
     const offerGame = await promiseToast(
       dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap(),
@@ -185,13 +185,13 @@ listen({
     const { dispatch, getState } = listenerApi;
     const { adminType } = getState().admin.common;
 
-    if (adminType === AdminType.DEVELOPER) debouncedFetchPaginatedDevelopers(dispatch);
-    else if (adminType === AdminType.PUBLISHER) debouncedFetchPaginatedPublishers(dispatch);
-    else if (adminType === AdminType.FEATURE) debouncedFetchPaginatedFeatures(dispatch);
-    else if (adminType === AdminType.TAG) debouncedFetchPaginatedTags(dispatch);
-    else if (adminType === AdminType.LANGUAGE) debouncedFetchPaginatedLanguages(dispatch);
-    else if (adminType === AdminType.REVIEW) debouncedFetchPaginatedReviews(dispatch);
-    else if (adminType === AdminType.OFFER || adminType === AdminType.CREATE_OFFER)
+    if (adminType === AdminType.Developer) debouncedFetchPaginatedDevelopers(dispatch);
+    else if (adminType === AdminType.Publisher) debouncedFetchPaginatedPublishers(dispatch);
+    else if (adminType === AdminType.Feature) debouncedFetchPaginatedFeatures(dispatch);
+    else if (adminType === AdminType.Tag) debouncedFetchPaginatedTags(dispatch);
+    else if (adminType === AdminType.Language) debouncedFetchPaginatedLanguages(dispatch);
+    else if (adminType === AdminType.Review) debouncedFetchPaginatedReviews(dispatch);
+    else if (adminType === AdminType.Offer || adminType === AdminType.CreateOffer)
       debouncedFetchPaginatedOffers(dispatch);
   },
 });

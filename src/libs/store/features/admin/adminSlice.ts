@@ -62,7 +62,7 @@ interface AdminState {
 
 // Initial state
 const adminState: AdminState = {
-  adminType: AdminType.TAG,
+  adminType: AdminType.Tag,
 
   offerGame: null,
   discountPrice: '0.00',

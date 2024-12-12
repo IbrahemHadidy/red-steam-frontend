@@ -56,7 +56,7 @@ interface UserSettingsState {
 const userSettingsState: UserSettingsState = {
   isIdVisible: false,
   isChangeModalVisible: false,
-  changeModalType: ChangeModalType.EMAIL,
+  changeModalType: ChangeModalType.Email,
   currentChangeStep: 1,
   isDeleteAccountModalVisible: false,
   isDeletePhoneModalVisible: false,

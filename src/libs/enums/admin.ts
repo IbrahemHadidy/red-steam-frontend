@@ -10,67 +10,53 @@ export const enum Direction {
  * Enum representing available sorting options.
  */
 export const enum UserSortOption {
-  USERNAME = 'username',
-  EMAIL = 'email',
-  COUNTRY = 'country',
-  VERIFIED = 'isVerified',
-  ADMIN = 'isAdmin',
-  CREATED_AT = 'createdAt',
+  Username = 'username',
+  Email = 'email',
+  Country = 'country',
+  Verified = 'isVerified',
+  Admin = 'isAdmin',
+  CreatedAt = 'createdAt',
 }
 
 /**
  * Enum representing available admin types.
  */
 export const enum AdminType {
-  DEVELOPER = 'DEVELOPER',
-  PUBLISHER = 'PUBLISHER',
-  FEATURE = 'FEATURE',
-  TAG = 'TAG',
-  LANGUAGE = 'LANGUAGE',
-  REVIEW = 'REVIEW',
-  OFFER = 'OFFER',
-  CREATE_OFFER = 'CREATE_OFFER',
+  Developer = 'Developer',
+  Publisher = 'Publisher',
+  Feature = 'Feature',
+  Tag = 'Tag',
+  Language = 'Language',
+  Review = 'Review',
+  Offer = 'Offer',
+  CreateOffer = 'CreateOffer',
 }
 
 /**
  * Enum representing available game admin types.
  */
 export const enum GameAdminType {
-  CREATE = 'CREATE',
-  UPDATE = 'UPDATE',
+  Create = 'Create',
+  Update = 'Update',
 }
 
 export const enum CurrentGameAdminPage {
-  BASIC = 'BASIC',
-  COMPANIES = 'COMPANIES',
-  THUMBNAILS = 'THUMBNAILS',
-  MEDIA = 'MEDIA',
-  PRICING = 'PRICING',
-  SPECIFICATIONS = 'SPECIFICATIONS',
-  SYSTEM_REQUIREMENTS = 'SYSTEM_REQUIREMENTS',
-  ADDITIONAL_INFO = 'ADDITIONAL_INFO',
-  PREVIEW = 'PREVIEW',
-}
-
-/**
- * Enum representing available admin list items.
- */
-export const enum AdminListItem {
-  FEATURE = 'FEATURE',
-  COMPANY = 'COMPANY',
-  TAG = 'TAG',
-  LANGUAGE = 'LANGUAGE',
-  REVIEW = 'REVIEW',
-  GAME = 'GAME',
-  OFFER = 'OFFER',
-  CREATE_OFFER = 'CREATE_OFFER',
+  Basic = 'Basic',
+  Companies = 'Companies',
+  Thumbnails = 'Thumbnails',
+  Media = 'Media',
+  Pricing = 'Pricing',
+  Specifications = 'Specifications',
+  SystemRequirements = 'SystemRequirements',
+  AdditionalInfo = 'AdditionalInfo',
+  Preview = 'Preview',
 }
 
 /**
  * Enum representing available game media change statuses.
  */
 export const enum GameMediaChangeStatus {
-  ADDED = 'ADDED',
-  DELETED = 'DELETED',
-  UNCHANGED = 'UNCHANGED',
+  Added = 'Added',
+  Deleted = 'Deleted',
+  Unchanged = 'Unchanged',
 }

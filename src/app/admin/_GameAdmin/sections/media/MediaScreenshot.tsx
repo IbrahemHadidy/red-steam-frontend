@@ -92,14 +92,14 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
           className={duplicateOrders.includes(item.order) ? 'input-error' : ''}
         />
         <button
-          className={`remove-button ${item.change === GameMediaChangeStatus.DELETED ? 'restore' : ''}`}
+          className={`remove-button ${item.change === GameMediaChangeStatus.Deleted ? 'restore' : ''}`}
           onClick={() =>
-            item.change === GameMediaChangeStatus.DELETED
+            item.change === GameMediaChangeStatus.Deleted
               ? handleRestoreScreenshot(item.baseOrder)
               : handleRemoveScreenshot(item.baseOrder)
           }
         >
-          {item.change === GameMediaChangeStatus.DELETED ? 'Restore' : 'Remove'}
+          {item.change === GameMediaChangeStatus.Deleted ? 'Restore' : 'Remove'}
         </button>
         <label>Featured:</label>
         <input

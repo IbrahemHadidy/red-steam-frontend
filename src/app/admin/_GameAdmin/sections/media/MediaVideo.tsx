@@ -78,14 +78,14 @@ export default function MediaVideo({ item }: MediaVideoProps) {
           className={duplicateOrders.includes(item.order) ? 'input-error' : ''}
         />
         <button
-          className={`remove-button ${item.change === GameMediaChangeStatus.DELETED ? 'restore' : ''}`}
+          className={`remove-button ${item.change === GameMediaChangeStatus.Deleted ? 'restore' : ''}`}
           onClick={() =>
-            item.change === GameMediaChangeStatus.DELETED
+            item.change === GameMediaChangeStatus.Deleted
               ? handleRestoreVideo(item.baseOrder)
               : handleRemoveVideo(item.baseOrder)
           }
         >
-          {item.change === GameMediaChangeStatus.DELETED ? 'Restore' : 'Remove'}
+          {item.change === GameMediaChangeStatus.Deleted ? 'Restore' : 'Remove'}
         </button>
       </div>
     </div>

@@ -88,7 +88,7 @@ export default function EditModal() {
       <div className="modal-overlay" onClick={closeModal} />
       <div className="edit-modal">
         <form onSubmit={handleSubmit}>
-          {adminType === AdminType.OFFER ? (
+          {adminType === AdminType.Offer ? (
             <>
               <div className="form-group">
                 <label htmlFor="discountPrice">Discount Price</label>
@@ -165,7 +165,7 @@ export default function EditModal() {
                 />
               </div>
 
-              {(adminType === AdminType.DEVELOPER || adminType === AdminType.PUBLISHER) && (
+              {(adminType === AdminType.Developer || adminType === AdminType.Publisher) && (
                 <div className="form-group">
                   <label htmlFor="website">Website</label>
                   <input
@@ -178,7 +178,7 @@ export default function EditModal() {
                 </div>
               )}
 
-              {adminType === AdminType.FEATURE && (
+              {adminType === AdminType.Feature && (
                 <div className="form-group">
                   <label htmlFor="icon">Icon</label>
                   <input id="icon" name="icon" type="file" onChange={handleIconChange} />

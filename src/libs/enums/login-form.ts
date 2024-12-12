@@ -1,5 +1,5 @@
 export const enum LoginFormType {
-  LOGIN = 'Sign In',
-  RESET_PASSWORD = 'Password Reset',
-  FORGOT_PASSWORD = 'Name / Password Recovery',
+  SignIn = 'Sign In',
+  PasswordReset = 'Password Reset',
+  NamePasswordRecovery = 'Name / Password Recovery',
 }

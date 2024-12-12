@@ -83,13 +83,13 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
   };
 
   const handleIncludeClick = (row: Filter): void => {
-    if (row.check === FilterCheckType.INCLUDED) {
+    if (row.check === FilterCheckType.Included) {
       dispatch(uncheckFilter({ filterType: getFilterTypeFromTitle(title), id: row.id }));
     } else {
       dispatch(
         checkFilter({
           filterType: getFilterTypeFromTitle(title),
-          check: FilterCheckType.INCLUDED,
+          check: FilterCheckType.Included,
           id: row.id,
         })
       );
@@ -98,13 +98,13 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
 
   const handleExcludeClick = (e: MouseEvent<HTMLImageElement>, row: Filter): void => {
     e.stopPropagation();
-    if (row.check === FilterCheckType.EXCLUDED) {
+    if (row.check === FilterCheckType.Excluded) {
       dispatch(uncheckFilter({ filterType: getFilterTypeFromTitle(title), id: row.id }));
     } else {
       dispatch(
         checkFilter({
           filterType: getFilterTypeFromTitle(title),
-          check: FilterCheckType.EXCLUDED,
+          check: FilterCheckType.Excluded,
           id: row.id,
         })
       );
@@ -113,9 +113,9 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
 
   //-------------------------------- Render -------------------------------//
 
-  const includedRows = currentFilters.filter((row) => row.check === FilterCheckType.INCLUDED);
-  const excludedRows = currentFilters.filter((row) => row.check === FilterCheckType.EXCLUDED);
-  const uncheckedRows = currentFilters.filter((row) => row.check === FilterCheckType.UNCHECKED);
+  const includedRows = currentFilters.filter((row) => row.check === FilterCheckType.Included);
+  const excludedRows = currentFilters.filter((row) => row.check === FilterCheckType.Excluded);
+  const uncheckedRows = currentFilters.filter((row) => row.check === FilterCheckType.Unchecked);
 
   return (
     <div className="filter-block">

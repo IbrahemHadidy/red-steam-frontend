@@ -66,10 +66,10 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
   };
 
   const handleIncludeClick = (row: Filter): void => {
-    if (row.check === FilterCheckType.INCLUDED) {
+    if (row.check === FilterCheckType.Included) {
       dispatch(uncheckFilter({ filterType: 'price', id: row.id }));
     } else {
-      dispatch(checkFilter({ filterType: 'price', check: FilterCheckType.INCLUDED, id: row.id }));
+      dispatch(checkFilter({ filterType: 'price', check: FilterCheckType.Included, id: row.id }));
     }
   };
 
@@ -124,7 +124,7 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
         {filters.map((row) => (
           <div
             key={row.name}
-            className={`filter-control-row ${row.check === FilterCheckType.INCLUDED ? 'included' : ''} ${
+            className={`filter-control-row ${row.check === FilterCheckType.Included ? 'included' : ''} ${
               row.id === 2 && priceRange === 0 ? 'disabled' : ''
             }`}
             onClick={() => handleIncludeClick(row)}

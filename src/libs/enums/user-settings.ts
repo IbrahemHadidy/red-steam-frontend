@@ -1,5 +1,8 @@
+/**
+ * Enum representing the types of change modals.
+ */
 export const enum ChangeModalType {
-  EMAIL = 'email',
-  PASSWORD = 'password',
-  PHONE = 'phone',
+  Email = 'email',
+  Password = 'password',
+  Phone = 'phone',
 }

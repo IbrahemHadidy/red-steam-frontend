@@ -79,7 +79,7 @@ export default function GameAdmin() {
   }, [thumbnails.backgroundImage.file]);
 
   useDynamicBackground(
-    currentPage === CurrentGameAdminPage.PREVIEW
+    currentPage === CurrentGameAdminPage.Preview
       ? `url(${background}) center top no-repeat #1b2838`
       : ADMIN_BG,
     [thumbnails.backgroundImage, currentPage]
@@ -88,27 +88,27 @@ export default function GameAdmin() {
   //------------------------------- Render --------------------------------//
   return (
     <>
-      {currentPage === CurrentGameAdminPage.PREVIEW && <SecondNavbar />}
+      {currentPage === CurrentGameAdminPage.Preview && <SecondNavbar />}
       <div
-        className={`game-creation-form ${currentPage === CurrentGameAdminPage.PREVIEW ? 'preview' : ''}`}
+        className={`game-creation-form ${currentPage === CurrentGameAdminPage.Preview ? 'preview' : ''}`}
       >
-        {currentPage !== CurrentGameAdminPage.PREVIEW ? (
+        {currentPage !== CurrentGameAdminPage.Preview ? (
           <>
             <h1 className="form-title">
-              {type === GameAdminType.UPDATE ? `Update ${name}'s Details` : 'Create a New Game'}
+              {type === GameAdminType.Update ? `Update ${name}'s Details` : 'Create a New Game'}
             </h1>
             <hr />
 
-            {currentPage === CurrentGameAdminPage.BASIC && <BasicInfoSection />}
-            {currentPage === CurrentGameAdminPage.COMPANIES && <CompaniesSection />}
-            {currentPage === CurrentGameAdminPage.THUMBNAILS && <ThumbnailsSection />}
-            {currentPage === CurrentGameAdminPage.MEDIA && <MediaSection />}
-            {currentPage === CurrentGameAdminPage.PRICING && <PricingSection />}
-            {currentPage === CurrentGameAdminPage.SPECIFICATIONS && <SpecificationsSection />}
-            {currentPage === CurrentGameAdminPage.SYSTEM_REQUIREMENTS && (
+            {currentPage === CurrentGameAdminPage.Basic && <BasicInfoSection />}
+            {currentPage === CurrentGameAdminPage.Companies && <CompaniesSection />}
+            {currentPage === CurrentGameAdminPage.Thumbnails && <ThumbnailsSection />}
+            {currentPage === CurrentGameAdminPage.Media && <MediaSection />}
+            {currentPage === CurrentGameAdminPage.Pricing && <PricingSection />}
+            {currentPage === CurrentGameAdminPage.Specifications && <SpecificationsSection />}
+            {currentPage === CurrentGameAdminPage.SystemRequirements && (
               <SystemRequirementsSection />
             )}
-            {currentPage === CurrentGameAdminPage.ADDITIONAL_INFO && <AdditionalInfoSection />}
+            {currentPage === CurrentGameAdminPage.AdditionalInfo && <AdditionalInfoSection />}
           </>
         ) : (
           previewData && (
@@ -119,7 +119,7 @@ export default function GameAdmin() {
           )
         )}
 
-        {currentPage === CurrentGameAdminPage.PREVIEW && (
+        {currentPage === CurrentGameAdminPage.Preview && (
           <>
             <br />
             <FormButtons />

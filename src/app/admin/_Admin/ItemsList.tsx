@@ -21,10 +21,10 @@ export default function ItemsList() {
   return (
     <>
       <div
-        className={`items-list-container ${[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) ? 'wide-list' : ''}`}
+        className={`items-list-container ${[AdminType.Offer, AdminType.CreateOffer].includes(adminType) ? 'wide-list' : ''}`}
       >
-        {![AdminType.OFFER, AdminType.REVIEW].includes(adminType) && <hr />}
-        {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) ? (
+        {![AdminType.Offer, AdminType.Review].includes(adminType) && <hr />}
+        {[AdminType.Offer, AdminType.CreateOffer].includes(adminType) ? (
           <h1 className="list-title">Current Offers</h1>
         ) : (
           <h1 className="list-title">{title}s List</h1>

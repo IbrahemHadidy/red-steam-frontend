@@ -38,7 +38,7 @@ export default function AccountSecuritySection() {
 
   const handleChangePasswordClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    openChangeModal(ChangeModalType.PASSWORD);
+    openChangeModal(ChangeModalType.Password);
   };
 
   //-------------------------------- Render -------------------------------//

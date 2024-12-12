@@ -29,7 +29,7 @@ export default function ExcludedFilters() {
     <>
       {Object.entries(filters).flatMap(([filterType, filterArray]) =>
         filterArray.map((row: Filter) =>
-          row.check === FilterCheckType.EXCLUDED ? (
+          row.check === FilterCheckType.Excluded ? (
             <div className="search-filter excluded" key={`${filterType}-${row.id}-exclude`}>
               <Image src={searchCrouton} alt="excluded" />
               {row.name}

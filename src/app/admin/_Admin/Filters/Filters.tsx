@@ -17,15 +17,15 @@ export default function Filters() {
   return (
     <div className="filters">
       <div className="search-box">
-        {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && <SearchByGame />}
+        {[AdminType.Offer, AdminType.CreateOffer].includes(adminType) && <SearchByGame />}
 
-        {![AdminType.REVIEW, AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && (
+        {![AdminType.Review, AdminType.Offer, AdminType.CreateOffer].includes(adminType) && (
           <SearchByName />
         )}
 
-        {[AdminType.PUBLISHER, AdminType.DEVELOPER].includes(adminType) && <SearchByWebsite />}
+        {[AdminType.Publisher, AdminType.Developer].includes(adminType) && <SearchByWebsite />}
 
-        {adminType === AdminType.REVIEW && (
+        {adminType === AdminType.Review && (
           <>
             <SearchByUser />
             <SearchByGame />

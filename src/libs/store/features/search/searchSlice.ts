@@ -34,24 +34,24 @@ const searchState: SearchState = {
   isSearchInitialized: false,
   isFetchDisabled: false,
 
-  sortOption: SortOption.RELEVANCE,
+  sortOption: SortOption.Relevance,
   searchInputValue: '',
   searchQuery: '',
   priceRange: 13,
   hasMoreResults: true,
   filters: {
     price: [
-      { id: 1, name: 'Special Offers', check: FilterCheckType.UNCHECKED },
-      { id: 2, name: 'Hide free to play games', check: FilterCheckType.UNCHECKED },
+      { id: 1, name: 'Special Offers', check: FilterCheckType.Unchecked },
+      { id: 2, name: 'Hide free to play games', check: FilterCheckType.Unchecked },
     ],
     preferences: [
-      { id: 1, name: 'Featured only', check: FilterCheckType.UNCHECKED },
-      { id: 6, name: 'Exclude mature', check: FilterCheckType.UNCHECKED },
-      { id: 7, name: 'Exclude upcoming', check: FilterCheckType.UNCHECKED },
+      { id: 1, name: 'Featured only', check: FilterCheckType.Unchecked },
+      { id: 6, name: 'Exclude mature', check: FilterCheckType.Unchecked },
+      { id: 7, name: 'Exclude upcoming', check: FilterCheckType.Unchecked },
     ],
     os: [
-      { id: 1, name: 'Windows', check: FilterCheckType.UNCHECKED },
-      { id: 2, name: 'macOS', check: FilterCheckType.UNCHECKED },
+      { id: 1, name: 'Windows', check: FilterCheckType.Unchecked },
+      { id: 2, name: 'macOS', check: FilterCheckType.Unchecked },
     ],
     tags: [],
     publishers: [],
@@ -122,17 +122,17 @@ const searchSlice = createSlice({
       const { filterType, id } = action.payload;
 
       state.filters[filterType] = state.filters[filterType].map((filter) =>
-        filter.id === id ? { ...filter, check: FilterCheckType.UNCHECKED } : filter
+        filter.id === id ? { ...filter, check: FilterCheckType.Unchecked } : filter
       );
     },
     uncheckHideFreeToPlay: (state) => {
-      state.filters.price[0].check = FilterCheckType.UNCHECKED;
+      state.filters.price[0].check = FilterCheckType.Unchecked;
     },
     addUserPreferences: (state) => {
       state.filters.preferences.push(
-        { id: 2, name: 'Hide items in my library', check: FilterCheckType.UNCHECKED },
-        { id: 3, name: 'Hide items in my wishlist', check: FilterCheckType.UNCHECKED },
-        { id: 4, name: 'Hide items in my cart', check: FilterCheckType.UNCHECKED }
+        { id: 2, name: 'Hide items in my library', check: FilterCheckType.Unchecked },
+        { id: 3, name: 'Hide items in my wishlist', check: FilterCheckType.Unchecked },
+        { id: 4, name: 'Hide items in my cart', check: FilterCheckType.Unchecked }
       );
     },
     removeUserPreferences: (state) => {

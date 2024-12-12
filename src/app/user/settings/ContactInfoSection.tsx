@@ -37,12 +37,12 @@ export default function ContactInfoSection() {
 
   const handleChangeEmailClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    openChangeModal(ChangeModalType.EMAIL);
+    openChangeModal(ChangeModalType.Email);
   };
 
   const handleChangePhoneClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    openChangeModal(ChangeModalType.PHONE);
+    openChangeModal(ChangeModalType.Phone);
   };
 
   const handleDeletePhoneClick = (e: MouseEvent<HTMLAnchorElement>): void => {

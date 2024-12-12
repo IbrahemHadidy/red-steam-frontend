@@ -32,7 +32,7 @@ export default function HomeTabs() {
   //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
-  const [openedTab, setOpenedTab] = useState<OpenedTab>(OpenedTab.NEW_AND_TRENDING);
+  const [openedTab, setOpenedTab] = useState<OpenedTab>(OpenedTab.NewAndTrending);
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
 

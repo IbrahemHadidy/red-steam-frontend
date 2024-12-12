@@ -18,18 +18,18 @@ export const PRICE_RANGES: { label: string; value: number | null }[] = [
 ];
 
 export const SORT_OPTIONS: SortOption[] = [
-  SortOption.RELEVANCE,
-  SortOption.NAME,
-  SortOption.RELEASE_DATE,
-  SortOption.LOWEST_PRICE,
-  SortOption.HIGHEST_PRICE,
-  SortOption.USER_REVIEWS,
-  SortOption.TOP_SALES,
+  SortOption.Relevance,
+  SortOption.Name,
+  SortOption.ReleaseDate,
+  SortOption.LowestPrice,
+  SortOption.HighestPrice,
+  SortOption.UserReviews,
+  SortOption.TopSales,
 ];
 
-export const EXCLUDABLE_FILTER_TITLES: FilterTitle[] = [FilterTitle.TAG];
+export const EXCLUDABLE_FILTER_TITLES: FilterTitle[] = [FilterTitle.Tag];
 
-export const DEFAULT_OPEN_DROPDOWNS: FilterTitle[] = [FilterTitle.FEATURE, FilterTitle.TAG];
+export const DEFAULT_OPEN_DROPDOWNS: FilterTitle[] = [FilterTitle.Feature, FilterTitle.Tag];
 
 export const DROPDOWN_HEIGHTS_BY_CHILD_COUNT: { [key: number]: number } = {
   0: 40,

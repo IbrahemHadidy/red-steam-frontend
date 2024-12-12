@@ -33,12 +33,12 @@ export default function Table() {
     <table className="items-list">
       <thead>
         <tr>
-          {adminType === AdminType.FEATURE && <FeatureHeaders />}
-          {adminType === AdminType.TAG && <TagHeaders />}
-          {adminType === AdminType.LANGUAGE && <LanguageHeaders />}
-          {adminType === AdminType.REVIEW && <ReviewHeaders />}
-          {[AdminType.PUBLISHER, AdminType.DEVELOPER].includes(adminType) && <CompanyHeaders />}
-          {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && <OfferHeaders />}
+          {adminType === AdminType.Feature && <FeatureHeaders />}
+          {adminType === AdminType.Tag && <TagHeaders />}
+          {adminType === AdminType.Language && <LanguageHeaders />}
+          {adminType === AdminType.Review && <ReviewHeaders />}
+          {[AdminType.Publisher, AdminType.Developer].includes(adminType) && <CompanyHeaders />}
+          {[AdminType.Offer, AdminType.CreateOffer].includes(adminType) && <OfferHeaders />}
           <th>Actions</th>
         </tr>
       </thead>
@@ -46,14 +46,14 @@ export default function Table() {
       <tbody className={isFetching ? 'disabled' : ''}>
         {items?.map((item) => (
           <tr key={item.id}>
-            {adminType === AdminType.FEATURE && isFeature(item) && <FeatureRows item={item} />}
-            {adminType === AdminType.TAG && isTag(item) && <TagRows item={item} />}
-            {adminType === AdminType.LANGUAGE && isLanguage(item) && <LanguageRows item={item} />}
-            {adminType === AdminType.REVIEW && isReview(item) && <ReviewRows item={item} />}
-            {[AdminType.PUBLISHER, AdminType.DEVELOPER].includes(adminType) && isCompany(item) && (
+            {adminType === AdminType.Feature && isFeature(item) && <FeatureRows item={item} />}
+            {adminType === AdminType.Tag && isTag(item) && <TagRows item={item} />}
+            {adminType === AdminType.Language && isLanguage(item) && <LanguageRows item={item} />}
+            {adminType === AdminType.Review && isReview(item) && <ReviewRows item={item} />}
+            {[AdminType.Publisher, AdminType.Developer].includes(adminType) && isCompany(item) && (
               <CompanyRows item={item} />
             )}
-            {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && isGame(item) && (
+            {[AdminType.Offer, AdminType.CreateOffer].includes(adminType) && isGame(item) && (
               <OfferRows item={item} />
             )}
             <ActionsRow item={item} />

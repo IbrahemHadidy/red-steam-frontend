@@ -23,7 +23,7 @@ export default function IncludedFilters() {
     <>
       {Object.entries(filters).flatMap(([filterType, filterArray]) =>
         filterArray.map((row: Filter) =>
-          row.check === FilterCheckType.INCLUDED ? (
+          row.check === FilterCheckType.Included ? (
             <div className="search-filter" key={`${filterType}-${row.id}-include`}>
               {row.name}
               <a onClick={() => handleFilterUncheck(filterType as keyof FilterState, row.id)} />

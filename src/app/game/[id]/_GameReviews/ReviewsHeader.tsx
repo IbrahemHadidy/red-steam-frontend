@@ -25,16 +25,16 @@ export default function ReviewsHeader() {
     const value = e.currentTarget.value;
     const filter =
       value === 'all'
-        ? ReviewFilter.ALL
+        ? ReviewFilter.All
         : value === 'positive'
-          ? ReviewFilter.POSITIVE
-          : ReviewFilter.NEGATIVE;
+          ? ReviewFilter.Positive
+          : ReviewFilter.Negative;
     dispatch(setFilter(filter));
   };
 
   const handleSortTypeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     const value = e.currentTarget.value;
-    const sort = value === 'newest' ? ReviewSort.NEWEST : ReviewSort.OLDEST;
+    const sort = value === 'newest' ? ReviewSort.Newest : ReviewSort.Oldest;
     dispatch(setSort(sort));
   };
 

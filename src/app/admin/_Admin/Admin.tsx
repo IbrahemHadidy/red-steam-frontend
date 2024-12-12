@@ -24,7 +24,7 @@ export default function Admin() {
     <Skeleton />
   ) : (
     <>
-      {![AdminType.REVIEW, AdminType.OFFER].includes(adminType) && <Create />}
+      {![AdminType.Review, AdminType.Offer].includes(adminType) && <Create />}
       <ItemsList />
     </>
   );

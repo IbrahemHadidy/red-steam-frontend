@@ -96,8 +96,8 @@ const gameState: GameState = {
   content: '',
 
   reviews: [],
-  filter: ReviewFilter.ALL,
-  sort: ReviewSort.NEWEST,
+  filter: ReviewFilter.All,
+  sort: ReviewSort.Newest,
   currentPage: 0,
   hasMore: true,
 

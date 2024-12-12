@@ -2,8 +2,8 @@
  * Enum representing the recommendation status of a game.
  */
 const enum RecommendationStatus {
-  RECOMMENDED = 'recommended',
-  AVAILABLE = 'available',
+  Recommended = 'recommended',
+  Available = 'available',
 }
 
 export default RecommendationStatus;

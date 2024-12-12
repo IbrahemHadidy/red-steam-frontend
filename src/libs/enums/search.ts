@@ -2,13 +2,13 @@
  * Enum representing the titles of filters for search results.
  */
 export const enum FilterTitle {
-  PREFERENCE = 'Preference',
-  TAG = 'Tag',
-  FEATURE = 'Feature',
-  DEVELOPER = 'Developer',
-  PUBLISHER = 'Publisher',
+  Preference = 'Preference',
+  Tag = 'Tag',
+  Feature = 'Feature',
+  Developer = 'Developer',
+  Publisher = 'Publisher',
   OS = 'OS',
-  LANGUAGE = 'Language',
+  Language = 'Language',
 }
 
 /**
@@ -17,37 +17,37 @@ export const enum FilterTitle {
  * name, price, release date, user reviews, and sales performance.
  */
 export const enum SortOption {
-  RELEVANCE = 'Relevance',
-  NAME = 'Name',
-  LOWEST_PRICE = 'Lowest Price',
-  HIGHEST_PRICE = 'Highest Price',
-  RELEASE_DATE = 'Release Date',
-  USER_REVIEWS = 'User Reviews',
-  TOP_SALES = 'Top Sales',
+  Relevance = 'Relevance',
+  Name = 'Name',
+  LowestPrice = 'Lowest Price',
+  HighestPrice = 'Highest Price',
+  ReleaseDate = 'Release Date',
+  UserReviews = 'User Reviews',
+  TopSales = 'Top Sales',
 }
 
 /**
  * Enum representing available check types for filters.
  */
 export const enum FilterCheckType {
-  UNCHECKED = 'UNCHECKED',
-  INCLUDED = 'INCLUDED',
-  EXCLUDED = 'EXCLUDED',
+  Unchecked = 'Unchecked',
+  Included = 'Included',
+  Excluded = 'Excluded',
 }
 
 /**
  * Enum representing the keys of the search parameters used in the URL.
  */
 export const enum FilterSearchParamKey {
-  PRICE_OPTIONS = 'priceOptions',
-  PREFERENCES_OPTIONS = 'preferencesOptions',
-  TAGS = 'tags',
-  EXCLUDED_TAGS = 'excludedTags',
-  FEATURES = 'features',
-  DEVELOPERS = 'developers',
-  PUBLISHERS = 'publishers',
+  PriceOptions = 'priceOptions',
+  PreferencesOptions = 'preferencesOptions',
+  Tags = 'tags',
+  ExcludedTags = 'excludedTags',
+  Features = 'features',
+  Developers = 'developers',
+  Publishers = 'publishers',
   OS = 'os',
-  LANGUAGES = 'languages',
+  Languages = 'languages',
 }
 
 /**
@@ -56,16 +56,16 @@ export const enum FilterSearchParamKey {
  * name, price, release date, user reviews, and sales performance.
  */
 export const enum SearchDataSortOption {
-  RELEVANCE = 'relevance',
-  NAME = 'name',
-  LOWEST_PRICE = 'lowestPrice',
-  HIGHEST_PRICE = 'highestPrice',
-  RELEASE_DATE = 'releaseDate',
-  USER_REVIEWS = 'reviews',
-  TOP_SALES = 'totalSales',
+  Relevance = 'relevance',
+  Name = 'name',
+  LowestPrice = 'lowestPrice',
+  HighestPrice = 'highestPrice',
+  ReleaseDate = 'releaseDate',
+  UserReviews = 'reviews',
+  TotalSales = 'totalSales',
 }
 
 export const enum SearchDataUpcomingMode {
-  ONLY_UPCOMING = 'onlyUpcoming',
-  EXCLUDE_UPCOMING = 'exclude',
+  OnlyUpcoming = 'onlyUpcoming',
+  ExcludeUpcoming = 'exclude',
 }

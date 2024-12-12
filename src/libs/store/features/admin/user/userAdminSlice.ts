@@ -34,7 +34,7 @@ const adminState: AdminState = {
   currentPage: 1,
   usersPerPage: 10,
   totalPages: 0,
-  sortConfig: { key: UserSortOption.USERNAME, direction: Direction.ASC },
+  sortConfig: { key: UserSortOption.Username, direction: Direction.ASC },
   searchQuery: {},
 
   currentEditUser: null,

@@ -44,7 +44,7 @@ export default function ActionsRow({ item }: ActionsRowProps) {
   const { adminType } = useAppSelector((state) => state.admin.common);
 
   const onEdit = (item: AdminListItem): void => {
-    if (adminType !== AdminType.REVIEW) {
+    if (adminType !== AdminType.Review) {
       dispatch(setCurrentEditItem(item));
       dispatch(setIsEditModalOpen(true));
     } else {

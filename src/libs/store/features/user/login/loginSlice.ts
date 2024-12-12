@@ -28,7 +28,7 @@ interface LoginState {
 
 // Initial state
 const loginState: LoginState = {
-  type: LoginFormType.LOGIN,
+  type: LoginFormType.SignIn,
   isLoginLoading: false,
   isLoginFormVisible: true,
   isForgotPasswordVisible: false,

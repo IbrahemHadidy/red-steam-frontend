@@ -47,7 +47,7 @@ export default function SignInPage() {
       handleLoginRedirect();
     } else {
       // Otherwise, set the state "type" to 'Sign In'
-      dispatch(setType(LoginFormType.LOGIN));
+      dispatch(setType(LoginFormType.SignIn));
     }
 
     return () => {

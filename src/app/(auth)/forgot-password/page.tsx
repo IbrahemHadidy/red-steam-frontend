@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setType(LoginFormType.FORGOT_PASSWORD));
+    dispatch(setType(LoginFormType.NamePasswordRecovery));
 
     return () => {
       dispatch(reset());

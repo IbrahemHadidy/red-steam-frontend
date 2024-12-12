@@ -48,7 +48,7 @@ export default function ForgotPasswordForm() {
   };
 
   const handleLoginInsteadBtnClick = (): void => {
-    dispatch(setType(LoginFormType.LOGIN));
+    dispatch(setType(LoginFormType.SignIn));
     dispatch(loginInstead());
     router.push('/login');
   };

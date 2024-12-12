@@ -31,9 +31,9 @@ export default function FormButtons({ validation }: FormButtonsProps) {
   //---------------------------- Event Handlers ---------------------------//
   const handleNextClick = async () => {
     scrollToTop();
-    if (currentPage === CurrentGameAdminPage.PREVIEW) {
+    if (currentPage === CurrentGameAdminPage.Preview) {
       await dispatch(submitForm(router));
-    } else if (currentPage === CurrentGameAdminPage.ADDITIONAL_INFO) {
+    } else if (currentPage === CurrentGameAdminPage.AdditionalInfo) {
       await dispatch(getPreviewData());
     } else {
       if (validation && validation() === false) return;
@@ -49,7 +49,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
   const handleResetClick = () => {
     scrollToTop();
     dispatch(reset());
-    dispatch(setPage(CurrentGameAdminPage.BASIC));
+    dispatch(setPage(CurrentGameAdminPage.Basic));
   };
 
   //------------------------------- Render --------------------------------//
@@ -61,11 +61,11 @@ export default function FormButtons({ validation }: FormButtonsProps) {
         onClick={handleNextClick}
         disabled={loading}
       >
-        {currentPage === CurrentGameAdminPage.PREVIEW
-          ? type === GameAdminType.UPDATE
+        {currentPage === CurrentGameAdminPage.Preview
+          ? type === GameAdminType.Update
             ? 'Update'
             : 'Create'
-          : currentPage === CurrentGameAdminPage.ADDITIONAL_INFO
+          : currentPage === CurrentGameAdminPage.AdditionalInfo
             ? 'Preview'
             : 'Next'}
         {loading && (
@@ -79,7 +79,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
         Reset
       </button>
 
-      {currentPage !== CurrentGameAdminPage.BASIC && (
+      {currentPage !== CurrentGameAdminPage.Basic && (
         <button type="button" className="back-button" onClick={handlePrevClick}>
           Back
         </button>

@@ -53,18 +53,18 @@ export default function Media() {
 
   //-------------------------- Utility Functions --------------------------//
   const getChangeStyle = (media: Screenshot | Video): string => {
-    if (type === GameAdminType.UPDATE) {
-      if (media.change === GameMediaChangeStatus.ADDED) return 'added';
-      if (media.change === GameMediaChangeStatus.DELETED) return 'deleted';
-      if (media.order !== media.baseOrder && media.change === GameMediaChangeStatus.UNCHANGED)
+    if (type === GameAdminType.Update) {
+      if (media.change === GameMediaChangeStatus.Added) return 'added';
+      if (media.change === GameMediaChangeStatus.Deleted) return 'deleted';
+      if (media.order !== media.baseOrder && media.change === GameMediaChangeStatus.Unchanged)
         return 'edited';
     }
     return '';
   };
 
   const sortedMedia = [...screenshots, ...videos].sort((a, b) => {
-    if (a.change === GameMediaChangeStatus.DELETED) return 1;
-    if (b.change === GameMediaChangeStatus.DELETED) return -1;
+    if (a.change === GameMediaChangeStatus.Deleted) return 1;
+    if (b.change === GameMediaChangeStatus.Deleted) return -1;
     return a.order - b.order;
   });
 
@@ -163,7 +163,7 @@ export default function Media() {
         <button className="reset-button" onClick={handleResetMedia}>
           Reset
         </button>
-        {type === GameAdminType.UPDATE && (
+        {type === GameAdminType.Update && (
           <div className="slides-color-info">
             <div>
               <div className="color-box unchanged" />

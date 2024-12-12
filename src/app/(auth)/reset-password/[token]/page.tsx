@@ -33,7 +33,7 @@ export default function ResetPasswordPage(props: ResetPasswordPageProps) {
 
   // Set the state "type" to 'Password Reset'
   useEffect(() => {
-    dispatch(setType(LoginFormType.RESET_PASSWORD));
+    dispatch(setType(LoginFormType.PasswordReset));
     return () => {
       dispatch(reset());
     };
