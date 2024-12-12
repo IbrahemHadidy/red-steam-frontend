@@ -23,8 +23,11 @@ import ExcludedRow from './ExcludedRow';
 import IncludedRow from './IncludedRow';
 import UncheckedRow from './UncheckedRow';
 
+// Enums
+import { FilterCheckType, FilterTitle } from '@enums/search';
+
 // Types
-import type { Filter, FilterTitle } from '@custom-types/search';
+import type { Filter } from '@custom-types/search';
 import type { ChangeEvent, MouseEvent } from 'react';
 
 interface FilterBlockProps {
@@ -80,31 +83,39 @@ export default function FilterBlock({ title, filters }: FilterBlockProps) {
   };
 
   const handleIncludeClick = (row: Filter): void => {
-    if (row.check === 'included') {
+    if (row.check === FilterCheckType.INCLUDED) {
       dispatch(uncheckFilter({ filterType: getFilterTypeFromTitle(title), id: row.id }));
     } else {
       dispatch(
-        checkFilter({ filterType: getFilterTypeFromTitle(title), check: 'included', id: row.id })
+        checkFilter({
+          filterType: getFilterTypeFromTitle(title),
+          check: FilterCheckType.INCLUDED,
+          id: row.id,
+        })
       );
     }
   };
 
   const handleExcludeClick = (e: MouseEvent<HTMLImageElement>, row: Filter): void => {
     e.stopPropagation();
-    if (row.check === 'excluded') {
+    if (row.check === FilterCheckType.EXCLUDED) {
       dispatch(uncheckFilter({ filterType: getFilterTypeFromTitle(title), id: row.id }));
     } else {
       dispatch(
-        checkFilter({ filterType: getFilterTypeFromTitle(title), check: 'excluded', id: row.id })
+        checkFilter({
+          filterType: getFilterTypeFromTitle(title),
+          check: FilterCheckType.EXCLUDED,
+          id: row.id,
+        })
       );
     }
   };
 
   //-------------------------------- Render -------------------------------//
 
-  const includedRows = currentFilters.filter((row) => row.check === 'included');
-  const excludedRows = currentFilters.filter((row) => row.check === 'excluded');
-  const uncheckedRows = currentFilters.filter((row) => row.check === 'unchecked');
+  const includedRows = currentFilters.filter((row) => row.check === FilterCheckType.INCLUDED);
+  const excludedRows = currentFilters.filter((row) => row.check === FilterCheckType.EXCLUDED);
+  const uncheckedRows = currentFilters.filter((row) => row.check === FilterCheckType.UNCHECKED);
 
   return (
     <div className="filter-block">

@@ -12,6 +12,9 @@ import Create from './CreateForm';
 import ItemsList from './ItemsList';
 import Skeleton from './Skeleton';
 
+// Enums
+import { AdminType } from '@enums/admin';
+
 export default function Admin() {
   const { adminType, isInitialized } = useAppSelector((state) => state.admin.common);
 
@@ -21,7 +24,7 @@ export default function Admin() {
     <Skeleton />
   ) : (
     <>
-      {!['review', 'offer'].includes(adminType) && <Create />}
+      {![AdminType.REVIEW, AdminType.OFFER].includes(adminType) && <Create />}
       <ItemsList />
     </>
   );

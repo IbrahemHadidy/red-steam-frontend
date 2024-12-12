@@ -1,4 +1,5 @@
 import type FileMetadata from '@custom-types/file-metadata';
+import type { GameMediaChangeStatus } from '@enums/admin';
 
 interface Thumbnail {
   file: FileMetadata | string | null;
@@ -18,7 +19,7 @@ export interface Thumbnails {
 export interface Screenshot {
   id: string;
   image: FileMetadata | string;
-  change: 'added' | 'deleted' | 'unchanged';
+  change: GameMediaChangeStatus;
   featured?: boolean;
   baseOrder: number;
   order: number;
@@ -28,7 +29,7 @@ export interface Video {
   id: string;
   video: FileMetadata | string;
   poster: FileMetadata | string;
-  change: 'added' | 'deleted' | 'unchanged';
+  change: GameMediaChangeStatus;
   baseOrder: number;
   order: number;
 }

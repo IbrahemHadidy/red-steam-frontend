@@ -10,6 +10,9 @@ import { getPreviewData, submitForm } from './gameAdminThunks';
 // Utils
 import { checkDuplicateScreenshot, checkDuplicateVideo, getNextOrder } from './gameAdminUtils';
 
+// Enums
+import { CurrentGameAdminPage, GameAdminType, GameMediaChangeStatus } from '@enums/admin';
+
 // Types
 import type FileMetadata from '@custom-types/file-metadata';
 import type {
@@ -26,7 +29,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface GameAdminState {
   // Admin type
-  readonly type: 'create' | 'update';
+  readonly type: GameAdminType;
 
   // Game to update (if type is 'update')
   readonly gameToUpdate: Game | null;
@@ -77,16 +80,7 @@ interface GameAdminState {
   // UI States
   readonly isUpdateFetching: boolean;
   readonly isGameUpdateInitialized: boolean;
-  readonly currentPage:
-    | 'basic'
-    | 'companies'
-    | 'thumbnails'
-    | 'media'
-    | 'pricing'
-    | 'specifications'
-    | 'systemRequirements'
-    | 'additional'
-    | 'preview';
+  readonly currentPage: CurrentGameAdminPage;
   readonly posterModalOpen: boolean;
   readonly loading: boolean;
   readonly duplicateError: boolean;
@@ -94,7 +88,7 @@ interface GameAdminState {
 
 // Initial state
 const gameAdminState: GameAdminState = {
-  type: 'create',
+  type: GameAdminType.CREATE,
 
   gameToUpdate: null,
 
@@ -173,7 +167,7 @@ const gameAdminState: GameAdminState = {
 
   isUpdateFetching: true,
   isGameUpdateInitialized: false,
-  currentPage: 'basic',
+  currentPage: CurrentGameAdminPage.BASIC,
   loading: false,
   posterModalOpen: false,
   duplicateError: false,
@@ -181,15 +175,15 @@ const gameAdminState: GameAdminState = {
 
 // Page order (for page navigation reducers)
 const pageOrder: GameAdminState['currentPage'][] = [
-  'basic',
-  'companies',
-  'thumbnails',
-  'media',
-  'pricing',
-  'specifications',
-  'systemRequirements',
-  'additional',
-  'preview',
+  CurrentGameAdminPage.BASIC,
+  CurrentGameAdminPage.COMPANIES,
+  CurrentGameAdminPage.THUMBNAILS,
+  CurrentGameAdminPage.MEDIA,
+  CurrentGameAdminPage.PRICING,
+  CurrentGameAdminPage.SPECIFICATIONS,
+  CurrentGameAdminPage.SYSTEM_REQUIREMENTS,
+  CurrentGameAdminPage.ADDITIONAL_INFO,
+  CurrentGameAdminPage.PREVIEW,
 ];
 
 const gameAdminSlice = createSlice({
@@ -197,7 +191,7 @@ const gameAdminSlice = createSlice({
   initialState: gameAdminState,
 
   reducers: {
-    setType: (state, action: PayloadAction<'create' | 'update'>) => {
+    setType: (state, action: PayloadAction<GameAdminType>) => {
       state.type = action.payload;
     },
 
@@ -207,7 +201,7 @@ const gameAdminSlice = createSlice({
     setUpdateFormInitialValues: (state, action: PayloadAction<Game>) => {
       const game = action.payload;
 
-      state.type = 'update';
+      state.type = GameAdminType.UPDATE;
       state.name = game.name;
       state.category = game.category;
       state.description = game.description;
@@ -236,7 +230,7 @@ const gameAdminSlice = createSlice({
         featured: image.featured,
         baseOrder: image.order,
         order: image.order,
-        change: 'unchanged',
+        change: GameMediaChangeStatus.UNCHANGED,
       }));
       state.videos = game.videoEntries.map((video) => ({
         id: nanoid(),
@@ -244,7 +238,7 @@ const gameAdminSlice = createSlice({
         poster: video.posterLink,
         baseOrder: video.order,
         order: video.order,
-        change: 'unchanged',
+        change: GameMediaChangeStatus.UNCHANGED,
       }));
 
       state.pricing = {
@@ -314,7 +308,7 @@ const gameAdminSlice = createSlice({
           image: action.payload,
           baseOrder: nextOrder,
           order: nextOrder,
-          change: 'added',
+          change: GameMediaChangeStatus.ADDED,
         },
       ];
     },
@@ -336,7 +330,7 @@ const gameAdminSlice = createSlice({
           poster: action.payload.poster,
           baseOrder: nextOrder,
           order: nextOrder,
-          change: 'added',
+          change: GameMediaChangeStatus.ADDED,
         },
       ];
     },
@@ -344,18 +338,20 @@ const gameAdminSlice = createSlice({
       const currentScreenshots = state.screenshots;
       const order = action.payload;
 
-      if (state.type === 'update') {
+      if (state.type === GameAdminType.UPDATE) {
         const screenshot = currentScreenshots.find((screenshot) => screenshot.baseOrder === order);
 
         if (!screenshot) return;
-        if (screenshot.change === 'added') {
+        if (screenshot.change === GameMediaChangeStatus.ADDED) {
           state.screenshots = currentScreenshots.filter(
             (screenshot) => screenshot.baseOrder !== order
           );
         } else {
           state.changes = [...state.changes, screenshot];
           state.screenshots = currentScreenshots.map((screenshot) =>
-            screenshot.baseOrder === order ? { ...screenshot, change: 'deleted' } : screenshot
+            screenshot.baseOrder === order
+              ? { ...screenshot, change: GameMediaChangeStatus.DELETED }
+              : screenshot
           );
         }
       } else {
@@ -368,16 +364,16 @@ const gameAdminSlice = createSlice({
       const currentVideos = state.videos;
       const order = action.payload;
 
-      if (state.type === 'update') {
+      if (state.type === GameAdminType.UPDATE) {
         const video = currentVideos.find((video) => video.baseOrder === order);
 
         if (!video) return;
-        if (video.change === 'added') {
+        if (video.change === GameMediaChangeStatus.ADDED) {
           state.videos = currentVideos.filter((video) => video.baseOrder !== order);
         } else {
           state.changes = [...state.changes, video];
           state.videos = currentVideos.map((video) =>
-            video.baseOrder === order ? { ...video, change: 'deleted' } : video
+            video.baseOrder === order ? { ...video, change: GameMediaChangeStatus.DELETED } : video
           );
         }
       } else {
@@ -429,7 +425,7 @@ const gameAdminSlice = createSlice({
       );
     },
     resetMedia: (state) => {
-      if (state.type === 'create') {
+      if (state.type === GameAdminType.CREATE) {
         state.screenshots = [];
         state.videos = [];
       } else {
@@ -440,7 +436,7 @@ const gameAdminSlice = createSlice({
             featured: image.featured,
             baseOrder: image.order,
             order: image.order,
-            change: 'unchanged',
+            change: GameMediaChangeStatus.UNCHANGED,
           })) ?? [];
 
         state.videos =
@@ -450,7 +446,7 @@ const gameAdminSlice = createSlice({
             poster: video.posterLink,
             baseOrder: video.order,
             order: video.order,
-            change: 'unchanged',
+            change: GameMediaChangeStatus.UNCHANGED,
           })) ?? [];
       }
 
@@ -619,12 +615,12 @@ const gameAdminSlice = createSlice({
     },
 
     reset: (state) => {
-      if (state.type === 'create') {
+      if (state.type === GameAdminType.CREATE) {
         return gameAdminState;
       } else {
         return {
           ...gameAdminState,
-          type: 'update',
+          type: GameAdminType.UPDATE,
           gameToUpdate: state.gameToUpdate,
         };
       }
@@ -639,7 +635,7 @@ const gameAdminSlice = createSlice({
       .addCase(getPreviewData.fulfilled, (state, action) => {
         state.previewData = action.payload;
         state.loading = false;
-        state.currentPage = 'preview';
+        state.currentPage = CurrentGameAdminPage.PREVIEW;
       })
       .addCase(getPreviewData.rejected, (state) => {
         state.loading = false;

@@ -4,6 +4,9 @@ import Image from 'next/image';
 // Images
 import excludedSearch from '@images/search_checkbox_not.svg';
 
+// Enums
+import { FilterCheckType } from '@enums/search';
+
 // Types
 import type { Filter } from '@custom-types/search';
 import type { MouseEvent } from 'react';
@@ -21,7 +24,7 @@ export default function ExcludedRow({
 }: ExcludedRowProps) {
   return (
     <div
-      className={`filter-control-row ${row.check === 'excluded' ? 'excluded' : ''}`}
+      className={`filter-control-row ${row.check === FilterCheckType.EXCLUDED ? 'excluded' : ''}`}
       onClick={() => handleIncludeClick(row)}
     >
       <span className="filter-tab">

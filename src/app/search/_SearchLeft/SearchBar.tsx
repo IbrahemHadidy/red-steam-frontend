@@ -14,8 +14,10 @@ import {
 // Constants
 import { SORT_OPTIONS } from '@constants/search';
 
+// Enums
+import { SortOption } from '@enums/search';
+
 // Types
-import type { SortOption } from '@custom-types/search';
 import type { ChangeEvent, MouseEvent } from 'react';
 
 export default function SearchBar() {

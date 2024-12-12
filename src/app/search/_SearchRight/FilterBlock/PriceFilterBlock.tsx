@@ -16,6 +16,9 @@ import { PRICE_RANGES } from '@config/constants/search';
 // Images
 import dropdown from '@images/dropdown.png';
 
+// Enums
+import { FilterCheckType } from '@enums/search';
+
 // Types
 import type { Filter } from '@custom-types/search';
 import type { ChangeEvent, MouseEvent } from 'react';
@@ -63,10 +66,10 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
   };
 
   const handleIncludeClick = (row: Filter): void => {
-    if (row.check === 'included') {
+    if (row.check === FilterCheckType.INCLUDED) {
       dispatch(uncheckFilter({ filterType: 'price', id: row.id }));
     } else {
-      dispatch(checkFilter({ filterType: 'price', check: 'included', id: row.id }));
+      dispatch(checkFilter({ filterType: 'price', check: FilterCheckType.INCLUDED, id: row.id }));
     }
   };
 
@@ -121,7 +124,7 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
         {filters.map((row) => (
           <div
             key={row.name}
-            className={`filter-control-row ${row.check === 'included' ? 'included' : ''} ${
+            className={`filter-control-row ${row.check === FilterCheckType.INCLUDED ? 'included' : ''} ${
               row.id === 2 && priceRange === 0 ? 'disabled' : ''
             }`}
             onClick={() => handleIncludeClick(row)}

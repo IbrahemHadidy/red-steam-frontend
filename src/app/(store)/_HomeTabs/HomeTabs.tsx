@@ -22,15 +22,17 @@ const RightSection = dynamic(() => import('./RightSection'));
 // Skeletons
 import Skeleton from './Skeleton';
 
+// Enums
+import { OpenedTab } from '@enums/tabs';
+
 // Types
-import type { OpenedTab } from '@custom-types/tabs';
 import type { Game } from '@interfaces/game';
 
 export default function HomeTabs() {
   //------------------------------- States --------------------------------//
   const { currentUserData } = useAppSelector((state) => state.auth);
 
-  const [openedTab, setOpenedTab] = useState<OpenedTab>('New & Trending');
+  const [openedTab, setOpenedTab] = useState<OpenedTab>(OpenedTab.NEW_AND_TRENDING);
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const [hoveredGame, setHoveredGame] = useState<Game | null>(null);
 

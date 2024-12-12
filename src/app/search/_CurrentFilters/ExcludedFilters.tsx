@@ -10,6 +10,9 @@ import { uncheckFilter } from '@store/features/search/searchSlice';
 // Images
 import searchCrouton from '@images/search_crouton_not.svg';
 
+// Enums
+import { FilterCheckType } from '@enums/search';
+
 // Types
 import type { Filter, FilterState } from '@custom-types/search';
 
@@ -26,7 +29,7 @@ export default function ExcludedFilters() {
     <>
       {Object.entries(filters).flatMap(([filterType, filterArray]) =>
         filterArray.map((row: Filter) =>
-          row.check === 'excluded' ? (
+          row.check === FilterCheckType.EXCLUDED ? (
             <div className="search-filter excluded" key={`${filterType}-${row.id}-exclude`}>
               <Image src={searchCrouton} alt="excluded" />
               {row.name}

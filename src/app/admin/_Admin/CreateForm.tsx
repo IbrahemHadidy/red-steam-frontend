@@ -23,6 +23,9 @@ import CreateLanguageForm from './Forms/CreateLanguageForm';
 import CreateOfferForm from './Forms/CreateOfferForm';
 import CreateTagForm from './Forms/CreateTagForm';
 
+// Enums
+import { AdminType } from '@enums/admin';
+
 // Types
 import type { FormEvent } from 'react';
 
@@ -59,11 +62,11 @@ export default function Create() {
 
     let validate = () => false;
 
-    if (adminType === 'developer' || adminType === 'publisher') {
+    if (adminType === AdminType.DEVELOPER || adminType === AdminType.PUBLISHER) {
       validate = () => validateCompanyInfo({ name, website, nameRef, websiteRef });
-    } else if (adminType === 'feature') {
+    } else if (adminType === AdminType.FEATURE) {
       validate = () => validateFeatureInfo({ name, icon, nameRef, iconRef });
-    } else if (adminType === 'create-offer') {
+    } else if (adminType === AdminType.CREATE_OFFER) {
       validate = () =>
         validateOfferInfo({
           discountPrice,
@@ -75,9 +78,9 @@ export default function Create() {
           discountStartDateRef,
           discountEndDateRef,
         });
-    } else if (adminType === 'language') {
+    } else if (adminType === AdminType.LANGUAGE) {
       validate = () => validateLanguageInfo({ name, nameRef });
-    } else if (adminType === 'tag') {
+    } else if (adminType === AdminType.TAG) {
       validate = () => validateTagInfo({ name, nameRef });
     }
 
@@ -88,18 +91,23 @@ export default function Create() {
     <>
       <div className="creation-form">
         <h1 className="creation-form-title">
-          Create {adminType === 'create-offer' ? `offer for: ${offerGame?.name}` : adminType}
+          Create{' '}
+          {adminType === AdminType.CREATE_OFFER
+            ? `offer for: ${offerGame?.name}`
+            : adminType.charAt(0).toUpperCase() + adminType.slice(1).toLowerCase()}
         </h1>
 
         <section className="creation-section">
           <div className="form-row-flex">
-            {adminType === 'language' && <CreateLanguageForm nameRef={nameRef} />}
-            {adminType === 'tag' && <CreateTagForm nameRef={nameRef} />}
-            {adminType === 'feature' && <CreateFeatureForm nameRef={nameRef} iconRef={iconRef} />}
-            {['developer', 'publisher'].includes(adminType) && (
+            {adminType === AdminType.LANGUAGE && <CreateLanguageForm nameRef={nameRef} />}
+            {adminType === AdminType.TAG && <CreateTagForm nameRef={nameRef} />}
+            {adminType === AdminType.FEATURE && (
+              <CreateFeatureForm nameRef={nameRef} iconRef={iconRef} />
+            )}
+            {[AdminType.DEVELOPER, AdminType.PUBLISHER].includes(adminType) && (
               <CreateCompanyForm nameRef={nameRef} websiteRef={websiteRef} />
             )}
-            {adminType === 'create-offer' && (
+            {adminType === AdminType.CREATE_OFFER && (
               <CreateOfferForm
                 discountPriceRef={discountPriceRef}
                 offerTypeRef={offerTypeRef}

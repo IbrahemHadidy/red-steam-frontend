@@ -16,6 +16,10 @@ import gameOfferApi from '@store/apis/game/offer';
 // Utils
 import debounce from '@utils/debounce';
 import promiseToast from '@utils/promiseToast';
+import { isGame } from '@utils/typeGuards';
+
+// Enums
+import { AdminType } from '@enums/admin';
 
 // Types
 import type { Company } from '@interfaces/company';
@@ -25,7 +29,6 @@ import type { Language } from '@interfaces/language';
 import type { Review } from '@interfaces/review';
 import type { Tag } from '@interfaces/tag';
 import type { AppDispatch } from '@store/store';
-import { isGame } from '@utils/typeGuards';
 
 type OffersOrderBy =
   | 'id'
@@ -315,7 +318,7 @@ export const submitItem = createAppAsyncThunk(
     } = getState().admin.common;
 
     let result: void | { message: string };
-    if (adminType === 'feature') {
+    if (adminType === AdminType.FEATURE) {
       result = await promiseToast(
         dispatch(featureApi.endpoints.createFeature.initiate({ name: name.trim(), icon })).unwrap(),
         {
@@ -324,7 +327,7 @@ export const submitItem = createAppAsyncThunk(
           fallbackError: 'Error creating feature',
         }
       );
-    } else if (adminType === 'publisher') {
+    } else if (adminType === AdminType.PUBLISHER) {
       result = await promiseToast(
         dispatch(
           publisherApi.endpoints.createPublisher.initiate({ name: name.trim(), website })
@@ -335,7 +338,7 @@ export const submitItem = createAppAsyncThunk(
           fallbackError: 'Error creating publisher',
         }
       );
-    } else if (adminType === 'developer') {
+    } else if (adminType === AdminType.DEVELOPER) {
       result = await promiseToast(
         dispatch(
           developerApi.endpoints.createDeveloper.initiate({ name: name.trim(), website })
@@ -346,7 +349,7 @@ export const submitItem = createAppAsyncThunk(
           fallbackError: 'Error creating developer',
         }
       );
-    } else if (adminType === 'language') {
+    } else if (adminType === AdminType.LANGUAGE) {
       result = await promiseToast(
         dispatch(languageApi.endpoints.createLanguage.initiate({ name: name.trim() })).unwrap(),
         {
@@ -355,7 +358,7 @@ export const submitItem = createAppAsyncThunk(
           fallbackError: 'Error creating language',
         }
       );
-    } else if (adminType === 'tag') {
+    } else if (adminType === AdminType.TAG) {
       result = await promiseToast(
         dispatch(tagApi.endpoints.createTag.initiate({ name: name.trim() })).unwrap(),
         {
@@ -364,7 +367,7 @@ export const submitItem = createAppAsyncThunk(
           fallbackError: 'Error creating tag',
         }
       );
-    } else if (adminType === 'create-offer' && offerGame) {
+    } else if (adminType === AdminType.CREATE_OFFER && offerGame) {
       result = await promiseToast(
         dispatch(
           gameOfferApi.endpoints.createOffer.initiate({
@@ -407,7 +410,7 @@ export const updateItem = createAppAsyncThunk(
       discountEndDate,
     } = getState().admin.common;
 
-    if (adminType === 'feature') {
+    if (adminType === AdminType.FEATURE) {
       const result = await promiseToast(
         dispatch(
           featureApi.endpoints.updateFeature.initiate({
@@ -425,7 +428,7 @@ export const updateItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error updating feature');
 
       debouncedFetchPaginatedFeatures(dispatch);
-    } else if (adminType === 'publisher') {
+    } else if (adminType === AdminType.PUBLISHER) {
       const result = await promiseToast(
         dispatch(
           publisherApi.endpoints.updatePublisher.initiate({
@@ -443,7 +446,7 @@ export const updateItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error updating publisher');
 
       debouncedFetchPaginatedPublishers(dispatch);
-    } else if (adminType === 'developer') {
+    } else if (adminType === AdminType.DEVELOPER) {
       const result = await promiseToast(
         dispatch(
           developerApi.endpoints.updateDeveloper.initiate({
@@ -461,7 +464,7 @@ export const updateItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error updating developer');
 
       debouncedFetchPaginatedDevelopers(dispatch);
-    } else if (adminType === 'language') {
+    } else if (adminType === AdminType.LANGUAGE) {
       const result = await promiseToast(
         dispatch(
           languageApi.endpoints.updateLanguage.initiate({
@@ -478,7 +481,7 @@ export const updateItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error updating language');
 
       debouncedFetchPaginatedLanguages(dispatch);
-    } else if (adminType === 'tag') {
+    } else if (adminType === AdminType.TAG) {
       const result = await promiseToast(
         dispatch(
           tagApi.endpoints.updateTag.initiate({ id: currentEditItem?.id ?? 0, name: name.trim() })
@@ -493,7 +496,7 @@ export const updateItem = createAppAsyncThunk(
 
       debouncedFetchPaginatedTags(dispatch);
     } else if (
-      ['offer', 'create-offer'].includes(adminType) &&
+      [AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) &&
       offerGame &&
       currentEditItem &&
       isGame(currentEditItem)
@@ -530,7 +533,7 @@ export const deleteItem = createAppAsyncThunk(
   async (_, { rejectWithValue, fulfillWithValue, dispatch, getState }) => {
     const { adminType, deleteItemId: id } = getState().admin.common;
 
-    if (adminType === 'feature') {
+    if (adminType === AdminType.FEATURE) {
       const result = await promiseToast(
         dispatch(featureApi.endpoints.deleteFeature.initiate(id ?? 0)).unwrap(),
         {
@@ -542,7 +545,7 @@ export const deleteItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error deleting feature');
 
       debouncedFetchPaginatedFeatures(dispatch);
-    } else if (adminType === 'publisher') {
+    } else if (adminType === AdminType.PUBLISHER) {
       const result = await promiseToast(
         dispatch(publisherApi.endpoints.deletePublisher.initiate(id ?? 0)).unwrap(),
         {
@@ -554,7 +557,7 @@ export const deleteItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error deleting publisher');
 
       debouncedFetchPaginatedPublishers(dispatch);
-    } else if (adminType === 'developer') {
+    } else if (adminType === AdminType.DEVELOPER) {
       const result = await promiseToast(
         dispatch(developerApi.endpoints.deleteDeveloper.initiate(id ?? 0)).unwrap(),
         {
@@ -566,7 +569,7 @@ export const deleteItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error deleting developer');
 
       debouncedFetchPaginatedDevelopers(dispatch);
-    } else if (adminType === 'language') {
+    } else if (adminType === AdminType.LANGUAGE) {
       const result = await promiseToast(
         dispatch(languageApi.endpoints.deleteLanguage.initiate(id ?? 0)).unwrap(),
         {
@@ -578,7 +581,7 @@ export const deleteItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error deleting language');
 
       debouncedFetchPaginatedLanguages(dispatch);
-    } else if (adminType === 'tag') {
+    } else if (adminType === AdminType.TAG) {
       const result = await promiseToast(
         dispatch(tagApi.endpoints.deleteTag.initiate(id ?? 0)).unwrap(),
         {
@@ -590,7 +593,7 @@ export const deleteItem = createAppAsyncThunk(
       if (!result) return rejectWithValue('Error deleting tag');
 
       debouncedFetchPaginatedTags(dispatch);
-    } else if (['offer', 'create-offer'].includes(adminType)) {
+    } else if ([AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType)) {
       const result = await promiseToast(
         dispatch(gameOfferApi.endpoints.deleteOffer.initiate(id ?? 0)).unwrap(),
         {

@@ -17,6 +17,9 @@ import { loginInstead, updateResetEmail } from '@store/features/user/recovery/re
 // Redux Thunks
 import { forgotPassword } from '@store/features/user/recovery/recoveryThunks';
 
+// Enums
+import { LoginFormType } from '@enums/login-form';
+
 // Types
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -45,7 +48,7 @@ export default function ForgotPasswordForm() {
   };
 
   const handleLoginInsteadBtnClick = (): void => {
-    dispatch(setType('Sign In'));
+    dispatch(setType(LoginFormType.LOGIN));
     dispatch(loginInstead());
     router.push('/login');
   };

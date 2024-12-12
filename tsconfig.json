@@ -26,6 +26,7 @@
       "@hooks/*": ["src/libs/hooks/*"],
       "@contexts/*": ["src/libs/contexts/*"],
       "@custom-types/*": ["src/libs/types/*"],
+      "@enums/*": ["src/libs/enums/*"],
       "@interfaces/*": ["src/libs/interfaces/*"],
       "@styles/*": ["src/libs/styles/*"],
       "@store/*": ["src/libs/store/*"],

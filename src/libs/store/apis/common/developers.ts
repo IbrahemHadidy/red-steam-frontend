@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
-import type { Developer } from '@interfaces/company';
+import type { Company } from '@interfaces/company';
 
 const developerApi = createApi({
   reducerPath: 'api/developer',
@@ -21,21 +21,21 @@ const developerApi = createApi({
       invalidatesTags: ['Developer'],
     }),
 
-    getDeveloper: builder.query<Developer, number>({
+    getDeveloper: builder.query<Company, number>({
       query: (id) => `/${id}`,
     }),
 
-    getDevelopers: builder.query<Developer[], number[]>({
+    getDevelopers: builder.query<Company[], number[]>({
       query: (ids) => `/bulk/${ids.join(',')}`,
     }),
 
-    getAllDevelopers: builder.query<Developer[], void>({
+    getAllDevelopers: builder.query<Company[], void>({
       query: () => '',
     }),
 
     getDevelopersPaginated: builder.query<
       {
-        items: Developer[];
+        items: Company[];
         total: number;
         totalPages: number;
       },

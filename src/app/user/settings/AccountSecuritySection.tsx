@@ -14,8 +14,10 @@ import {
 // Images
 import guardIcon from '@images/icon_steamguard.png';
 
+// Enums
+import { ChangeModalType } from '@enums/user-settings';
+
 // Types
-import type { ChangeModalType } from '@store/features/user/settings/userSettingsSlice';
 import type { MouseEvent } from 'react';
 
 export default function AccountSecuritySection() {
@@ -36,7 +38,7 @@ export default function AccountSecuritySection() {
 
   const handleChangePasswordClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    openChangeModal('password');
+    openChangeModal(ChangeModalType.PASSWORD);
   };
 
   //-------------------------------- Render -------------------------------//

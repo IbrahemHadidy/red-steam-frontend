@@ -15,8 +15,10 @@ import {
 import emailIcon from '@images/icon_email.png';
 import mobileIcon from '@images/icon_mobile.png';
 
+// Enums
+import { ChangeModalType } from '@enums/user-settings';
+
 // Types
-import type { ChangeModalType } from '@store/features/user/settings/userSettingsSlice';
 import type { MouseEvent } from 'react';
 
 export default function ContactInfoSection() {
@@ -35,12 +37,12 @@ export default function ContactInfoSection() {
 
   const handleChangeEmailClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    openChangeModal('email');
+    openChangeModal(ChangeModalType.EMAIL);
   };
 
   const handleChangePhoneClick = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    openChangeModal('phone');
+    openChangeModal(ChangeModalType.PHONE);
   };
 
   const handleDeletePhoneClick = (e: MouseEvent<HTMLAnchorElement>): void => {

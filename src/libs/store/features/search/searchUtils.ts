@@ -6,20 +6,24 @@ import Decimal from 'decimal.js';
 // Constants
 import { PRICE_RANGES } from '@config/constants/search';
 
-// Types
-import type {
+// Enums
+import {
+  FilterCheckType,
   FilterSearchParamKey,
-  FilterState,
-  RequestParams,
+  SearchDataSortOption,
+  SearchDataUpcomingMode,
   SortOption,
-} from '@custom-types/search';
+} from '@enums/search';
+
+// Types
+import type { FilterState, RequestParams } from '@custom-types/search';
 import type { User } from '@interfaces/user';
 
 //----------------------------- Initialize filters --------------------------------//
 export const initializeFilterData = <T extends { id: number; name: string }>(
   items: T[]
-): { id: number; name: string; check: 'unchecked' }[] =>
-  items.map(({ id, name }) => ({ id, name, check: 'unchecked' }));
+): { id: number; name: string; check: FilterCheckType.UNCHECKED }[] =>
+  items.map(({ id, name }) => ({ id, name, check: FilterCheckType.UNCHECKED }));
 
 //----------------------- Update filters from search params -----------------------//
 export const setFiltersFromSearchParams = (
@@ -31,17 +35,29 @@ export const setFiltersFromSearchParams = (
   const fieldsToUpdate: {
     key: FilterSearchParamKey;
     field: keyof FilterState;
-    status: 'included' | 'excluded';
+    status: FilterCheckType;
   }[] = [
-    { key: 'priceOptions', field: 'price', status: 'included' },
-    { key: 'preferencesOptions', field: 'preferences', status: 'included' },
-    { key: 'tags', field: 'tags', status: 'included' },
-    { key: 'excludedTags', field: 'tags', status: 'excluded' },
-    { key: 'features', field: 'features', status: 'included' },
-    { key: 'developers', field: 'developers', status: 'included' },
-    { key: 'publishers', field: 'publishers', status: 'included' },
-    { key: 'os', field: 'os', status: 'included' },
-    { key: 'languages', field: 'languages', status: 'included' },
+    { key: FilterSearchParamKey.PRICE_OPTIONS, field: 'price', status: FilterCheckType.INCLUDED },
+    {
+      key: FilterSearchParamKey.PREFERENCES_OPTIONS,
+      field: 'preferences',
+      status: FilterCheckType.INCLUDED,
+    },
+    { key: FilterSearchParamKey.TAGS, field: 'tags', status: FilterCheckType.INCLUDED },
+    { key: FilterSearchParamKey.EXCLUDED_TAGS, field: 'tags', status: FilterCheckType.EXCLUDED },
+    { key: FilterSearchParamKey.FEATURES, field: 'features', status: FilterCheckType.INCLUDED },
+    {
+      key: FilterSearchParamKey.DEVELOPERS,
+      field: 'developers',
+      status: FilterCheckType.INCLUDED,
+    },
+    {
+      key: FilterSearchParamKey.PUBLISHERS,
+      field: 'publishers',
+      status: FilterCheckType.INCLUDED,
+    },
+    { key: FilterSearchParamKey.OS, field: 'os', status: FilterCheckType.INCLUDED },
+    { key: FilterSearchParamKey.LANGUAGES, field: 'languages', status: FilterCheckType.INCLUDED },
   ];
 
   fieldsToUpdate.forEach(({ key, field, status }) => {
@@ -84,39 +100,39 @@ export const getNewSearchUrl = (
     createQueryString('maxPrice', priceValue(rangeValue)),
     createQueryString(
       'priceOptions',
-      filters.price.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.price.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'preferencesOptions',
-      filters.preferences.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.preferences.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'tags',
-      filters.tags.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.tags.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'os',
-      filters.os.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.os.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'excludedTags',
-      filters.tags.filter((f) => f.check === 'excluded').map((f) => f.id)
+      filters.tags.filter((f) => f.check === FilterCheckType.EXCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'features',
-      filters.features.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.features.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'developers',
-      filters.developers.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.developers.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'publishers',
-      filters.publishers.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.publishers.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
     createQueryString(
       'languages',
-      filters.languages.filter((f) => f.check === 'included').map((f) => f.id)
+      filters.languages.filter((f) => f.check === FilterCheckType.INCLUDED).map((f) => f.id)
     ),
   ];
 
@@ -139,20 +155,20 @@ export const getNewRequestParams = (
   if (searchQuery !== '') searchData.partialName = searchQuery;
 
   // Get sort option
-  if (sortOption === 'Relevance') {
-    searchData.sort = 'relevance';
-  } else if (sortOption === 'Name') {
-    searchData.sort = 'name';
-  } else if (sortOption === 'Lowest Price') {
-    searchData.sort = 'lowestPrice';
-  } else if (sortOption === 'Highest Price') {
-    searchData.sort = 'highestPrice';
-  } else if (sortOption === 'Release Date') {
-    searchData.sort = 'releaseDate';
-  } else if (sortOption === 'User Reviews') {
-    searchData.sort = 'reviews';
-  } else if (sortOption === 'Top Sales') {
-    searchData.sort = 'totalSales';
+  if (sortOption === SortOption.RELEVANCE) {
+    searchData.sort = SearchDataSortOption.RELEVANCE;
+  } else if (sortOption === SortOption.NAME) {
+    searchData.sort = SearchDataSortOption.NAME;
+  } else if (sortOption === SortOption.LOWEST_PRICE) {
+    searchData.sort = SearchDataSortOption.LOWEST_PRICE;
+  } else if (sortOption === SortOption.HIGHEST_PRICE) {
+    searchData.sort = SearchDataSortOption.HIGHEST_PRICE;
+  } else if (sortOption === SortOption.RELEASE_DATE) {
+    searchData.sort = SearchDataSortOption.RELEASE_DATE;
+  } else if (sortOption === SortOption.USER_REVIEWS) {
+    searchData.sort = SearchDataSortOption.USER_REVIEWS;
+  } else if (sortOption === SortOption.TOP_SALES) {
+    searchData.sort = SearchDataSortOption.TOP_SALES;
   }
 
   // Get price range
@@ -161,33 +177,41 @@ export const getNewRequestParams = (
   }
 
   // Get tags
-  if (filters.tags.filter((f) => f.check === 'included').length > 0) {
-    searchData.tags = filters.tags.filter((f) => f.check === 'included').map((f) => f.id);
+  if (filters.tags.filter((f) => f.check === FilterCheckType.INCLUDED).length > 0) {
+    searchData.tags = filters.tags
+      .filter((f) => f.check === FilterCheckType.INCLUDED)
+      .map((f) => f.id);
   }
 
   // Get excluded tags
-  if (filters.tags.filter((f) => f.check === 'excluded').length > 0) {
-    searchData.excludeTags = filters.tags.filter((f) => f.check === 'excluded').map((f) => f.id);
+  if (filters.tags.filter((f) => f.check === FilterCheckType.EXCLUDED).length > 0) {
+    searchData.excludeTags = filters.tags
+      .filter((f) => f.check === FilterCheckType.EXCLUDED)
+      .map((f) => f.id);
   }
 
   // Get paid only
   if (
-    filters.price.filter((f) => f.name === 'Hide free to play games' && f.check === 'included')
-      .length > 0
+    filters.price.filter(
+      (f) => f.name === 'Hide free to play games' && f.check === FilterCheckType.INCLUDED
+    ).length > 0
   ) {
     searchData.paid = true;
   }
 
   // Get offers only
   if (
-    filters.price.filter((f) => f.name === 'Special Offers' && f.check === 'included').length > 0
+    filters.price.filter((f) => f.name === 'Special Offers' && f.check === FilterCheckType.INCLUDED)
+      .length > 0
   ) {
     searchData.offers = true;
   }
 
   // Get platforms
-  if (filters.os.filter((f) => f.check === 'included').length > 0) {
-    const platforms = filters.os.filter((f) => f.check === 'included').map((f) => f.name);
+  if (filters.os.filter((f) => f.check === FilterCheckType.INCLUDED).length > 0) {
+    const platforms = filters.os
+      .filter((f) => f.check === FilterCheckType.INCLUDED)
+      .map((f) => f.name);
     const convertedPlatforms: ('win' | 'mac')[] = platforms
       .map((platform) => {
         if (platform === 'macOS') {
@@ -203,51 +227,58 @@ export const getNewRequestParams = (
   }
 
   // Get publishers
-  if (filters.publishers.filter((f) => f.check === 'included').length > 0) {
+  if (filters.publishers.filter((f) => f.check === FilterCheckType.INCLUDED).length > 0) {
     searchData.publishers = filters.publishers
-      .filter((f) => f.check === 'included')
+      .filter((f) => f.check === FilterCheckType.INCLUDED)
       .map((f) => f.id);
   }
 
   // Get developers
-  if (filters.developers.filter((f) => f.check === 'included').length > 0) {
+  if (filters.developers.filter((f) => f.check === FilterCheckType.INCLUDED).length > 0) {
     searchData.developers = filters.developers
-      .filter((f) => f.check === 'included')
+      .filter((f) => f.check === FilterCheckType.INCLUDED)
       .map((f) => f.id);
   }
 
   // Get features
-  if (filters.features.filter((f) => f.check === 'included').length > 0) {
-    searchData.features = filters.features.filter((f) => f.check === 'included').map((f) => f.id);
+  if (filters.features.filter((f) => f.check === FilterCheckType.INCLUDED).length > 0) {
+    searchData.features = filters.features
+      .filter((f) => f.check === FilterCheckType.INCLUDED)
+      .map((f) => f.id);
   }
 
   // Get languages
-  if (filters.languages.filter((f) => f.check === 'included').length > 0) {
-    searchData.languages = filters.languages.filter((f) => f.check === 'included').map((f) => f.id);
+  if (filters.languages.filter((f) => f.check === FilterCheckType.INCLUDED).length > 0) {
+    searchData.languages = filters.languages
+      .filter((f) => f.check === FilterCheckType.INCLUDED)
+      .map((f) => f.id);
   }
 
   // Get featured only
   if (
-    filters.preferences.filter((f) => f.name === 'Featured only' && f.check === 'included').length >
-    0
+    filters.preferences.filter(
+      (f) => f.name === 'Featured only' && f.check === FilterCheckType.INCLUDED
+    ).length > 0
   ) {
     searchData.featured = true;
   }
 
   // Get exclude mature
   if (
-    filters.preferences.filter((f) => f.name === 'Exclude mature' && f.check === 'included')
-      .length > 0
+    filters.preferences.filter(
+      (f) => f.name === 'Exclude mature' && f.check === FilterCheckType.INCLUDED
+    ).length > 0
   ) {
     searchData.excludeMature = true;
   }
 
   // Get exclude upcoming
   if (
-    filters.preferences.filter((f) => f.name === 'Exclude upcoming games' && f.check === 'included')
-      .length > 0
+    filters.preferences.filter(
+      (f) => f.name === 'Exclude upcoming games' && f.check === FilterCheckType.INCLUDED
+    ).length > 0
   ) {
-    searchData.upcomingMode = 'exclude';
+    searchData.upcomingMode = SearchDataUpcomingMode.EXCLUDE_UPCOMING;
   }
 
   // Get excluded games ids
@@ -258,13 +289,13 @@ export const getNewRequestParams = (
     const cartFilter = filters.preferences.find((f) => f.name === 'Hide items in my cart');
     const libraryFilter = filters.preferences.find((f) => f.name === 'Hide items in my library');
 
-    if (wishlistFilter && wishlistFilter.check === 'included') {
+    if (wishlistFilter && wishlistFilter.check === FilterCheckType.INCLUDED) {
       currentUserData.wishlist.forEach((item) => newExcludedIds.add(item.id));
     }
-    if (cartFilter && cartFilter.check === 'included') {
+    if (cartFilter && cartFilter.check === FilterCheckType.INCLUDED) {
       currentUserData.cart.forEach((item) => newExcludedIds.add(item.id));
     }
-    if (libraryFilter && libraryFilter.check === 'included') {
+    if (libraryFilter && libraryFilter.check === FilterCheckType.INCLUDED) {
       currentUserData.library.forEach((item) => newExcludedIds.add(item.id));
     }
 

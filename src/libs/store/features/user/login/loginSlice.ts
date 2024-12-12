@@ -4,14 +4,15 @@ import { createSlice } from '@reduxjs/toolkit';
 // Thunks
 import { login } from '@store/features/auth/authThunks';
 
+// Enums
+import { LoginFormType } from '@enums/login-form';
+
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type FormType = 'Sign In' | 'Password Reset' | 'Name / Password Recovery';
-
 interface LoginState {
   // UI states
-  readonly type: FormType;
+  readonly type: LoginFormType;
   readonly isLoginLoading: boolean;
   readonly isLoginFormVisible: boolean;
   readonly isForgotPasswordVisible: boolean;
@@ -27,7 +28,7 @@ interface LoginState {
 
 // Initial state
 const loginState: LoginState = {
-  type: 'Sign In',
+  type: LoginFormType.LOGIN,
   isLoginLoading: false,
   isLoginFormVisible: true,
   isForgotPasswordVisible: false,
@@ -42,7 +43,7 @@ const loginSlice = createSlice({
   initialState: loginState,
 
   reducers: {
-    setType: (state, action: PayloadAction<FormType>) => {
+    setType: (state, action: PayloadAction<LoginFormType>) => {
       state.type = action.payload;
     },
     setLoginLoading: (state, action: PayloadAction<boolean>) => {

@@ -15,6 +15,9 @@ import {
 // Utils
 import getFileUrl from '@utils/getFileUrl';
 
+// Enums
+import { GameMediaChangeStatus } from '@enums/admin';
+
 // Types
 import type { Screenshot } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
@@ -89,14 +92,14 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
           className={duplicateOrders.includes(item.order) ? 'input-error' : ''}
         />
         <button
-          className={`remove-button ${item.change === 'deleted' ? 'restore' : ''}`}
+          className={`remove-button ${item.change === GameMediaChangeStatus.DELETED ? 'restore' : ''}`}
           onClick={() =>
-            item.change === 'deleted'
+            item.change === GameMediaChangeStatus.DELETED
               ? handleRestoreScreenshot(item.baseOrder)
               : handleRemoveScreenshot(item.baseOrder)
           }
         >
-          {item.change === 'deleted' ? 'Restore' : 'Remove'}
+          {item.change === GameMediaChangeStatus.DELETED ? 'Restore' : 'Remove'}
         </button>
         <label>Featured:</label>
         <input

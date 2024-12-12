@@ -20,6 +20,9 @@ import { updateItem } from '@store/features/admin/adminThunks';
 import getBase64FromFile from '@utils/getBase64FromFile';
 import Decimal from 'decimal.js';
 
+// Enums
+import { AdminType } from '@enums/admin';
+
 // Types
 import type { ChangeEvent } from 'react';
 
@@ -85,7 +88,7 @@ export default function EditModal() {
       <div className="modal-overlay" onClick={closeModal} />
       <div className="edit-modal">
         <form onSubmit={handleSubmit}>
-          {adminType === 'offer' ? (
+          {adminType === AdminType.OFFER ? (
             <>
               <div className="form-group">
                 <label htmlFor="discountPrice">Discount Price</label>
@@ -162,7 +165,7 @@ export default function EditModal() {
                 />
               </div>
 
-              {(adminType === 'developer' || adminType === 'publisher') && (
+              {(adminType === AdminType.DEVELOPER || adminType === AdminType.PUBLISHER) && (
                 <div className="form-group">
                   <label htmlFor="website">Website</label>
                   <input
@@ -175,7 +178,7 @@ export default function EditModal() {
                 </div>
               )}
 
-              {adminType === 'feature' && (
+              {adminType === AdminType.FEATURE && (
                 <div className="form-group">
                   <label htmlFor="icon">Icon</label>
                   <input id="icon" name="icon" type="file" onChange={handleIconChange} />

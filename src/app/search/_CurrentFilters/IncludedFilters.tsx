@@ -4,6 +4,9 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 // Redux Handlers
 import { uncheckFilter } from '@store/features/search/searchSlice';
 
+// Enums
+import { FilterCheckType } from '@enums/search';
+
 // Types
 import type { Filter, FilterState } from '@custom-types/search';
 
@@ -20,7 +23,7 @@ export default function IncludedFilters() {
     <>
       {Object.entries(filters).flatMap(([filterType, filterArray]) =>
         filterArray.map((row: Filter) =>
-          row.check === 'included' ? (
+          row.check === FilterCheckType.INCLUDED ? (
             <div className="search-filter" key={`${filterType}-${row.id}-include`}>
               {row.name}
               <a onClick={() => handleFilterUncheck(filterType as keyof FilterState, row.id)} />

@@ -25,11 +25,17 @@ export interface User {
   readonly reviews?: Review[];
 }
 
-export interface BaseItem {
+export interface WishlistItem {
   readonly id: number;
   readonly addedOn: string;
 }
 
-export type WishlistItem = BaseItem;
-export type CartItem = BaseItem;
-export type LibraryItem = BaseItem;
+export interface CartItem {
+  readonly id: number;
+  readonly addedOn: string;
+}
+
+export interface LibraryItem {
+  readonly id: number;
+  readonly addedOn: string;
+}

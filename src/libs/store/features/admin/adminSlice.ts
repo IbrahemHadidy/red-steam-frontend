@@ -18,8 +18,11 @@ import {
 // Utils
 import get7DaysFromNow from '@utils/get7DaysFromNow';
 
+// Enums
+import { AdminType, Direction } from '@enums/admin';
+
 // Types
-import type { AdminListItem, AdminType, ItemSortConfig, SearchQuery } from '@custom-types/admin';
+import type { AdminListItem, ItemSortConfig, SearchQuery } from '@custom-types/admin';
 import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -59,7 +62,7 @@ interface AdminState {
 
 // Initial state
 const adminState: AdminState = {
-  adminType: 'tag',
+  adminType: AdminType.TAG,
 
   offerGame: null,
   discountPrice: '0.00',
@@ -75,7 +78,7 @@ const adminState: AdminState = {
   currentPage: 1,
   itemsPerPage: 10,
   totalPages: 1,
-  sortConfig: { key: 'id', direction: 'ASC' },
+  sortConfig: { key: 'id', direction: Direction.ASC },
   searchQuery: {},
 
   isEditModalOpen: false,

@@ -7,8 +7,10 @@ import { setFilter, setSort } from '@store/features/game/gameSlice';
 // Utils
 import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 
+// Enums
+import { ReviewFilter, ReviewSort } from '@enums/reviews';
+
 // Types
-import type { ReviewFilter, ReviewSort } from '@custom-types/reviews';
 import type { ChangeEvent } from 'react';
 
 export default function ReviewsHeader() {
@@ -20,13 +22,20 @@ export default function ReviewsHeader() {
 
   //---------------------------- Event Handlers ---------------------------//
   const handleReviewTypeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    const value = e.currentTarget.value as ReviewFilter;
-    dispatch(setFilter(value));
+    const value = e.currentTarget.value;
+    const filter =
+      value === 'all'
+        ? ReviewFilter.ALL
+        : value === 'positive'
+          ? ReviewFilter.POSITIVE
+          : ReviewFilter.NEGATIVE;
+    dispatch(setFilter(filter));
   };
 
   const handleSortTypeChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    const value = e.currentTarget.value as ReviewSort;
-    dispatch(setSort(value));
+    const value = e.currentTarget.value;
+    const sort = value === 'newest' ? ReviewSort.NEWEST : ReviewSort.OLDEST;
+    dispatch(setSort(sort));
   };
 
   //-------------------------------- Render -------------------------------//

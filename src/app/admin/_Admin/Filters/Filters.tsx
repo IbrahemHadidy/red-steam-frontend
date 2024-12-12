@@ -8,19 +8,24 @@ import SearchByName from './SearchByName';
 import SearchByUser from './SearchByUser';
 import SearchByWebsite from './SearchByWebsite';
 
+// Enums
+import { AdminType } from '@enums/admin';
+
 export default function Filters() {
   const { adminType } = useAppSelector((state) => state.admin.common);
 
   return (
     <div className="filters">
       <div className="search-box">
-        {['offer', 'create-offer'].includes(adminType) && <SearchByGame />}
+        {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && <SearchByGame />}
 
-        {!['review', 'offer', 'create-offer'].includes(adminType) && <SearchByName />}
+        {![AdminType.REVIEW, AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && (
+          <SearchByName />
+        )}
 
-        {['developer', 'publisher'].includes(adminType) && <SearchByWebsite />}
+        {[AdminType.PUBLISHER, AdminType.DEVELOPER].includes(adminType) && <SearchByWebsite />}
 
-        {adminType === 'review' && (
+        {adminType === AdminType.REVIEW && (
           <>
             <SearchByUser />
             <SearchByGame />

@@ -13,11 +13,12 @@ import {
   deletePhone,
 } from './userSettingsThunks';
 
+// Enums
+import { ChangeModalType } from '@enums/user-settings';
+
 // Types
 import type FileMetadata from '@custom-types/file-metadata';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-export type ChangeModalType = 'email' | 'password' | 'phone';
 
 interface UserSettingsState {
   // UI States
@@ -55,7 +56,7 @@ interface UserSettingsState {
 const userSettingsState: UserSettingsState = {
   isIdVisible: false,
   isChangeModalVisible: false,
-  changeModalType: 'email',
+  changeModalType: ChangeModalType.EMAIL,
   currentChangeStep: 1,
   isDeleteAccountModalVisible: false,
   isDeletePhoneModalVisible: false,

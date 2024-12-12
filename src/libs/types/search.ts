@@ -1,28 +1,4 @@
-/**
- * Type representing the title of a filter block.
- */
-export type FilterTitle =
-  | 'Preference'
-  | 'Tag'
-  | 'Feature'
-  | 'Developer'
-  | 'Publisher'
-  | 'OS'
-  | 'Language';
-
-/**
- * Type representing available sorting options for search results.
- * These options allow users to sort items based on criteria like relevance,
- * name, price, release date, user reviews, and sales performance.
- */
-export type SortOption =
-  | 'Relevance'
-  | 'Name'
-  | 'Lowest Price'
-  | 'Highest Price'
-  | 'Release Date'
-  | 'User Reviews'
-  | 'Top Sales';
+import type { FilterCheckType, SearchDataSortOption, SearchDataUpcomingMode } from '@enums/search';
 
 /**
  * Type representing available filter options for search results.
@@ -33,7 +9,7 @@ export type SortOption =
 export interface Filter {
   id: number;
   name: string;
-  check: 'unchecked' | 'included' | 'excluded';
+  check: FilterCheckType;
 }
 
 /**
@@ -52,33 +28,12 @@ export interface FilterState {
 }
 
 /**
- * Type representing the keys of the search parameters used in the URL.
- */
-export type FilterSearchParamKey =
-  | 'priceOptions'
-  | 'preferencesOptions'
-  | 'tags'
-  | 'excludedTags'
-  | 'features'
-  | 'developers'
-  | 'publishers'
-  | 'os'
-  | 'languages';
-
-/**
  * Type representing the parameters for a search request.
  * It includes a search data object and a pagination object.
  */
 export interface RequestParams {
   searchData: {
-    sort?:
-      | 'relevance'
-      | 'name'
-      | 'lowestPrice'
-      | 'highestPrice'
-      | 'releaseDate'
-      | 'reviews'
-      | 'totalSales';
+    sort?: SearchDataSortOption;
     partialName?: string;
     maxPrice?: string;
     tags?: number[];
@@ -93,7 +48,7 @@ export interface RequestParams {
     featured?: boolean;
     excludeMature?: boolean;
     excludedGames?: number[];
-    upcomingMode?: 'onlyUpcoming' | 'exclude';
+    upcomingMode?: SearchDataUpcomingMode;
   };
   pagination: { page: number; limit: number };
 }

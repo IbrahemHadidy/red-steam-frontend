@@ -4,6 +4,9 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 // Thunks
 import { fetchPaginatedUsers, updateUser } from './userAdminThunks';
 
+// Enums
+import { Direction, UserSortOption } from '@enums/admin';
+
 // Types
 import type { SearchQuery, UserSortConfig } from '@custom-types/admin';
 import type { User } from '@interfaces/user';
@@ -31,7 +34,7 @@ const adminState: AdminState = {
   currentPage: 1,
   usersPerPage: 10,
   totalPages: 0,
-  sortConfig: { key: 'username', direction: 'ASC' },
+  sortConfig: { key: UserSortOption.USERNAME, direction: Direction.ASC },
   searchQuery: {},
 
   currentEditUser: null,

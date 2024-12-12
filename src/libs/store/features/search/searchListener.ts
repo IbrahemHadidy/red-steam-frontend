@@ -42,8 +42,10 @@ import {
 // Constants
 import { PRICE_RANGES } from '@config/constants/search';
 
+// Enums
+import type { SortOption } from '@enums/search';
+
 // Types
-import type { SortOption } from '@custom-types/search';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from '@store/store';
 

@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Types
 import type { RequestParams } from '@custom-types/search';
+import type { ReviewFilter, ReviewSort } from '@enums/reviews';
 import type { Game } from '@interfaces/game';
 import type { Review } from '@interfaces/review';
 
@@ -113,14 +114,14 @@ const gameDataApi = createApi({
       Review[],
       {
         gameId: number;
-        filter: 'positive' | 'negative' | 'all';
-        sort: 'newest' | 'oldest';
+        filter: ReviewFilter;
+        sort: ReviewSort;
         offset: number;
         limit: number;
       }
     >({
       query: ({ gameId, filter, sort, limit, offset }) => ({
-        url: `${gameId}/reviews?filter=${filter}&sort=${sort}&limit=${limit}&offset=${offset}`,
+        url: `${gameId}/reviews?filter=${filter.toLowerCase()}&sort=${sort.toLowerCase()}&limit=${limit}&offset=${offset}`,
         method: 'GET',
         credentials: 'include',
       }),

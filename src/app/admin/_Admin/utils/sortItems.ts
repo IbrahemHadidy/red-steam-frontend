@@ -1,3 +1,5 @@
+import { Direction } from '@enums/admin';
+
 import type { ItemSortConfig } from '@custom-types/admin';
 
 /**
@@ -10,10 +12,10 @@ export default function sortItems(key: string, sortConfig: ItemSortConfig): Item
   // Check if the same key is clicked, then toggle the direction
   if (sortConfig?.key === key) {
     // Toggle the sorting direction
-    const newDirection = sortConfig.direction === 'ASC' ? 'DESC' : 'ASC';
+    const newDirection = sortConfig.direction === Direction.ASC ? Direction.DESC : Direction.ASC;
     return { key, direction: newDirection };
   }
 
   // Otherwise, set a new sorting key with ascending order
-  return { key, direction: 'ASC' };
+  return { key, direction: Direction.ASC };
 }

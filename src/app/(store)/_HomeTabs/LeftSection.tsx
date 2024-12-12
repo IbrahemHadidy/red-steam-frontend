@@ -2,8 +2,10 @@
 import Tab from './Tab';
 import TabContent from './TabContent';
 
+// Enums
+import { OpenedTab } from '@enums/tabs';
+
 // Types
-import type { OpenedTab } from '@custom-types/tabs';
 import type { Game } from '@interfaces/game';
 
 interface LeftSectionProps {
@@ -30,22 +32,22 @@ export default function LeftSection({
 }: LeftSectionProps) {
   //------------------------ Tabs Content Config --------------------------//
   const tabsRow = [
-    { tabName: 'newreleases', tabTitle: 'New & Trending' },
-    { tabName: 'topsellers', tabTitle: 'Top Sellers' },
-    { tabName: 'upcoming', tabTitle: 'Popular Upcoming' },
-    { tabName: 'specials', tabTitle: 'Specials' },
+    { tabName: 'newreleases', tabTitle: OpenedTab.NEW_AND_TRENDING },
+    { tabName: 'topsellers', tabTitle: OpenedTab.TOP_SELLERS },
+    { tabName: 'upcoming', tabTitle: OpenedTab.POPULAR_UPCOMING },
+    { tabName: 'specials', tabTitle: OpenedTab.SPECIALS },
   ];
 
   const tabsContent = [
     {
       items: newAndTrending,
-      title: 'New & Trending',
+      title: OpenedTab.NEW_AND_TRENDING,
       seeMore: '/search?sort=Release%20Date',
     },
     { items: topSellers, title: 'Top Sellers', seeMore: '/search?sort=Relevance' },
     {
       items: popularUpcoming,
-      title: 'Popular Upcoming',
+      title: OpenedTab.POPULAR_UPCOMING,
       seeMore: '/search?sort=Release%20Date',
     },
     { items: specials, title: 'Specials', seeMore: '/search?sort=Relevance' },

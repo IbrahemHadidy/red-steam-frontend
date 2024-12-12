@@ -1,4 +1,4 @@
-import type { Developer, Publisher } from '@interfaces/company';
+import type { Company } from '@interfaces/company';
 import type { Feature } from '@interfaces/feature';
 import type { Language } from '@interfaces/language';
 import type { Pricing } from '@interfaces/pricing';
@@ -12,8 +12,8 @@ export interface Game {
   readonly description: string;
   readonly releaseDate: string;
   readonly featured: boolean;
-  readonly publishers?: Publisher[];
-  readonly developers?: Developer[];
+  readonly publishers?: Company[];
+  readonly developers?: Company[];
   readonly thumbnailEntries: ThumbnailsEntry;
   readonly imageEntries: ImageEntry[];
   readonly videoEntries: VideoEntry[];

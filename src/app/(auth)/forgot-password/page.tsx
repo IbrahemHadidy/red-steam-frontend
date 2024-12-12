@@ -13,12 +13,15 @@ import { reset, setType } from '@store/features/user/login/loginSlice';
 import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 import ForgotPassword from '../_SignInAndRecovery/SignInAndRecovery';
 
+// Enums
+import { LoginFormType } from '@enums/login-form';
+
 export default function ForgotPasswordPage() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setType('Name / Password Recovery'));
+    dispatch(setType(LoginFormType.FORGOT_PASSWORD));
 
     return () => {
       dispatch(reset());

@@ -6,6 +6,3 @@ export interface Company {
   readonly website: string;
   readonly games?: Game[];
 }
-
-export type Publisher = Company;
-export type Developer = Company;

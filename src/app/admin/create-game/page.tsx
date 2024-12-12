@@ -12,6 +12,9 @@ import { reset, setType } from '@store/features/admin/game/gameAdminSlice';
 // Components
 import GameAdmin from '@app/admin/_GameAdmin/GameAdmin';
 
+// Enums
+import { GameAdminType } from '@enums/admin';
+
 export default function GameCreate() {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
@@ -19,7 +22,7 @@ export default function GameCreate() {
   //------------------------------- Effects -------------------------------//
   // Reset state on Mount
   useEffect(() => {
-    dispatch(setType('create'));
+    dispatch(setType(GameAdminType.CREATE));
     dispatch(reset());
   }, [dispatch]);
 

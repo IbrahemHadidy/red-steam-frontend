@@ -18,6 +18,9 @@ import gameAdminApi, { Thumbnails } from '@store/apis/game/admin';
 import getFileUrl from '@utils/getFileUrl';
 import promiseToast from '@utils/promiseToast';
 
+// Enums
+import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
+
 // Types
 import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
@@ -83,7 +86,7 @@ export const getPreviewData = createAppAsyncThunk<Game>(
         },
         imageEntries: await Promise.all(
           screenshots
-            .filter((entry) => entry.change !== 'deleted')
+            .filter((entry) => entry.change !== GameMediaChangeStatus.DELETED)
             .map(async (entry) => ({
               ...entry,
               link: await getFileUrl(entry.image),
@@ -91,7 +94,7 @@ export const getPreviewData = createAppAsyncThunk<Game>(
         ),
         videoEntries: await Promise.all(
           videos
-            .filter((entry) => entry.change !== 'deleted')
+            .filter((entry) => entry.change !== GameMediaChangeStatus.DELETED)
             .map(async (entry) => ({
               ...entry,
               link: await getFileUrl(entry.video),
@@ -224,16 +227,16 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
                 : undefined,
           },
           deletedScreenshots: screenshots
-            .filter((screenshot) => screenshot.change === 'deleted')
+            .filter((screenshot) => screenshot.change === GameMediaChangeStatus.DELETED)
             .map((screenshot) => screenshot.baseOrder),
           deletedVideos: videos
-            .filter((video) => video.change === 'deleted')
+            .filter((video) => video.change === GameMediaChangeStatus.DELETED)
             .map((video) => video.baseOrder),
           changedScreenshots: screenshots
             .filter(
               (screenshot) =>
-                screenshot.change !== 'deleted' &&
-                screenshot.change !== 'added' &&
+                screenshot.change !== GameMediaChangeStatus.DELETED &&
+                screenshot.change !== GameMediaChangeStatus.ADDED &&
                 screenshot.order !== screenshot.baseOrder
             )
             .map((screenshot) => ({
@@ -243,16 +246,18 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
           changedVideos: videos
             .filter(
               (video) =>
-                video.change !== 'deleted' &&
-                video.change !== 'added' &&
+                video.change !== GameMediaChangeStatus.DELETED &&
+                video.change !== GameMediaChangeStatus.ADDED &&
                 video.order !== video.baseOrder
             )
             .map((video) => ({
               oldOrder: video.baseOrder,
               newOrder: video.order,
             })),
-          addedScreenshots: screenshots.filter((screenshot) => screenshot.change === 'added'),
-          addedVideos: videos.filter((video) => video.change === 'added'),
+          addedScreenshots: screenshots.filter(
+            (screenshot) => screenshot.change === GameMediaChangeStatus.ADDED
+          ),
+          addedVideos: videos.filter((video) => video.change === GameMediaChangeStatus.ADDED),
           featuredOrders: screenshots
             .filter((screenshot) => screenshot.featured)
             .map((screenshot) => screenshot.order),
@@ -358,9 +363,9 @@ export const submitForm = createAppAsyncThunk<void, AppRouterInstance>(
       // Prevent the user from leaving the page
       window.addEventListener('beforeunload', preventNavigation);
 
-      if (type === 'create') {
+      if (type === GameAdminType.CREATE) {
         await createGame(dispatch, getState(), router);
-      } else if (type === 'update') {
+      } else if (type === GameAdminType.UPDATE) {
         await updateGame(dispatch, getState(), router);
       }
     } catch (error) {

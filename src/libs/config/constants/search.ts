@@ -1,4 +1,4 @@
-import type { FilterTitle, SortOption } from '@custom-types/search';
+import { FilterTitle, SortOption } from '@enums/search';
 
 export const PRICE_RANGES: { label: string; value: number | null }[] = [
   { label: 'Free', value: 0 },
@@ -18,18 +18,18 @@ export const PRICE_RANGES: { label: string; value: number | null }[] = [
 ];
 
 export const SORT_OPTIONS: SortOption[] = [
-  'Relevance',
-  'Release Date',
-  'Name',
-  'Lowest Price',
-  'Highest Price',
-  'User Reviews',
-  'Top Sales',
+  SortOption.RELEVANCE,
+  SortOption.NAME,
+  SortOption.RELEASE_DATE,
+  SortOption.LOWEST_PRICE,
+  SortOption.HIGHEST_PRICE,
+  SortOption.USER_REVIEWS,
+  SortOption.TOP_SALES,
 ];
 
-export const EXCLUDABLE_FILTER_TITLES: FilterTitle[] = ['Tag'];
+export const EXCLUDABLE_FILTER_TITLES: FilterTitle[] = [FilterTitle.TAG];
 
-export const DEFAULT_OPEN_DROPDOWNS: FilterTitle[] = ['Feature', 'Tag'];
+export const DEFAULT_OPEN_DROPDOWNS: FilterTitle[] = [FilterTitle.FEATURE, FilterTitle.TAG];
 
 export const DROPDOWN_HEIGHTS_BY_CHILD_COUNT: { [key: number]: number } = {
   0: 40,

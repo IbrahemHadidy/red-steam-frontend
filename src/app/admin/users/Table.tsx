@@ -25,8 +25,11 @@ import sortItems from '../_Admin/utils/sortItems';
 import deleteIcon from '@images/delete.png';
 import editIcon from '@images/edit.png';
 
+// Enums
+import { UserSortOption } from '@enums/admin';
+
 // Types
-import type { UserSort, UserSortConfig } from '@custom-types/admin';
+import type { UserSortConfig } from '@custom-types/admin';
 import type { User } from '@interfaces/user';
 import type { SortArrow } from '../_Admin/utils/getSortArrow';
 
@@ -57,7 +60,7 @@ export default function Table() {
     return getSortArrow(key, sortConfig);
   };
 
-  const sortBykey = (key: UserSort): void => {
+  const sortBykey = (key: UserSortOption): void => {
     const sortedItems = sortItems(key, sortConfig);
     if (Object.values(sortedItems).includes(key)) {
       dispatch(setSortConfig(sortedItems as UserSortConfig));
@@ -71,24 +74,26 @@ export default function Table() {
         <tr>
           <th className="user-id">ID</th>
 
-          <th onClick={() => sortBykey('username')}>Username {sortArrow('username')}</th>
-
-          <th onClick={() => sortBykey('email')}>Email {sortArrow('email')}</th>
-
-          <th className="mini" onClick={() => sortBykey('country')}>
-            Country {sortArrow('country')}
+          <th onClick={() => sortBykey(UserSortOption.USERNAME)}>
+            Username {sortArrow(UserSortOption.USERNAME)}
           </th>
 
-          <th className="mini" onClick={() => sortBykey('isVerified')}>
-            Verified {sortArrow('isVerified')}
+          <th onClick={() => sortBykey(UserSortOption.EMAIL)}>Email {UserSortOption.EMAIL}</th>
+
+          <th className="mini" onClick={() => sortBykey(UserSortOption.COUNTRY)}>
+            Country {sortArrow(UserSortOption.COUNTRY)}
           </th>
 
-          <th className="mini" onClick={() => sortBykey('isAdmin')}>
-            Admin {sortArrow('isAdmin')}
+          <th className="mini" onClick={() => sortBykey(UserSortOption.VERIFIED)}>
+            Verified {sortArrow(UserSortOption.VERIFIED)}
           </th>
 
-          <th className="created-at" onClick={() => sortBykey('createdAt')}>
-            Created at {sortArrow('createdAt')}
+          <th className="mini" onClick={() => sortBykey(UserSortOption.ADMIN)}>
+            Admin {sortArrow(UserSortOption.ADMIN)}
+          </th>
+
+          <th className="created-at" onClick={() => sortBykey(UserSortOption.CREATED_AT)}>
+            Created at {sortArrow(UserSortOption.CREATED_AT)}
           </th>
 
           <th>Actions</th>

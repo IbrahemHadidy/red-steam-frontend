@@ -24,7 +24,7 @@ const useVideoProgress = (
         setVideoCurrentTime(video.currentTime);
 
         // Calculate the playback progress percentage
-        const progressPercentage: number = (video.currentTime / video.duration) * 100;
+        const progressPercentage = (video.currentTime / video.duration) * 100;
 
         // Update the video playback progress bar
         if (progressBarRef.current) {
@@ -40,7 +40,7 @@ const useVideoProgress = (
           bufferedAmount = Math.max(bufferedAmount, video.buffered.end(i));
         }
 
-        const progressPercentage: number = (bufferedAmount / video.duration) * 100;
+        const progressPercentage = (bufferedAmount / video.duration) * 100;
         bufferProgressBarRef.current.value = progressPercentage;
       }
     };

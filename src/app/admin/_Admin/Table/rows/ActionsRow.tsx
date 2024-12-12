@@ -1,7 +1,10 @@
-import { toast } from 'react-toastify';
-
+// NextJS
 import Image from 'next/image';
 
+// Redux Hooks
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+
+// Redux Handlers
 import {
   setCurrentEditItem,
   setDeleteItemId,
@@ -14,14 +17,22 @@ import {
   setOfferType,
   setWebsite,
 } from '@store/features/admin/adminSlice';
-import { useAppDispatch, useAppSelector } from '@store/hooks';
 
+// Toast Notifications
+import { toast } from 'react-toastify';
+
+// Utils
 import get7DaysFromNow from '@utils/get7DaysFromNow';
 import { isCompany, isFeature, isGame, isLanguage, isTag } from '@utils/typeGuards';
 
+// Images
 import deleteIcon from '@images/delete.png';
 import editIcon from '@images/edit.png';
 
+// Enums
+import { AdminType } from '@enums/admin';
+
+// Types
 import type { AdminListItem } from '@custom-types/admin';
 
 interface ActionsRowProps {
@@ -33,7 +44,7 @@ export default function ActionsRow({ item }: ActionsRowProps) {
   const { adminType } = useAppSelector((state) => state.admin.common);
 
   const onEdit = (item: AdminListItem): void => {
-    if (adminType !== 'review') {
+    if (adminType !== AdminType.REVIEW) {
       dispatch(setCurrentEditItem(item));
       dispatch(setIsEditModalOpen(true));
     } else {

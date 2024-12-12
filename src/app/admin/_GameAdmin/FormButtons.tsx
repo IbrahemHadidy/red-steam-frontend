@@ -13,6 +13,9 @@ import { getPreviewData, submitForm } from '@store/features/admin/game/gameAdmin
 // Utils
 import scrollToTop from '@utils/scrollToTop';
 
+// Enums
+import { CurrentGameAdminPage, GameAdminType } from '@enums/admin';
+
 interface FormButtonsProps {
   validation?: () => boolean;
 }
@@ -28,9 +31,9 @@ export default function FormButtons({ validation }: FormButtonsProps) {
   //---------------------------- Event Handlers ---------------------------//
   const handleNextClick = async () => {
     scrollToTop();
-    if (currentPage === 'preview') {
+    if (currentPage === CurrentGameAdminPage.PREVIEW) {
       await dispatch(submitForm(router));
-    } else if (currentPage === 'additional') {
+    } else if (currentPage === CurrentGameAdminPage.ADDITIONAL_INFO) {
       await dispatch(getPreviewData());
     } else {
       if (validation && validation() === false) return;
@@ -46,7 +49,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
   const handleResetClick = () => {
     scrollToTop();
     dispatch(reset());
-    dispatch(setPage('basic'));
+    dispatch(setPage(CurrentGameAdminPage.BASIC));
   };
 
   //------------------------------- Render --------------------------------//
@@ -58,11 +61,11 @@ export default function FormButtons({ validation }: FormButtonsProps) {
         onClick={handleNextClick}
         disabled={loading}
       >
-        {currentPage === 'preview'
-          ? type === 'update'
+        {currentPage === CurrentGameAdminPage.PREVIEW
+          ? type === GameAdminType.UPDATE
             ? 'Update'
             : 'Create'
-          : currentPage === 'additional'
+          : currentPage === CurrentGameAdminPage.ADDITIONAL_INFO
             ? 'Preview'
             : 'Next'}
         {loading && (
@@ -76,7 +79,7 @@ export default function FormButtons({ validation }: FormButtonsProps) {
         Reset
       </button>
 
-      {currentPage !== 'basic' && (
+      {currentPage !== CurrentGameAdminPage.BASIC && (
         <button type="button" className="back-button" onClick={handlePrevClick}>
           Back
         </button>

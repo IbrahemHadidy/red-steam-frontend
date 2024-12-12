@@ -14,6 +14,9 @@ import {
 // Utils
 import getFileUrl from '@utils/getFileUrl';
 
+// Enums
+import { GameMediaChangeStatus } from '@enums/admin';
+
 // Types
 import type { Video } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
@@ -75,14 +78,14 @@ export default function MediaVideo({ item }: MediaVideoProps) {
           className={duplicateOrders.includes(item.order) ? 'input-error' : ''}
         />
         <button
-          className={`remove-button ${item.change === 'deleted' ? 'restore' : ''}`}
+          className={`remove-button ${item.change === GameMediaChangeStatus.DELETED ? 'restore' : ''}`}
           onClick={() =>
-            item.change === 'deleted'
+            item.change === GameMediaChangeStatus.DELETED
               ? handleRestoreVideo(item.baseOrder)
               : handleRemoveVideo(item.baseOrder)
           }
         >
-          {item.change === 'deleted' ? 'Restore' : 'Remove'}
+          {item.change === GameMediaChangeStatus.DELETED ? 'Restore' : 'Remove'}
         </button>
       </div>
     </div>

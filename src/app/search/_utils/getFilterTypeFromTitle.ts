@@ -1,4 +1,6 @@
-import type { FilterState, FilterTitle } from '@custom-types/search';
+import { FilterTitle } from '@enums/search';
+
+import type { FilterState } from '@custom-types/search';
 
 export default function getFilterTypeFromTitle(title: FilterTitle): keyof FilterState {
   switch (title) {
@@ -16,5 +18,7 @@ export default function getFilterTypeFromTitle(title: FilterTitle): keyof Filter
       return 'os';
     case 'Language':
       return 'languages';
+    default:
+      return 'price';
   }
 }

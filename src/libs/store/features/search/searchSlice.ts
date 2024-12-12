@@ -4,8 +4,11 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 // Thunks
 import { fetchSearchResults } from './searchThunks';
 
+// Enums
+import { FilterCheckType, SortOption } from '@enums/search';
+
 // Types
-import type { FilterState, RequestParams, SortOption } from '@custom-types/search';
+import type { FilterState, RequestParams } from '@custom-types/search';
 import type { Game } from '@interfaces/game';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -31,24 +34,24 @@ const searchState: SearchState = {
   isSearchInitialized: false,
   isFetchDisabled: false,
 
-  sortOption: 'Relevance',
+  sortOption: SortOption.RELEVANCE,
   searchInputValue: '',
   searchQuery: '',
   priceRange: 13,
   hasMoreResults: true,
   filters: {
     price: [
-      { id: 1, name: 'Special Offers', check: 'unchecked' },
-      { id: 2, name: 'Hide free to play games', check: 'unchecked' },
+      { id: 1, name: 'Special Offers', check: FilterCheckType.UNCHECKED },
+      { id: 2, name: 'Hide free to play games', check: FilterCheckType.UNCHECKED },
     ],
     preferences: [
-      { id: 1, name: 'Featured only', check: 'unchecked' },
-      { id: 6, name: 'Exclude mature', check: 'unchecked' },
-      { id: 7, name: 'Exclude upcoming', check: 'unchecked' },
+      { id: 1, name: 'Featured only', check: FilterCheckType.UNCHECKED },
+      { id: 6, name: 'Exclude mature', check: FilterCheckType.UNCHECKED },
+      { id: 7, name: 'Exclude upcoming', check: FilterCheckType.UNCHECKED },
     ],
     os: [
-      { id: 1, name: 'Windows', check: 'unchecked' },
-      { id: 2, name: 'macOS', check: 'unchecked' },
+      { id: 1, name: 'Windows', check: FilterCheckType.UNCHECKED },
+      { id: 2, name: 'macOS', check: FilterCheckType.UNCHECKED },
     ],
     tags: [],
     publishers: [],
@@ -102,7 +105,7 @@ const searchSlice = createSlice({
       state,
       action: PayloadAction<{
         filterType: keyof FilterState;
-        check: 'included' | 'excluded';
+        check: FilterCheckType;
         id: number;
       }>
     ) => {
@@ -119,17 +122,17 @@ const searchSlice = createSlice({
       const { filterType, id } = action.payload;
 
       state.filters[filterType] = state.filters[filterType].map((filter) =>
-        filter.id === id ? { ...filter, check: 'unchecked' } : filter
+        filter.id === id ? { ...filter, check: FilterCheckType.UNCHECKED } : filter
       );
     },
     uncheckHideFreeToPlay: (state) => {
-      state.filters.price[0].check = 'unchecked';
+      state.filters.price[0].check = FilterCheckType.UNCHECKED;
     },
     addUserPreferences: (state) => {
       state.filters.preferences.push(
-        { id: 2, name: 'Hide items in my library', check: 'unchecked' },
-        { id: 3, name: 'Hide items in my wishlist', check: 'unchecked' },
-        { id: 4, name: 'Hide items in my cart', check: 'unchecked' }
+        { id: 2, name: 'Hide items in my library', check: FilterCheckType.UNCHECKED },
+        { id: 3, name: 'Hide items in my wishlist', check: FilterCheckType.UNCHECKED },
+        { id: 4, name: 'Hide items in my cart', check: FilterCheckType.UNCHECKED }
       );
     },
     removeUserPreferences: (state) => {

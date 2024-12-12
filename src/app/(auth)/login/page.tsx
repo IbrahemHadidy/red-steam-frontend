@@ -18,6 +18,9 @@ import { useAppSelector } from '@store/hooks';
 // Components
 import SignIn from '../_SignInAndRecovery/SignInAndRecovery';
 
+// Enums
+import { LoginFormType } from '@enums/login-form';
+
 export default function SignInPage() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
@@ -44,7 +47,7 @@ export default function SignInPage() {
       handleLoginRedirect();
     } else {
       // Otherwise, set the state "type" to 'Sign In'
-      dispatch(setType('Sign In'));
+      dispatch(setType(LoginFormType.LOGIN));
     }
 
     return () => {

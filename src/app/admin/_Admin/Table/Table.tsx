@@ -22,6 +22,9 @@ const OfferRows = dynamic(() => import('./rows/OfferRows'));
 const ReviewRows = dynamic(() => import('./rows/ReviewRows'));
 const TagRows = dynamic(() => import('./rows/TagRows'));
 
+// Enums
+import { AdminType } from '@enums/admin';
+
 export default function Table() {
   //------------------------------- States --------------------------------//
   const { adminType, items, isFetching } = useAppSelector((state) => state.admin.common);
@@ -30,12 +33,12 @@ export default function Table() {
     <table className="items-list">
       <thead>
         <tr>
-          {adminType === 'feature' && <FeatureHeaders />}
-          {adminType === 'tag' && <TagHeaders />}
-          {adminType === 'language' && <LanguageHeaders />}
-          {adminType === 'review' && <ReviewHeaders />}
-          {['publisher', 'developer'].includes(adminType) && <CompanyHeaders />}
-          {['offer', 'create-offer'].includes(adminType) && <OfferHeaders />}
+          {adminType === AdminType.FEATURE && <FeatureHeaders />}
+          {adminType === AdminType.TAG && <TagHeaders />}
+          {adminType === AdminType.LANGUAGE && <LanguageHeaders />}
+          {adminType === AdminType.REVIEW && <ReviewHeaders />}
+          {[AdminType.PUBLISHER, AdminType.DEVELOPER].includes(adminType) && <CompanyHeaders />}
+          {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && <OfferHeaders />}
           <th>Actions</th>
         </tr>
       </thead>
@@ -43,14 +46,14 @@ export default function Table() {
       <tbody className={isFetching ? 'disabled' : ''}>
         {items?.map((item) => (
           <tr key={item.id}>
-            {adminType === 'feature' && isFeature(item) && <FeatureRows item={item} />}
-            {adminType === 'tag' && isTag(item) && <TagRows item={item} />}
-            {adminType === 'language' && isLanguage(item) && <LanguageRows item={item} />}
-            {adminType === 'review' && isReview(item) && <ReviewRows item={item} />}
-            {['publisher', 'developer'].includes(adminType) && isCompany(item) && (
+            {adminType === AdminType.FEATURE && isFeature(item) && <FeatureRows item={item} />}
+            {adminType === AdminType.TAG && isTag(item) && <TagRows item={item} />}
+            {adminType === AdminType.LANGUAGE && isLanguage(item) && <LanguageRows item={item} />}
+            {adminType === AdminType.REVIEW && isReview(item) && <ReviewRows item={item} />}
+            {[AdminType.PUBLISHER, AdminType.DEVELOPER].includes(adminType) && isCompany(item) && (
               <CompanyRows item={item} />
             )}
-            {['offer', 'create-offer'].includes(adminType) && isGame(item) && (
+            {[AdminType.OFFER, AdminType.CREATE_OFFER].includes(adminType) && isGame(item) && (
               <OfferRows item={item} />
             )}
             <ActionsRow item={item} />

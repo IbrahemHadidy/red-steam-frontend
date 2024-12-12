@@ -24,6 +24,9 @@ import { validateMedia } from '../../validations';
 // Utils
 import { saveFileToIndexedDB } from '@utils/filesStorageUtils';
 
+// Enums
+import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
+
 // Types
 import type { Screenshot, Video } from '@custom-types/game-admin';
 import type { ChangeEvent } from 'react';
@@ -50,17 +53,18 @@ export default function Media() {
 
   //-------------------------- Utility Functions --------------------------//
   const getChangeStyle = (media: Screenshot | Video): string => {
-    if (type === 'update') {
-      if (media.change === 'added') return 'added';
-      if (media.change === 'deleted') return 'deleted';
-      if (media.order !== media.baseOrder && media.change === 'unchanged') return 'edited';
+    if (type === GameAdminType.UPDATE) {
+      if (media.change === GameMediaChangeStatus.ADDED) return 'added';
+      if (media.change === GameMediaChangeStatus.DELETED) return 'deleted';
+      if (media.order !== media.baseOrder && media.change === GameMediaChangeStatus.UNCHANGED)
+        return 'edited';
     }
     return '';
   };
 
   const sortedMedia = [...screenshots, ...videos].sort((a, b) => {
-    if (a.change === 'deleted') return 1;
-    if (b.change === 'deleted') return -1;
+    if (a.change === GameMediaChangeStatus.DELETED) return 1;
+    if (b.change === GameMediaChangeStatus.DELETED) return -1;
     return a.order - b.order;
   });
 
@@ -159,7 +163,7 @@ export default function Media() {
         <button className="reset-button" onClick={handleResetMedia}>
           Reset
         </button>
-        {type === 'update' && (
+        {type === GameAdminType.UPDATE && (
           <div className="slides-color-info">
             <div>
               <div className="color-box unchanged" />

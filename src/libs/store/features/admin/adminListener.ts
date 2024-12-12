@@ -34,6 +34,9 @@ import gameDataApi from '@store/apis/game/data';
 // Utils
 import promiseToast from '@utils/promiseToast';
 
+// Enums
+import { AdminType } from '@enums/admin';
+
 // Types
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from '@store/store';
@@ -50,7 +53,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('developer'));
+    dispatch(setAdminType(AdminType.DEVELOPER));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedDevelopers(dispatch);
   },
@@ -64,7 +67,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('publisher'));
+    dispatch(setAdminType(AdminType.PUBLISHER));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedPublishers(dispatch);
   },
@@ -78,7 +81,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('feature'));
+    dispatch(setAdminType(AdminType.FEATURE));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedFeatures(dispatch);
   },
@@ -92,7 +95,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('tag'));
+    dispatch(setAdminType(AdminType.TAG));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedTags(dispatch);
   },
@@ -106,7 +109,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('language'));
+    dispatch(setAdminType(AdminType.LANGUAGE));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedLanguages(dispatch);
   },
@@ -120,7 +123,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('review'));
+    dispatch(setAdminType(AdminType.REVIEW));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedReviews(dispatch);
   },
@@ -134,7 +137,7 @@ listen({
     const { dispatch } = listenerApi;
 
     dispatch(reset());
-    dispatch(setAdminType('offer'));
+    dispatch(setAdminType(AdminType.OFFER));
     dispatch(setIsInitialized(true));
     debouncedFetchPaginatedOffers(dispatch);
   },
@@ -149,7 +152,7 @@ listen({
     const gameId = action.payload;
 
     dispatch(reset());
-    dispatch(setAdminType('create-offer'));
+    dispatch(setAdminType(AdminType.CREATE_OFFER));
 
     const offerGame = await promiseToast(
       dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap(),
@@ -182,13 +185,13 @@ listen({
     const { dispatch, getState } = listenerApi;
     const { adminType } = getState().admin.common;
 
-    if (adminType === 'developer') debouncedFetchPaginatedDevelopers(dispatch);
-    else if (adminType === 'publisher') debouncedFetchPaginatedPublishers(dispatch);
-    else if (adminType === 'feature') debouncedFetchPaginatedFeatures(dispatch);
-    else if (adminType === 'tag') debouncedFetchPaginatedTags(dispatch);
-    else if (adminType === 'language') debouncedFetchPaginatedLanguages(dispatch);
-    else if (adminType === 'review') debouncedFetchPaginatedReviews(dispatch);
-    else if (adminType === 'offer' || adminType === 'create-offer')
+    if (adminType === AdminType.DEVELOPER) debouncedFetchPaginatedDevelopers(dispatch);
+    else if (adminType === AdminType.PUBLISHER) debouncedFetchPaginatedPublishers(dispatch);
+    else if (adminType === AdminType.FEATURE) debouncedFetchPaginatedFeatures(dispatch);
+    else if (adminType === AdminType.TAG) debouncedFetchPaginatedTags(dispatch);
+    else if (adminType === AdminType.LANGUAGE) debouncedFetchPaginatedLanguages(dispatch);
+    else if (adminType === AdminType.REVIEW) debouncedFetchPaginatedReviews(dispatch);
+    else if (adminType === AdminType.OFFER || adminType === AdminType.CREATE_OFFER)
       debouncedFetchPaginatedOffers(dispatch);
   },
 });

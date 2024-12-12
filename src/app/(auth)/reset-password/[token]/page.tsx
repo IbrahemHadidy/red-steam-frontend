@@ -16,6 +16,9 @@ import useInitializePasswordReset from './_hooks/useInitializePasswordReset';
 import ResetPassword from '@app/(auth)/_SignInAndRecovery/SignInAndRecovery';
 import RedirectIfLoggedIn from '@components/RedirectIfLoggedIn';
 
+// Enums
+import { LoginFormType } from '@enums/login-form';
+
 interface ResetPasswordPageProps {
   params: Promise<{
     token: string;
@@ -30,7 +33,7 @@ export default function ResetPasswordPage(props: ResetPasswordPageProps) {
 
   // Set the state "type" to 'Password Reset'
   useEffect(() => {
-    dispatch(setType('Password Reset'));
+    dispatch(setType(LoginFormType.RESET_PASSWORD));
     return () => {
       dispatch(reset());
     };

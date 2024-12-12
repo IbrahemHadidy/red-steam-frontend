@@ -11,8 +11,10 @@ import {
   submitReview,
 } from './gameThunks';
 
+// Enums
+import { ReviewFilter, ReviewSort } from '@enums/reviews';
+
 // Types
-import type { ReviewFilter, ReviewSort } from '@custom-types/reviews';
 import type { Game, ImageEntry, VideoEntry } from '@interfaces/game';
 import type { Review } from '@interfaces/review';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -94,8 +96,8 @@ const gameState: GameState = {
   content: '',
 
   reviews: [],
-  filter: 'all',
-  sort: 'newest',
+  filter: ReviewFilter.ALL,
+  sort: ReviewSort.NEWEST,
   currentPage: 0,
   hasMore: true,
 

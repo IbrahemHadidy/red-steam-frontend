@@ -1,9 +1,9 @@
-// Types
-import type { OpenedTab } from '@custom-types/tabs';
+// Enums
+import { OpenedTab } from '@enums/tabs';
 
 interface TabProps {
   tabName: string;
-  tabTitle: string;
+  tabTitle: OpenedTab;
   handleTabClick: (tabTitle: OpenedTab) => void;
   openedTab: OpenedTab;
 }
@@ -12,7 +12,7 @@ export default function Tab({ tabName, tabTitle, handleTabClick, openedTab }: Ta
   return (
     <div
       className={`tab-${tabName} ${openedTab === tabTitle ? 'active-tab' : ''}`}
-      onClick={() => handleTabClick(tabTitle as OpenedTab)}
+      onClick={() => handleTabClick(tabTitle)}
     >
       <div className="tab-content">{tabTitle}</div>
     </div>
