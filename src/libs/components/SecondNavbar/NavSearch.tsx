@@ -68,8 +68,8 @@ export default function NavSearch() {
                 {game.pricing?.free
                   ? 'Free to Play'
                   : game.pricing?.discountPrice
-                    ? game.pricing?.discountPrice
-                    : game.pricing?.basePrice}
+                    ? `$${game.pricing?.discountPrice}`
+                    : `$${game.pricing?.basePrice}`}
               </div>
             </Link>
           ))}

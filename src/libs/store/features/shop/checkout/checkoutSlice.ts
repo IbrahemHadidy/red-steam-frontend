@@ -39,6 +39,7 @@ const checkoutSlice = createSlice({
     setOrderId: (state, action: PayloadAction<string>) => {
       state.orderId = action.payload;
     },
+    reset: () => checkoutState,
   },
 
   extraReducers: (builder) => {
@@ -49,6 +50,6 @@ const checkoutSlice = createSlice({
   },
 });
 
-export const { setPaymentConfirmed, setReviewSelected, toggleCheckboxChecked, setOrderId } =
+export const { setPaymentConfirmed, setReviewSelected, toggleCheckboxChecked, setOrderId, reset } =
   checkoutSlice.actions;
 export default checkoutSlice;

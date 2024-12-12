@@ -40,6 +40,7 @@ const wishlistSlice = createSlice({
     setRemoveBtnLoading: (state, action: PayloadAction<boolean>) => {
       state.isRemoveBtnLoading = action.payload;
     },
+    reset: () => wishlistState,
   },
 
   extraReducers: (builder) => {
@@ -79,6 +80,11 @@ const wishlistSlice = createSlice({
 // Listener actions
 export const initializeWishlist = createAction<void>('shop/wishlist/initializeWislist');
 
-export const { setIsWishlistInitialized, updateWishlist, setCartBtnLoading, setRemoveBtnLoading } =
-  wishlistSlice.actions;
+export const {
+  setIsWishlistInitialized,
+  updateWishlist,
+  setCartBtnLoading,
+  setRemoveBtnLoading,
+  reset,
+} = wishlistSlice.actions;
 export default wishlistSlice;

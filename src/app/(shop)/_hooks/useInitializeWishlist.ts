@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeWishlist } from '@store/features/shop/wishlist/wishlistSlice';
+import { initializeWishlist, reset } from '@store/features/shop/wishlist/wishlistSlice';
 
 export default function useInitializeWishlist() {
   const dispatch = useAppDispatch();
@@ -14,5 +14,9 @@ export default function useInitializeWishlist() {
   // Fetch wishlist data
   useEffect(() => {
     if (isAuthInitialized) dispatch(initializeWishlist());
+
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch, isAuthInitialized]);
 }

@@ -17,7 +17,9 @@ export default function FreeToPlay() {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { currentGame, isGameInLibrary, isCartBtnLoading } = useAppSelector((state) => state.game);
+  const { currentGame, isGameInLibrary, isLibraryBtnLoading } = useAppSelector(
+    (state) => state.game
+  );
 
   //--------------------------- Event Handlers ----------------------------//
   const handleAddToLibraryClick = async (e: MouseEvent<HTMLAnchorElement>): Promise<void> => {
@@ -39,7 +41,7 @@ export default function FreeToPlay() {
               </Link>
             </div>
           ) : (
-            <div className={`addtocart-btn ${isCartBtnLoading ? 'loading' : ''}`}>
+            <div className={`addtocart-btn ${isLibraryBtnLoading ? 'loading' : ''}`}>
               <a className="blue-btn" onClick={handleAddToLibraryClick}>
                 <span className="medium-btn">Add to Library</span>
               </a>

@@ -45,6 +45,7 @@ const cartSlice = createSlice({
     setTotalPrice: (state, action: PayloadAction<string>) => {
       state.totalPrice = action.payload;
     },
+    reset: () => cartState,
   },
 
   extraReducers: (builder) => {
@@ -80,5 +81,6 @@ export const {
   setRemoveBtnLoading,
   setRemoveAllBtnLoading,
   setTotalPrice,
+  reset,
 } = cartSlice.actions;
 export default cartSlice;

@@ -13,7 +13,8 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeCart } from '@store/features/shop/cart/cartSlice';
+import { initializeCart, reset as resetCart } from '@store/features/shop/cart/cartSlice';
+import { reset as resetCheckout } from '@store/features/shop/checkout/checkoutSlice';
 
 export default function useInitializeCart() {
   //--------------------------- Initializations ---------------------------//
@@ -29,6 +30,11 @@ export default function useInitializeCart() {
   // Fetch cart data
   useEffect(() => {
     if (isAuthInitialized) dispatch(initializeCart());
+
+    return () => {
+      dispatch(resetCart());
+      dispatch(resetCheckout());
+    };
   }, [dispatch, isAuthInitialized]);
 
   // Redirect if in checkout page and cart is empty

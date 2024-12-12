@@ -47,6 +47,7 @@ const librarySlice = createSlice({
     setIsCompleteModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isCompleteModalOpen = action.payload;
     },
+    reset: () => libraryState,
   },
 });
 
@@ -60,5 +61,6 @@ export const {
   updateLibrary,
   setIsGameModalOpen,
   setIsCompleteModalOpen,
+  reset,
 } = librarySlice.actions;
 export default librarySlice;
