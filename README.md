@@ -63,6 +63,7 @@ The following features are currently under development or not functioning as int
 - **Your Queue**: The "Your Queue" feature is not integrated yet and is currently not working.
 - **Community Features**: All community-based features are disabled as the community system is not implemented yet.
 - **Phone Settings**: Phone-related settings, including adding or updating phone numbers, are currently disabled and non-functional.
+- **Image Loading**: `[Error [TimeoutError]: The operation was aborted due to timeout]` occurs when using the Next.js `Image` component, as images are slow to load on the server due to the absence of a CDN.
 
 ## Requirements
 
@@ -84,24 +85,23 @@ This project should be run alongside the [Red-Steam Backend](https://github.com/
 If the project continues, the following features are planned for potential development:
 
 - **OTP Authentication**: Implementation of One-Time Password (OTP) functionality to enhance security. OTPs will be used for the following scenarios:
-    - Adding or changing a phone number to verify ownership.
-    - Logging in to ensure secure access, especially for sensitive accounts. OTPs can be delivered via SMS or through authenticator apps for a seamless and secure user experience.
+  - Adding or changing a phone number to verify ownership.
+  - Logging in to ensure secure access, especially for sensitive accounts. OTPs can be delivered via SMS or through authenticator apps for a seamless and secure user experience.
 - **Friend Management**: Allow users to connect and manage their social circle with the following capabilities:
-    - Adding friends to build a personal network.
-    - Blocking or removing users to control interactions and ensure a safe environment.
+  - Adding friends to build a personal network.
+  - Blocking or removing users to control interactions and ensure a safe environment.
 - **Notifications System**: A robust notification system to keep users informed about important updates and activities, such as:
-    - Offers or discounts on games in their wishlist.
-    - New game releases that align with their interests.
-    - Friend requests and social interactions.
-    - Login attempts from new devices or locations.
-    - Successful checkouts or completed transactions.
+  - Offers or discounts on games in their wishlist.
+  - New game releases that align with their interests.
+  - Friend requests and social interactions.
+  - Login attempts from new devices or locations.
+  - Successful checkouts or completed transactions.
 - **Enhanced Authentication**: Advanced session control to improve account security, including:
-    - Viewing and managing active sessions across multiple devices.
-    - The ability to remotely log out from specific devices.
-    - Alerts for new logins from unrecognized devices or locations.
-    - Optional device-based session persistence with enhanced security measures, such as re-authentication for sensitive actions.
+  - Viewing and managing active sessions across multiple devices.
+  - The ability to remotely log out from specific devices.
+  - Alerts for new logins from unrecognized devices or locations.
+  - Optional device-based session persistence with enhanced security measures, such as re-authentication for sensitive actions.
 - **Chat System**: Real-time messaging between users.
 - **Community Features**: Interactive forums, group chats, user-managed groups, and event scheduling.
 - **Enhanced User Profiles**: Public and private profile views with customizable settings.
-> **Note**: This list is not exhaustive. Additional features and improvements may be added depending on the areas I wish to explore and learn in the future.
-
+  > **Note**: This list is not exhaustive. Additional features and improvements may be added depending on the areas I wish to explore and learn in the future.
