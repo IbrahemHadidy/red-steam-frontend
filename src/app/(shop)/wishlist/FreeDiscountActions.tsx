@@ -1,34 +1,26 @@
-// NextJS
-import Link from 'next/link';
-
 // Redux Hooks
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Thunks
-import { addToCart } from '@store/features/shop/wishlist/wishlistThunks';
+import { addToLibrary } from '@store/features/shop/wishlist/wishlistThunks';
 
 // Types
 import type { Game } from '@interfaces/game';
 
-interface DiscountActionsProps {
+interface FreeDiscountActionsProps {
   game: Game;
 }
 
-export default function DiscountActions({ game }: DiscountActionsProps) {
+export default function FreeDiscountActions({ game }: FreeDiscountActionsProps) {
   //--------------------------- Initializations ---------------------------//
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { currentUserData } = useAppSelector((state) => state.auth);
   const { isCartBtnLoading } = useAppSelector((state) => state.shop.wishlist);
 
-  //-------------------------- Utility Functions --------------------------//
-  const isInCart = (game: Game): boolean | undefined =>
-    currentUserData?.cart?.some((item) => item.id === game.id);
-
   //---------------------------- Event Handlers ----------------------------//
-  const handleAddToCartBtnClick = async (itemId: number): Promise<void> => {
-    await dispatch(addToCart(itemId));
+  const handleAddToLibraryBtnClick = async (itemId: number): Promise<void> => {
+    await dispatch(addToLibrary(itemId));
   };
 
   //------------------------------- Render --------------------------------//
@@ -45,15 +37,9 @@ export default function DiscountActions({ game }: DiscountActionsProps) {
         </div>
 
         <div className={`addtocart-btn ${isCartBtnLoading ? 'loading' : ''}`}>
-          {!isInCart(game) ? (
-            <a className="green-btn" onClick={() => handleAddToCartBtnClick(game?.id)}>
-              <span className="medium-btn">Add to Cart</span>
-            </a>
-          ) : (
-            <Link href="/cart" className="green-btn">
-              <span className="medium-btn">In Cart</span>
-            </Link>
-          )}
+          <a className="green-btn" onClick={() => handleAddToLibraryBtnClick(game?.id)}>
+            <span className="medium-btn">Add to Library</span>
+          </a>
         </div>
       </div>
     </div>

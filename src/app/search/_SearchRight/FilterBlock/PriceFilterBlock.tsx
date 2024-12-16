@@ -124,9 +124,7 @@ export default function PriceFilterBlock({ filters }: PriceFilterBlockProps) {
         {filters.map((row) => (
           <div
             key={row.name}
-            className={`filter-control-row ${row.check === FilterCheckType.Included ? 'included' : ''} ${
-              row.id === 2 && priceRange === 0 ? 'disabled' : ''
-            }`}
+            className={`filter-control-row ${row.check === FilterCheckType.Included ? 'included' : ''}`}
             onClick={() => handleIncludeClick(row)}
           >
             <span className="filter-tab">

@@ -5,6 +5,7 @@ import { useAppSelector } from '@store/hooks';
 import getPlatform from '@utils/getPlatform';
 
 // Components
+import FreeDiscount from './FreeDiscount';
 import FreeToPlay from './FreeToPlay';
 import HasDiscount from './HasDiscount';
 import NoDiscount from './NoDiscount';
@@ -35,9 +36,11 @@ export default function GamePurchase() {
             )}
           </div>
 
-          {currentGame?.pricing?.free ? (
+          {currentGame?.pricing?.free && currentGame?.pricing?.discount ? (
+            <FreeDiscount />
+          ) : currentGame?.pricing?.free ? (
             <FreeToPlay />
-          ) : !currentGame?.pricing?.discount ? (
+          ) : currentGame?.pricing?.discount ? (
             <HasDiscount />
           ) : (
             <NoDiscount />

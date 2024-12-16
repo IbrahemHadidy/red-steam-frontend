@@ -37,6 +37,7 @@ export default async function promiseToast<T>(
     fallbackError?: string;
     disablePendingDots?: boolean;
     onlyError?: boolean;
+    autoClose?: number;
   }
 ): Promise<T | void> {
   const fallbackError =
@@ -55,6 +56,6 @@ export default async function promiseToast<T>(
       };
 
   return await toast
-    .promise(promise, toastConfig)
+    .promise(promise, toastConfig, { autoClose: options.autoClose })
     .catch((error) => console.error(`Error while ${options.pending.toLowerCase()}:`, error));
 }

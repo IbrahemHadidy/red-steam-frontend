@@ -8,9 +8,6 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 // Redux Thunks
 import { addToCart } from '@store/features/game/gameThunks';
 
-// Utils
-import formatDate from '@utils/formatDate';
-
 export default function NoDiscount() {
   //--------------------------- Initializations ---------------------------//
   const router = useRouter();
@@ -30,43 +27,23 @@ export default function NoDiscount() {
   return (
     <>
       {!isGameInLibrary ? <h1>Buy {currentGame?.name}</h1> : <h1>Play {currentGame?.name}</h1>}
-
-      {!isGameInLibrary && (
-        <p className="dicount-countdown">
-          {currentGame?.pricing?.offerType}! Offer ends{' '}
-          {formatDate(currentGame?.pricing?.discountEndDate)}
-        </p>
-      )}
-
       <div className="game-purchase-action">
         <div className="game-purchase-action-background">
           {!isGameInLibrary && (
-            <div className="game-purchase-discount">
-              <div className="discount-precentage">
-                -{currentGame?.pricing?.discountPercentage}%
-              </div>
-              <div className="discount-prices">
-                <div className="discount-original-price">${currentGame?.pricing?.basePrice}</div>
-                <div className="discount-final-price">
-                  ${currentGame?.pricing?.discountPrice} USD
-                </div>
-              </div>
-            </div>
+            <div className="game-purchase-price"> ${currentGame?.pricing?.basePrice} USD </div>
           )}
 
           {isGameInLibrary ? (
             <div className="play-game-btn">
-              <Link href="/library" className="green-btn">
+              <Link className="green-btn" href="/library">
                 <span className="medium-btn">Play Game</span>
               </Link>
             </div>
           ) : (
             <div className={`addtocart-btn ${isCartBtnLoading ? 'loading' : ''}`}>
               {!isGameInCart ? (
-                <div className="green-btn">
-                  <span className="medium-btn" onClick={handleAddToCartClick}>
-                    Add to Cart
-                  </span>
+                <div className="green-btn" onClick={handleAddToCartClick}>
+                  <span className="medium-btn">Add to Cart</span>
                 </div>
               ) : (
                 <Link href="/cart" className="green-btn">

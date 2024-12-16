@@ -24,6 +24,7 @@ import {
   initializeTagsAdmin,
   reset,
   setAdminType,
+  setDiscountPrice,
   setIsInitialized,
   setOfferGame,
 } from './adminSlice';
@@ -164,6 +165,7 @@ listen({
     );
 
     dispatch(setOfferGame(offerGame ?? null));
+    dispatch(setDiscountPrice(offerGame?.pricing?.discountPrice ?? '0.00'));
     dispatch(setIsInitialized(true));
 
     debouncedFetchPaginatedOffers(dispatch);

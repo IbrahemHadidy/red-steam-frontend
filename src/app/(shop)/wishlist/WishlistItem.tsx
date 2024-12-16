@@ -24,6 +24,7 @@ import { getRatingClass, getRatingText } from '@utils/ratingUtils';
 
 // Types
 import type { Game } from '@interfaces/game';
+import FreeDiscountActions from './FreeDiscountActions';
 
 interface WishlistItemProps {
   game: Game;
@@ -101,6 +102,8 @@ export default function WishlistItem({ game, idx }: WishlistItemProps) {
                 <Suspense fallback={<div>Loading...</div>}>
                   {!game?.pricing?.discount ? (
                     <NoDiscountActions game={game} />
+                  ) : game?.pricing?.free ? (
+                    <FreeDiscountActions game={game} />
                   ) : (
                     <DiscountActions game={game} />
                   )}

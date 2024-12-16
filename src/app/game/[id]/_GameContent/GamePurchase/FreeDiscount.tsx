@@ -6,10 +6,13 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Thunks
-import { addToCart } from '@store/features/game/gameThunks';
+import { addToLibrary } from '@store/features/game/gameThunks';
 
 // Utils
 import formatDate from '@utils/formatDate';
+
+// Types
+import type { MouseEvent } from 'react';
 
 export default function HasDiscount() {
   //--------------------------- Initializations ---------------------------//
@@ -17,19 +20,20 @@ export default function HasDiscount() {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { currentGame, isGameInCart, isGameInLibrary, isCartBtnLoading } = useAppSelector(
+  const { currentGame, isGameInLibrary, isLibraryBtnLoading } = useAppSelector(
     (state) => state.game
   );
 
   //--------------------------- Event Handlers ----------------------------//
-  const handleAddToCartClick = async (): Promise<void> => {
-    await dispatch(addToCart(router));
+  const handleAddToLibraryClick = async (e: MouseEvent<HTMLAnchorElement>): Promise<void> => {
+    e.preventDefault();
+    await dispatch(addToLibrary(router));
   };
 
   //------------------------------- Render --------------------------------//
   return (
     <>
-      {!isGameInLibrary ? <h1>Buy {currentGame?.name}</h1> : <h1>Play {currentGame?.name}</h1>}
+      <h1>Play {currentGame?.name}</h1>
 
       {!isGameInLibrary && (
         <p className="dicount-countdown">
@@ -61,18 +65,12 @@ export default function HasDiscount() {
               </Link>
             </div>
           ) : (
-            <div className={`addtocart-btn ${isCartBtnLoading ? 'loading' : ''}`}>
-              {!isGameInCart ? (
-                <div className="green-btn">
-                  <span className="medium-btn" onClick={handleAddToCartClick}>
-                    Add to Cart
-                  </span>
-                </div>
-              ) : (
-                <Link href="/cart" className="green-btn">
-                  <span className="medium-btn">In Cart</span>
-                </Link>
-              )}
+            <div className={`addtocart-btn ${isLibraryBtnLoading ? 'loading' : ''}`}>
+              <div className="green-btn">
+                <span className="medium-btn" onClick={handleAddToLibraryClick}>
+                  Add to Library
+                </span>
+              </div>
             </div>
           )}
         </div>
