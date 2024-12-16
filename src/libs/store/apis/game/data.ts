@@ -12,10 +12,11 @@ const gameDataApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/game/data`,
   }),
-  tagTypes: ['Game', 'GameReviews'],
+  tagTypes: ['Games', 'GameReviews'],
   endpoints: (builder) => ({
     search: builder.query<Game[], string>({
       query: (partialName) => `search/${partialName}`,
+      providesTags: (result) => result?.map((game) => ({ type: 'Games', id: game.id })) ?? [],
     }),
 
     getByParameters: builder.query<Game[], RequestParams>({
@@ -49,9 +50,7 @@ const gameDataApi = createApi({
 
         return `search?${queryParams.toString()}`;
       },
-      providesTags: (_result, _error, arg) => [
-        { type: 'Game', id: `QUERY-${JSON.stringify(arg)}` },
-      ],
+      providesTags: (_, __, arg) => [{ type: 'Games', id: JSON.stringify(arg) }],
     }),
 
     getFeatured: builder.query<Game[], { excludedGames: number[]; limit: number }>({
@@ -59,7 +58,7 @@ const gameDataApi = createApi({
         const endpoint = `featured?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}&limit=${limit}`;
         return endpoint;
       },
-      providesTags: [{ type: 'Game', id: 'FEATURED' }],
+      providesTags: [{ type: 'Games', id: 'FEATURED' }],
     }),
 
     getByTags: builder.query<Game[], { tags: number[]; excludedGames: number[]; limit?: number }>({
@@ -67,47 +66,47 @@ const gameDataApi = createApi({
         const endpoint = `tags?${tags.length > 0 ? `tags=${tags.join(',')}` : ''}${excludedGames.length > 0 ? `&excludedGames=${excludedGames.join(',')}` : ''}${limit ? `&limit=${limit}` : ''}`;
         return endpoint;
       },
-      providesTags: [{ type: 'Game', id: 'TAGS' }],
+      providesTags: [{ type: 'Games', id: 'TAGS' }],
     }),
 
     getById: builder.query<Game, number>({
       query: (id) => `${id}`,
-      providesTags: (_result, _error, arg) => [{ type: 'Game', id: arg }],
+      providesTags: (_, __, arg) => [{ type: 'Games', id: arg }],
     }),
 
     getByIds: builder.query<Game[], number[]>({
       query: (ids) => `bulk?${ids.length > 0 ? `ids=${ids.join(',')}` : ''}`,
-      providesTags: (result, error, arg) => arg.map((id) => ({ type: 'Game', id })),
+      providesTags: (_, __, arg) => arg.map((id) => ({ type: 'Games', id })),
     }),
 
     getByOffers: builder.query<Game[], number[]>({
       query: (excludedGames) =>
         `offers?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`,
-      providesTags: [{ type: 'Game', id: 'OFFERS' }],
+      providesTags: [{ type: 'Games', id: 'OFFERS' }],
     }),
 
     getByNewest: builder.query<Game[], number[]>({
       query: (excludedGames) =>
         `newest?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`,
-      providesTags: [{ type: 'Game', id: 'NEWEST' }],
+      providesTags: [{ type: 'Games', id: 'NEWEST' }],
     }),
 
     getByTopSales: builder.query<Game[], number[]>({
       query: (excludedGames) =>
         `top-sales?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`,
-      providesTags: [{ type: 'Game', id: 'TOP_SALES' }],
+      providesTags: [{ type: 'Games', id: 'TOP_SALES' }],
     }),
 
     getBySpecials: builder.query<Game[], number[]>({
       query: (excludedGames) =>
         `specials?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`,
-      providesTags: [{ type: 'Game', id: 'SPECIALS' }],
+      providesTags: [{ type: 'Games', id: 'SPECIALS' }],
     }),
 
     getByUpcoming: builder.query<Game[], number[]>({
       query: (excludedGames) =>
         `upcoming?${excludedGames.length > 0 ? `excludedGames=${excludedGames.join(',')}` : ''}`,
-      providesTags: [{ type: 'Game', id: 'UPCOMING' }],
+      providesTags: [{ type: 'Games', id: 'UPCOMING' }],
     }),
 
     getReviews: builder.query<
@@ -125,7 +124,7 @@ const gameDataApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: (result, error, { gameId }) => [{ type: 'GameReviews', id: gameId }],
+      providesTags: (_, __, { gameId }) => [{ type: 'GameReviews', id: gameId }],
     }),
   }),
 });

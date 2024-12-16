@@ -9,7 +9,7 @@ const userAdminApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/admin`,
   }),
-  tagTypes: ['User'],
+  tagTypes: ['Users', 'UsersPage'],
   endpoints: (builder) => ({
     getUsersPaginated: builder.query<
       { items: User[]; total: number; totalPages: number },
@@ -34,9 +34,7 @@ const userAdminApi = createApi({
           credentials: 'include',
         };
       },
-      providesTags: (_result, _error, arg) => [
-        { type: 'User', id: `QUERY_${JSON.stringify(arg)}` },
-      ],
+      providesTags: (_, __, arg) => [{ type: 'UsersPage', id: JSON.stringify(arg) }],
     }),
 
     updateUser: builder.mutation<
@@ -49,7 +47,7 @@ const userAdminApi = createApi({
         body: { isVerified, isAdmin },
         credentials: 'include',
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['Users', 'UsersPage'],
     }),
 
     deleteUser: builder.mutation<{ message: string }, string>({
@@ -58,7 +56,7 @@ const userAdminApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['Users', 'UsersPage'],
     }),
   }),
 });

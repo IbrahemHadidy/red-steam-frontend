@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Handlers
-import { initializeReviewsAdmin } from '@store/features/admin/adminSlice';
+import { initializeReviewsAdmin, setIsInitialized } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
@@ -17,6 +17,9 @@ export default function ReviewsAdmin() {
 
   useEffect(() => {
     dispatch(initializeReviewsAdmin());
+    return () => {
+      dispatch(setIsInitialized(false));
+    };
   }, [dispatch]);
 
   return <Admin />;

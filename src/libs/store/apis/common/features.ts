@@ -9,7 +9,7 @@ const featureApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/feature`,
   }),
-  tagTypes: ['Feature'],
+  tagTypes: ['Feature', 'AllFeatures', 'FeaturesPage'],
   endpoints: (builder) => ({
     createFeature: builder.mutation<{ message: string }, { name: string; icon: string }>({
       query: (newFeature) => ({
@@ -18,19 +18,22 @@ const featureApi = createApi({
         body: newFeature,
         credentials: 'include',
       }),
-      invalidatesTags: ['Feature'],
+      invalidatesTags: ['AllFeatures', 'FeaturesPage'],
     }),
 
     getFeature: builder.query<Feature, number>({
       query: (id) => `/${id}`,
+      providesTags: (_, __, id) => [{ type: 'Feature', id }],
     }),
 
     getFeatures: builder.query<Feature[], number[]>({
       query: (ids) => `/bulk/${ids.join(',')}`,
+      providesTags: (_, __, ids) => ids.map((id) => ({ type: 'Feature', id })),
     }),
 
     getAllFeatures: builder.query<Feature[], void>({
       query: () => '',
+      providesTags: ['AllFeatures'],
     }),
 
     getFeaturesPaginated: builder.query<
@@ -55,6 +58,7 @@ const featureApi = createApi({
         }
         return `/paginated${queryString}`;
       },
+      providesTags: (_, __, arg) => [{ type: 'FeaturesPage', id: JSON.stringify(arg) }],
     }),
 
     updateFeature: builder.mutation<
@@ -67,7 +71,11 @@ const featureApi = createApi({
         body: { name, icon },
         credentials: 'include',
       }),
-      invalidatesTags: ['Feature'],
+      invalidatesTags: (_, __, { id }) => [
+        { type: 'Feature', id },
+        { type: 'FeaturesPage' },
+        { type: 'AllFeatures' },
+      ],
     }),
 
     deleteFeature: builder.mutation<{ message: string }, number>({
@@ -76,7 +84,11 @@ const featureApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Feature'],
+      invalidatesTags: (_, __, id) => [
+        { type: 'Feature', id },
+        { type: 'FeaturesPage' },
+        { type: 'AllFeatures' },
+      ],
     }),
   }),
 });

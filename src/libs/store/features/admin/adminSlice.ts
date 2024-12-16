@@ -189,6 +189,9 @@ const adminSlice = createSlice({
       .addCase(submitItem.fulfilled, (state) => {
         state.isFetching = false;
         state.isSubmitting = false;
+        state.name = '';
+        state.website = '';
+        state.icon = '';
       })
       .addCase(submitItem.rejected, (state) => {
         state.isFetching = false;
@@ -203,6 +206,9 @@ const adminSlice = createSlice({
         state.isFetching = false;
         state.isSubmitting = false;
         state.isEditModalOpen = false;
+        state.name = '';
+        state.website = '';
+        state.icon = '';
       })
       .addCase(updateItem.rejected, (state) => {
         state.isFetching = false;

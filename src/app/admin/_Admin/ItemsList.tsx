@@ -1,3 +1,6 @@
+// React
+import { Suspense } from 'react';
+
 // Redux Hooks
 import { useAppSelector } from '@store/hooks';
 
@@ -32,10 +35,10 @@ export default function ItemsList() {
 
         <Filters />
         {items.length !== 0 ? (
-          <>
+          <Suspense fallback={<h2 className="no-items">Loading...</h2>}>
             <Table />
             <Pagination />
-          </>
+          </Suspense>
         ) : (
           <h2 className="no-items">No {title}s found</h2>
         )}

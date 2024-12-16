@@ -1,7 +1,7 @@
 // Components
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
-import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
+import Navbar from '@components/Navbar/Navbar';
 
 import Sidebar from './_Sidebar/Sidebar';
 
@@ -37,7 +37,7 @@ export default function StoreLayout({ children }: StoreLayoutProps) {
     <>
       <Header />
       <Sidebar />
-      <SecondNavbar />
+      <Navbar />
       {children}
       <Footer />
     </>

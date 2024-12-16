@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeUserAdmin } from '@store/features/admin/user/userAdminSlice';
+import { initializeUserAdmin, reset } from '@store/features/admin/user/userAdminSlice';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
@@ -27,6 +27,9 @@ export default function UsersAdmin() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(initializeUserAdmin());
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch]);
 
   //------------------------------- States --------------------------------//

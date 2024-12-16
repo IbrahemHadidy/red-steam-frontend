@@ -9,7 +9,7 @@ const developerApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/developer`,
   }),
-  tagTypes: ['Developer'],
+  tagTypes: ['Developer', 'AllDevelopers', 'DevelopersPage'],
   endpoints: (builder) => ({
     createDeveloper: builder.mutation<{ message: string }, { name: string; website: string }>({
       query: (newDeveloper) => ({
@@ -18,19 +18,22 @@ const developerApi = createApi({
         body: newDeveloper,
         credentials: 'include',
       }),
-      invalidatesTags: ['Developer'],
+      invalidatesTags: ['AllDevelopers', 'DevelopersPage'],
     }),
 
     getDeveloper: builder.query<Company, number>({
       query: (id) => `/${id}`,
+      providesTags: (_, __, id) => [{ type: 'Developer', id }],
     }),
 
     getDevelopers: builder.query<Company[], number[]>({
       query: (ids) => `/bulk/${ids.join(',')}`,
+      providesTags: (_, __, ids) => ids.map((id) => ({ type: 'Developer', id })),
     }),
 
     getAllDevelopers: builder.query<Company[], void>({
       query: () => '',
+      providesTags: ['AllDevelopers'],
     }),
 
     getDevelopersPaginated: builder.query<
@@ -55,6 +58,7 @@ const developerApi = createApi({
         }
         return `/paginated${queryString}`;
       },
+      providesTags: (_, __, arg) => [{ type: 'DevelopersPage', id: JSON.stringify(arg) }],
     }),
 
     updateDeveloper: builder.mutation<
@@ -67,7 +71,11 @@ const developerApi = createApi({
         body: { name, website },
         credentials: 'include',
       }),
-      invalidatesTags: ['Developer'],
+      invalidatesTags: (_, __, { id }) => [
+        { type: 'Developer', id },
+        { type: 'DevelopersPage' },
+        { type: 'AllDevelopers' },
+      ],
     }),
 
     deleteDeveloper: builder.mutation<{ message: string }, number>({
@@ -76,7 +84,11 @@ const developerApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Developer'],
+      invalidatesTags: (_, __, id) => [
+        { type: 'Developer', id },
+        { type: 'DevelopersPage' },
+        { type: 'AllDevelopers' },
+      ],
     }),
   }),
 });

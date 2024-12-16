@@ -17,7 +17,7 @@ export default function CreateCompanyForm({ nameRef, websiteRef }: CreateCompany
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { name, website } = useAppSelector((state) => state.admin.common);
+  const { name, website, isEditModalOpen } = useAppSelector((state) => state.admin.common);
 
   //--------------------------- Event Handlers ----------------------------//
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -36,7 +36,7 @@ export default function CreateCompanyForm({ nameRef, websiteRef }: CreateCompany
         <input
           type="text"
           className="form-input"
-          value={name}
+          value={isEditModalOpen ? '' : name}
           onChange={handleNameChange}
           placeholder="Name"
           ref={nameRef}
@@ -47,7 +47,7 @@ export default function CreateCompanyForm({ nameRef, websiteRef }: CreateCompany
         <input
           type="text"
           className="form-input"
-          value={website}
+          value={isEditModalOpen ? '' : website}
           onChange={handleWebsiteChange}
           placeholder="Website"
           ref={websiteRef}

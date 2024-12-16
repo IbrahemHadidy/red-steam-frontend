@@ -1,7 +1,7 @@
 // Components
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
-import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
+import Navbar from '@components/Navbar/Navbar';
 
 // Styles
 import '@styles/admin/ActionsModals.scss';
@@ -21,7 +21,7 @@ export default function GameLayout({ children }: GameLayoutProps) {
   return (
     <>
       <Header />
-      <SecondNavbar />
+      <Navbar />
       <main className="game">{children}</main>
       <Footer />
     </>

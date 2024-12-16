@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 // Components
 import NavSearch from '../NavSearch';
 
-export default function MobileSecondNav() {
+export default function MobileNav() {
   const path = usePathname();
 
   const [isSearchPage, setIsSearchPage] = useState<boolean>(false);

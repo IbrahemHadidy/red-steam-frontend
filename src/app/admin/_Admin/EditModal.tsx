@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
 import {
+  resetInputs,
   setDiscountEndDate,
   setDiscountPrice,
   setDiscountStartDate,
@@ -80,6 +81,7 @@ export default function EditModal() {
 
   const closeModal = (): void => {
     dispatch(setIsEditModalOpen(false));
+    dispatch(resetInputs());
   };
 
   //------------------------------- Render --------------------------------//

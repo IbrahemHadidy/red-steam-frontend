@@ -20,7 +20,7 @@ export default function CreateFeatureForm({ nameRef, iconRef }: CreateFeatureFor
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { name } = useAppSelector((state) => state.admin.common);
+  const { name, isEditModalOpen } = useAppSelector((state) => state.admin.common);
 
   //--------------------------- Event Handlers ----------------------------//
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -45,7 +45,7 @@ export default function CreateFeatureForm({ nameRef, iconRef }: CreateFeatureFor
         <input
           type="text"
           className="form-input"
-          value={name}
+          value={isEditModalOpen ? '' : name}
           onChange={handleNameChange}
           placeholder="Name"
           ref={nameRef}

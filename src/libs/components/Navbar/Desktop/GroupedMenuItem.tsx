@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useAppSelector } from '@store/hooks';
 
 // Types
-import type { MenuItem } from '../SecondNavbar.types';
+import type { MenuItem } from '../Navbar.types';
 
 interface GroupedMenuItemProps {
   menuTitle: string;

@@ -9,7 +9,7 @@ const userAuthApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/auth`,
   }),
-  tagTypes: ['User', 'WaitingTime'],
+  tagTypes: ['CurrentUser', 'Users', 'WaitingTime'],
   endpoints: (builder) => ({
     signup: builder.mutation<
       { message: string },
@@ -21,6 +21,7 @@ const userAuthApi = createApi({
         body: data,
         credentials: 'include',
       }),
+      invalidatesTags: [{ type: 'Users' }],
     }),
 
     login: builder.mutation<
@@ -41,7 +42,7 @@ const userAuthApi = createApi({
         method: 'POST',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'User', id: 'CURRENT' }],
+      providesTags: [{ type: 'CurrentUser' }],
     }),
 
     logout: builder.mutation<{ message: string }, void>({
@@ -50,7 +51,7 @@ const userAuthApi = createApi({
         method: 'POST',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'User', id: 'CURRENT' }],
+      invalidatesTags: [{ type: 'CurrentUser' }],
     }),
 
     refreshToken: builder.mutation<User, void>({
@@ -59,7 +60,7 @@ const userAuthApi = createApi({
         method: 'POST',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'User', id: 'CURRENT' }],
+      invalidatesTags: [{ type: 'CurrentUser' }],
     }),
 
     updateUserData: builder.mutation<{ userData: User; message: string }, void>({
@@ -68,7 +69,7 @@ const userAuthApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'User', id: 'CURRENT' }],
+      invalidatesTags: [{ type: 'CurrentUser' }],
     }),
 
     resendVerificationToken: builder.mutation<string, void>({

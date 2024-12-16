@@ -15,7 +15,7 @@ import { DEFAULT_BG } from '@config/constants/backgrounds';
 // Components
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
-import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
+import Navbar from '@components/Navbar/Navbar';
 import CurrentFilters from './_CurrentFilters/CurrentFilters';
 import SearchLeft from './_SearchLeft/SearchLeft';
 import SearchRight from './_SearchRight/SearchRight';
@@ -40,7 +40,7 @@ export default function SearchPage() {
       <Header />
 
       <div className="search-header">
-        <SecondNavbar />
+        <Navbar />
         <CurrentFilters />
       </div>
 

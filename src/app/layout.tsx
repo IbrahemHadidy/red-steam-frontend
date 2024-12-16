@@ -67,7 +67,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </AuthProvider>
           </ReduxStoreProvider>
         </div>
-        <div id="loading-portal" />
       </body>
     </html>
   );

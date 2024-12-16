@@ -11,23 +11,23 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 
 // Components
 import LoadingSkeleton from './Skeleton';
-const DesktopSecondNav = dynamic(() => import('./Desktop/DesktopSecondNav'), {
+const DesktopNav = dynamic(() => import('./Desktop/DesktopNav'), {
   loading: () => <LoadingSkeleton />,
 });
-const MobileSecondNav = dynamic(() => import('./Mobile/MobileSecondNav'), {
+const MobileNav = dynamic(() => import('./Mobile/MobileNav'), {
   loading: () => <LoadingSkeleton />,
 });
 
 // Styles
-import '@styles/components/SecondNavbar.scss';
+import '@styles/components/Navbar.scss';
 
-export default function SecondNavbar() {
+export default function Navbar() {
   const isViewport960OrLess = useResponsiveViewport(960);
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
 
   if (!isAuthInitialized || !authOnLoadIntialized) {
     return <LoadingSkeleton />;
   } else {
-    return <>{isViewport960OrLess ? <MobileSecondNav /> : <DesktopSecondNav />}</>;
+    return <>{isViewport960OrLess ? <MobileNav /> : <DesktopNav />}</>;
   }
 }

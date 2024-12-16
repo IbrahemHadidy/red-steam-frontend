@@ -9,7 +9,7 @@ const reviewApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/review`,
   }),
-  tagTypes: ['Review'],
+  tagTypes: ['ReviewsPage'],
   endpoints: (builder) => ({
     getReviewsPaginated: builder.query<
       {
@@ -33,6 +33,7 @@ const reviewApi = createApi({
         }
         return `/paginated${queryString}`;
       },
+      providesTags: (_, __, { page }) => [{ type: 'ReviewsPage', id: page }],
     }),
 
     deleteReview: builder.mutation<{ message: string }, number>({
@@ -41,7 +42,7 @@ const reviewApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Review'],
+      invalidatesTags: ['ReviewsPage'],
     }),
   }),
 });

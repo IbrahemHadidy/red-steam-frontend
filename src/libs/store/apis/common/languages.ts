@@ -9,7 +9,7 @@ const languageApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/language`,
   }),
-  tagTypes: ['Language'],
+  tagTypes: ['Language', 'AllLanguages', 'LanguagesPage'],
   endpoints: (builder) => ({
     createLanguage: builder.mutation<{ message: string }, { name: string }>({
       query: (newLanguage) => ({
@@ -18,19 +18,22 @@ const languageApi = createApi({
         body: newLanguage,
         credentials: 'include',
       }),
-      invalidatesTags: ['Language'],
+      invalidatesTags: ['AllLanguages', 'LanguagesPage'],
     }),
 
     getLanguage: builder.query<Language, number>({
       query: (id) => `/${id}`,
+      providesTags: (_, __, id) => [{ type: 'Language', id }],
     }),
 
     getLanguages: builder.query<Language[], number[]>({
       query: (ids) => `/bulk/${ids.join(',')}`,
+      providesTags: (_, __, ids) => ids.map((id) => ({ type: 'Language', id })),
     }),
 
     getAllLanguages: builder.query<Language[], void>({
       query: () => '',
+      providesTags: ['AllLanguages'],
     }),
 
     getLanguagesPaginated: builder.query<
@@ -55,6 +58,7 @@ const languageApi = createApi({
         }
         return `/paginated${queryString}`;
       },
+      providesTags: (_, __, arg) => [{ type: 'LanguagesPage', id: JSON.stringify(arg) }],
     }),
 
     updateLanguage: builder.mutation<{ message: string }, { id: number; name: string }>({
@@ -64,7 +68,11 @@ const languageApi = createApi({
         body: { name },
         credentials: 'include',
       }),
-      invalidatesTags: ['Language'],
+      invalidatesTags: (_, __, { id }) => [
+        { type: 'Language', id },
+        { type: 'LanguagesPage' },
+        { type: 'AllLanguages' },
+      ],
     }),
 
     deleteLanguage: builder.mutation<{ message: string }, number>({
@@ -73,7 +81,11 @@ const languageApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Language'],
+      invalidatesTags: (_, __, id) => [
+        { type: 'Language', id },
+        { type: 'LanguagesPage' },
+        { type: 'AllLanguages' },
+      ],
     }),
   }),
 });

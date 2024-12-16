@@ -1,7 +1,7 @@
 // Components
 import Footer from '@components/Footer/Footer';
 import Header from '@components/Header/Header';
-import SecondNavbar from '@components/SecondNavbar/SecondNavbar';
+import Navbar from '@components/Navbar/Navbar';
 
 // Styles
 import '@styles/shop/Wishlist.scss';
@@ -23,7 +23,7 @@ export default function WishlistLayout({ children }: WishlistLayoutProps) {
   return (
     <>
       <Header />
-      <SecondNavbar />
+      <Navbar />
       {children}
       <Footer />
     </>

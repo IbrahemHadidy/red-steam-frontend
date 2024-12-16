@@ -9,7 +9,7 @@ const gameOfferApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/game/offer`,
   }),
-  tagTypes: ['Game'],
+  tagTypes: ['Games', 'GameOffersPage'],
   endpoints: (builder) => ({
     createOffer: builder.mutation<
       { message: string },
@@ -33,7 +33,7 @@ const gameOfferApi = createApi({
         },
         credentials: 'include',
       }),
-      invalidatesTags: ['Game'],
+      invalidatesTags: ['Games', 'GameOffersPage'],
     }),
 
     getOffersPaginated: builder.query<
@@ -66,7 +66,7 @@ const gameOfferApi = createApi({
           credentials: 'include',
         };
       },
-      providesTags: ['Game'],
+      providesTags: (result) => [{ type: 'GameOffersPage', id: JSON.stringify(result) }],
     }),
 
     updateOffer: builder.mutation<
@@ -90,7 +90,7 @@ const gameOfferApi = createApi({
         },
         credentials: 'include',
       }),
-      invalidatesTags: ['Game'],
+      invalidatesTags: ['Games', 'GameOffersPage'],
     }),
 
     deleteOffer: builder.mutation<{ message: string }, number>({
@@ -99,7 +99,7 @@ const gameOfferApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Game'],
+      invalidatesTags: ['Games', 'GameOffersPage'],
     }),
   }),
 });

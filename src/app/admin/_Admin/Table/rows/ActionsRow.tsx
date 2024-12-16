@@ -51,19 +51,19 @@ export default function ActionsRow({ item }: ActionsRowProps) {
       toast.error('Reviews cannot be edited');
     }
 
-    if (['publisher', 'developer'].includes(adminType) && isCompany(item)) {
+    if ([AdminType.Publisher, AdminType.Developer].includes(adminType) && isCompany(item)) {
       dispatch(setName(item.name));
       dispatch(setWebsite(item.website));
     }
 
     if (
-      ['feature', 'tag', 'language'].includes(adminType) &&
+      [AdminType.Feature, AdminType.Tag, AdminType.Language].includes(adminType) &&
       (isFeature(item) || isLanguage(item) || isTag(item))
     ) {
       dispatch(setName(item.name));
     }
 
-    if (['offer', 'create-offer'].includes(adminType) && isGame(item)) {
+    if ([AdminType.Offer, AdminType.CreateOffer].includes(adminType) && isGame(item)) {
       dispatch(setDiscountPrice(item.pricing?.price ?? ''));
       dispatch(setOfferType(item.pricing?.offerType ?? 'SPECIAL PROMOTION'));
 

@@ -26,7 +26,6 @@ const TagRows = dynamic(() => import('./rows/TagRows'));
 import { AdminType } from '@enums/admin';
 
 export default function Table() {
-  //------------------------------- States --------------------------------//
   const { adminType, items, isFetching } = useAppSelector((state) => state.admin.common);
 
   return (

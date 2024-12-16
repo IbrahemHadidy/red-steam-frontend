@@ -63,11 +63,11 @@ export default function HomeTabs() {
   };
 
   //------------------------------- Render --------------------------------//
-  return (
-    <div className="tab-container">
-      {newAndTrendingLoading || specialsLoading || topSellersLoading || popularUpcomingLoading ? (
-        <Skeleton />
-      ) : (
+  if (newAndTrendingLoading || specialsLoading || topSellersLoading || popularUpcomingLoading) {
+    return <Skeleton />;
+  } else {
+    return (
+      <div className="tab-container">
         <div className="tab-contents">
           <LeftSection
             openedTab={openedTab}
@@ -82,7 +82,7 @@ export default function HomeTabs() {
           />
           <RightSection game={hoveredGame} />
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }

@@ -9,7 +9,7 @@ const publisherApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/publisher`,
   }),
-  tagTypes: ['Publisher'],
+  tagTypes: ['Publisher', 'AllPublishers', 'PublishersPage'],
   endpoints: (builder) => ({
     createPublisher: builder.mutation<{ message: string }, { name: string; website: string }>({
       query: (newPublisher) => ({
@@ -18,19 +18,22 @@ const publisherApi = createApi({
         body: newPublisher,
         credentials: 'include',
       }),
-      invalidatesTags: ['Publisher'],
+      invalidatesTags: ['AllPublishers', 'PublishersPage'],
     }),
 
     getPublisher: builder.query<Company, number>({
       query: (id) => `/${id}`,
+      providesTags: (_, __, id) => [{ type: 'Publisher', id }],
     }),
 
     getPublishers: builder.query<Company[], number[]>({
       query: (ids) => `/bulk/${ids.join(',')}`,
+      providesTags: (_, __, ids) => ids.map((id) => ({ type: 'Publisher', id })),
     }),
 
     getAllPublishers: builder.query<Company[], void>({
       query: () => '',
+      providesTags: ['AllPublishers'],
     }),
 
     getPublishersPaginated: builder.query<
@@ -55,6 +58,7 @@ const publisherApi = createApi({
         }
         return `/paginated${queryString}`;
       },
+      providesTags: (_, __, arg) => [{ type: 'PublishersPage', id: JSON.stringify(arg) }],
     }),
 
     updatePublisher: builder.mutation<
@@ -67,7 +71,11 @@ const publisherApi = createApi({
         body: { name, website },
         credentials: 'include',
       }),
-      invalidatesTags: ['Publisher'],
+      invalidatesTags: (_, __, { id }) => [
+        { type: 'Publisher', id },
+        { type: 'PublishersPage' },
+        { type: 'AllPublishers' },
+      ],
     }),
 
     deletePublisher: builder.mutation<{ message: string }, number>({
@@ -76,7 +84,11 @@ const publisherApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Publisher'],
+      invalidatesTags: (_, __, id) => [
+        { type: 'Publisher', id },
+        { type: 'PublishersPage' },
+        { type: 'AllPublishers' },
+      ],
     }),
   }),
 });

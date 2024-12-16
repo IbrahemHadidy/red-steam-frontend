@@ -9,7 +9,7 @@ const tagApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/tag`,
   }),
-  tagTypes: ['Tag'],
+  tagTypes: ['Tag', 'AllTags', 'TagsPage'],
   endpoints: (builder) => ({
     createTag: builder.mutation<{ message: string }, { name: string }>({
       query: (body) => ({
@@ -18,19 +18,22 @@ const tagApi = createApi({
         body,
         credentials: 'include',
       }),
-      invalidatesTags: ['Tag'],
+      invalidatesTags: ['AllTags', 'TagsPage'],
     }),
 
     getTag: builder.query<Tag, number>({
       query: (id) => `/${id}`,
+      providesTags: (_, __, id) => [{ type: 'Tag', id }],
     }),
 
     getTags: builder.query<Tag[], number[]>({
       query: (ids) => `/bulk/${ids.join(',')}`,
+      providesTags: (_, __, ids) => ids.map((id) => ({ type: 'Tag', id })),
     }),
 
     getAllTags: builder.query<Tag[], void>({
       query: () => '',
+      providesTags: ['AllTags'],
     }),
 
     getTagsPaginated: builder.query<
@@ -55,6 +58,7 @@ const tagApi = createApi({
         }
         return `/paginated${queryString}`;
       },
+      providesTags: (_, __, arg) => [{ type: 'TagsPage', id: JSON.stringify(arg) }],
     }),
 
     updateTag: builder.mutation<{ message: string }, { id: number; name: string }>({
@@ -64,7 +68,11 @@ const tagApi = createApi({
         body: { name },
         credentials: 'include',
       }),
-      invalidatesTags: ['Tag'],
+      invalidatesTags: (_, __, { id }) => [
+        { type: 'Tag', id },
+        { type: 'TagsPage' },
+        { type: 'AllTags' },
+      ],
     }),
 
     deleteTag: builder.mutation<{ message: string }, number>({
@@ -73,7 +81,11 @@ const tagApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: ['Tag'],
+      invalidatesTags: (_, __, id) => [
+        { type: 'Tag', id },
+        { type: 'TagsPage' },
+        { type: 'AllTags' },
+      ],
     }),
   }),
 });

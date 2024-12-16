@@ -11,7 +11,7 @@ const userInteractionApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/interaction`,
   }),
-  tagTypes: ['Library', 'Wishlist', 'Cart', 'Tags', 'Reviews'],
+  tagTypes: ['UserLibrary', 'UserWishlist', 'UserCart', 'UserTags', 'UserReviews'],
   endpoints: (builder) => ({
     changeTags: builder.mutation<{ message: string }, number[]>({
       query: (tags) => ({
@@ -20,7 +20,7 @@ const userInteractionApi = createApi({
         body: { tags },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Tags', id: 'ALL' }],
+      invalidatesTags: ['UserTags'],
     }),
 
     getTags: builder.query<{ tags: Tag[] }, void>({
@@ -29,7 +29,7 @@ const userInteractionApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'Tags', id: 'ALL' }],
+      providesTags: ['UserTags'],
     }),
 
     addToLibrary: builder.mutation<{ message: string }, number[]>({
@@ -39,7 +39,7 @@ const userInteractionApi = createApi({
         body: { itemsIds },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Library', id: 'ALL' }],
+      invalidatesTags: ['UserLibrary'],
     }),
 
     removeFromLibrary: builder.mutation<{ message: string }, number[]>({
@@ -49,7 +49,7 @@ const userInteractionApi = createApi({
         body: { itemsIds },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Library', id: 'ALL' }],
+      invalidatesTags: ['UserLibrary'],
     }),
 
     clearLibrary: builder.mutation<{ message: string }, void>({
@@ -58,7 +58,7 @@ const userInteractionApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Library', id: 'ALL' }],
+      invalidatesTags: ['UserLibrary'],
     }),
 
     addToWishlist: builder.mutation<{ message: string }, number[]>({
@@ -68,7 +68,7 @@ const userInteractionApi = createApi({
         body: { itemsIds },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Wishlist', id: 'ALL' }],
+      invalidatesTags: ['UserWishlist'],
     }),
 
     removeFromWishlist: builder.mutation<{ message: string }, number[]>({
@@ -78,7 +78,7 @@ const userInteractionApi = createApi({
         body: { itemsIds },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Wishlist', id: 'ALL' }],
+      invalidatesTags: ['UserWishlist'],
     }),
 
     clearWishlist: builder.mutation<{ message: string }, void>({
@@ -87,7 +87,7 @@ const userInteractionApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Wishlist', id: 'ALL' }],
+      invalidatesTags: ['UserWishlist'],
     }),
 
     addToCart: builder.mutation<{ message: string }, number[]>({
@@ -97,7 +97,7 @@ const userInteractionApi = createApi({
         body: { itemsIds },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Cart', id: 'ALL' }],
+      invalidatesTags: ['UserCart'],
     }),
 
     removeFromCart: builder.mutation<{ message: string }, number[]>({
@@ -107,7 +107,7 @@ const userInteractionApi = createApi({
         body: { itemsIds },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Cart', id: 'ALL' }],
+      invalidatesTags: ['UserCart'],
     }),
 
     clearCart: builder.mutation<{ message: string }, void>({
@@ -116,7 +116,7 @@ const userInteractionApi = createApi({
         method: 'DELETE',
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Cart', id: 'ALL' }],
+      invalidatesTags: ['UserCart'],
     }),
 
     getLibrary: builder.query<LibraryItem[], void>({
@@ -125,7 +125,7 @@ const userInteractionApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'Library', id: 'ALL' }],
+      providesTags: ['UserLibrary'],
     }),
 
     getWishlist: builder.query<WishlistItem[], void>({
@@ -134,7 +134,7 @@ const userInteractionApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'Wishlist', id: 'ALL' }],
+      providesTags: ['UserWishlist'],
     }),
 
     getCart: builder.query<{ items: LibraryItem[] }, void>({
@@ -143,7 +143,7 @@ const userInteractionApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'Cart', id: 'ALL' }],
+      providesTags: ['UserCart'],
     }),
 
     reviewGame: builder.mutation<
@@ -156,7 +156,7 @@ const userInteractionApi = createApi({
         body: { gameId, positive, content },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Reviews', id: 'ALL' }],
+      invalidatesTags: ['UserReviews'],
     }),
 
     updateReview: builder.mutation<
@@ -169,7 +169,7 @@ const userInteractionApi = createApi({
         body: { reviewId, positive, content },
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Reviews', id: 'ALL' }],
+      invalidatesTags: ['UserReviews'],
     }),
 
     hasReviewedGame: builder.query<{ reviewed: boolean; review: Review }, number>({
@@ -178,7 +178,7 @@ const userInteractionApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'Reviews', id: 'ALL' }],
+      providesTags: ['UserReviews'],
     }),
 
     getReviews: builder.query<Review[], void>({
@@ -187,7 +187,7 @@ const userInteractionApi = createApi({
         method: 'GET',
         credentials: 'include',
       }),
-      providesTags: [{ type: 'Reviews', id: 'ALL' }],
+      providesTags: ['UserReviews'],
     }),
   }),
 });

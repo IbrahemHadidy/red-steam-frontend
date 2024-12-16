@@ -23,9 +23,9 @@ import cart from '@images/cart.svg';
 import defaultPFP from '@images/default-pfp.png';
 
 // Types
-import type { MenuItem } from '../SecondNavbar.types';
+import type { MenuItem } from '../Navbar.types';
 
-export default function DesktopSecondNav() {
+export default function DesktopNav() {
   //--------------------------- Initializations ---------------------------//
   const pathname = usePathname();
 

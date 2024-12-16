@@ -17,7 +17,7 @@ import useDynamicBackground from '@hooks/useDynamicBackground';
 import { ADMIN_BG } from '@config/constants/backgrounds';
 
 // Components
-const SecondNavbar = dynamic(() => import('@components/SecondNavbar/SecondNavbar'));
+const Navbar = dynamic(() => import('@components/Navbar/Navbar'));
 const BasicInfoSection = dynamic(() => import('./sections/BasicInfo'), {
   loading: () => <FormSkeleton />,
 });
@@ -88,7 +88,7 @@ export default function GameAdmin() {
   //------------------------------- Render --------------------------------//
   return (
     <>
-      {currentPage === CurrentGameAdminPage.Preview && <SecondNavbar />}
+      {currentPage === CurrentGameAdminPage.Preview && <Navbar />}
       <div
         className={`game-creation-form ${currentPage === CurrentGameAdminPage.Preview ? 'preview' : ''}`}
       >

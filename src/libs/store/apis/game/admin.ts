@@ -25,7 +25,7 @@ const gameAdminApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/game/admin`,
   }),
-  tagTypes: ['Game'],
+  tagTypes: ['Games'],
   endpoints: (builder) => ({
     createGame: builder.mutation<
       { message: string; id: number },
@@ -97,7 +97,7 @@ const gameAdminApi = createApi({
           credentials: 'include',
         };
       },
-      invalidatesTags: ['Game'],
+      invalidatesTags: ['Games'],
     }),
 
     updateGame: builder.mutation<
@@ -204,7 +204,7 @@ const gameAdminApi = createApi({
           credentials: 'include',
         };
       },
-      invalidatesTags: ['Game'],
+      invalidatesTags: (_, __, { updateData: { id } }) => [{ type: 'Games', id }],
     }),
 
     deleteGame: builder.mutation<{ message: string }, number>({
@@ -215,7 +215,7 @@ const gameAdminApi = createApi({
           credentials: 'include',
         };
       },
-      invalidatesTags: ['Game'],
+      invalidatesTags: (_, __, id) => [{ type: 'Games', id }],
     }),
   }),
 });

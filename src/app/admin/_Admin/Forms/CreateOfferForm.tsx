@@ -32,8 +32,14 @@ export default function CreateOfferForm({
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { offerGame, discountPrice, offerType, discountStartDate, discountEndDate } =
-    useAppSelector((state) => state.admin.common);
+  const {
+    offerGame,
+    discountPrice,
+    offerType,
+    discountStartDate,
+    discountEndDate,
+    isEditModalOpen,
+  } = useAppSelector((state) => state.admin.common);
 
   //--------------------------- Event Handlers ----------------------------//
   const handleDiscountPriceChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -64,7 +70,7 @@ export default function CreateOfferForm({
         <input
           type="number"
           className="form-input"
-          value={discountPrice}
+          value={isEditModalOpen ? '' : discountPrice}
           onChange={handleDiscountPriceChange}
           placeholder={`Discount price, Current price: ${offerGame?.pricing?.basePrice}`}
           ref={discountPriceRef}
@@ -104,7 +110,7 @@ export default function CreateOfferForm({
         <input
           type="date"
           className="form-input"
-          value={discountStartDate}
+          value={isEditModalOpen ? '' : discountStartDate}
           onChange={handleDiscountStartDateChange}
           placeholder="Discount start date"
           ref={discountStartDateRef}
@@ -116,7 +122,7 @@ export default function CreateOfferForm({
         <input
           type="date"
           className="form-input"
-          value={discountEndDate}
+          value={isEditModalOpen ? '' : discountEndDate}
           onChange={handleDiscountEndDateChange}
           placeholder="Discount end date"
           ref={discountEndDateRef}

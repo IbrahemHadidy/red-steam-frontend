@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '@store/hooks';
 
 // Redux Handlers
-import { initializePublishersAdmin } from '@store/features/admin/adminSlice';
+import { initializePublishersAdmin, setIsInitialized } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
@@ -17,6 +17,9 @@ export default function PublishersAdmin() {
 
   useEffect(() => {
     dispatch(initializePublishersAdmin());
+    return () => {
+      dispatch(setIsInitialized(false));
+    };
   }, [dispatch]);
 
   return <Admin />;

@@ -1,8 +1,7 @@
 'use client';
 
 // React
-import { use, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { use, useEffect } from 'react';
 
 // NextJS
 import { useRouter } from 'next/navigation';
@@ -14,11 +13,10 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeCreateOfferAdmin } from '@store/features/admin/adminSlice';
+import { initializeCreateOfferAdmin, setIsInitialized } from '@store/features/admin/adminSlice';
 
 // Components
 import Admin from '@app/admin/_Admin/Admin';
-import Loading from '@app/loading';
 
 interface CreateOfferAdminProps {
   params: Promise<{
@@ -32,19 +30,20 @@ export default function CreateOfferAdmin(props: CreateOfferAdminProps) {
   const dispatch = useAppDispatch();
 
   const { offerGame } = useAppSelector((state) => state.admin.common);
-  const [loadingPortal, setLoadingPortal] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     dispatch(initializeCreateOfferAdmin(+params.id));
+    return () => {
+      dispatch(setIsInitialized(false));
+    };
   }, [dispatch, params.id]);
 
   useEffect(() => {
     if (offerGame?.pricing?.free) {
-      setLoadingPortal(document.getElementById('loading-portal'));
       toast.warn('Free games cannot have offers');
       router.push(`/game/${offerGame.id}`);
     }
   }, [offerGame, router]);
 
-  return !offerGame && loadingPortal ? createPortal(<Loading />, loadingPortal) : <Admin />;
+  return <Admin />;
 }
