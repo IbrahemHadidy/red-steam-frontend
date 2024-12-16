@@ -25,7 +25,7 @@ import Decimal from 'decimal.js';
 import { AdminType } from '@enums/admin';
 
 // Types
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 
 export default function EditModal() {
   //--------------------------- Initializations ---------------------------//
@@ -44,7 +44,8 @@ export default function EditModal() {
   } = useAppSelector((state) => state.admin.common);
 
   //---------------------------- Event Handlers ---------------------------//
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
     await dispatch(updateItem());
   };
 

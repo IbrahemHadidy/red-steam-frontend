@@ -37,6 +37,95 @@ const InputField = () => (
   </Box>
 );
 
+export const TableRows = () => {
+  const isViewport960OrLess = useResponsiveViewport(960);
+
+  return (
+    <Box sx={{ width: '100%', margin: '20px 0' }}>
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }}
+      />
+      <Skeleton
+        variant="rectangular"
+        height={51.5}
+        sx={{
+          width: isViewport960OrLess ? 'auto' : '950px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        }}
+      />
+    </Box>
+  );
+};
+
 const Table = () => {
   const isViewport960OrLess = useResponsiveViewport(960);
 
@@ -144,88 +233,7 @@ const Table = () => {
           />
         </Box>
       </Box>
-      <Box sx={{ width: '100%', margin: '20px 0' }}>
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={51.5}
-          sx={{
-            width: isViewport960OrLess ? 'auto' : '950px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          }}
-        />
-      </Box>
+      <TableRows />
       <Box
         sx={{
           display: 'flex',
