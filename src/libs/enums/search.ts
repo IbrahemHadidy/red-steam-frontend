@@ -65,6 +65,9 @@ export const enum SearchDataSortOption {
   TotalSales = 'totalSales',
 }
 
+/**
+ * Enum representing available upcoming modes for search results.
+ */
 export const enum SearchDataUpcomingMode {
   OnlyUpcoming = 'onlyUpcoming',
   ExcludeUpcoming = 'exclude',

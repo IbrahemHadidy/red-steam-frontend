@@ -195,7 +195,7 @@ export default function ProfileInfoSection() {
                 type="file"
                 className="file-input"
                 accept="image/*"
-                onClick={(e) => ((e.target as HTMLInputElement).value = '//:0')}
+                onClick={(e) => ((e.target as HTMLInputElement).value = '')}
                 onChange={handleFileChange}
               />
 

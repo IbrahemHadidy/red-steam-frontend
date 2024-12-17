@@ -16,7 +16,7 @@ import {
 import getFileUrl from '@utils/getFileUrl';
 
 // Enums
-import { GameMediaChangeStatus } from '@enums/admin';
+import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
 
 // Types
 import type { Screenshot } from '@custom-types/game-admin';
@@ -31,7 +31,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { screenshots, duplicateOrders } = useAppSelector((state) => state.admin.game);
+  const { screenshots, duplicateOrders, type } = useAppSelector((state) => state.admin.game);
   const [imageUrl, setImageUrl] = useState<string>('//:0');
 
   //------------------------------ Effects -------------------------------//
@@ -66,8 +66,21 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   ): void => {
     const newOrder = Number(e.target.value.trim());
     dispatch(updateScreenshotOrder({ baseOrder, newOrder }));
-    const screenshotElement = document.querySelector(`img[alt="Screenshot ${newOrder}"]`);
-    screenshotElement?.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => {
+      const screenshotElementContainer = document.querySelector(
+        `div[title="Screenshot ${newOrder}"]`
+      )?.parentElement;
+
+      if (screenshotElementContainer) {
+        screenshotElementContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        if (type === GameAdminType.Create) {
+          screenshotElementContainer.classList.remove('fading-border');
+          screenshotElementContainer.classList.add('fading-border');
+        }
+      }
+    }, 50);
   };
 
   const handleFeaturedChange = (id: number): void => {
@@ -76,7 +89,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
 
   //------------------------------- Render --------------------------------//
   return (
-    <div className="media-screenshot">
+    <div className="media-screenshot" title={`Screenshot ${item.order}`}>
       <img
         src={imageUrl}
         alt={`Screenshot ${item.order}`}

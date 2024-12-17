@@ -197,6 +197,10 @@
             }
           }
 
+          &.fading-border {
+            animation: fadeOutShadow 5s ease-out;
+          }
+
           @media screen and (max-width: 740px) {
             width: 100%;
           }
@@ -725,5 +729,16 @@
         background-color: #777;
       }
     }
+  }
+}
+
+
+@keyframes fadeOutShadow {
+  0% {
+    box-shadow: 0 0 2px 1px #ffff00;
+  }
+
+  100% {
+    box-shadow: 0 0 0 1px transparent;
   }
 }

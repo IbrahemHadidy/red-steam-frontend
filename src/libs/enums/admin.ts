@@ -40,6 +40,9 @@ export const enum GameAdminType {
   Update = 'Update',
 }
 
+/**
+ * Enum representing available game admin pages.
+ */
 export const enum CurrentGameAdminPage {
   Basic = 'Basic',
   Companies = 'Companies',
