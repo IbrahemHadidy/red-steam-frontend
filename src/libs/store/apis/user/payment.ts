@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 const userPaymentApi = createApi({
   reducerPath: 'api/user/payment',
   baseQuery: fetchBaseQuery({
@@ -11,7 +14,7 @@ const userPaymentApi = createApi({
       {
         query: ({ totalPrice, cartItems }) => ({
           url: '/order/create',
-          method: 'POST',
+          method: ApiMethod.POST,
           body: { totalPrice, cartItems },
           credentials: 'include',
         }),
@@ -24,7 +27,7 @@ const userPaymentApi = createApi({
     >({
       query: ({ orderId, cartItems }) => ({
         url: '/order/capture',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { orderId, cartItems },
         credentials: 'include',
       }),
@@ -33,5 +36,8 @@ const userPaymentApi = createApi({
 });
 
 export const { useCreateOrderMutation, useCaptureOrderMutation } = userPaymentApi;
+
+export const { createOrder: createOrderService, captureOrder: captureOrderService } =
+  userPaymentApi.endpoints;
 
 export default userPaymentApi;

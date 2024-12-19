@@ -8,15 +8,16 @@ import { createAppAsyncThunk } from '@store/hooks';
 import { initializeGamePreview } from '@store/features/game/gameSlice';
 
 // APIs
-import developerApi from '@store/apis/common/developers';
-import featureApi from '@store/apis/common/features';
-import publisherApi from '@store/apis/common/publishers';
-import tagApi from '@store/apis/common/tags';
-import gameAdminApi, { Thumbnails } from '@store/apis/game/admin';
+import { getDevelopersService } from '@store/apis/common/developers';
+import { getFeaturesService } from '@store/apis/common/features';
+import { getPublishersService } from '@store/apis/common/publishers';
+import { getTagsService } from '@store/apis/common/tags';
+import { createGameService, deleteGameService, updateGameService } from '@store/apis/game/admin';
 
 // Utils
 import getFileUrl from '@utils/getFileUrl';
 import promiseToast from '@utils/promiseToast';
+import { prepareCreateGameFormData, prepareUpdateGameFormData } from './gameAdminUtils';
 
 // Enums
 import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
@@ -25,6 +26,7 @@ import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
 import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import type { FormThumbnails } from './gameAdminUtils';
 
 export const getPreviewData = createAppAsyncThunk<Game>(
   'admin/game/getPreviewData',
@@ -54,16 +56,10 @@ export const getPreviewData = createAppAsyncThunk<Game>(
     } = getState().admin.game;
 
     try {
-      const publishersData = await dispatch(
-        publisherApi.endpoints.getPublishers.initiate(publishers)
-      ).unwrap();
-      const developersData = await dispatch(
-        developerApi.endpoints.getDevelopers.initiate(developers)
-      ).unwrap();
-      const tagsData = await dispatch(tagApi.endpoints.getTags.initiate(tags)).unwrap();
-      const featuresData = await dispatch(
-        featureApi.endpoints.getFeatures.initiate(features)
-      ).unwrap();
+      const publishersData = await dispatch(getPublishersService.initiate(publishers)).unwrap();
+      const developersData = await dispatch(getDevelopersService.initiate(developers)).unwrap();
+      const tagsData = await dispatch(getTagsService.initiate(tags)).unwrap();
+      const featuresData = await dispatch(getFeaturesService.initiate(features)).unwrap();
 
       const game: Game = {
         id: 0,
@@ -140,21 +136,18 @@ export const getPreviewData = createAppAsyncThunk<Game>(
 const createGame = async (dispatch: AppDispatch, state: RootState, router: AppRouterInstance) => {
   const { previewData, thumbnails, screenshots, videos } = state.admin.game;
 
-  const response = await promiseToast(
-    dispatch(
-      gameAdminApi.endpoints.createGame.initiate({
-        gameData: previewData as Game,
-        thumbnails: thumbnails as Thumbnails,
-        images: screenshots,
-        videos,
-      })
-    ).unwrap(),
-    {
-      pending: 'Creating game',
-      success: 'Game created successfully',
-      fallbackError: 'An error occurred while creating game. Please try again.',
-    }
+  const formData = await prepareCreateGameFormData(
+    previewData as Game,
+    thumbnails as FormThumbnails,
+    screenshots,
+    videos
   );
+
+  const response = await promiseToast(dispatch(createGameService.initiate({ formData })).unwrap(), {
+    pending: 'Creating game',
+    success: 'Game created successfully',
+    fallbackError: 'An error occurred while creating game. Please try again.',
+  });
 
   if (response?.id) router.push(`/game/${response.id}`);
 };
@@ -185,142 +178,139 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
     gameToUpdate,
   } = state.admin.game;
 
+  const formData = await prepareUpdateGameFormData(
+    {
+      changedThumbnails: {
+        mainImage:
+          thumbnails.mainImage.file instanceof File && thumbnails.mainImage.changed
+            ? thumbnails.mainImage.file
+            : undefined,
+        backgroundImage:
+          thumbnails.backgroundImage.file instanceof File && thumbnails.backgroundImage.changed
+            ? thumbnails.backgroundImage.file
+            : undefined,
+        menuImg:
+          thumbnails.menuImg.file instanceof File && thumbnails.menuImg.changed
+            ? thumbnails.menuImg.file
+            : undefined,
+        horizontalHeaderImage:
+          thumbnails.horizontalHeaderImage.file instanceof File &&
+          thumbnails.horizontalHeaderImage.changed
+            ? thumbnails.horizontalHeaderImage.file
+            : undefined,
+        verticalHeaderImage:
+          thumbnails.verticalHeaderImage.file instanceof File &&
+          thumbnails.verticalHeaderImage.changed
+            ? thumbnails.verticalHeaderImage.file
+            : undefined,
+        smallHeaderImage:
+          thumbnails.smallHeaderImage.file instanceof File && thumbnails.smallHeaderImage.changed
+            ? thumbnails.smallHeaderImage.file
+            : undefined,
+        searchImage:
+          thumbnails.searchImage.file instanceof File && thumbnails.searchImage.changed
+            ? thumbnails.searchImage.file
+            : undefined,
+        tabImage:
+          thumbnails.tabImage.file instanceof File && thumbnails.tabImage.changed
+            ? thumbnails.tabImage.file
+            : undefined,
+      },
+      deletedScreenshots: screenshots
+        .filter((screenshot) => screenshot.change === GameMediaChangeStatus.Deleted)
+        .map((screenshot) => screenshot.baseOrder),
+      deletedVideos: videos
+        .filter((video) => video.change === GameMediaChangeStatus.Deleted)
+        .map((video) => video.baseOrder),
+      changedScreenshots: screenshots
+        .filter(
+          (screenshot) =>
+            screenshot.change !== GameMediaChangeStatus.Deleted &&
+            screenshot.change !== GameMediaChangeStatus.Added &&
+            screenshot.order !== screenshot.baseOrder
+        )
+        .map((screenshot) => ({
+          oldOrder: screenshot.baseOrder,
+          newOrder: screenshot.order,
+        })),
+      changedVideos: videos
+        .filter(
+          (video) =>
+            video.change !== GameMediaChangeStatus.Deleted &&
+            video.change !== GameMediaChangeStatus.Added &&
+            video.order !== video.baseOrder
+        )
+        .map((video) => ({
+          oldOrder: video.baseOrder,
+          newOrder: video.order,
+        })),
+      addedScreenshots: screenshots.filter(
+        (screenshot) => screenshot.change === GameMediaChangeStatus.Added
+      ),
+      addedVideos: videos.filter((video) => video.change === GameMediaChangeStatus.Added),
+      featuredOrders: screenshots
+        .filter((screenshot) => screenshot.featured)
+        .map((screenshot) => screenshot.order),
+    },
+    {
+      id: gameToUpdate?.id,
+      name: name.trim(),
+      category: gameToUpdate?.category !== category.trim() ? category.trim() : undefined,
+      description:
+        gameToUpdate?.description !== description.trim() ? description.trim() : undefined,
+      releaseDate: gameToUpdate?.releaseDate !== releaseDate ? releaseDate : undefined,
+      featured: gameToUpdate?.featured !== featured ? featured : undefined,
+      publishers:
+        JSON.stringify(gameToUpdate?.publishers?.map((publisher) => publisher.id).sort()) !==
+        JSON.stringify([...publishers].sort())
+          ? publishers
+          : undefined,
+      developers:
+        JSON.stringify(gameToUpdate?.developers?.map((developer) => developer.id).sort()) !==
+        JSON.stringify([...developers].sort())
+          ? developers
+          : undefined,
+      pricing:
+        gameToUpdate?.pricing?.free !== pricing.free ||
+        gameToUpdate?.pricing?.basePrice !== pricing.price?.toString()
+          ? {
+              free: gameToUpdate?.pricing?.free !== pricing.free ? pricing.free : undefined,
+              price:
+                gameToUpdate?.pricing?.basePrice !== pricing.price
+                  ? pricing.price?.toString()
+                  : undefined,
+            }
+          : undefined,
+      tags:
+        JSON.stringify(gameToUpdate?.tags?.map((tag) => tag.id).sort()) !==
+        JSON.stringify([...tags].sort())
+          ? tags
+          : undefined,
+      features:
+        JSON.stringify(gameToUpdate?.features?.map((feature) => feature.id).sort()) !==
+        JSON.stringify([...features].sort())
+          ? features
+          : undefined,
+      languages: gameToUpdate?.languageSupport !== languages ? languages : undefined,
+      platforms: {
+        win: platforms.win,
+        mac: platforms.mac,
+      },
+      link: gameToUpdate?.link !== link.trim() ? link.trim() : undefined,
+      about: gameToUpdate?.about !== about.trim() ? about.trim() : undefined,
+      mature: gameToUpdate?.mature !== mature ? mature : undefined,
+      matureDescription:
+        gameToUpdate?.matureDescription !== matureDescription.trim()
+          ? matureDescription.trim()
+          : undefined,
+      systemRequirements:
+        gameToUpdate?.systemRequirements !== systemRequirements ? systemRequirements : undefined,
+      legal: gameToUpdate?.legal !== legal.trim() ? legal.trim() : undefined,
+    }
+  );
+
   const response = await promiseToast(
-    dispatch(
-      gameAdminApi.endpoints.updateGame.initiate({
-        media: {
-          changedThumbnails: {
-            mainImage:
-              thumbnails.mainImage.file instanceof File && thumbnails.mainImage.changed
-                ? thumbnails.mainImage.file
-                : undefined,
-            backgroundImage:
-              thumbnails.backgroundImage.file instanceof File && thumbnails.backgroundImage.changed
-                ? thumbnails.backgroundImage.file
-                : undefined,
-            menuImg:
-              thumbnails.menuImg.file instanceof File && thumbnails.menuImg.changed
-                ? thumbnails.menuImg.file
-                : undefined,
-            horizontalHeaderImage:
-              thumbnails.horizontalHeaderImage.file instanceof File &&
-              thumbnails.horizontalHeaderImage.changed
-                ? thumbnails.horizontalHeaderImage.file
-                : undefined,
-            verticalHeaderImage:
-              thumbnails.verticalHeaderImage.file instanceof File &&
-              thumbnails.verticalHeaderImage.changed
-                ? thumbnails.verticalHeaderImage.file
-                : undefined,
-            smallHeaderImage:
-              thumbnails.smallHeaderImage.file instanceof File &&
-              thumbnails.smallHeaderImage.changed
-                ? thumbnails.smallHeaderImage.file
-                : undefined,
-            searchImage:
-              thumbnails.searchImage.file instanceof File && thumbnails.searchImage.changed
-                ? thumbnails.searchImage.file
-                : undefined,
-            tabImage:
-              thumbnails.tabImage.file instanceof File && thumbnails.tabImage.changed
-                ? thumbnails.tabImage.file
-                : undefined,
-          },
-          deletedScreenshots: screenshots
-            .filter((screenshot) => screenshot.change === GameMediaChangeStatus.Deleted)
-            .map((screenshot) => screenshot.baseOrder),
-          deletedVideos: videos
-            .filter((video) => video.change === GameMediaChangeStatus.Deleted)
-            .map((video) => video.baseOrder),
-          changedScreenshots: screenshots
-            .filter(
-              (screenshot) =>
-                screenshot.change !== GameMediaChangeStatus.Deleted &&
-                screenshot.change !== GameMediaChangeStatus.Added &&
-                screenshot.order !== screenshot.baseOrder
-            )
-            .map((screenshot) => ({
-              oldOrder: screenshot.baseOrder,
-              newOrder: screenshot.order,
-            })),
-          changedVideos: videos
-            .filter(
-              (video) =>
-                video.change !== GameMediaChangeStatus.Deleted &&
-                video.change !== GameMediaChangeStatus.Added &&
-                video.order !== video.baseOrder
-            )
-            .map((video) => ({
-              oldOrder: video.baseOrder,
-              newOrder: video.order,
-            })),
-          addedScreenshots: screenshots.filter(
-            (screenshot) => screenshot.change === GameMediaChangeStatus.Added
-          ),
-          addedVideos: videos.filter((video) => video.change === GameMediaChangeStatus.Added),
-          featuredOrders: screenshots
-            .filter((screenshot) => screenshot.featured)
-            .map((screenshot) => screenshot.order),
-        },
-        updateData: {
-          id: gameToUpdate?.id,
-          name: name.trim(),
-          category: gameToUpdate?.category !== category.trim() ? category.trim() : undefined,
-          description:
-            gameToUpdate?.description !== description.trim() ? description.trim() : undefined,
-          releaseDate: gameToUpdate?.releaseDate !== releaseDate ? releaseDate : undefined,
-          featured: gameToUpdate?.featured !== featured ? featured : undefined,
-          publishers:
-            JSON.stringify(gameToUpdate?.publishers?.map((publisher) => publisher.id).sort()) !==
-            JSON.stringify([...publishers].sort())
-              ? publishers
-              : undefined,
-          developers:
-            JSON.stringify(gameToUpdate?.developers?.map((developer) => developer.id).sort()) !==
-            JSON.stringify([...developers].sort())
-              ? developers
-              : undefined,
-          pricing:
-            gameToUpdate?.pricing?.free !== pricing.free ||
-            gameToUpdate?.pricing?.basePrice !== pricing.price?.toString()
-              ? {
-                  free: gameToUpdate?.pricing?.free !== pricing.free ? pricing.free : undefined,
-                  price:
-                    gameToUpdate?.pricing?.basePrice !== pricing.price
-                      ? pricing.price?.toString()
-                      : undefined,
-                }
-              : undefined,
-          tags:
-            JSON.stringify(gameToUpdate?.tags?.map((tag) => tag.id).sort()) !==
-            JSON.stringify([...tags].sort())
-              ? tags
-              : undefined,
-          features:
-            JSON.stringify(gameToUpdate?.features?.map((feature) => feature.id).sort()) !==
-            JSON.stringify([...features].sort())
-              ? features
-              : undefined,
-          languages: gameToUpdate?.languageSupport !== languages ? languages : undefined,
-          platforms: {
-            win: platforms.win,
-            mac: platforms.mac,
-          },
-          link: gameToUpdate?.link !== link.trim() ? link.trim() : undefined,
-          about: gameToUpdate?.about !== about.trim() ? about.trim() : undefined,
-          mature: gameToUpdate?.mature !== mature ? mature : undefined,
-          matureDescription:
-            gameToUpdate?.matureDescription !== matureDescription.trim()
-              ? matureDescription.trim()
-              : undefined,
-          systemRequirements:
-            gameToUpdate?.systemRequirements !== systemRequirements
-              ? systemRequirements
-              : undefined,
-          legal: gameToUpdate?.legal !== legal.trim() ? legal.trim() : undefined,
-        },
-      })
-    ).unwrap(),
+    dispatch(updateGameService.initiate({ id: gameToUpdate?.id, formData })).unwrap(),
     {
       pending: 'Updating game',
       success: 'Game updated successfully',
@@ -334,14 +324,11 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
 export const deleteGame = createAppAsyncThunk<void, { id: number; router: AppRouterInstance }>(
   'admin/game/deleteGame',
   async ({ id, router }, { dispatch }) => {
-    const response = await promiseToast(
-      dispatch(gameAdminApi.endpoints.deleteGame.initiate(id)).unwrap(),
-      {
-        pending: 'Deleting game...',
-        success: 'Game deleted successfully',
-        fallbackError: 'Error deleting game',
-      }
-    );
+    const response = await promiseToast(dispatch(deleteGameService.initiate(id)).unwrap(), {
+      pending: 'Deleting game...',
+      success: 'Game deleted successfully',
+      fallbackError: 'Error deleting game',
+    });
 
     if (response?.message) router.push('/');
   }

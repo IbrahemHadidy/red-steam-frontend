@@ -8,7 +8,7 @@ import { createAppAsyncThunk } from '@store/hooks';
 import { fetchUserData } from '@store/features/auth/authThunks';
 
 // Apis
-import userInteractionApi from '@store/apis/user/interaction';
+import { changeTagsService } from '@store/apis/user/interaction';
 
 // Types
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -23,14 +23,11 @@ export const submitTags = createAppAsyncThunk<string, AppRouterInstance>(
         .filter((tag) => tag !== undefined && tag !== null && tag.id)
         .map((tag) => tag.id);
 
-      await toast.promise(
-        dispatch(userInteractionApi.endpoints.changeTags.initiate(selectedTagIds)),
-        {
-          pending: 'Changing tags...',
-          success: 'Tags changed successfully',
-          error: 'An error occurred. Please try again later.',
-        }
-      );
+      await toast.promise(dispatch(changeTagsService.initiate(selectedTagIds)), {
+        pending: 'Changing tags...',
+        success: 'Tags changed successfully',
+        error: 'An error occurred. Please try again later.',
+      });
 
       // Update user data
       await dispatch(fetchUserData());

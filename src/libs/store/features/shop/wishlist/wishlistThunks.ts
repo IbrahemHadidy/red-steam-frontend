@@ -8,13 +8,19 @@ import { updateWishlist } from './wishlistSlice';
 import { fetchUserData } from '@store/features/auth/authThunks';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
-import userInteractionApi from '@store/apis/user/interaction';
+import { getByIdsService } from '@store/apis/game/data';
+import {
+  addToCartService,
+  addToLibraryService,
+  removeFromWishlistService,
+} from '@store/apis/user/interaction';
+
+// Utils
+import promiseToast from '@utils/promiseToast';
 
 // Types
 import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
-import promiseToast from '@utils/promiseToast';
 
 const refreshWishlist = async (
   dispatch: AppDispatch,
@@ -30,7 +36,7 @@ const refreshWishlist = async (
 
     if (userWishlist.length > 0) {
       wishlistItems = await dispatch(
-        gameDataApi.endpoints.getByIds.initiate(userWishlist.map((item) => item.id))
+        getByIdsService.initiate(userWishlist.map((item) => item.id))
       ).unwrap();
     }
 
@@ -45,14 +51,11 @@ const refreshWishlist = async (
 export const addToCart = createAppAsyncThunk<void, number>(
   'shop/wishlist/addToCart',
   async (id, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.addToCart.initiate([id])).unwrap(),
-      {
-        pending: 'Adding to cart',
-        success: 'Added to cart',
-        fallbackError: 'Error adding to cart',
-      }
-    );
+    const result = await promiseToast(dispatch(addToCartService.initiate([id])).unwrap(), {
+      pending: 'Adding to cart',
+      success: 'Added to cart',
+      fallbackError: 'Error adding to cart',
+    });
     if (!result) return rejectWithValue('Error adding to cart');
 
     await refreshWishlist(dispatch, getState, rejectWithValue);
@@ -63,14 +66,11 @@ export const addToCart = createAppAsyncThunk<void, number>(
 export const addToLibrary = createAppAsyncThunk<void, number>(
   'shop/wishlist/addToLibrary',
   async (id, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.addToLibrary.initiate([id])).unwrap(),
-      {
-        pending: 'Adding to library',
-        success: 'Added to library',
-        fallbackError: 'Error adding to library',
-      }
-    );
+    const result = await promiseToast(dispatch(addToLibraryService.initiate([id])).unwrap(), {
+      pending: 'Adding to library',
+      success: 'Added to library',
+      fallbackError: 'Error adding to library',
+    });
     if (!result) return rejectWithValue('Error adding to library');
 
     await refreshWishlist(dispatch, getState, rejectWithValue);
@@ -81,14 +81,11 @@ export const addToLibrary = createAppAsyncThunk<void, number>(
 export const removeFromWishlist = createAppAsyncThunk<void, number>(
   'shop/wishlist/removeFromWishlist',
   async (id, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.removeFromWishlist.initiate([id])).unwrap(),
-      {
-        pending: 'Removing from wishlist',
-        success: 'Removed from wishlist',
-        fallbackError: 'Error removing from wishlist',
-      }
-    );
+    const result = await promiseToast(dispatch(removeFromWishlistService.initiate([id])).unwrap(), {
+      pending: 'Removing from wishlist',
+      success: 'Removed from wishlist',
+      fallbackError: 'Error removing from wishlist',
+    });
     if (!result) return rejectWithValue('Error removing from wishlist');
 
     await refreshWishlist(dispatch, getState, rejectWithValue);

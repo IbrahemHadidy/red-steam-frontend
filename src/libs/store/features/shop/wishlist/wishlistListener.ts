@@ -5,7 +5,7 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { initializeWishlist, setIsWishlistInitialized, updateWishlist } from './wishlistSlice';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
+import { getByIdsService } from '@store/apis/game/data';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -31,9 +31,7 @@ listen({
     if (userWishlist.length > 0) {
       wishlistItems =
         (await promiseToast(
-          dispatch(
-            gameDataApi.endpoints.getByIds.initiate(userWishlist.map((item) => item.id))
-          ).unwrap(),
+          dispatch(getByIdsService.initiate(userWishlist.map((item) => item.id))).unwrap(),
           {
             pending: 'Fetching wishlist items',
             fallbackError: 'Error fetching wishlist items',

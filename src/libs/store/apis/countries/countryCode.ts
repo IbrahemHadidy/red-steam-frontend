@@ -14,4 +14,6 @@ const ipBaseApi = createApi({
 
 export const { useFetchUserCountryQuery } = ipBaseApi;
 
+export const { fetchUserCountry: fetchUserCountryService } = ipBaseApi.endpoints;
+
 export default ipBaseApi;

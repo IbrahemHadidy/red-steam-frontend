@@ -5,7 +5,7 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { setInitialTags, updateInitialTags, updateSelectedTags } from './userTagsSlice';
 
 // APIs
-import tagsApi from '@store/apis/common/tags';
+import { getAllTagsService } from '@store/apis/common/tags';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -25,13 +25,10 @@ listen({
     const userTags = getState().auth.currentUserData?.tags;
 
     // Get initial tags
-    const initialTags = await promiseToast(
-      dispatch(tagsApi.endpoints.getAllTags.initiate()).unwrap(),
-      {
-        pending: 'Fetching tags',
-        fallbackError: 'Error fetching tags',
-      }
-    );
+    const initialTags = await promiseToast(dispatch(getAllTagsService.initiate()).unwrap(), {
+      pending: 'Fetching tags',
+      fallbackError: 'Error fetching tags',
+    });
 
     // Update state
     dispatch(updateInitialTags(initialTags ?? []));

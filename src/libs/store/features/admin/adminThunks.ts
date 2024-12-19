@@ -5,13 +5,43 @@ import { createAppAsyncThunk } from '@store/hooks';
 import { setIsFetching } from './adminSlice';
 
 // APIs
-import developerApi from '@store/apis/common/developers';
-import featureApi from '@store/apis/common/features';
-import languageApi from '@store/apis/common/languages';
-import publisherApi from '@store/apis/common/publishers';
-import reviewApi from '@store/apis/common/reviews';
-import tagApi from '@store/apis/common/tags';
-import gameOfferApi from '@store/apis/game/offer';
+import {
+  createDeveloperService,
+  deleteDeveloperService,
+  getDevelopersPaginatedService,
+  updateDeveloperService,
+} from '@store/apis/common/developers';
+import {
+  createFeatureService,
+  deleteFeatureService,
+  getFeaturesPaginatedService,
+  updateFeatureService,
+} from '@store/apis/common/features';
+import {
+  createLanguageService,
+  deleteLanguageService,
+  getLanguagesPaginatedService,
+  updateLanguageService,
+} from '@store/apis/common/languages';
+import {
+  createPublisherService,
+  deletePublisherService,
+  getPublishersPaginatedService,
+  updatePublisherService,
+} from '@store/apis/common/publishers';
+import { getReviewsPaginatedService } from '@store/apis/common/reviews';
+import {
+  createTagService,
+  deleteTagService,
+  getTagsPaginatedService,
+  updateTagService,
+} from '@store/apis/common/tags';
+import {
+  createOfferService,
+  deleteOfferService,
+  getOffersPaginatedService,
+  updateOfferService,
+} from '@store/apis/game/offer';
 
 // Utils
 import debounce from '@utils/debounce';
@@ -83,7 +113,7 @@ export const fetchPaginatedFeatures = createAppAsyncThunk<FetchPaginatedFeatures
 
     const data = await promiseToast(
       dispatch(
-        featureApi.endpoints.getFeaturesPaginated.initiate({
+        getFeaturesPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as 'id' | 'name',
@@ -110,7 +140,7 @@ export const fetchPaginatedPublishers = createAppAsyncThunk<FetchPaginatedCompan
 
     const data = await promiseToast(
       dispatch(
-        publisherApi.endpoints.getPublishersPaginated.initiate({
+        getPublishersPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as 'id' | 'name',
@@ -140,7 +170,7 @@ export const fetchPaginatedDevelopers = createAppAsyncThunk<FetchPaginatedCompan
 
     const data = await promiseToast(
       dispatch(
-        developerApi.endpoints.getDevelopersPaginated.initiate({
+        getDevelopersPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as 'id' | 'name',
@@ -167,7 +197,7 @@ export const fetchPaginatedLanguages = createAppAsyncThunk<FetchPaginatedLanguag
 
     const data = await promiseToast(
       dispatch(
-        languageApi.endpoints.getLanguagesPaginated.initiate({
+        getLanguagesPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as 'id' | 'name',
@@ -194,7 +224,7 @@ export const fetchPaginatedTags = createAppAsyncThunk<FetchPaginatedTagsPayload>
 
     const data = await promiseToast(
       dispatch(
-        tagApi.endpoints.getTagsPaginated.initiate({
+        getTagsPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as 'id' | 'name',
@@ -221,7 +251,7 @@ export const fetchPaginatedReviews = createAppAsyncThunk<FetchPaginatedReviewsPa
 
     const data = await promiseToast(
       dispatch(
-        reviewApi.endpoints.getReviewsPaginated.initiate({
+        getReviewsPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as 'id' | 'name',
@@ -248,7 +278,7 @@ export const fetchPaginatedOffers = createAppAsyncThunk<FetchPaginatedOffersPayl
 
     const data = await promiseToast(
       dispatch(
-        gameOfferApi.endpoints.getOffersPaginated.initiate({
+        getOffersPaginatedService.initiate({
           page: currentPage,
           limit: itemsPerPage,
           orderBy: sortConfig.key as OffersOrderBy,
@@ -320,7 +350,7 @@ export const submitItem = createAppAsyncThunk(
     let result: void | { message: string };
     if (adminType === AdminType.Feature) {
       result = await promiseToast(
-        dispatch(featureApi.endpoints.createFeature.initiate({ name: name.trim(), icon })).unwrap(),
+        dispatch(createFeatureService.initiate({ name: name.trim(), icon })).unwrap(),
         {
           pending: 'Creating feature',
           success: 'Feature created successfully',
@@ -329,9 +359,7 @@ export const submitItem = createAppAsyncThunk(
       );
     } else if (adminType === AdminType.Publisher) {
       result = await promiseToast(
-        dispatch(
-          publisherApi.endpoints.createPublisher.initiate({ name: name.trim(), website })
-        ).unwrap(),
+        dispatch(createPublisherService.initiate({ name: name.trim(), website })).unwrap(),
         {
           pending: 'Creating publisher',
           success: 'Publisher created successfully',
@@ -340,9 +368,7 @@ export const submitItem = createAppAsyncThunk(
       );
     } else if (adminType === AdminType.Developer) {
       result = await promiseToast(
-        dispatch(
-          developerApi.endpoints.createDeveloper.initiate({ name: name.trim(), website })
-        ).unwrap(),
+        dispatch(createDeveloperService.initiate({ name: name.trim(), website })).unwrap(),
         {
           pending: 'Creating developer',
           success: 'Developer created successfully',
@@ -351,7 +377,7 @@ export const submitItem = createAppAsyncThunk(
       );
     } else if (adminType === AdminType.Language) {
       result = await promiseToast(
-        dispatch(languageApi.endpoints.createLanguage.initiate({ name: name.trim() })).unwrap(),
+        dispatch(createLanguageService.initiate({ name: name.trim() })).unwrap(),
         {
           pending: 'Creating language',
           success: 'Language created successfully',
@@ -360,7 +386,7 @@ export const submitItem = createAppAsyncThunk(
       );
     } else if (adminType === AdminType.Tag) {
       result = await promiseToast(
-        dispatch(tagApi.endpoints.createTag.initiate({ name: name.trim() })).unwrap(),
+        dispatch(createTagService.initiate({ name: name.trim() })).unwrap(),
         {
           pending: 'Creating tag',
           success: 'Tag created successfully',
@@ -370,7 +396,7 @@ export const submitItem = createAppAsyncThunk(
     } else if (adminType === AdminType.CreateOffer && offerGame) {
       result = await promiseToast(
         dispatch(
-          gameOfferApi.endpoints.createOffer.initiate({
+          createOfferService.initiate({
             gameId: offerGame.id,
             discountPrice,
             offerType,
@@ -413,7 +439,7 @@ export const updateItem = createAppAsyncThunk(
     if (adminType === AdminType.Feature) {
       const result = await promiseToast(
         dispatch(
-          featureApi.endpoints.updateFeature.initiate({
+          updateFeatureService.initiate({
             id: currentEditItem?.id ?? 0,
             name: name.trim(),
             icon,
@@ -431,7 +457,7 @@ export const updateItem = createAppAsyncThunk(
     } else if (adminType === AdminType.Publisher) {
       const result = await promiseToast(
         dispatch(
-          publisherApi.endpoints.updatePublisher.initiate({
+          updatePublisherService.initiate({
             id: currentEditItem?.id ?? 0,
             name: name.trim(),
             website,
@@ -449,7 +475,7 @@ export const updateItem = createAppAsyncThunk(
     } else if (adminType === AdminType.Developer) {
       const result = await promiseToast(
         dispatch(
-          developerApi.endpoints.updateDeveloper.initiate({
+          updateDeveloperService.initiate({
             id: currentEditItem?.id ?? 0,
             name: name.trim(),
             website,
@@ -467,7 +493,7 @@ export const updateItem = createAppAsyncThunk(
     } else if (adminType === AdminType.Language) {
       const result = await promiseToast(
         dispatch(
-          languageApi.endpoints.updateLanguage.initiate({
+          updateLanguageService.initiate({
             id: currentEditItem?.id ?? 0,
             name: name.trim(),
           })
@@ -484,7 +510,7 @@ export const updateItem = createAppAsyncThunk(
     } else if (adminType === AdminType.Tag) {
       const result = await promiseToast(
         dispatch(
-          tagApi.endpoints.updateTag.initiate({ id: currentEditItem?.id ?? 0, name: name.trim() })
+          updateTagService.initiate({ id: currentEditItem?.id ?? 0, name: name.trim() })
         ).unwrap(),
         {
           pending: 'Updating tag',
@@ -503,7 +529,7 @@ export const updateItem = createAppAsyncThunk(
     ) {
       const result = await promiseToast(
         dispatch(
-          gameOfferApi.endpoints.updateOffer.initiate({
+          updateOfferService.initiate({
             id: currentEditItem?.pricing?.id ?? 0,
             discountPrice,
             offerType,
@@ -534,20 +560,17 @@ export const deleteItem = createAppAsyncThunk(
     const { adminType, deleteItemId: id } = getState().admin.common;
 
     if (adminType === AdminType.Feature) {
-      const result = await promiseToast(
-        dispatch(featureApi.endpoints.deleteFeature.initiate(id ?? 0)).unwrap(),
-        {
-          pending: 'Deleting feature',
-          success: 'Feature deleted successfully',
-          fallbackError: 'Error deleting feature',
-        }
-      );
+      const result = await promiseToast(dispatch(deleteFeatureService.initiate(id ?? 0)).unwrap(), {
+        pending: 'Deleting feature',
+        success: 'Feature deleted successfully',
+        fallbackError: 'Error deleting feature',
+      });
       if (!result) return rejectWithValue('Error deleting feature');
 
       debouncedFetchPaginatedFeatures(dispatch);
     } else if (adminType === AdminType.Publisher) {
       const result = await promiseToast(
-        dispatch(publisherApi.endpoints.deletePublisher.initiate(id ?? 0)).unwrap(),
+        dispatch(deletePublisherService.initiate(id ?? 0)).unwrap(),
         {
           pending: 'Deleting publisher',
           success: 'Publisher deleted successfully',
@@ -559,7 +582,7 @@ export const deleteItem = createAppAsyncThunk(
       debouncedFetchPaginatedPublishers(dispatch);
     } else if (adminType === AdminType.Developer) {
       const result = await promiseToast(
-        dispatch(developerApi.endpoints.deleteDeveloper.initiate(id ?? 0)).unwrap(),
+        dispatch(deleteDeveloperService.initiate(id ?? 0)).unwrap(),
         {
           pending: 'Deleting developer',
           success: 'Developer deleted successfully',
@@ -571,7 +594,7 @@ export const deleteItem = createAppAsyncThunk(
       debouncedFetchPaginatedDevelopers(dispatch);
     } else if (adminType === AdminType.Language) {
       const result = await promiseToast(
-        dispatch(languageApi.endpoints.deleteLanguage.initiate(id ?? 0)).unwrap(),
+        dispatch(deleteLanguageService.initiate(id ?? 0)).unwrap(),
         {
           pending: 'Deleting language',
           success: 'Language deleted successfully',
@@ -582,26 +605,20 @@ export const deleteItem = createAppAsyncThunk(
 
       debouncedFetchPaginatedLanguages(dispatch);
     } else if (adminType === AdminType.Tag) {
-      const result = await promiseToast(
-        dispatch(tagApi.endpoints.deleteTag.initiate(id ?? 0)).unwrap(),
-        {
-          pending: 'Deleting tag',
-          success: 'Tag deleted successfully',
-          fallbackError: 'Error deleting tag',
-        }
-      );
+      const result = await promiseToast(dispatch(deleteTagService.initiate(id ?? 0)).unwrap(), {
+        pending: 'Deleting tag',
+        success: 'Tag deleted successfully',
+        fallbackError: 'Error deleting tag',
+      });
       if (!result) return rejectWithValue('Error deleting tag');
 
       debouncedFetchPaginatedTags(dispatch);
     } else if ([AdminType.Offer, AdminType.CreateOffer].includes(adminType)) {
-      const result = await promiseToast(
-        dispatch(gameOfferApi.endpoints.deleteOffer.initiate(id ?? 0)).unwrap(),
-        {
-          pending: 'Deleting offer',
-          success: 'Offer deleted successfully',
-          fallbackError: 'Error deleting offer',
-        }
-      );
+      const result = await promiseToast(dispatch(deleteOfferService.initiate(id ?? 0)).unwrap(), {
+        pending: 'Deleting offer',
+        success: 'Offer deleted successfully',
+        fallbackError: 'Error deleting offer',
+      });
       if (!result) return rejectWithValue('Error deleting offer');
 
       debouncedFetchPaginatedOffers(dispatch);

@@ -5,7 +5,7 @@ import { createAppAsyncThunk } from '@store/hooks';
 import { fetchUserData } from '@store/features/auth/authThunks';
 
 // APIs
-import userPaymentApi from '@store/apis/user/payment';
+import { captureOrderService, createOrderService } from '@store/apis/user/payment';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -21,7 +21,7 @@ export const createOrder = createAppAsyncThunk<string>(
     // Create order
     const result = await promiseToast(
       dispatch(
-        userPaymentApi.endpoints.createOrder.initiate({
+        createOrderService.initiate({
           totalPrice,
           cartItems: userCart.map((item) => item.id) ?? [],
         })
@@ -45,7 +45,7 @@ export const captureOrder = createAppAsyncThunk<string, OnApproveData>(
     // Capture order
     const response = await promiseToast(
       dispatch(
-        userPaymentApi.endpoints.captureOrder.initiate({
+        captureOrderService.initiate({
           orderId: data.orderID,
           cartItems: userCart.map((item) => item.id) ?? [],
         })

@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 const userPhoneApi = createApi({
   reducerPath: 'api/user/phone',
   baseQuery: fetchBaseQuery({
@@ -11,7 +14,7 @@ const userPhoneApi = createApi({
     sendOTP: builder.mutation<{ message: string }, { phoneNumber: string }>({
       query: ({ phoneNumber }) => ({
         url: '/send-otp',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { phoneNumber },
       }),
     }),
@@ -19,7 +22,7 @@ const userPhoneApi = createApi({
     resendOTP: builder.mutation<{ message: string }, { phoneNumber: string }>({
       query: ({ phoneNumber }) => ({
         url: '/resend-otp',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { phoneNumber },
       }),
     }),
@@ -27,7 +30,7 @@ const userPhoneApi = createApi({
     verifyOTP: builder.mutation<{ message: string }, { phoneNumber: string; otp: string }>({
       query: ({ phoneNumber, otp }) => ({
         url: '/verify-otp',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { phoneNumber, otp },
       }),
     }),
@@ -38,7 +41,7 @@ const userPhoneApi = createApi({
     >({
       query: ({ phoneNumber, verificationCode }) => ({
         url: '/verify-verification-code',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { phoneNumber, verificationCode },
       }),
     }),
@@ -46,7 +49,7 @@ const userPhoneApi = createApi({
     changePhoneNumber: builder.mutation<{ message: string }, { newPhoneNumber: string }>({
       query: ({ newPhoneNumber }) => ({
         url: '/change-phone-number',
-        method: 'PATCH',
+        method: ApiMethod.PATCH,
         body: { newPhoneNumber },
       }),
     }),
@@ -54,14 +57,14 @@ const userPhoneApi = createApi({
     removePhoneNumber: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/remove-phone-number',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
       }),
     }),
 
     verifyPhoneNumber: builder.mutation<{ message: string }, { phoneNumber: string }>({
       query: ({ phoneNumber }) => ({
         url: '/verify-phone-number',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { phoneNumber },
       }),
     }),
@@ -69,7 +72,7 @@ const userPhoneApi = createApi({
     sendVerificationCode: builder.mutation<{ message: string }, { phoneNumber: string }>({
       query: ({ phoneNumber }) => ({
         url: '/send-verification-code',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { phoneNumber },
       }),
     }),
@@ -86,5 +89,16 @@ export const {
   useVerifyPhoneNumberMutation,
   useSendVerificationCodeMutation,
 } = userPhoneApi;
+
+export const {
+  sendOTP: sendOTPService,
+  resendOTP: resendOTPService,
+  verifyOTP: verifyOTPService,
+  verifyVerificationCode: verifyVerificationCodeService,
+  changePhoneNumber: changePhoneNumberService,
+  removePhoneNumber: removePhoneNumberService,
+  verifyPhoneNumber: verifyPhoneNumberService,
+  sendVerificationCode: sendVerificationCodeService,
+} = userPhoneApi.endpoints;
 
 export default userPhoneApi;

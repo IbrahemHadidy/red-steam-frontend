@@ -11,7 +11,16 @@ import { authChannel } from '@store/features/auth/authChannel';
 import { setIsVerificationEmailSent, setIsVerifyModalVisible } from './authSlice';
 
 // APIs
-import userAuthApi from '@store/apis/user/auth';
+import {
+  autoLoginService,
+  getWaitingTimeService,
+  loginService,
+  logoutService,
+  refreshTokenService,
+  resendVerificationTokenService,
+  updateUserDataService,
+  verificationStatusService,
+} from '@store/apis/user/auth';
 
 // Utils
 import { validateEmail, validateName, validatePassword } from '@utils/inputValidations';
@@ -36,7 +45,7 @@ export const login = createAppAsyncThunk<User, LoginData>(
     }
 
     const loginResult = await promiseToast(
-      dispatch(userAuthApi.endpoints.login.initiate({ identifier, password, rememberMe })).unwrap(),
+      dispatch(loginService.initiate({ identifier, password, rememberMe })).unwrap(),
       {
         pending: 'Logging in...',
         success: 'Logged in successfully!',
@@ -74,7 +83,7 @@ export const logout = createAppAsyncThunk(
     authChannel.postMessage({ isUserLoggedIn: false, currentUserData: null });
 
     // Call the logout user service
-    const result = await promiseToast(dispatch(userAuthApi.endpoints.logout.initiate()).unwrap(), {
+    const result = await promiseToast(dispatch(logoutService.initiate()).unwrap(), {
       pending: 'Logging out...',
       success: 'Logged out successfully!',
       fallbackError:
@@ -94,9 +103,7 @@ export const fetchUserData = createAppAsyncThunk<User | null>(
   async (_, { dispatch, rejectWithValue, fulfillWithValue }) => {
     try {
       // Fetch fresh user data
-      const currentUserData = (
-        await dispatch(userAuthApi.endpoints.updateUserData.initiate()).unwrap()
-      ).userData;
+      const currentUserData = (await dispatch(updateUserDataService.initiate()).unwrap()).userData;
 
       // Notify other tabs about the login status
       if (!currentUserData)
@@ -115,7 +122,7 @@ export const autoLoginOnLoad = createAppAsyncThunk<{
   currentUserData: User | null;
 }>('auth/autoLogin', async (_, { fulfillWithValue, rejectWithValue, dispatch }) => {
   try {
-    const data = await dispatch(userAuthApi.endpoints.autoLogin.initiate()).unwrap();
+    const data = await dispatch(autoLoginService.initiate()).unwrap();
     if (data?.userData === null) return { isUserLoggedIn: false, currentUserData: null };
 
     // Schedule token refresh
@@ -141,7 +148,7 @@ export const refreshAuthorizationToken = createAppAsyncThunk(
     if (isLoggedIn && !isSessionLogin) {
       try {
         // Refresh token request
-        await dispatch(userAuthApi.endpoints.refreshToken.initiate()).unwrap();
+        await dispatch(refreshTokenService.initiate()).unwrap();
 
         // Fetch data after token is refreshed
         await dispatch(fetchUserData());
@@ -169,16 +176,15 @@ export const checkVerificationStatus = createAppAsyncThunk<void, AppRouterInstan
 
     // Resend verification token
     if (currentUserData && !isVerificationEmailSent) {
-      await dispatch(userAuthApi.endpoints.resendVerificationToken.initiate()).unwrap();
+      await dispatch(resendVerificationTokenService.initiate()).unwrap();
       dispatch(setIsVerificationEmailSent(true));
       toast.info('Verification email sent. Please check your inbox.');
     }
 
-    const waitingTime = (await dispatch(userAuthApi.endpoints.getWaitingTime.initiate()).unwrap())
-      .waitingTime;
+    const waitingTime = (await dispatch(getWaitingTimeService.initiate()).unwrap()).waitingTime;
 
     const getVerificationStatus = async () =>
-      (await dispatch(userAuthApi.endpoints.verificationStatus.initiate()).unwrap()).verified;
+      (await dispatch(verificationStatusService.initiate()).unwrap()).verified;
 
     const timeoutId = setTimeout(async () => {
       clearInterval(intervalId);

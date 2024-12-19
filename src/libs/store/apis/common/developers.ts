@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Company } from '@interfaces/company';
 
@@ -14,7 +17,7 @@ const developerApi = createApi({
     createDeveloper: builder.mutation<{ message: string }, { name: string; website: string }>({
       query: (newDeveloper) => ({
         url: '',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: newDeveloper,
         credentials: 'include',
       }),
@@ -67,7 +70,7 @@ const developerApi = createApi({
     >({
       query: ({ id, name, website }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { name, website },
         credentials: 'include',
       }),
@@ -81,7 +84,7 @@ const developerApi = createApi({
     deleteDeveloper: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: (_, __, id) => [
@@ -102,5 +105,15 @@ export const {
   useUpdateDeveloperMutation,
   useDeleteDeveloperMutation,
 } = developerApi;
+
+export const {
+  createDeveloper: createDeveloperService,
+  getDeveloper: getDeveloperService,
+  getDevelopers: getDevelopersService,
+  getAllDevelopers: getAllDevelopersService,
+  getDevelopersPaginated: getDevelopersPaginatedService,
+  updateDeveloper: updateDeveloperService,
+  deleteDeveloper: deleteDeveloperService,
+} = developerApi.endpoints;
 
 export default developerApi;

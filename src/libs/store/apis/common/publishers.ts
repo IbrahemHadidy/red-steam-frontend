@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Company } from '@interfaces/company';
 
@@ -14,7 +17,7 @@ const publisherApi = createApi({
     createPublisher: builder.mutation<{ message: string }, { name: string; website: string }>({
       query: (newPublisher) => ({
         url: '',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: newPublisher,
         credentials: 'include',
       }),
@@ -67,7 +70,7 @@ const publisherApi = createApi({
     >({
       query: ({ id, name, website }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { name, website },
         credentials: 'include',
       }),
@@ -81,7 +84,7 @@ const publisherApi = createApi({
     deletePublisher: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: (_, __, id) => [
@@ -102,5 +105,15 @@ export const {
   useUpdatePublisherMutation,
   useDeletePublisherMutation,
 } = publisherApi;
+
+export const {
+  createPublisher: createPublisherService,
+  getPublisher: getPublisherService,
+  getPublishers: getPublishersService,
+  getAllPublishers: getAllPublishersService,
+  getPublishersPaginated: getPublishersPaginatedService,
+  updatePublisher: updatePublisherService,
+  deletePublisher: deletePublisherService,
+} = publisherApi.endpoints;
 
 export default publisherApi;

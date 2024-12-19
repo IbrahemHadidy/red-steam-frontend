@@ -30,7 +30,7 @@ import {
 } from './adminSlice';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
+import { getByIdService } from '@store/apis/game/data';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -155,14 +155,11 @@ listen({
     dispatch(reset());
     dispatch(setAdminType(AdminType.CreateOffer));
 
-    const offerGame = await promiseToast(
-      dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap(),
-      {
-        pending: 'Fetching game data...',
-        success: 'Game data fetched successfully',
-        fallbackError: 'Error fetching game data',
-      }
-    );
+    const offerGame = await promiseToast(dispatch(getByIdService.initiate(gameId)).unwrap(), {
+      pending: 'Fetching game data...',
+      success: 'Game data fetched successfully',
+      fallbackError: 'Error fetching game data',
+    });
 
     dispatch(setOfferGame(offerGame ?? null));
     dispatch(setDiscountPrice(offerGame?.pricing?.discountPrice ?? '0.00'));

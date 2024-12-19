@@ -17,8 +17,8 @@ import debounce from '@utils/debounce';
 import scrollToTop from '@utils/scrollToTop';
 
 // APIs
-import ipBaseApi from '@store/apis/countries/countryCode';
-import userManagementApi from '@store/apis/user/management';
+import { fetchUserCountryService } from '@store/apis/countries/countryCode';
+import { checkUsernameExistsService } from '@store/apis/user/management';
 
 // Types
 import type { AppDispatch, RootState } from '@store/store';
@@ -35,9 +35,7 @@ listen({
 
     try {
       // Fetch country
-      const fetchedCountry = await dispatch(
-        ipBaseApi.endpoints.fetchUserCountry.initiate()
-      ).unwrap();
+      const fetchedCountry = await dispatch(fetchUserCountryService.initiate()).unwrap();
 
       // Set fetched country
       dispatch(updateCountry(fetchedCountry ?? 'PS'));
@@ -54,9 +52,7 @@ const debouncedCheckUsernameExists = debounce<
   try {
     dispatch(setSubmitButtonDisabled(true));
     const exists = (
-      await dispatch(
-        userManagementApi.endpoints.checkUsernameExists.initiate(accountName.trim())
-      ).unwrap()
+      await dispatch(checkUsernameExistsService.initiate(accountName.trim())).unwrap()
     ).exists;
 
     if (!exists) {

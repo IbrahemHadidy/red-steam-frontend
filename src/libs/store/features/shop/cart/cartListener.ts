@@ -5,7 +5,7 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { initializeCart, setCartInitialized, setTotalPrice, updateCart } from './cartSlice';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
+import { getByIdsService } from '@store/apis/game/data';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -32,9 +32,7 @@ listen({
     if (userCart.length > 0) {
       cartItems =
         (await promiseToast(
-          dispatch(
-            gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
-          ).unwrap(),
+          dispatch(getByIdsService.initiate(userCart.map((item) => item.id))).unwrap(),
           {
             pending: 'Fetching cart items',
             fallbackError: 'Error fetching cart items',

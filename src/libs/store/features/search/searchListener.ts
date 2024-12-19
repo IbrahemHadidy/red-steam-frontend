@@ -24,11 +24,11 @@ import {
 import { debouncedFetchSearchResults } from './searchThunks';
 
 // APIs
-import developerApi from '@store/apis/common/developers';
-import featureApi from '@store/apis/common/features';
-import languageApi from '@store/apis/common/languages';
-import publisherApi from '@store/apis/common/publishers';
-import tagApi from '@store/apis/common/tags';
+import { getAllDevelopersService } from '@store/apis/common/developers';
+import { getAllFeaturesService } from '@store/apis/common/features';
+import { getAllLanguagesService } from '@store/apis/common/languages';
+import { getAllPublishersService } from '@store/apis/common/publishers';
+import { getAllTagsService } from '@store/apis/common/tags';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -75,11 +75,11 @@ listen({
     const [tags, features, publishers, developers, languages] =
       (await promiseToast(
         Promise.all([
-          dispatch(tagApi.endpoints.getAllTags.initiate()).unwrap(),
-          dispatch(featureApi.endpoints.getAllFeatures.initiate()).unwrap(),
-          dispatch(publisherApi.endpoints.getAllPublishers.initiate()).unwrap(),
-          dispatch(developerApi.endpoints.getAllDevelopers.initiate()).unwrap(),
-          dispatch(languageApi.endpoints.getAllLanguages.initiate()).unwrap(),
+          dispatch(getAllTagsService.initiate()).unwrap(),
+          dispatch(getAllFeaturesService.initiate()).unwrap(),
+          dispatch(getAllPublishersService.initiate()).unwrap(),
+          dispatch(getAllDevelopersService.initiate()).unwrap(),
+          dispatch(getAllLanguagesService.initiate()).unwrap(),
         ]),
         {
           pending: 'Initializing search',

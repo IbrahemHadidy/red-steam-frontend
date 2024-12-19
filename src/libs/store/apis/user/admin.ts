@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { User } from '@interfaces/user';
 
@@ -30,7 +33,7 @@ const userAdminApi = createApi({
 
         return {
           url: `paginated${queryString}`,
-          method: 'GET',
+          method: ApiMethod.GET,
           credentials: 'include',
         };
       },
@@ -43,7 +46,7 @@ const userAdminApi = createApi({
     >({
       query: ({ id, isVerified, isAdmin }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { isVerified, isAdmin },
         credentials: 'include',
       }),
@@ -53,7 +56,7 @@ const userAdminApi = createApi({
     deleteUser: builder.mutation<{ message: string }, string>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['Users', 'UsersPage'],
@@ -63,5 +66,11 @@ const userAdminApi = createApi({
 
 export const { useGetUsersPaginatedQuery, useUpdateUserMutation, useDeleteUserMutation } =
   userAdminApi;
+
+export const {
+  getUsersPaginated: getUsersPaginatedService,
+  updateUser: updateUserService,
+  deleteUser: deleteUserService,
+} = userAdminApi.endpoints;
 
 export default userAdminApi;

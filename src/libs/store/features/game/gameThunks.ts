@@ -11,8 +11,15 @@ import { resetReviews } from './gameSlice';
 import { fetchUserData } from '@store/features/auth/authThunks';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
-import userInteractionApi from '@store/apis/user/interaction';
+import { getReviewsService } from '@store/apis/game/data';
+import {
+  addToCartService,
+  addToLibraryService,
+  addToWishlistService,
+  removeFromWishlistService,
+  reviewGameService,
+  updateReviewService,
+} from '@store/apis/user/interaction';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -34,14 +41,11 @@ export const addToWishlist = createAppAsyncThunk(
 
     if (!gameId) return rejectWithValue('Error adding game to wishlist');
 
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.addToWishlist.initiate([gameId])).unwrap(),
-      {
-        pending: 'Adding to wishlist',
-        success: 'Added to wishlist',
-        fallbackError: 'Error adding to wishlist',
-      }
-    );
+    const result = await promiseToast(dispatch(addToWishlistService.initiate([gameId])).unwrap(), {
+      pending: 'Adding to wishlist',
+      success: 'Added to wishlist',
+      fallbackError: 'Error adding to wishlist',
+    });
     if (!result) return rejectWithValue('Error adding to wishlist');
 
     await dispatch(fetchUserData());
@@ -59,7 +63,7 @@ export const removeFromWishlist = createAppAsyncThunk(
     if (!gameId) return rejectWithValue('Error removing game from wishlist');
 
     const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.removeFromWishlist.initiate([gameId])).unwrap(),
+      dispatch(removeFromWishlistService.initiate([gameId])).unwrap(),
       {
         pending: 'Removing from wishlist',
         success: 'Removed from wishlist',
@@ -89,14 +93,11 @@ export const addToCart = createAppAsyncThunk<void, AppRouterInstance>(
 
     if (!gameId) return rejectWithValue('Error adding game to cart');
 
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.addToCart.initiate([gameId])).unwrap(),
-      {
-        pending: 'Adding to cart',
-        success: 'Added to cart',
-        fallbackError: 'Error adding to cart',
-      }
-    );
+    const result = await promiseToast(dispatch(addToCartService.initiate([gameId])).unwrap(), {
+      pending: 'Adding to cart',
+      success: 'Added to cart',
+      fallbackError: 'Error adding to cart',
+    });
     if (!result) return rejectWithValue('Error adding to cart');
 
     await dispatch(fetchUserData());
@@ -120,14 +121,11 @@ export const addToLibrary = createAppAsyncThunk<void, AppRouterInstance>(
 
     if (!gameId) return rejectWithValue('Error adding game to library');
 
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.addToLibrary.initiate([gameId])).unwrap(),
-      {
-        pending: 'Adding to library',
-        success: 'Added to library',
-        fallbackError: 'Error adding to library',
-      }
-    );
+    const result = await promiseToast(dispatch(addToLibraryService.initiate([gameId])).unwrap(), {
+      pending: 'Adding to library',
+      success: 'Added to library',
+      fallbackError: 'Error adding to library',
+    });
     if (!result) return rejectWithValue('Error adding to library');
 
     await dispatch(fetchUserData());
@@ -146,9 +144,7 @@ export const submitReview = createAppAsyncThunk<void, void>(
 
     if (!hasReviewed) {
       const result = await promiseToast(
-        dispatch(
-          userInteractionApi.endpoints.reviewGame.initiate({ gameId, positive, content })
-        ).unwrap(),
+        dispatch(reviewGameService.initiate({ gameId, positive, content })).unwrap(),
         {
           pending: 'Submitting review',
           success: 'Submitted review',
@@ -160,9 +156,7 @@ export const submitReview = createAppAsyncThunk<void, void>(
       if (reviewId === null) return rejectWithValue('Error updating review');
 
       const result = await promiseToast(
-        dispatch(
-          userInteractionApi.endpoints.updateReview.initiate({ reviewId, positive, content })
-        ).unwrap(),
+        dispatch(updateReviewService.initiate({ reviewId, positive, content })).unwrap(),
         {
           pending: 'Updating review',
           success: 'Updated review',
@@ -189,7 +183,7 @@ export const getReviews = createAppAsyncThunk<GetReviewsFulfillValue>(
 
     const response = await promiseToast(
       dispatch(
-        gameDataApi.endpoints.getReviews.initiate({
+        getReviewsService.initiate({
           gameId,
           filter,
           sort,

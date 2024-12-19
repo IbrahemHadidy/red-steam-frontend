@@ -9,7 +9,11 @@ import debounce from '@utils/debounce';
 import promiseToast from '@utils/promiseToast';
 
 // APIs
-import userAdminApi from '@store/apis/user/admin';
+import {
+  deleteUserService,
+  getUsersPaginatedService,
+  updateUserService,
+} from '@store/apis/user/admin';
 
 // Types
 import type { User } from '@interfaces/user';
@@ -28,7 +32,7 @@ export const fetchPaginatedUsers = createAppAsyncThunk<FetchPaginatedUsersPayloa
 
     const data = await promiseToast(
       dispatch(
-        userAdminApi.endpoints.getUsersPaginated.initiate({
+        getUsersPaginatedService.initiate({
           page: currentPage,
           limit: usersPerPage,
           orderBy: sortConfig.key,
@@ -66,7 +70,7 @@ export const updateUser = createAppAsyncThunk(
 
     const result = await promiseToast(
       dispatch(
-        userAdminApi.endpoints.updateUser.initiate({
+        updateUserService.initiate({
           id: currentEditUser?.id ?? '',
           isAdmin: currentEditUser?.isAdmin ?? false,
           isVerified: currentEditUser?.isVerified ?? false,
@@ -89,7 +93,7 @@ export const deleteUser = createAppAsyncThunk(
     const { deleteUserId } = getState().admin.user;
 
     const result = await promiseToast(
-      dispatch(userAdminApi.endpoints.deleteUser.initiate(deleteUserId ?? '')).unwrap(),
+      dispatch(deleteUserService.initiate(deleteUserId ?? '')).unwrap(),
       {
         pending: 'Deleting user',
         fallbackError: 'Error deleting user',

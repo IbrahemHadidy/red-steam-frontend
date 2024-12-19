@@ -5,7 +5,7 @@ import { createAppAsyncThunk } from '@store/hooks';
 import { setIsFetchDisabled } from './searchSlice';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
+import { getByParametersService } from '@store/apis/game/data';
 
 // Utils
 import debounce from '@utils/debounce';
@@ -30,7 +30,7 @@ export const fetchSearchResults = createAppAsyncThunk<
 
     const response = await promiseToast(
       dispatch(
-        gameDataApi.endpoints.getByParameters.initiate({
+        getByParametersService.initiate({
           searchData: requestParams.searchData,
           pagination: requestParams.pagination,
         })

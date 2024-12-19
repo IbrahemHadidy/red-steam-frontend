@@ -6,7 +6,11 @@ import { validateEmail } from '@utils/inputValidations';
 import promiseToast from '@utils/promiseToast';
 
 // APIs
-import userManagementApi from '@store/apis/user/management';
+import {
+  checkEmailExistsService,
+  forgotPasswordService,
+  resetPasswordService,
+} from '@store/apis/user/management';
 
 // Types
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -50,9 +54,7 @@ export const forgotPassword = createAppAsyncThunk<
 
     try {
       // Check if the account exists
-      const accountExists = await dispatch(
-        userManagementApi.endpoints.checkEmailExists.initiate(resetEmail)
-      ).unwrap();
+      const accountExists = await dispatch(checkEmailExistsService.initiate(resetEmail)).unwrap();
 
       // Handle account not found case
       if (!accountExists) {
@@ -65,7 +67,7 @@ export const forgotPassword = createAppAsyncThunk<
       // Proceed with password reset if account exists
       const response = await promiseToast(
         dispatch(
-          userManagementApi.endpoints.forgotPassword.initiate({
+          forgotPasswordService.initiate({
             email: resetEmail,
             recaptchaToken: recaptchaValue ?? '',
           })
@@ -101,9 +103,7 @@ export const resetPassword = createAppAsyncThunk<void, AppRouterInstance>(
     }
 
     const response = await promiseToast(
-      dispatch(
-        userManagementApi.endpoints.resetPassword.initiate({ token: resetToken, newPassword })
-      ).unwrap(),
+      dispatch(resetPasswordService.initiate({ token: resetToken, newPassword })).unwrap(),
       {
         pending: 'Resetting password',
         success: 'Password reset successfully',

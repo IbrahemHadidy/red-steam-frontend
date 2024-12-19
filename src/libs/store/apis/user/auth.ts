@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { User } from '@interfaces/user';
 
@@ -17,7 +20,7 @@ const userAuthApi = createApi({
     >({
       query: (data) => ({
         url: '/signup',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: data,
         credentials: 'include',
       }),
@@ -30,7 +33,7 @@ const userAuthApi = createApi({
     >({
       query: (data) => ({
         url: '/login',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: data,
         credentials: 'include',
       }),
@@ -39,7 +42,7 @@ const userAuthApi = createApi({
     autoLogin: builder.query<{ userData: User | null; message: string } | null, void>({
       query: () => ({
         url: '/auto-login',
-        method: 'POST',
+        method: ApiMethod.POST,
         credentials: 'include',
       }),
       providesTags: [{ type: 'CurrentUser' }],
@@ -48,7 +51,7 @@ const userAuthApi = createApi({
     logout: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/logout',
-        method: 'POST',
+        method: ApiMethod.POST,
         credentials: 'include',
       }),
       invalidatesTags: [{ type: 'CurrentUser' }],
@@ -57,7 +60,7 @@ const userAuthApi = createApi({
     refreshToken: builder.mutation<User, void>({
       query: () => ({
         url: '/refresh-token',
-        method: 'POST',
+        method: ApiMethod.POST,
         credentials: 'include',
       }),
       invalidatesTags: [{ type: 'CurrentUser' }],
@@ -66,7 +69,7 @@ const userAuthApi = createApi({
     updateUserData: builder.mutation<{ userData: User; message: string }, void>({
       query: () => ({
         url: '/user-data',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       invalidatesTags: [{ type: 'CurrentUser' }],
@@ -75,7 +78,7 @@ const userAuthApi = createApi({
     resendVerificationToken: builder.mutation<string, void>({
       query: () => ({
         url: '/resend-verification-token',
-        method: 'POST',
+        method: ApiMethod.POST,
         credentials: 'include',
       }),
     }),
@@ -83,7 +86,7 @@ const userAuthApi = createApi({
     verificationStatus: builder.mutation<{ verified: boolean }, void>({
       query: () => ({
         url: '/verification-status',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
     }),
@@ -91,7 +94,7 @@ const userAuthApi = createApi({
     verifyEmail: builder.mutation<{ message: string }, { token: string; username: string }>({
       query: (data) => ({
         url: '/verify-email',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: data,
         credentials: 'include',
       }),
@@ -100,7 +103,7 @@ const userAuthApi = createApi({
     updateTokens: builder.mutation<User, string>({
       query: (userId) => ({
         url: '/update-tokens',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { userId },
         credentials: 'include',
       }),
@@ -126,5 +129,19 @@ export const {
   useUpdateTokensMutation,
   useGetWaitingTimeQuery,
 } = userAuthApi;
+
+export const {
+  signup: signupService,
+  login: loginService,
+  autoLogin: autoLoginService,
+  logout: logoutService,
+  refreshToken: refreshTokenService,
+  updateUserData: updateUserDataService,
+  resendVerificationToken: resendVerificationTokenService,
+  verificationStatus: verificationStatusService,
+  verifyEmail: verifyEmailService,
+  updateTokens: updateTokensService,
+  getWaitingTime: getWaitingTimeService,
+} = userAuthApi.endpoints;
 
 export default userAuthApi;

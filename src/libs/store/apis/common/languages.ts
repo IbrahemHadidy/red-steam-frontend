@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import { Language } from '@interfaces/language';
 
@@ -14,7 +17,7 @@ const languageApi = createApi({
     createLanguage: builder.mutation<{ message: string }, { name: string }>({
       query: (newLanguage) => ({
         url: '',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: newLanguage,
         credentials: 'include',
       }),
@@ -64,7 +67,7 @@ const languageApi = createApi({
     updateLanguage: builder.mutation<{ message: string }, { id: number; name: string }>({
       query: ({ id, name }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { name },
         credentials: 'include',
       }),
@@ -78,7 +81,7 @@ const languageApi = createApi({
     deleteLanguage: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: (_, __, id) => [
@@ -99,5 +102,15 @@ export const {
   useUpdateLanguageMutation,
   useDeleteLanguageMutation,
 } = languageApi;
+
+export const {
+  createLanguage: createLanguageService,
+  getLanguage: getLanguageService,
+  getLanguages: getLanguagesService,
+  getAllLanguages: getAllLanguagesService,
+  getLanguagesPaginated: getLanguagesPaginatedService,
+  updateLanguage: updateLanguageService,
+  deleteLanguage: deleteLanguageService,
+} = languageApi.endpoints;
 
 export default languageApi;

@@ -13,8 +13,16 @@ import { validateEmail, validatePassword, validatePhone } from '@utils/inputVali
 import promiseToast from '@utils/promiseToast';
 
 // Apis
-import userManagementApi from '@store/apis/user/management';
-import userPhoneApi from '@store/apis/user/phone';
+import {
+  changeCountryService,
+  changeEmailService,
+  changePasswordService,
+  changeUsernameService,
+  deleteAccountService,
+  deleteAvatarService,
+  uploadAvatarService,
+} from '@store/apis/user/management';
+import { changePhoneNumberService, removePhoneNumberService } from '@store/apis/user/phone';
 
 // Channels
 import { authChannel } from '@store/features/auth/authChannel';
@@ -30,7 +38,7 @@ export const changeUsername = createAppAsyncThunk<string>(
     try {
       // Change username
       await dispatch(
-        userManagementApi.endpoints.changeUsername.initiate({
+        changeUsernameService.initiate({
           newUsername,
           currentPassword,
         })
@@ -79,7 +87,7 @@ export const changeEmail = createAppAsyncThunk<void | string, AppRouterInstance>
       // Second step: change email
       const response = await promiseToast(
         dispatch(
-          userManagementApi.endpoints.changeEmail.initiate({
+          changeEmailService.initiate({
             currentEmail,
             currentPassword,
             newEmail: email,
@@ -109,7 +117,7 @@ export const changeCountry = createAppAsyncThunk<string, string>(
   'user/settings/changeCountry',
   async (newCountry, { rejectWithValue, fulfillWithValue, dispatch }) => {
     const response = await promiseToast(
-      dispatch(userManagementApi.endpoints.changeCountry.initiate({ newCountry })).unwrap(),
+      dispatch(changeCountryService.initiate({ newCountry })).unwrap(),
       {
         pending: 'Changing country',
         success: 'Country changed successfully',
@@ -141,9 +149,7 @@ export const changePhone = createAppAsyncThunk<void | string>(
     } else {
       // Second step: change phone
       const response = await promiseToast(
-        dispatch(
-          userPhoneApi.endpoints.changePhoneNumber.initiate({ newPhoneNumber: phone })
-        ).unwrap(),
+        dispatch(changePhoneNumberService.initiate({ newPhoneNumber: phone })).unwrap(),
         {
           pending: 'Changing phone number...',
           success: 'Phone number changed successfully',
@@ -174,7 +180,7 @@ export const changePassword = createAppAsyncThunk<string>(
       // Change password
       const response = await promiseToast(
         dispatch(
-          userManagementApi.endpoints.changePassword.initiate({
+          changePasswordService.initiate({
             currentPassword: currentPassword,
             newPassword: confirmNewPassword,
           })
@@ -204,14 +210,11 @@ export const deletePhone = createAppAsyncThunk<string>(
   'user/settings/deletePhone',
   async (_, { rejectWithValue, fulfillWithValue, dispatch }) => {
     // Delete phone
-    const response = await promiseToast(
-      dispatch(userPhoneApi.endpoints.removePhoneNumber.initiate()).unwrap(),
-      {
-        pending: 'Deleting phone number',
-        success: 'Phone number deleted successfully',
-        fallbackError: 'An error occurred while deleting phone number. Please try again.',
-      }
-    );
+    const response = await promiseToast(dispatch(removePhoneNumberService.initiate()).unwrap(), {
+      pending: 'Deleting phone number',
+      success: 'Phone number deleted successfully',
+      fallbackError: 'An error occurred while deleting phone number. Please try again.',
+    });
     if (!response) return rejectWithValue('Error deleting phone');
 
     // Update user data
@@ -229,7 +232,7 @@ export const deleteAccount = createAppAsyncThunk<string>(
 
     // Delete account
     const response = await promiseToast(
-      dispatch(userManagementApi.endpoints.deleteAccount.initiate(currentPassword)).unwrap(),
+      dispatch(deleteAccountService.initiate(currentPassword)).unwrap(),
       {
         pending: 'Deleting account',
         success: 'Account deleted successfully',
@@ -258,9 +261,7 @@ export const changeAvatar = createAppAsyncThunk<string>(
       // Change avatar
       const response = await promiseToast(
         dispatch(
-          userManagementApi.endpoints.uploadAvatar.initiate(
-            (await getFileFromIndexedDB(avatarFile.id)) as File
-          )
+          uploadAvatarService.initiate((await getFileFromIndexedDB(avatarFile.id)) as File)
         ).unwrap(),
         {
           pending: 'Uploading avatar...',
@@ -285,14 +286,11 @@ export const changeAvatar = createAppAsyncThunk<string>(
 export const deleteAvatar = createAppAsyncThunk<string>(
   'user/settings/deleteAvatar',
   async (_, { rejectWithValue, fulfillWithValue, dispatch }) => {
-    const response = await promiseToast(
-      dispatch(userManagementApi.endpoints.deleteAvatar.initiate()).unwrap(),
-      {
-        pending: 'Deleting avatar...',
-        success: 'Avatar deleted successfully',
-        fallbackError: 'An error occurred while deleting avatar. Please try again.',
-      }
-    );
+    const response = await promiseToast(dispatch(deleteAvatarService.initiate()).unwrap(), {
+      pending: 'Deleting avatar...',
+      success: 'Avatar deleted successfully',
+      fallbackError: 'An error occurred while deleting avatar. Please try again.',
+    });
     if (!response) return rejectWithValue('Error deleting avatar');
 
     // Update user data

@@ -12,8 +12,8 @@ import { validateEmail, validateName, validatePassword } from '@utils/inputValid
 import scrollToTop from '@utils/scrollToTop';
 
 // Apis
-import userAuthApi from '@store/apis/user/auth';
-import userManagementApi from '@store/apis/user/management';
+import { loginService, signupService } from '@store/apis/user/auth';
+import { checkEmailExistsService } from '@store/apis/user/management';
 
 // Types
 import type { User } from '@interfaces/user';
@@ -80,13 +80,10 @@ export const checkExistingEmail = createAppAsyncThunk<
 
     try {
       const result = await toast
-        .promise<{ exists: boolean }>(
-          dispatch(userManagementApi.endpoints.checkEmailExists.initiate(email)).unwrap(),
-          {
-            pending: 'Checking if email exists...',
-            error: 'An error occurred while checking if email exists. Please try again.',
-          }
-        )
+        .promise<{ exists: boolean }>(dispatch(checkEmailExistsService.initiate(email)).unwrap(), {
+          pending: 'Checking if email exists...',
+          error: 'An error occurred while checking if email exists. Please try again.',
+        })
         .catch((error) => {
           console.error('Error checking existing email:', error);
           rejectValue.errors.push(
@@ -176,7 +173,7 @@ export const checkNameAndPassword = createAppAsyncThunk<
     try {
       // Signup the user
       await dispatch(
-        userAuthApi.endpoints.signup.initiate({
+        signupService.initiate({
           username: accountName,
           email,
           password,
@@ -198,7 +195,7 @@ export const checkNameAndPassword = createAppAsyncThunk<
     try {
       // Login the user
       const loginResult = await dispatch(
-        userAuthApi.endpoints.login.initiate({ identifier: email, password, rememberMe: false })
+        loginService.initiate({ identifier: email, password, rememberMe: false })
       ).unwrap();
       const currentUserData = loginResult.userData;
 

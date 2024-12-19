@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { RequestParams } from '@custom-types/search';
 import type { ReviewFilter, ReviewSort } from '@enums/reviews';
@@ -121,7 +124,7 @@ const gameDataApi = createApi({
     >({
       query: ({ gameId, filter, sort, limit, offset }) => ({
         url: `${gameId}/reviews?filter=${filter.toLowerCase()}&sort=${sort.toLowerCase()}&limit=${limit}&offset=${offset}`,
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: (_, __, { gameId }) => [{ type: 'GameReviews', id: gameId }],
@@ -143,5 +146,20 @@ export const {
   useGetByUpcomingQuery,
   useGetReviewsQuery,
 } = gameDataApi;
+
+export const {
+  search: searchService,
+  getByParameters: getByParametersService,
+  getFeatured: getFeaturedService,
+  getByTags: getByTagsService,
+  getById: getByIdService,
+  getByIds: getByIdsService,
+  getByOffers: getByOffersService,
+  getByNewest: getByNewestService,
+  getByTopSales: getByTopSalesService,
+  getBySpecials: getBySpecialsService,
+  getByUpcoming: getByUpcomingService,
+  getReviews: getReviewsService,
+} = gameDataApi.endpoints;
 
 export default gameDataApi;

@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Review } from '@interfaces/review';
 import type { Tag } from '@interfaces/tag';
@@ -16,7 +19,7 @@ const userInteractionApi = createApi({
     changeTags: builder.mutation<{ message: string }, number[]>({
       query: (tags) => ({
         url: '/tags',
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { tags },
         credentials: 'include',
       }),
@@ -26,7 +29,7 @@ const userInteractionApi = createApi({
     getTags: builder.query<{ tags: Tag[] }, void>({
       query: () => ({
         url: '/tags',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: ['UserTags'],
@@ -35,7 +38,7 @@ const userInteractionApi = createApi({
     addToLibrary: builder.mutation<{ message: string }, number[]>({
       query: (itemsIds) => ({
         url: '/library',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { itemsIds },
         credentials: 'include',
       }),
@@ -45,7 +48,7 @@ const userInteractionApi = createApi({
     removeFromLibrary: builder.mutation<{ message: string }, number[]>({
       query: (itemsIds) => ({
         url: '/library',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         body: { itemsIds },
         credentials: 'include',
       }),
@@ -55,7 +58,7 @@ const userInteractionApi = createApi({
     clearLibrary: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/library',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['UserLibrary'],
@@ -64,7 +67,7 @@ const userInteractionApi = createApi({
     addToWishlist: builder.mutation<{ message: string }, number[]>({
       query: (itemsIds) => ({
         url: '/wishlist',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { itemsIds },
         credentials: 'include',
       }),
@@ -74,7 +77,7 @@ const userInteractionApi = createApi({
     removeFromWishlist: builder.mutation<{ message: string }, number[]>({
       query: (itemsIds) => ({
         url: '/wishlist',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         body: { itemsIds },
         credentials: 'include',
       }),
@@ -84,7 +87,7 @@ const userInteractionApi = createApi({
     clearWishlist: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/wishlist',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['UserWishlist'],
@@ -93,7 +96,7 @@ const userInteractionApi = createApi({
     addToCart: builder.mutation<{ message: string }, number[]>({
       query: (itemsIds) => ({
         url: '/cart',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { itemsIds },
         credentials: 'include',
       }),
@@ -103,7 +106,7 @@ const userInteractionApi = createApi({
     removeFromCart: builder.mutation<{ message: string }, number[]>({
       query: (itemsIds) => ({
         url: '/cart',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         body: { itemsIds },
         credentials: 'include',
       }),
@@ -113,7 +116,7 @@ const userInteractionApi = createApi({
     clearCart: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/cart',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['UserCart'],
@@ -122,7 +125,7 @@ const userInteractionApi = createApi({
     getLibrary: builder.query<LibraryItem[], void>({
       query: () => ({
         url: '/library',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: ['UserLibrary'],
@@ -131,7 +134,7 @@ const userInteractionApi = createApi({
     getWishlist: builder.query<WishlistItem[], void>({
       query: () => ({
         url: '/wishlist',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: ['UserWishlist'],
@@ -140,7 +143,7 @@ const userInteractionApi = createApi({
     getCart: builder.query<{ items: LibraryItem[] }, void>({
       query: () => ({
         url: '/cart',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: ['UserCart'],
@@ -152,7 +155,7 @@ const userInteractionApi = createApi({
     >({
       query: ({ gameId, positive, content }) => ({
         url: '/review',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { gameId, positive, content },
         credentials: 'include',
       }),
@@ -165,7 +168,7 @@ const userInteractionApi = createApi({
     >({
       query: ({ reviewId, positive, content }) => ({
         url: '/review',
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { reviewId, positive, content },
         credentials: 'include',
       }),
@@ -175,7 +178,7 @@ const userInteractionApi = createApi({
     hasReviewedGame: builder.query<{ reviewed: boolean; review: Review }, number>({
       query: (gameId) => ({
         url: `/check-review/${gameId}`,
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: ['UserReviews'],
@@ -184,7 +187,7 @@ const userInteractionApi = createApi({
     getReviews: builder.query<Review[], void>({
       query: () => ({
         url: '/reviews',
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
       providesTags: ['UserReviews'],
@@ -212,5 +215,26 @@ export const {
   useHasReviewedGameQuery,
   useGetReviewsQuery,
 } = userInteractionApi;
+
+export const {
+  changeTags: changeTagsService,
+  getTags: getTagsService,
+  addToLibrary: addToLibraryService,
+  removeFromLibrary: removeFromLibraryService,
+  clearLibrary: clearLibraryService,
+  addToWishlist: addToWishlistService,
+  removeFromWishlist: removeFromWishlistService,
+  clearWishlist: clearWishlistService,
+  addToCart: addToCartService,
+  removeFromCart: removeFromCartService,
+  clearCart: clearCartService,
+  getLibrary: getLibraryService,
+  getWishlist: getWishlistService,
+  getCart: getCartService,
+  reviewGame: reviewGameService,
+  updateReview: updateReviewService,
+  hasReviewedGame: hasReviewedGameService,
+  getReviews: getReviewsService,
+} = userInteractionApi.endpoints;
 
 export default userInteractionApi;

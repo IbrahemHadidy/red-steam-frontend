@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Game } from '@interfaces/game';
 
@@ -23,7 +26,7 @@ const gameOfferApi = createApi({
     >({
       query: ({ gameId, discountPrice, offerType, discountStartDate, discountEndDate }) => ({
         url: '',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: {
           gameId,
           discountPrice,
@@ -62,7 +65,7 @@ const gameOfferApi = createApi({
         }
         return {
           url: queryString,
-          method: 'GET',
+          method: ApiMethod.GET,
           credentials: 'include',
         };
       },
@@ -81,7 +84,7 @@ const gameOfferApi = createApi({
     >({
       query: ({ id, discountPrice, offerType, discountStartDate, discountEndDate }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: {
           discountPrice,
           offerType,
@@ -96,7 +99,7 @@ const gameOfferApi = createApi({
     deleteOffer: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['Games', 'GameOffersPage'],
@@ -110,5 +113,12 @@ export const {
   useUpdateOfferMutation,
   useDeleteOfferMutation,
 } = gameOfferApi;
+
+export const {
+  createOffer: createOfferService,
+  getOffersPaginated: getOffersPaginatedService,
+  updateOffer: updateOfferService,
+  deleteOffer: deleteOfferService,
+} = gameOfferApi.endpoints;
 
 export default gameOfferApi;

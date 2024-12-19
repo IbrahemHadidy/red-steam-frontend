@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Tag } from '@interfaces/tag';
 
@@ -14,7 +17,7 @@ const tagApi = createApi({
     createTag: builder.mutation<{ message: string }, { name: string }>({
       query: (body) => ({
         url: '',
-        method: 'POST',
+        method: ApiMethod.POST,
         body,
         credentials: 'include',
       }),
@@ -64,7 +67,7 @@ const tagApi = createApi({
     updateTag: builder.mutation<{ message: string }, { id: number; name: string }>({
       query: ({ id, name }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { name },
         credentials: 'include',
       }),
@@ -78,7 +81,7 @@ const tagApi = createApi({
     deleteTag: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: (_, __, id) => [
@@ -99,5 +102,15 @@ export const {
   useUpdateTagMutation,
   useDeleteTagMutation,
 } = tagApi;
+
+export const {
+  createTag: createTagService,
+  getTag: getTagService,
+  getTags: getTagsService,
+  getAllTags: getAllTagsService,
+  getTagsPaginated: getTagsPaginatedService,
+  updateTag: updateTagService,
+  deleteTag: deleteTagService,
+} = tagApi.endpoints;
 
 export default tagApi;

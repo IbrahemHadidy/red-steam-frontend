@@ -32,8 +32,8 @@ import { getReviews } from './gameThunks';
 import { isImageEntry } from '@utils/checkMediaEntry';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
-import userInteractionApi from '@store/apis/user/interaction';
+import { getByIdService } from '@store/apis/game/data';
+import { hasReviewedGameService } from '@store/apis/user/interaction';
 
 // Types
 import type RecentGames from '@custom-types/recent-games';
@@ -58,7 +58,7 @@ listen({
     const recentGames: RecentGames = JSON.parse(localStorage.getItem('recentGames') ?? '[]');
 
     const fetchedGame = !isNaN(gameId)
-      ? await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap()
+      ? await dispatch(getByIdService.initiate(gameId)).unwrap()
       : undefined;
 
     // Sort media entries
@@ -184,9 +184,7 @@ listen({
     const { currentGame } = listenerApi.getState().game;
 
     if (currentUserData && currentGame) {
-      const hasReviewed = await dispatch(
-        userInteractionApi.endpoints.hasReviewedGame.initiate(currentGame.id)
-      ).unwrap();
+      const hasReviewed = await dispatch(hasReviewedGameService.initiate(currentGame.id)).unwrap();
       if (hasReviewed.reviewed) {
         dispatch(setHasReviewed(true));
         dispatch(setPositive(hasReviewed.review.positive));

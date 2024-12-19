@@ -16,7 +16,7 @@ import {
 } from './gameAdminSlice';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
+import { getByIdService } from '@store/apis/game/data';
 
 // Types
 import type { Screenshot, Video } from '@custom-types/game-admin';
@@ -59,7 +59,7 @@ listen({
     const gameId = action.payload;
 
     try {
-      const gameData = await dispatch(gameDataApi.endpoints.getById.initiate(gameId)).unwrap();
+      const gameData = await dispatch(getByIdService.initiate(gameId)).unwrap();
 
       // Set initial values for game update form
       dispatch(setGameToUpdate(gameData));

@@ -12,8 +12,8 @@ import promiseToast from '@utils/promiseToast';
 import Decimal from 'decimal.js';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
-import userInteractionApi from '@store/apis/user/interaction';
+import { getByIdsService } from '@store/apis/game/data';
+import { clearCartService, removeFromCartService } from '@store/apis/user/interaction';
 
 // Types
 import type { Game } from '@interfaces/game';
@@ -33,7 +33,7 @@ const refreshCart = async (
 
     if (userCart.length > 0) {
       cartItems = await dispatch(
-        gameDataApi.endpoints.getByIds.initiate(userCart.map((item) => item.id))
+        getByIdsService.initiate(userCart.map((item) => item.id))
       ).unwrap();
     }
 
@@ -60,14 +60,11 @@ const refreshCart = async (
 export const removeCartItem = createAppAsyncThunk<void, number>(
   'shop/cart/removeCartItem',
   async (id, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.removeFromCart.initiate([id])).unwrap(),
-      {
-        pending: 'Removing item from cart',
-        success: 'Removed from cart',
-        fallbackError: 'Error removing from cart',
-      }
-    );
+    const result = await promiseToast(dispatch(removeFromCartService.initiate([id])).unwrap(), {
+      pending: 'Removing item from cart',
+      success: 'Removed from cart',
+      fallbackError: 'Error removing from cart',
+    });
     if (!result) return rejectWithValue('Error removing from cart');
 
     // Refresh cart
@@ -79,14 +76,11 @@ export const removeCartItem = createAppAsyncThunk<void, number>(
 export const clearCart = createAppAsyncThunk(
   'shop/cart/clearCart',
   async (_, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    const result = await promiseToast(
-      dispatch(userInteractionApi.endpoints.clearCart.initiate()).unwrap(),
-      {
-        pending: 'Clearing cart',
-        success: 'Cart cleared',
-        fallbackError: 'Error clearing cart',
-      }
-    );
+    const result = await promiseToast(dispatch(clearCartService.initiate()).unwrap(), {
+      pending: 'Clearing cart',
+      success: 'Cart cleared',
+      fallbackError: 'Error clearing cart',
+    });
     if (!result) return rejectWithValue('Error clearing cart');
 
     // Refresh cart

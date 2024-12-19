@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 const userManagementApi = createApi({
   reducerPath: 'api/user/management',
   baseQuery: fetchBaseQuery({
@@ -11,7 +14,7 @@ const userManagementApi = createApi({
     checkEmailExists: builder.mutation<{ exists: boolean }, string>({
       query: (email) => ({
         url: `/email/${email}`,
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
     }),
@@ -19,7 +22,7 @@ const userManagementApi = createApi({
     checkUsernameExists: builder.mutation<{ exists: boolean }, string>({
       query: (username) => ({
         url: `/username/${username}`,
-        method: 'GET',
+        method: ApiMethod.GET,
         credentials: 'include',
       }),
     }),
@@ -30,7 +33,7 @@ const userManagementApi = createApi({
     >({
       query: ({ newUsername, currentPassword }) => ({
         url: '/username',
-        method: 'PATCH',
+        method: ApiMethod.PATCH,
         body: { newUsername, currentPassword },
         credentials: 'include',
       }),
@@ -43,7 +46,7 @@ const userManagementApi = createApi({
     >({
       query: ({ currentEmail, currentPassword, newEmail }) => ({
         url: '/email',
-        method: 'PATCH',
+        method: ApiMethod.PATCH,
         body: { currentEmail, currentPassword, newEmail },
         credentials: 'include',
       }),
@@ -53,7 +56,7 @@ const userManagementApi = createApi({
     changeCountry: builder.mutation<{ message: string }, { newCountry: string }>({
       query: ({ newCountry }) => ({
         url: '/country',
-        method: 'PATCH',
+        method: ApiMethod.PATCH,
         body: { newCountry },
         credentials: 'include',
       }),
@@ -66,7 +69,7 @@ const userManagementApi = createApi({
         formData.append('avatar', avatarFile);
         return {
           url: '/avatar',
-          method: 'PATCH',
+          method: ApiMethod.PATCH,
           body: formData,
           credentials: 'include',
         };
@@ -77,7 +80,7 @@ const userManagementApi = createApi({
     deleteAvatar: builder.mutation<{ message: string }, void>({
       query: () => ({
         url: '/avatar',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['User'],
@@ -89,7 +92,7 @@ const userManagementApi = createApi({
     >({
       query: ({ currentPassword, newPassword }) => ({
         url: '/password/change',
-        method: 'PATCH',
+        method: ApiMethod.PATCH,
         body: { currentPassword, newPassword },
         credentials: 'include',
       }),
@@ -101,7 +104,7 @@ const userManagementApi = createApi({
     >({
       query: ({ email, recaptchaToken }) => ({
         url: '/password/forgot',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: { email, recaptchaToken },
         credentials: 'include',
       }),
@@ -110,7 +113,7 @@ const userManagementApi = createApi({
     resetPassword: builder.mutation<{ message: string }, { token: string; newPassword: string }>({
       query: ({ token, newPassword }) => ({
         url: '/password/reset',
-        method: 'PATCH',
+        method: ApiMethod.PATCH,
         body: { token, newPassword },
         credentials: 'include',
       }),
@@ -119,7 +122,7 @@ const userManagementApi = createApi({
     deleteAccount: builder.mutation<{ message: string }, string>({
       query: (currentPassword) => ({
         url: '/account',
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         body: { currentPassword },
         credentials: 'include',
       }),
@@ -140,5 +143,19 @@ export const {
   useResetPasswordMutation,
   useDeleteAccountMutation,
 } = userManagementApi;
+
+export const {
+  checkEmailExists: checkEmailExistsService,
+  checkUsernameExists: checkUsernameExistsService,
+  changeUsername: changeUsernameService,
+  changeEmail: changeEmailService,
+  changeCountry: changeCountryService,
+  uploadAvatar: uploadAvatarService,
+  deleteAvatar: deleteAvatarService,
+  changePassword: changePasswordService,
+  forgotPassword: forgotPasswordService,
+  resetPassword: resetPasswordService,
+  deleteAccount: deleteAccountService,
+} = userManagementApi.endpoints;
 
 export default userManagementApi;

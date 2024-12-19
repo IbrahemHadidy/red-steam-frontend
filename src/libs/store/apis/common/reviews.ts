@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Review } from '@interfaces/review';
 
@@ -39,7 +42,7 @@ const reviewApi = createApi({
     deleteReview: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: ['ReviewsPage'],
@@ -48,5 +51,10 @@ const reviewApi = createApi({
 });
 
 export const { useGetReviewsPaginatedQuery, useDeleteReviewMutation } = reviewApi;
+
+export const {
+  getReviewsPaginated: getReviewsPaginatedService,
+  deleteReview: deleteReviewService,
+} = reviewApi.endpoints;
 
 export default reviewApi;

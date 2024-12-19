@@ -13,7 +13,7 @@ import {
 import debounce from '@utils/debounce';
 
 // APIs
-import userManagementApi from '@store/apis/user/management';
+import { checkUsernameExistsService } from '@store/apis/user/management';
 
 // Types
 import type { AppDispatch, RootState } from '@store/store';
@@ -44,9 +44,7 @@ const debouncedCheckUsernameExists = debounce<
 >(async (accountName: string, dispatch: AppDispatch) => {
   try {
     const exists = (
-      await dispatch(
-        userManagementApi.endpoints.checkUsernameExists.initiate(accountName.trim())
-      ).unwrap()
+      await dispatch(checkUsernameExistsService.initiate(accountName.trim())).unwrap()
     ).exists;
 
     if (!exists) {

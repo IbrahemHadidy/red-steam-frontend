@@ -5,7 +5,7 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { initializeLibrary, setIsLibraryInitialized, updateLibrary } from './librarySlice';
 
 // APIs
-import gameDataApi from '@store/apis/game/data';
+import { getByIdsService } from '@store/apis/game/data';
 
 // Utils
 import promiseToast from '@utils/promiseToast';
@@ -30,9 +30,7 @@ listen({
     if (userLibrary.length > 0) {
       libraryItems =
         (await promiseToast(
-          dispatch(
-            gameDataApi.endpoints.getByIds.initiate(userLibrary.map((item) => item.id))
-          ).unwrap(),
+          dispatch(getByIdsService.initiate(userLibrary.map((item) => item.id))).unwrap(),
           {
             pending: 'Fetching library items',
             fallbackError: 'Error fetching library items',

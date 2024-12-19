@@ -1,6 +1,9 @@
 // RTK Query
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// Enums
+import { ApiMethod } from '@enums/api';
+
 // Types
 import type { Feature } from '@interfaces/feature';
 
@@ -14,7 +17,7 @@ const featureApi = createApi({
     createFeature: builder.mutation<{ message: string }, { name: string; icon: string }>({
       query: (newFeature) => ({
         url: '',
-        method: 'POST',
+        method: ApiMethod.POST,
         body: newFeature,
         credentials: 'include',
       }),
@@ -67,7 +70,7 @@ const featureApi = createApi({
     >({
       query: ({ id, name, icon }) => ({
         url: `/${id}`,
-        method: 'PUT',
+        method: ApiMethod.PUT,
         body: { name, icon },
         credentials: 'include',
       }),
@@ -81,7 +84,7 @@ const featureApi = createApi({
     deleteFeature: builder.mutation<{ message: string }, number>({
       query: (id) => ({
         url: `/${id}`,
-        method: 'DELETE',
+        method: ApiMethod.DELETE,
         credentials: 'include',
       }),
       invalidatesTags: (_, __, id) => [
@@ -102,5 +105,15 @@ export const {
   useUpdateFeatureMutation,
   useDeleteFeatureMutation,
 } = featureApi;
+
+export const {
+  createFeature: createFeatureService,
+  getFeature: getFeatureService,
+  getFeatures: getFeaturesService,
+  getAllFeatures: getAllFeaturesService,
+  getFeaturesPaginated: getFeaturesPaginatedService,
+  updateFeature: updateFeatureService,
+  deleteFeature: deleteFeatureService,
+} = featureApi.endpoints;
 
 export default featureApi;
