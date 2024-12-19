@@ -81,19 +81,22 @@ export default function GameTitleArea() {
                   />
                 </div>
 
-                <div
-                  className="offer-icon-container"
-                  title="Add offer"
-                  onClick={() => onOffer(currentGame?.id)}
-                >
-                  <Image
-                    src={offerIcon}
-                    alt="Offer"
-                    className="offer-icon"
-                    width={18}
-                    height={18}
-                  />
-                </div>
+                {(!currentGame?.pricing?.free ||
+                  (currentGame?.pricing?.free && currentGame?.pricing?.discount)) && (
+                  <div
+                    className="offer-icon-container"
+                    title="Add offer"
+                    onClick={() => onOffer(currentGame?.id)}
+                  >
+                    <Image
+                      src={offerIcon}
+                      alt="Offer"
+                      className="offer-icon"
+                      width={18}
+                      height={18}
+                    />
+                  </div>
+                )}
 
                 <div
                   className="delete-icon-container"
