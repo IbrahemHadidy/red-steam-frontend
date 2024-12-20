@@ -66,11 +66,17 @@ export default function EditModal() {
   };
 
   const handleDiscountStartDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setDiscountStartDate(new Date(e.target.value).toString()));
+    const dateValue = new Date(e.target.value);
+    if (!isNaN(dateValue.getTime())) {
+      dispatch(setDiscountStartDate(dateValue.toISOString()));
+    }
   };
 
   const handleDiscountEndDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setDiscountEndDate(new Date(e.target.value).toString()));
+    const dateValue = new Date(e.target.value);
+    if (!isNaN(dateValue.getTime())) {
+      dispatch(setDiscountEndDate(dateValue.toISOString()));
+    }
   };
 
   const handleIconChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -91,7 +97,7 @@ export default function EditModal() {
       <div className="modal-overlay" onClick={closeModal} />
       <div className="edit-modal">
         <form onSubmit={handleSubmit}>
-          {adminType === AdminType.Offer ? (
+          {[AdminType.Offer, AdminType.CreateOffer].includes(adminType) ? (
             <>
               <div className="form-group">
                 <label htmlFor="discountPrice">Discount Price</label>
@@ -138,7 +144,7 @@ export default function EditModal() {
                   id="discountStartDate"
                   name="discountStartDate"
                   type="date"
-                  value={new Date(discountStartDate).toISOString().split('T')[0]}
+                  value={discountStartDate.split('T')[0]}
                   onChange={handleDiscountStartDateChange}
                 />
               </div>
@@ -149,7 +155,7 @@ export default function EditModal() {
                   id="discountEndDate"
                   name="discountEndDate"
                   type="date"
-                  value={new Date(discountEndDate).toISOString().split('T')[0]}
+                  value={discountEndDate.split('T')[0]}
                   onChange={handleDiscountEndDateChange}
                 />
               </div>

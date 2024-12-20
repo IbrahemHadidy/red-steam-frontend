@@ -55,11 +55,17 @@ export default function CreateOfferForm({
   };
 
   const handleDiscountStartDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setDiscountStartDate(new Date(e.target.value).toString()));
+    const dateValue = new Date(e.target.value);
+    if (!isNaN(dateValue.getTime())) {
+      dispatch(setDiscountStartDate(dateValue.toISOString()));
+    }
   };
 
   const handleDiscountEndDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setDiscountEndDate(new Date(e.target.value).toString()));
+    const dateValue = new Date(e.target.value);
+    if (!isNaN(dateValue.getTime())) {
+      dispatch(setDiscountEndDate(dateValue.toISOString()));
+    }
   };
 
   //------------------------------- Render --------------------------------//
@@ -110,7 +116,7 @@ export default function CreateOfferForm({
         <input
           type="date"
           className="form-input"
-          value={isEditModalOpen ? '' : discountStartDate}
+          value={isEditModalOpen ? '' : discountStartDate.split('T')[0]}
           onChange={handleDiscountStartDateChange}
           placeholder="Discount start date"
           ref={discountStartDateRef}
@@ -122,7 +128,7 @@ export default function CreateOfferForm({
         <input
           type="date"
           className="form-input"
-          value={isEditModalOpen ? '' : discountEndDate}
+          value={isEditModalOpen ? '' : discountEndDate.split('T')[0]}
           onChange={handleDiscountEndDateChange}
           placeholder="Discount end date"
           ref={discountEndDateRef}

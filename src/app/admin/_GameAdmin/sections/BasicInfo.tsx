@@ -54,7 +54,7 @@ export default function BasicInfo() {
   };
 
   const handleReleaseDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const dateValue: Date = new Date(e.target.value);
+    const dateValue = new Date(e.target.value);
     if (!isNaN(dateValue.getTime())) {
       dispatch(updateReleaseDate(dateValue.toISOString()));
     }
