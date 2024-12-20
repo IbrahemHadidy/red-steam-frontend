@@ -27,7 +27,10 @@ export function hasMinimumCommonTags(gametags: Tag[], userTags: Tag[]): boolean 
  * @param currentUserData The current user's data (optional).
  * @returns The recommendation class for the game ('recommended' or 'available').
  */
-export function getRecommendationClass(game: Game, currentUserData?: User): RecommendationStatus {
+export function getRecommendationClass(
+  game: Game,
+  currentUserData: User | null
+): RecommendationStatus {
   const gameTags = game.tags ?? [];
   const userTags = currentUserData?.tags ?? [];
   if (gameTags.length < 3 || userTags.length < 3) return RecommendationStatus.Available;

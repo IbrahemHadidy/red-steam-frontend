@@ -88,8 +88,8 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
           </div>
 
           <div className="reason">
-            <div className={getRecommendationClass(slide)}>
-              {getRecommendationClass(slide) === 'recommended' ? (
+            <div className={getRecommendationClass(slide, currentUserData)}>
+              {getRecommendationClass(slide, currentUserData) === 'recommended' ? (
                 <>
                   <strong>Recommended</strong> based on your tags
                 </>
@@ -99,7 +99,7 @@ export default function Slide({ slide }: FeaturedDesktopProps) {
             </div>
 
             <div className="tags">
-              {getRecommendationClass(slide) === 'recommended' && currentUserData
+              {getRecommendationClass(slide, currentUserData) === 'recommended' && currentUserData
                 ? slide.tags
                     ?.filter((tag) => currentUserData.tags.some((userTag) => userTag.id === tag.id))
                     .map((tag) => <span key={tag.id}>{tag.name}</span>)
