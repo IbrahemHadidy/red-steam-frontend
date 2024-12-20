@@ -23,6 +23,7 @@ import { prepareCreateGameFormData, prepareUpdateGameFormData } from './gameAdmi
 import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
 
 // Types
+import type FileMetadata from '@custom-types/file-metadata';
 import type { Game } from '@interfaces/game';
 import type { AppDispatch, RootState } from '@store/store';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -181,40 +182,28 @@ const updateGame = async (dispatch: AppDispatch, state: RootState, router: AppRo
   const formData = await prepareUpdateGameFormData(
     {
       changedThumbnails: {
-        mainImage:
-          thumbnails.mainImage.file instanceof File && thumbnails.mainImage.changed
-            ? thumbnails.mainImage.file
-            : undefined,
-        backgroundImage:
-          thumbnails.backgroundImage.file instanceof File && thumbnails.backgroundImage.changed
-            ? thumbnails.backgroundImage.file
-            : undefined,
-        menuImg:
-          thumbnails.menuImg.file instanceof File && thumbnails.menuImg.changed
-            ? thumbnails.menuImg.file
-            : undefined,
-        horizontalHeaderImage:
-          thumbnails.horizontalHeaderImage.file instanceof File &&
-          thumbnails.horizontalHeaderImage.changed
-            ? thumbnails.horizontalHeaderImage.file
-            : undefined,
-        verticalHeaderImage:
-          thumbnails.verticalHeaderImage.file instanceof File &&
-          thumbnails.verticalHeaderImage.changed
-            ? thumbnails.verticalHeaderImage.file
-            : undefined,
-        smallHeaderImage:
-          thumbnails.smallHeaderImage.file instanceof File && thumbnails.smallHeaderImage.changed
-            ? thumbnails.smallHeaderImage.file
-            : undefined,
-        searchImage:
-          thumbnails.searchImage.file instanceof File && thumbnails.searchImage.changed
-            ? thumbnails.searchImage.file
-            : undefined,
-        tabImage:
-          thumbnails.tabImage.file instanceof File && thumbnails.tabImage.changed
-            ? thumbnails.tabImage.file
-            : undefined,
+        mainImage: thumbnails.mainImage.changed
+          ? (thumbnails.mainImage.file as FileMetadata)
+          : undefined,
+        backgroundImage: thumbnails.backgroundImage.changed
+          ? (thumbnails.backgroundImage.file as FileMetadata)
+          : undefined,
+        menuImg: thumbnails.menuImg.changed ? (thumbnails.menuImg.file as FileMetadata) : undefined,
+        horizontalHeaderImage: thumbnails.horizontalHeaderImage.changed
+          ? (thumbnails.horizontalHeaderImage.file as FileMetadata)
+          : undefined,
+        verticalHeaderImage: thumbnails.verticalHeaderImage.changed
+          ? (thumbnails.verticalHeaderImage.file as FileMetadata)
+          : undefined,
+        smallHeaderImage: thumbnails.smallHeaderImage.changed
+          ? (thumbnails.smallHeaderImage.file as FileMetadata)
+          : undefined,
+        searchImage: thumbnails.searchImage.changed
+          ? (thumbnails.searchImage.file as FileMetadata)
+          : undefined,
+        tabImage: thumbnails.tabImage.changed
+          ? (thumbnails.tabImage.file as FileMetadata)
+          : undefined,
       },
       deletedScreenshots: screenshots
         .filter((screenshot) => screenshot.change === GameMediaChangeStatus.Deleted)

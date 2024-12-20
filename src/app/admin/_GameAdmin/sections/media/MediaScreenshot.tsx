@@ -16,7 +16,7 @@ import {
 import getFileUrl from '@utils/getFileUrl';
 
 // Enums
-import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
+import { GameMediaChangeStatus } from '@enums/admin';
 
 // Types
 import type { Screenshot } from '@custom-types/game-admin';
@@ -31,7 +31,7 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { screenshots, duplicateOrders, type } = useAppSelector((state) => state.admin.game);
+  const { screenshots, duplicateOrders } = useAppSelector((state) => state.admin.game);
   const [imageUrl, setImageUrl] = useState<string>('//:0');
 
   //------------------------------ Effects -------------------------------//
@@ -74,11 +74,8 @@ export default function MediaScreenshot({ item }: MediaScreenshotProps) {
 
       if (screenshotElementContainer) {
         screenshotElementContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        if (type === GameAdminType.Create) {
-          screenshotElementContainer.classList.remove('fading-border');
-          screenshotElementContainer.classList.add('fading-border');
-        }
+        screenshotElementContainer.classList.remove('fading-border');
+        screenshotElementContainer.classList.add('fading-border');
       }
     }, 50);
   };

@@ -171,14 +171,14 @@ export const prepareCreateGameFormData = async (
 export const prepareUpdateGameFormData = async (
   media: {
     changedThumbnails: {
-      mainImage?: File;
-      backgroundImage?: File;
-      menuImg?: File;
-      horizontalHeaderImage?: File;
-      verticalHeaderImage?: File;
-      smallHeaderImage?: File;
-      searchImage?: File;
-      tabImage?: File;
+      mainImage?: FileMetadata;
+      backgroundImage?: FileMetadata;
+      menuImg?: FileMetadata;
+      horizontalHeaderImage?: FileMetadata;
+      verticalHeaderImage?: FileMetadata;
+      smallHeaderImage?: FileMetadata;
+      searchImage?: FileMetadata;
+      tabImage?: FileMetadata;
     };
     deletedScreenshots?: number[];
     deletedVideos?: number[];
@@ -236,28 +236,39 @@ export const prepareUpdateGameFormData = async (
     })
   );
 
-  Object.entries(media.changedThumbnails).forEach(([key, value]) => {
+  // Append thumbnails
+  for (const [key, value] of Object.entries(media.changedThumbnails)) {
     if (value) {
-      formData.append(key, value);
+      const file = await getFileFromIndexedDB(value.id);
+      if (file) {
+        formData.append(key, file as File);
+      }
     }
-  });
+  }
 
-  media.addedScreenshots?.forEach(async (screenshot) => {
-    formData.append(
-      `${screenshot.order}`,
-      (await getFileFromIndexedDB((screenshot.image as FileMetadata).id)) as File
-    );
-  });
-  media.addedVideos?.forEach(async (video) => {
-    formData.append(
-      `${video.order}`,
-      (await getFileFromIndexedDB((video.video as FileMetadata).id)) as File
-    );
-    formData.append(
-      `${video.order}-poster`,
-      (await getFileFromIndexedDB((video.poster as FileMetadata).id)) as File
-    );
-  });
+  // Append images
+  if (media.addedScreenshots) {
+    for (const entry of media.addedScreenshots) {
+      const file = await getFileFromIndexedDB((entry.image as FileMetadata).id);
+      if (file) {
+        formData.append(`${entry.order}`, file as File);
+      }
+    }
+  }
+
+  // Append videos
+  if (media.addedVideos) {
+    for (const entry of media.addedVideos) {
+      const videoFile = await getFileFromIndexedDB((entry.video as FileMetadata).id);
+      const posterFile = await getFileFromIndexedDB((entry.poster as FileMetadata).id);
+      if (videoFile) {
+        formData.append(`${entry.order}`, videoFile as File);
+      }
+      if (posterFile) {
+        formData.append(`${entry.order}-poster`, posterFile as File);
+      }
+    }
+  }
 
   return formData;
 };

@@ -15,7 +15,7 @@ import {
 import getFileUrl from '@utils/getFileUrl';
 
 // Enums
-import { GameAdminType, GameMediaChangeStatus } from '@enums/admin';
+import { GameMediaChangeStatus } from '@enums/admin';
 
 // Types
 import type { Video } from '@custom-types/game-admin';
@@ -30,7 +30,7 @@ export default function MediaVideo({ item }: MediaVideoProps) {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { duplicateOrders, type } = useAppSelector((state) => state.admin.game);
+  const { duplicateOrders } = useAppSelector((state) => state.admin.game);
   const [videoUrl, setVideoUrl] = useState<string>('//:0');
   const [posterUrl, setPosterUrl] = useState<string>('//:0');
 
@@ -62,11 +62,8 @@ export default function MediaVideo({ item }: MediaVideoProps) {
 
       if (videoElementContainer) {
         videoElementContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        if (type === GameAdminType.Create) {
-          videoElementContainer.classList.remove('fading-border');
-          videoElementContainer.classList.add('fading-border');
-        }
+        videoElementContainer.classList.remove('fading-border');
+        videoElementContainer.classList.add('fading-border');
       }
     }, 50);
   };

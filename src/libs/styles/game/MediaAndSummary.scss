@@ -53,6 +53,21 @@
           display: block;
           background: transparent;
         }
+
+        &.disabled {
+          pointer-events: none;
+          opacity: 0.5;
+
+          span {
+            cursor: default;
+          }
+
+          &:hover {
+            text-decoration: none !important;
+            color: #67c1f5 !important;
+            background: rgba(103, 193, 245, 0.2);
+          }
+        }
       }
     }
 

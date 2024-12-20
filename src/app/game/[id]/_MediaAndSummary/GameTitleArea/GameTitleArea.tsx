@@ -62,6 +62,12 @@ export default function GameTitleArea() {
           </Link>
         </div>
         <div className="game-header-content">
+          <div className="game-community">
+            <a className="community-btn disabled">
+              <span>Community Hub</span>
+            </a>
+          </div>
+
           <div className="game-name-block">
             <div className="main-game-name">{currentGame?.name}</div>
 
