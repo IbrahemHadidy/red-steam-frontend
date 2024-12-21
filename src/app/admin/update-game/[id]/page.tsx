@@ -7,7 +7,11 @@ import { use, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeGameUpdate } from '@store/features/admin/game/gameAdminSlice';
+import {
+  initializeGameUpdate,
+  reset,
+  setIsGameUpdateInitialized,
+} from '@store/features/admin/game/gameAdminSlice';
 
 // Components
 import GameAdmin from '@app/admin/_GameAdmin/GameAdmin';
@@ -31,6 +35,10 @@ export default function GameUpdate({ params }: GameUpdateProps) {
   // Initialize Game Update on id change
   useEffect(() => {
     if (!isGameUpdateInitialized) dispatch(initializeGameUpdate(+id));
+    return () => {
+      dispatch(reset());
+      dispatch(setIsGameUpdateInitialized(false));
+    };
   }, [dispatch, id, isGameUpdateInitialized]);
 
   //-------------------------------- Render -------------------------------//

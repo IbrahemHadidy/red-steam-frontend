@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 
 // Redux Handlers
-import { initializeGame } from '@store/features/game/gameSlice';
+import { initializeGame, reset } from '@store/features/game/gameSlice';
 
 // Custom Hooks
 import useDynamicBackground from '@hooks/useDynamicBackground';
@@ -39,6 +39,7 @@ export default function GameProvider({ id, children }: GameProviderProps) {
   //-----------------------------  On Mount -------------------------------//
   useEffect(() => {
     dispatch(initializeGame(id));
+    dispatch(reset());
   }, [dispatch, id]);
 
   //------------------------------- Render --------------------------------//

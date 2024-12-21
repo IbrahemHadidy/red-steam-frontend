@@ -23,7 +23,9 @@ export default function GameCreate() {
   // Reset state on Mount
   useEffect(() => {
     dispatch(setType(GameAdminType.Create));
-    dispatch(reset());
+    return () => {
+      dispatch(reset());
+    };
   }, [dispatch]);
 
   return <GameAdmin />;
