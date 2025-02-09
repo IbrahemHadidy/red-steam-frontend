@@ -22,7 +22,7 @@ interface RootLayoutProps {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_PATH ?? ''),
+  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
   icons: {
     icon: favIcon.src,
   },

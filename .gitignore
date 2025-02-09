@@ -43,3 +43,8 @@ next-env.d.ts
 certificate.crt
 csr.pem
 private.key
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
