@@ -22,12 +22,16 @@ const MobileNav = dynamic(() => import('./Mobile/MobileNav'), {
 import '@styles/components/Navbar.scss';
 
 export default function Navbar() {
-  const isViewport960OrLess = useResponsiveViewport(960);
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
 
   if (!isAuthInitialized || !authOnLoadIntialized) {
     return <LoadingSkeleton />;
   } else {
-    return <>{isViewport960OrLess ? <MobileNav /> : <DesktopNav />}</>;
+    return <NavbarComponent />;
   }
+}
+
+function NavbarComponent() {
+  const isViewport960OrLess = useResponsiveViewport(960);
+  return <>{isViewport960OrLess ? <MobileNav /> : <DesktopNav />}</>;
 }

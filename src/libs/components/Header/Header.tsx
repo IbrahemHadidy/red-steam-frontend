@@ -22,12 +22,16 @@ import useResponsiveViewport from '@hooks/useResponsiveViewport';
 import '@styles/components/Header.scss';
 
 export default function Header() {
-  const isViewport960OrLess = useResponsiveViewport(960);
   const { isAuthInitialized, authOnLoadIntialized } = useAppSelector((state) => state.auth);
 
   if (!isAuthInitialized || !authOnLoadIntialized) {
     return <LoadingSkeleton />;
   } else {
-    return <>{isViewport960OrLess ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;
+    return <HeaderComponent />;
   }
+}
+
+function HeaderComponent() {
+  const isViewport960OrLess = useResponsiveViewport(960);
+  return <>{isViewport960OrLess ? <CustomMobileComponent /> : <DefaultDesktopComponent />}</>;
 }

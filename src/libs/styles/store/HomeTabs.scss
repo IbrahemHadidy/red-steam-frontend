@@ -149,15 +149,18 @@
 						line-height: 69px;
 						transition: opacity 0.25s;
 
-						@media (max-width: 630px) {
-							img {
-								width: 65%;
-							}
-						}
-
 						img {
 							height: 69px;
 							width: 184px;
+						}
+
+						@media (max-width: 630px) {
+							width: 125px;
+
+							img {
+								width: 125px;
+								height: unset;
+							}
 						}
 					}
 
