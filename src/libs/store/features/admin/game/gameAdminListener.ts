@@ -55,8 +55,11 @@ listen({
   actionCreator: initializeGameUpdate,
 
   effect: async (action: PayloadAction<number>, listenerApi) => {
-    const { dispatch } = listenerApi;
+    const { dispatch, getState } = listenerApi;
+    const { isGameUpdateInitialized } = getState().admin.game;
     const gameId = action.payload;
+
+    if (isGameUpdateInitialized) return;
 
     try {
       const gameData = await dispatch(getByIdService.initiate(gameId)).unwrap();
@@ -65,7 +68,7 @@ listen({
       dispatch(setGameToUpdate(gameData));
       dispatch(setUpdateFormInitialValues(gameData));
 
-      // Set cart initialized
+      // Set game initialized
       dispatch(setIsUpdateFetching(false));
       dispatch(setIsGameUpdateInitialized(true));
     } catch (error) {

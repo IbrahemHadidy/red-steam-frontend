@@ -29,17 +29,17 @@ export default function GameUpdate({ params }: GameUpdateProps) {
   const dispatch = useAppDispatch();
 
   //------------------------------- States --------------------------------//
-  const { isUpdateFetching, isGameUpdateInitialized } = useAppSelector((state) => state.admin.game);
+  const { isUpdateFetching } = useAppSelector((state) => state.admin.game);
 
   //------------------------------- Effects -------------------------------//
   // Initialize Game Update on id change
   useEffect(() => {
-    if (!isGameUpdateInitialized) dispatch(initializeGameUpdate(+id));
+    if (id) dispatch(initializeGameUpdate(+id));
     return () => {
       dispatch(reset());
       dispatch(setIsGameUpdateInitialized(false));
     };
-  }, [dispatch, id, isGameUpdateInitialized]);
+  }, [dispatch, id]);
 
   //-------------------------------- Render -------------------------------//
 
